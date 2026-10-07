@@ -45,7 +45,7 @@ const V = {
       row('#/igudziai', 'Įgūdžiai', n + ' įgūdžiai · įsivertinta ' + rated + ' / ' + n) +
       row('#/vaistai', 'Vaistai', 'Pagrindiniai ir papildomi') +
       '<h2>Kontroliniai sąrašai</h2>' +
-      (E.escape || []).concat(['atmist', 'stop', 'komanda', 'kokybe']).map(id => S[id] ? row('#/s/' + id, S[id].title) : '').join('') +
+      (E.escape || []).concat(['atmist', 'antrine', 'stop', 'komanda', 'kokybe']).map(id => S[id] ? row('#/s/' + id, S[id].title) : '').join('') +
       row('#/nustatymai', 'Nustatymai');
   },
 
@@ -60,7 +60,7 @@ const V = {
     if (S[lid] && S[lid].intro) h += '<p class="muted">' + br(S[lid].intro) + '</p>';
     h += renderList(lid);
     if (f < r.lists.length - 1) h += `<button class="row" data-act="go" data-r="#/v/${id}?f=${f + 1}" style="margin-top:12px">Toliau: ${esc((S[r.lists[f + 1]] || {}).title || '')}<span class="ar">›</span></button>`;
-    if (r.vadovas) h += '<h2>Vadovo įrankiai</h2>' + V.escRows() + row('#/s/stop', 'STOP · 10 už 10') + row('#/s/komanda', 'Komandos darbas') + row('#/s/kokybe', 'Gydymo tikslai ir kokybė');
+    if (r.vadovas) h += '<h2>Komandos vado įrankiai</h2>' + V.escRows() + row('#/s/stop', 'STOP · 10 už 10') + row('#/s/komanda', 'Komandos darbas') + row('#/s/kokybe', 'Gydymo tikslai ir kokybė') + row('#/s/antrine', 'Antrinė apžiūra nuo galvos iki kojų');
     return h;
   },
 

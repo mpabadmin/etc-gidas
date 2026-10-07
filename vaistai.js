@@ -17,18 +17,18 @@ window.ETC.vaistai = [
     ind: 'Hemoraginis šokas, masyvus kraujavimas',
     kontra: 'Alergija',
     dozes: [
-      { k: 'Į veną', d: '2 g ne vėliau nei 3 val. nuo sužeidimo',
-        p: 'Skyrimo pvz.: iš 4 ampulių 20 ml (2 g traneksamo rūgšties) suleisti lėtai neskiestos.' },
+      { k: 'Į veną', d: '2 g – per 3 val. nuo traumos',
+        p: 'Skyrimo pvz.: iš 4 ampulių 20 ml (2 g traneksamo rūgšties) suleisti lėtai, neskiedus.' },
       { k: 'Vietinis skyrimas', d: 'Ampulės turiniu suvilgyti tvarstį',
         p: 'Tamponuoti gausiai kraujuojančią vietą.' }
     ],
-    ispejimai: ['Skirti ne vėliau nei per 3 val. nuo sužeidimo. Pradžios ekrane pažymėkite traumos laiką – kortelė „TXA iki“ parodys terminą.'],
+    ispejimai: ['Skirti per 3 val. nuo traumos. Pradžios ekrane pažymėkite traumos laiką – kortelė „TXA iki“ parodys terminą.'],
     salutinis: 'Pykinimas, vėmimas, viduriavimas, galvos skausmas, kraujospūdžio sumažėjimas (greitos infuzijos metu), galimi traukuliai (ypač jei yra pasireiškę anksčiau).',
     pakuote: 'Ampulės 500 mg / 5 ml (100 mg/ml)',
     pastabos: [
-      'TCCC vadovas: pirma dozė 1 g IV per 10 min per pirmąsias 3 val. po traumos (lėtai – kad išvengti hipotenzijos); antra dozė 1 g, skiesta 100 ml fiziologinio arba gliukozės tirpalo, infuzuojama per 8 val. Jei nėra galimybės skirti IV/IO – ta pati dozė į raumenis.',
+      'TCCC vadovas: pirma dozė 1 g IV per 10 min per pirmąsias 3 val. po traumos (lėtai, siekiant išvengti hipotenzijos); antra dozė 1 g, skiesta 100 ml fiziologinio arba gliukozės tirpalo, infuzuojama per 8 val. Jei nėra galimybės skirti IV/IO – ta pati dozė į raumenis.',
       'ETC lentelė: 2000 mg į 100 ml arba 250 ml NaCl, 2 g greita infuzija.',
-      'Gydymo kokybės kriterijus: pacientui skirta traneksaminė rūgštis.'
+      'Gydymo kokybės kriterijus: pacientui skirta traneksamo rūgštis.'
     ],
     susije: ['kalcis'],
     saltinis: KORTELE + '; ' + TCCC + '; ' + ETC_LENT + '; ETC vertinimo lapas'
@@ -39,9 +39,9 @@ window.ETC.vaistai = [
     kontra: 'Alergija',
     dozes: [
       { k: 'Į veną', d: '0,25 mg/kg · ml – skiesto 5 mg/ml tirpalo', c: { per: 0.25, conc: 5 },
-        p: 'Išliekant skausmui kartoti po 5–10 min iki nistagmo atsiradimo.\nSkyrimo pvz.: iš ampulės 1 ml (50 mg ketamino) skiesti iki 10 ml, suleisti 5 ml tirpalo (25 mg ketamino), kai paciento svoris 100 kg.' },
+        p: 'Išliekant skausmui kartoti po 5–10 min iki nistagmo atsiradimo.\nSkyrimo pvz. 100 kg pacientui: iš ampulės 1 ml (50 mg ketamino) skiesti iki 10 ml, suleisti 5 ml tirpalo (25 mg).' },
       { k: 'Į raumenis', d: '0,5–1 mg/kg · ml – neskiesto 50 mg/ml', c: { min: 0.5, max: 1, conc: 50 },
-        p: 'Išliekant skausmui kartoti po 20 min iki nistagmo atsiradimo.\nSkyrimo pvz.: iš ampulės 1–2 ml (50–100 mg neskiesto ketamino) suleisti į raumenis, kai paciento svoris 100 kg.' }
+        p: 'Išliekant skausmui kartoti po 20 min iki nistagmo atsiradimo.\nSkyrimo pvz. 100 kg pacientui: iš ampulės 1–2 ml (50–100 mg neskiesto ketamino) suleisti į raumenis.' }
     ],
     ispejimai: [
       'Patikrinkite ampulės stiprumą: skaičiuoklė skaičiuoja 50 mg/ml. Jei ampulė 100 mg/ml – reikės perpus mažiau ml.',
@@ -52,7 +52,7 @@ window.ETC.vaistai = [
     salutinis: 'Pykinimas, vėmimas, galvos svaigimas (dėl nistagmo), raumenų įsitempimas, sumišimas, haliucinacijos, disociacija iki visiško nereagavimo į aplinką (priklauso nuo dozės).',
     pakuote: 'Ampulės 250 mg / 5 ml (50 mg/ml)',
     pastabos: [
-      'SVARBU: mažiau slopina kvėpavimą ir kraujotaką palyginus su opioidais.',
+      'SVARBU: mažiau slopina kvėpavimą ir kraujotaką nei opioidai.',
       'Gali būti naudojamas ir sedacijai ar anestezijai – čia nurodytos dozės skirtos skausmui malšinti.',
       'Nistagmas – nevalingi, ritmingi akių judesiai.',
       'TCCC vadovas: IV 0,1–0,3 mg/kg (praktiškai 10–20 mg kas 5–10 min arba 20–30 mg kas 20 min, maks. ~1 mg/kg); IM 0,5–1 mg/kg (50–100 mg kas 20–30 min). Pikas: IV 1–2 min, IM 10–15 min. Gali padidėti kraujospūdis ir pulsas. Formos: 50 mg/ml arba 100 mg/ml.',
@@ -68,13 +68,13 @@ window.ETC.vaistai = [
     kontra: 'Alergija. Atsargiai naudoti esant sutrikusiam kvėpavimui ir kraujotakai.',
     dozes: [
       { k: 'Į veną', d: '2–5 mg, išliekant skausmui kartoti kas 10–15 min',
-        p: 'Skyrimo pvz.: iš ampulės 1 ml (10 mg morfino) skiesti iki 10 ml, suleisti 2–3 ml (2–3 mg morfino).\nTitruoti iki norimo efekto. Skyrimas nutraukiamas, kai kvėpavimo dažnis <10 k./min.' },
+        p: 'Skyrimo pvz.: iš ampulės 1 ml (10 mg morfino) skiesti iki 10 ml, suleisti 2–3 ml (2–3 mg morfino).\nTitruoti iki norimo efekto. Skyrimas nutraukiamas, kai kvėpavimo dažnis < 10 k./min.' },
       { k: 'Į raumenis', d: '5–10 mg kas 2 val. Maks. 20 mg per 4 val.',
         p: 'Skyrimo pvz.: iš ampulės 1 ml (10 mg morfino) suleisti 0,5–1 ml (5–10 mg neskiesto morfino).' }
     ],
     ispejimai: [
       'Kvėpavimo slopinimas gali prasidėti nepasiekus norimo skausmo malšinimo arba tęstis ilgiau nei skausmo malšinimo efektas. Antagonistas – naloksonas.',
-      'Skyrimą nutraukti, kai kvėpavimo dažnis <10 k./min.'
+      'Skyrimą nutraukti, kai kvėpavimo dažnis < 10 k./min.'
     ],
     pradzia: '5–10 min (į veną)\n10–30 min (į raumenis)',
     trukme: '3–5 val.',
@@ -93,14 +93,14 @@ window.ETC.vaistai = [
     kontra: 'Alergija',
     dozes: [
       { k: 'Į veną', d: '0,4–2 mg kas 2–3 min',
-        p: 'Skyrimo pvz.: iš ampulės 1 ml (0,4 mg naloksono) skiesti iki 10 ml, suleisti 10 ml.\nTitruoti iki efekto (kvėpavimo dažnis >10 k./min).' },
+        p: 'Skyrimo pvz.: iš ampulės 1 ml (0,4 mg naloksono) skiesti iki 10 ml, suleisti 10 ml.\nTitruoti iki efekto (kvėpavimo dažnis > 10 k./min).' },
       { k: 'Į raumenis', d: '0,4–2 mg kas 2–3 min',
-        p: 'Skyrimo pvz.: iš ampulės 1 ml (0,4 mg naloksono) suleisti 1 ml neskiesto.\nTitruoti iki efekto (kvėpavimo dažnis >10 k./min).' }
+        p: 'Skyrimo pvz.: iš ampulės 1 ml (0,4 mg naloksono) suleisti 1 ml neskiesto.\nTitruoti iki efekto (kvėpavimo dažnis > 10 k./min).' }
     ],
     ispejimai: ['Kai kurie opioidai gali veikti ilgiau nei naloksonas – būtina stebėti, ar neatsinaujino kvėpavimo slopinimas.'],
     pradzia: '1–2 min (į veną)\n2–5 min (į raumenis)',
     trukme: '20–90 min (į veną)\n30 min – 2 val. (į raumenis)',
-    salutinis: 'Pykinimas, vėmimas, sujaudinimas, skausmo slopinimo sumažėjimas.',
+    salutinis: 'Pykinimas, vėmimas, sujaudinimas, susilpnėjęs nuskausminimas.',
     pakuote: 'Ampulės 0,4 mg / 1 ml (0,4 mg/ml)',
     pastabos: [
       'Tikslas – adekvatus kvėpavimo dažnis neprarandant skausmo malšinimo.',
@@ -118,7 +118,7 @@ window.ETC.vaistai = [
       { k: 'Į veną', d: '1–2 mg kas 2–3 min',
         p: 'Skyrimo pvz.: jei koncentracija 1 mg/ml – skiesti nereikia. Jei koncentracija 5 mg/ml – iš ampulės 1 ml skiesti iki 5 ml, suleisti 1–2 ml (1–2 mg midazolamo).\nTitruoti iki efekto.' },
       { k: 'Į raumenis', d: '5–10 mg',
-        p: 'Skyrimo pvz.: iš ampulės 1 ml (5 mg midazolamo) suleisti neskiesto. Esant poreikiui dozę pakartoti.\nNenaudoti 1 mg/ml koncentracijos tirpalo.' }
+        p: 'Skyrimo pvz.: iš ampulės 1 ml (5 mg midazolamo) suleisti neskiestą. Esant poreikiui dozę pakartoti.\nNenaudoti 1 mg/ml koncentracijos tirpalo.' }
     ],
     ispejimai: ['Vengti kartu su opioidais, jei nėra galimybės valdyti kvėpavimo (TCCC vadovas).', 'TCCC vadovas: IV maks. 5 mg.'],
     pradzia: '1–3 min (į veną)\n5–10 min (į raumenis)',
@@ -126,7 +126,7 @@ window.ETC.vaistai = [
     salutinis: 'Kvėpavimo slopinimas, sumažėjęs kraujospūdis, pykinimas, vėmimas.',
     pakuote: 'Buteliukas 5 mg / 5 ml (1 mg/ml)\nAmpulės 5 mg / 1 ml (5 mg/ml)',
     pastabos: [
-      'Sukelia atminties praradimą apie įvykius po vaisto pavartojimo, paprastai iki 1 val., retai efektas gali trukti kelias valandas.',
+      'Sukelia anterogradinę amneziją: pacientas neprisimena įvykių po vaisto suleidimo, paprastai iki 1 val., retai – kelias valandas.',
       'TCCC vadovas: IV 0,5–2 mg kas 2–3 min, kol pasiekiamas norimas efektas (maks. 5 mg); IM 5–10 mg kaip viena dozė. Pagal kg: IV 0,02–0,1 mg/kg lėtai per 2–3 min, IM 0,07–0,1 mg/kg. Pikas: IV 3–5 min, IM 15–30 min. Neskirkite be būtino reikalo – galima lengvai prisidaryti bėdų.'
     ],
     susije: ['ketaminas'],
@@ -140,12 +140,12 @@ window.ETC.vaistai = [
       { k: 'Į veną', d: '4–8 mg kas 6–8 val.', p: 'Leisti lėtai. Skiesti nebūtina.' },
       { k: 'Per burną', d: '4–8 mg tab. kas 8 val.', p: 'Pagal poreikį.' }
     ],
-    pradzia: '5–10 min (į veną)\n15–30 min (per burną, tirpios tabletės)\n30–60 min (per burną, nuryjamos tabletės)',
+    pradzia: '5–10 min (į veną)\n15–30 min (per burną, burnoje tirpstančios tabletės)\n30–60 min (per burną, nuryjamos tabletės)',
     trukme: '4–6 val.',
     salutinis: 'Galvos skausmas, vidurių užkietėjimas.',
     pakuote: 'Ampulės 4 mg / 2 ml (2 mg/ml)\nAmpulės 8 mg / 4 ml (2 mg/ml)\nTabletės 4 mg arba 8 mg – gali būti tirpstančios burnoje arba nuryjamos (žr. ant pakuotės)',
     pastabos: [
-      'TCCC vadovas: IV 4 mg per 2 min kas 6–8 val., pagal poreikį. Didelėmis dozėmis gali prailgėti QT intervalas.',
+      'TCCC vadovas: IV 4 mg per 2 min kas 6–8 val., pagal poreikį. Didelės dozės gali pailginti QT intervalą.',
       'ETC lentelė: 8 mg + 16 ml NaCl (20 ml švirkštas), suleisti lėtai IV.'
     ],
     susije: ['metoklopramidas'],
@@ -157,7 +157,7 @@ window.ETC.vaistai = [
     kontra: 'Alergija penicilinams, cefalosporinams ar kitiems beta laktamų grupės antibiotikams',
     dozes: [
       { k: 'Į veną', d: '1,2 g kas 8 val. (pirma dozė gali būti 2,4 g)',
-        p: 'Ištirpinti į 20 ml 0,9 % NaCl.\n• Infuzijai – tirpalą dar kartą skiesti su 0,9 % NaCl iki 100 ml, sulašinti per 30–40 min.\n• Injekcijai į veną daugiau nebeskiesti, suleisti labai lėtai.' },
+        p: 'Ištirpinti 20 ml 0,9 % NaCl tirpalo.\n• Infuzijai – tirpalą dar kartą skiesti 0,9 % NaCl tirpalu iki 100 ml, sulašinti per 30–40 min.\n• Injekcijai į veną daugiau nebeskiesti, suleisti labai lėtai.' },
       { k: 'Į raumenis', d: 'Kontraindikuotina' }
     ],
     ispejimai: [
@@ -165,8 +165,8 @@ window.ETC.vaistai = [
       'Į raumenis neleisti.'
     ],
     salutinis: 'Viduriavimas, pykinimas, vėmimas, bėrimas, galvos skausmas.',
-    pakuote: 'Milteliai flakone: 1 g amoksicilino + 200 mg klavulaninės rūgšties',
-    pastabos: ['Amoksicilinas su klavulanine rūgštimi. Kai kurios bakterijos gali suardyti amoksicilino struktūrą, klavulaninė rūgštis padeda ją išsaugoti.'],
+    pakuote: 'Milteliai flakone: 1 g amoksicilino + 200 mg klavulano rūgšties',
+    pastabos: ['Amoksicilinas su klavulano rūgštimi. Kai kurios bakterijos gali suardyti amoksicilino struktūrą, klavulano rūgštis padeda ją išsaugoti.'],
     susije: ['ertapenemas', 'moksifloksacinas'],
     saltinis: KORTELE
   },
@@ -180,9 +180,9 @@ window.ETC.vaistai = [
     ],
     pradzia: '10–15 min',
     trukme: '2–4 val.',
-    salutinis: 'Padidėjęs kraujo spaudimas, paraudimas / skausmas injekcijos vietoje, traukuliai.',
+    salutinis: 'Padidėjęs kraujospūdis, paraudimas / skausmas injekcijos vietoje, traukuliai.',
     pakuote: 'Buteliukai 10 % 100 ml',
-    pastabos: ['Gydymo kokybės kriterijai esant galvos smegenų traumai: manitolis arba 3 % NaCl, 30° lovos galvūgalio padėtis; AKS tikslas – sAKS 110–120 mmHg.'],
+    pastabos: ['Gydymo kokybės kriterijai esant galvos smegenų traumai: manitolis arba 3 % NaCl, 30° lovos galvūgalio padėtis; AKS tikslas – sAKS 110–120 mm Hg.'],
     saltinis: KORTELE + '; ETC vertinimo lapas'
   },
 
@@ -211,7 +211,7 @@ window.ETC.vaistai = [
     ind: 'Sunkių infekcijų gydymas',
     dozes: [{ k: 'Į veną / į raumenis', d: '1 g kartą per parą' }],
     ispejimai: ['Neskirti esant sunkiai beta laktamų alergijai.'],
-    salutinis: 'Viduriavimas, išbėrimas.',
+    salutinis: 'Viduriavimas, bėrimas.',
     pakuote: '1 g flakonas (IV/IM)',
     susije: ['amoksiklavas', 'moksifloksacinas'],
     saltinis: TCCC
@@ -246,7 +246,7 @@ window.ETC.vaistai = [
   },
   {
     id: 'noradrenalinas', name: 'Noradrenalinas', klase: 'Vazopresorius', tipas: 'papild', kam: 'Medicinos personalui',
-    dozes: [{ k: 'Infuzomatu', d: '0,1–1 mcg/kg/min', p: '4 mg + 46 ml 5 % gliukozės (50 ml švirkštas) = 80 mcg/ml.\nMaždaug nuo 6 ml/val., maksimalus 50 ml/val.' }],
+    dozes: [{ k: 'Infuzomatu', d: '0,1–1 mcg/kg/min', p: '4 mg + 46 ml 5 % gliukozės (50 ml švirkštas) = 80 mcg/ml.\nMaždaug nuo 6 ml/val., maks. 50 ml/val.' }],
     saltinis: ETC_LENT
   },
   {
