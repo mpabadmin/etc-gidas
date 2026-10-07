@@ -1,0 +1,1 @@
+window.ETC = window.ETC || {};
