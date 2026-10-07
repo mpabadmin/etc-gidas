@@ -14,14 +14,12 @@ E.versija = '2026-10-07';
 
 // ───────── VAIDMENYS ─────────
 E.vaidmenys = [
-  { id: 'A', cls: 'rA', pav: 'A komandos narys – kvėpavimo takai', sub: 'Airway', lists: ['a-pas', 'a-pir', 'a-ant'],
-    aprasymas: '<b>Vieta:</b> prie paciento galvūgalio. Užtikrina kvėpavimo takus ir deguonį, perima informaciją iš atvežusio ekipažo, vertina neurologiją (AVPU, vyzdžiai, galūnių simetrija), rūpinasi analgezija. Jei kvėpavimo takų intervencijos nereikia – padeda kitiems. Antrinėje apžiūroje – galva ir veidas.' },
+  { id: 'A', cls: 'rA', pav: 'A komandos narys – kvėpavimo takai, komandos vadas', sub: 'Airway · vadas', lists: ['a-pas', 'atmist', 'a-pir', 'a-plan', 'a-ant'], vadovas: true,
+    aprasymas: '<b>Vieta:</b> prie paciento galvūgalio. A narys yra ir komandos vadas: veda instruktažą, atlieka 5 s apžiūrą ir garsiai paskelbia Planą A ar Escape planą, perima ATMIST informaciją, užtikrina kvėpavimo takus ir deguonį, vertina neurologiją, renka B ir C radinius, perskirsto darbą, po pirminės apžiūros daro „10 už 10“ ir planuoja tolesnį kelią. Antrinėje apžiūroje – galva ir veidas.' },
   { id: 'B', cls: 'rB', pav: 'B komandos narys – kvėpavimas', sub: 'Breathing', lists: ['b-pas', 'b-pir', 'b-ant'],
-    aprasymas: '<b>Vieta:</b> vienoje paciento pusėje, šalia echoskopo. Atidengia krūtinę ir pilvą, uždeda monitoringą, vertina kaklą ir krūtinės ląstą, sprendžia dėl drenavimo, atlieka e-FAST (pagal kompetenciją), apverčia pacientą ir apžiūri nugarą. Jei krūtinės intervencijos nereikia – padeda kitiems. Antrinėje apžiūroje atlieka A nario nurodytas procedūras ir padeda C nariui.' },
+    aprasymas: '<b>Vieta:</b> vienoje paciento pusėje, šalia echoskopo. Atidengia krūtinę ir pilvą, uždeda monitoringą, vertina kaklą ir krūtinės ląstą, taip pat apžiūri pilvą, dubenį, tarpvietę ir galūnes dėl kraujavimo. Pilną apžiūrą stetoskopu ir rankomis atlieka ne ilgiau nei per 2 min ir <b>tik tada</b> praneša radinius A nariui. Apverčia pacientą ir apžiūri nugarą – <b>prieš e-FAST</b>. Drenavimas ir e-FAST – pagal kompetenciją. Antrinėje apžiūroje atlieka A nario nurodytas procedūras ir padeda C nariui.' },
   { id: 'C', cls: 'rC', pav: 'C komandos narys – kraujotaka', sub: 'Circulation', lists: ['c-pas', 'c-pir', 'c-ant'],
-    aprasymas: '<b>Vieta:</b> kitoje paciento pusėje, prie stovo skysčiams ir infuzomatams. Stabdo kraujavimą, vertina pilvą, dubenį ir šoko požymius, užtikrina kraujagyslių prieigą, kraujo grupę, vaistus ir kraujo komponentus, hipotermijos prevenciją. Aiškiai pasako, ar pacientas yra hemoraginiame šoke.' },
-  { id: 'TTL', cls: 'rL', pav: 'Komandos lyderis (TTL)', sub: 'Lyderis', lists: ['l-pas', 'atmist', 'l-pir', 'l-plan'], vadovas: true,
-    aprasymas: '<b>Vieta:</b> prie lovos kojūgalio, šalia rašytojo. Lyderis nesikiša į procedūras – stebi visą situaciją, renka radinius, priima sprendimus ir paskirsto darbą. Atlieka 5 s apžiūrą ir garsiai paskelbia: Planas A ar Escape planas. Po pirminės apžiūros daro „10 už 10“ ir planuoja tolesnį kelią.' }
+    aprasymas: '<b>Vieta:</b> kitoje paciento pusėje, prie stovo skysčiams ir infuzomatams. <b>Iškart atvykus pacientui, nelaukdamas A nurodymo,</b> įveda PVK arba intrakaulinę adatą ir visiems pacientams nustato kraujo grupę ir gliukozę. Toliau vertina šoko požymius ir aiškiai pasako, ar pacientas yra hemoraginiame šoke, ruošia vaistus ir kraujo komponentus, rūpinasi hipotermijos prevencija.' }
 ];
 
 // ───────── ESCAPE PLANAI ─────────
@@ -30,9 +28,9 @@ E.escape = ['esc-kraujas', 'esc-kt', 'esc-tss'];
 E.sarasai = {
   'esc-kraujas': {
     title: 'Katastrofinis kraujavimas', short: 'Kraujavimas',
-    intro: 'Lyderis aiškiai paskelbia prioritetinę problemą. Pirminė apžiūra netęsiama, kol kraujavimas nesustabdytas.',
+    intro: 'Komandos vadas (A) aiškiai paskelbia prioritetinę problemą. Pirminė apžiūra netęsiama, kol kraujavimas nesustabdytas.',
     items: [
-      { t: 'Lyderis aiškiai identifikavo ir paskelbė: katastrofinis kraujavimas', k: true },
+      { t: 'A (komandos vadas) aiškiai identifikavo ir paskelbė: katastrofinis kraujavimas', k: true },
       { t: 'B ir C nariams nurodyta stabdyti kraujavimą', k: true },
       { t: 'Tiesioginis spaudimas į kraujuojančią vietą' },
       { t: 'Turniketas – pažymėtas uždėjimo laikas', i: 'Pradžios ekrane spauskite kortelę „Turniketas“ → „Dabar“.' },
@@ -46,9 +44,9 @@ E.sarasai = {
   },
   'esc-kt': {
     title: 'Kvėpavimo takų obstrukcija', short: 'Kvėpavimo takai',
-    intro: 'Lyderis aiškiai paskelbia prioritetinę problemą ir paskirsto užduotis.',
+    intro: 'Komandos vadas (A) aiškiai paskelbia prioritetinę problemą ir paskirsto užduotis.',
     items: [
-      { t: 'Lyderis aiškiai identifikavo ir paskelbė: kvėpavimo takų obstrukcija', k: true },
+      { t: 'A (komandos vadas) aiškiai identifikavo ir paskelbė: kvėpavimo takų obstrukcija', k: true },
       { t: 'B nariui nurodyta pasiruošti kriko', g: KOMP, k: true },
       { t: 'Kviečiama ekspertinė pagalba', k: true },
       { t: 'Atsiurbti kvėpavimo takai' },
@@ -63,16 +61,30 @@ E.sarasai = {
     title: 'Trauminis širdies sustojimas', short: 'Širdies sustojimas',
     intro: 'Taip šis scenarijus aprašytas ETC vertinimo lape. ETC trauminio širdies sustojimo algoritmas yra vadovo 5c skyriuje – papildykite šį sąrašą pagal kuopos protokolą.',
     items: [
-      { t: 'Lyderis aiškiai identifikavo ir paskelbė: trauminis širdies sustojimas', k: true },
+      { t: 'A (komandos vadas) aiškiai identifikavo ir paskelbė: trauminis širdies sustojimas', k: true },
       { t: 'Deklaruota mirtis' }
     ]
   },
 
   // ───────── A ─────────
   'a-pas': {
-    title: 'A – pasiruošimas', short: 'Pasiruošimas',
-    intro: 'Vieta – prie paciento galvūgalio. Šalia: kvėpavimo takų priemonės ir drenai, atsiurbėjas, DPV ir deguonis.',
+    title: 'A – instruktažas ir pasiruošimas', short: 'Pasiruošimas',
+    intro: 'A narys – komandos vadas. Vieta – prie paciento galvūgalio. Šalia: kvėpavimo takų priemonės ir drenai, atsiurbėjas, DPV ir deguonis.',
     items: [
+      { h: 'Komandos instruktažas' },
+      { t: 'Komandos nariai prisistatė vieni kitiems' },
+      { t: 'Pasidalinta informacija prieš atvykimą (ATMIST)' },
+      { t: 'Patikrintos narių kompetencijos, jaunesniems paskirta vyresniųjų parama' },
+      { t: 'Paskirstyti vaidmenys: A, B, C, rašytojas', k: true },
+      { t: 'Suformuluotas Planas A', k: true },
+      { t: 'Aptartas Planas B ir Escape planai', s: ['Skubus perkėlimas į operacinę', 'Netikėtas širdies sustojimas', 'Katastrofinis kraujavimas, kvėpavimo takų obstrukcija'] },
+      { t: 'Įvertintas papildomų išteklių poreikis', s: ['Personalas (pvz., vyresnis kolega)', 'Įranga: masinio kraujo perpylimo, sudėtingų kvėpavimo takų rinkinys'] },
+      { t: 'Informuoti: kraujo bankas, radiologija, operacinė, intensyvioji terapija' },
+      { t: 'Visi laikosi visuotinių atsargumo priemonių' },
+      { t: 'Kiekvienas narys patikrino savo įrangą, visi žino, kaip kviesti pagalbą' },
+      { t: 'Patalpa ir skysčiai pašildyti' },
+      { t: 'Nariai turėjo galimybę užduoti klausimus ir išsakyti rūpesčius' },
+      { h: 'A įranga' },
       { t: 'Prieinama visa bazinė ir pažangi kvėpavimo takų įranga', k: true },
       { t: 'Atsiurbėjas paruoštas ir veikia' },
       { t: 'DPV patikrintas ir paruoštas naudoti' },
@@ -85,14 +97,19 @@ E.sarasai = {
   },
   'a-pir': {
     title: 'A – pirminė apžiūra', short: 'Pirminė',
+    intro: 'C narys iškart pats įveda PVK / IO ir nustato kraujo grupę bei gliukozę – nurodymo nereikia. B narys radinius praneša tik baigęs pilną apžiūrą (iki 2 min).',
     items: [
-      { t: 'Atliktas 5 s vertinimas, nustatytas tolesnis algoritmas: Planas A / Escape', k: true,
-        i: 'Vertinimo trikampis: socialinė sąveika, kvėpavimo pastangos, odos perfuzija. Plačiau – tema „ETC eiga“.' },
+      { h: '5 sekundžių apžiūra' },
+      { t: 'Atlikta 5 s apžiūra – vertinimo trikampis', k: true, s: ['Socialinė sąveika: rami / susijaudinęs / nėra', 'Kvėpavimo pastangos: normalios / padidėjusios / nėra', 'Odos perfuzija: rožinė / blyški, marmuruota / nėra'],
+        i: 'Plačiau – tema „ETC eiga“.' },
+      { t: 'Atmesta: katastrofinis kraujavimas, kvėpavimo takų obstrukcija, trauminis širdies sustojimas', k: true },
+      { t: 'Garsiai paskelbta: tęsiamas Planas A arba aktyvuojamas Escape planas', k: true },
+      { h: 'Kvėpavimo takai ir neurologija' },
       { t: 'Įvertintas kvėpavimo takų praeinamumas', k: true, s: ['Kvėpavimo takai laisvi', 'Obstrukcija – užkritęs liežuvis / skystis / tinimas'], i: 'Įgūdžiai #2, #3.' },
       { t: 'Apžiūrėta burnos ertmė', s: ['Atsiurbimo poreikio nėra', 'Atsiurbimo poreikis yra'] },
       { t: 'Įvertintas orofaringinės kaukės poreikis (koma / obstrukcija)', i: 'Įgūdis #6.' },
       { t: 'Įvertintas kvėpavimo nepakankamumas ir deguonies poreikis', s: ['Deguonies poreikio nėra', 'Nosies kaniulės, deguonis < 6 l/min', 'Deguonies kaukė, deguonis > 6 l/min'], i: 'Įgūdžiai #4, #5.' },
-      { t: 'Perimta informacija iš atvežusio ekipažo', s: ['Traumos laikas', 'Traumos mechanizmas', 'Turniketai ir laikas', 'Kiti sužalojimai ir intervencijos', 'Skirti vaistai'] },
+      { t: 'Perimta informacija iš atvežusio ekipažo (skirtukas ATMIST)' },
       { t: 'Įvertinta, ar gerai ventiliuojasi plaučiai', s: ['Papildomos ventiliacijos ambu maišu nereikia', 'Reikia papildomos ventiliacijos ambu maišu'], i: 'Įgūdis #7.' },
       { t: 'Įvertinta, ar pakankamai deguonies patenka į plaučius', s: ['Pakankama', 'Nepakankama'] },
       { t: 'Įvertinta, ar nereikia eskaluoti kvėpavimo takų valdymo', k: true,
@@ -100,7 +117,26 @@ E.sarasai = {
             'Optimizuojamas atvėrimas: orofaringinė kaukė (nesąmoningam), dažnesnė ir didesnio tūrio ventiliacija ambu maišu, orofaringinė keičiama į laringinę kaukę',
             'Padidinamas deguonies srautas'],
         i: 'Įgūdis #8 – neefektyvaus kvėpavimo takų valdymo atpažinimas.' },
-      { t: 'Įvertinta neurologija', s: ['AVPU', 'Vyzdžių dydis ir fotoreakcija', 'Galūnių motorika – simetriška / nesimetriška'], i: 'Įgūdis #12.' }
+      { t: 'Įvertinta neurologija', s: ['AVPU', 'Vyzdžių dydis ir fotoreakcija', 'Galūnių motorika – simetriška / nesimetriška'], i: 'Įgūdis #12.' },
+      { h: 'Komandos valdymas' },
+      { t: 'Gauti B nario radiniai po pilnos apžiūros (closed-loop komunikacija)', k: true },
+      { t: 'Gauti C nario duomenys: prieiga, kraujo grupė, gliukozė, šoko požymiai' },
+      { t: 'Darbas perskirstomas pagal klinikinę situaciją' },
+      { t: 'Prireikus aktyvuotas masinio kraujavimo protokolas' },
+      { t: 'Iškilus netikėtai problemai – STOP (10 už 10)' }
+    ]
+  },
+  'a-plan': {
+    title: 'A – po pirminės apžiūros', short: 'Planavimas',
+    items: [
+      { t: 'Algoritmas pereitas dar kartą – radinių apžvalga (10 už 10)', k: true },
+      { t: 'Su komanda aptartas pirminis gydymas / planas', k: true },
+      { t: 'Įvertintas atsakas į gydymą' },
+      { t: 'Visi komandos nariai žino paciento problemas ir ištyrimo / gydymo etapą' },
+      { t: 'Patikrinti gydymo tikslai (sąrašas „Gydymo tikslai ir kokybė“)' },
+      { t: 'Nuspręsta dėl tolesnio kelio: vaizdiniai tyrimai, operacinė, intensyvioji terapija, pervežimas' },
+      { t: 'Informuoti priimantys skyriai, dokumentacija keliauja su pacientu' },
+      { t: 'Atlikta arba suplanuota antrinė apžiūra, neatlikti elementai įrašyti' }
     ]
   },
   'a-ant': {
@@ -133,6 +169,7 @@ E.sarasai = {
   },
   'b-pir': {
     title: 'B – pirminė apžiūra', short: 'Pirminė',
+    intro: 'Pilna apžiūra stetoskopu ir rankomis – ne ilgiau nei 2 min. Radinius A nariui praneškite tik baigę visą apžiūrą. Nugara apžiūrima prieš e-FAST.',
     items: [
       { t: 'Nukirpti (jei įtariama trauma) / nuimti viršutiniai rūbai – pilvas ir krūtinė pilnai atidengti' },
       { t: 'Uždėtas monitoringas', i: 'Įgūdis #15.' },
@@ -140,8 +177,13 @@ E.sarasai = {
       { t: 'Įvertinta krūtinės ląsta', k: true, s: ['Žaizdos ir kraujosruvos', 'Simetriškas krūtinės ląstos kilnojimasis', 'Poodinė emfizema', 'Kvėpavimo dažnis', 'Respiracinis distresas', 'Auskultacija 3 taškuose kairėje ir dešinėje'], i: 'Įgūdis #13.' },
       { t: 'Įvertinta dėl įtampos hemopneumotorakso', k: true, s: ['Mažai tikėtinas – drenuoti nereikia', 'Labai tikėtinas – drenuoti; įvertinta, kiek išbėgo kraujo'], i: 'Įgūdis #14 – pleuros drenavimas (pagal kompetenciją).' },
       { t: 'Ant krūtinės ląstos žaizdos uždėtas okliuzinis tvarstis' },
-      { t: 'Atliktas e-FAST', g: KOMP, s: ['Morisono kišenė', 'Splenorenalinė kišenė', 'Šlapimo pūslė', 'Perikardas', 'Kairėje ir dešinėje dėl pneumotorakso'], i: 'Įgūdis #16.' },
-      { t: 'Pacientas paverstas ant šono, apžiūrėta nugara', s: ['Sužeidimai ir kraujavimas', 'Okliuzinis tvarstis, jei krūtinėje yra žaizda', 'Stuburo vidurio linijos palpacija dėl skausmingumo (jei sąmoningas)'], i: 'Įgūdis #17.' }
+      { t: 'Apžiūrėtas pilvas dėl žaizdų, evisceracijos; palpuota dėl skausmingumo ir įtempimo' },
+      { t: 'Patikrintas dubens stabilumas', k: true, s: ['Dubuo stabilus', 'Dubuo nestabilus – uždedamas dubens diržas'], i: 'Įgūdis #20.' },
+      { t: 'Patikrinta tarpvietė ir lytiniai organai dėl kraujavimo požymių', s: ['Kraujo nėra', 'Kraujas yra – uždedamas dubens diržas'] },
+      { t: 'Apžiūrėtos galūnės ir jungties vietos dėl kraujavimo', k: true },
+      { t: 'Radiniai pranešti A nariui – tik baigus pilną apžiūrą stetoskopu / rankomis (iki 2 min)', k: true },
+      { t: 'Pacientas paverstas ant šono, apžiūrėta nugara – prieš e-FAST', k: true, s: ['Sužeidimai ir kraujavimas', 'Okliuzinis tvarstis, jei krūtinėje yra žaizda', 'Stuburo vidurio linijos palpacija dėl skausmingumo (jei sąmoningas)'], i: 'Įgūdis #17.' },
+      { t: 'Atliktas e-FAST', g: KOMP, s: ['Morisono kišenė', 'Splenorenalinė kišenė', 'Šlapimo pūslė', 'Perikardas', 'Kairėje ir dešinėje dėl pneumotorakso'], i: 'Įgūdis #16.' }
     ]
   },
   'b-ant': {
@@ -159,10 +201,10 @@ E.sarasai = {
     title: 'C – pasiruošimas', short: 'Pasiruošimas',
     intro: 'Vieta – kitoje paciento pusėje, prie stovo skysčiams ir infuzomatams.',
     items: [
+      { t: 'PVK 16–18G ir intrakaulinė adata paruoštos iškart', g: MED, k: true },
+      { t: 'Paruoštos kraujo grupės nustatymo priemonės ir gliukometras', g: MED, k: true },
       { t: 'Tvarsčiai, hemostatinė marlė ir turniketai išoriniam kraujavimui', k: true },
       { t: 'Dubens diržas' },
-      { t: 'Didelio skersmens kraujagyslių prieiga: PVK 16–18G', g: MED },
-      { t: 'Escape planas kraujagyslių prieigai: intrakaulinė adata', g: KOMP },
       { t: 'Greito infuzavimo / masinio kraujo perpylimo sistema, kraujo komponentai', g: MED },
       { t: 'Pašildyti skysčiai' },
       { t: 'Paruošti vaistai (žr. „Vaistų skiedimo lentelės“)', g: MED },
@@ -171,17 +213,14 @@ E.sarasai = {
   },
   'c-pir': {
     title: 'C – pirminė apžiūra', short: 'Pirminė',
+    intro: 'Atvykus pacientui – iškart kraujagyslių prieiga, kraujo grupė ir gliukozė, nelaukiant A nario nurodymo.',
     items: [
+      { t: 'Iškart atvykus pacientui įvestas 16–18G PVK – be A nurodymo', g: MED, k: true, s: ['Negalint įvesti PVK – intrakaulinė adata'], i: 'Įgūdžiai #21, #22.' },
+      { t: 'Visiems pacientams iškart nustatyta kraujo grupė ir gliukozė – be A nurodymo', g: MED, k: true, i: 'Įgūdis #23. Žr. temą „Kraujo suderinamumas“.' },
       { t: 'Nuimti batai, nukirpti (jei įtariama trauma) apatiniai rūbai' },
       { t: 'Uždėtas monitoringas', i: 'Įgūdis #15.' },
-      { t: 'Apžiūrėta dėl kraujavimo iš galūnių ir jungties vietų', k: true },
-      { t: 'Apžiūrėtas pilvas dėl žaizdų, evisceracijos; palpuota dėl skausmingumo ir įtempimo' },
-      { t: 'Patikrintas dubens stabilumas', k: true, s: ['Dubuo stabilus', 'Dubuo nestabilus – uždedamas dubens diržas'], i: 'Įgūdis #20.' },
-      { t: 'Patikrinta tarpvietė ir lytiniai organai dėl kraujavimo požymių', s: ['Kraujo nėra', 'Kraujas yra – uždedamas dubens diržas'] },
       { t: 'Įvertinta dėl šoko požymių', s: ['Interpretuoti monitoriaus rodmenys', 'Galūnės čiuopiamos dėl šaltumo (spazmuota periferija)', 'Oda – marmuruotumas / prakaitas', 'A. radialis ir a. femoralis pulsai'] },
       { t: 'Aiškiai iškomunikuota, ar pacientas yra hemoraginiame šoke', k: true },
-      { t: 'Įvestas 16–18G PVK', g: MED, s: ['Negalint įvesti PVK – intrakaulinė adata'], i: 'Įgūdžiai #21, #22.' },
-      { t: 'Nustatyta kraujo grupė', g: MED, i: 'Įgūdis #23. Žr. temą „Kraujo suderinamumas“.' },
       { t: 'Paruošti ir suleisti paskirti vaistai', g: MED, i: 'Įgūdis #24.' },
       { t: 'Paruošti kraujo komponentai transfuzijai', g: MED },
       { t: 'Pacientas paverstas ant šono', s: ['Apžiūrėta dėl sužeidimų ir kraujavimo', 'Stuburo vidurio linijos palpacija dėl skausmingumo (jei sąmoningas)'] },
@@ -198,28 +237,10 @@ E.sarasai = {
     ]
   },
 
-  // ───────── LYDERIS ─────────
-  'l-pas': {
-    title: 'Komandos instruktažas', short: 'Instruktažas',
-    intro: 'Kai komanda susirenka, iki paciento atvykimo.',
-    items: [
-      { t: 'Komandos nariai prisistatė vieni kitiems' },
-      { t: 'Pasidalinta informacija prieš atvykimą (ATMIST)' },
-      { t: 'Patikrintos narių kompetencijos, jaunesniems paskirta vyresniųjų parama' },
-      { t: 'Paskirstyti vaidmenys: A, B, C, rašytojas', k: true },
-      { t: 'Suformuluotas Planas A', k: true },
-      { t: 'Aptartas Planas B ir Escape planai', s: ['Skubus perkėlimas į operacinę', 'Netikėtas širdies sustojimas', 'Katastrofinis kraujavimas, kvėpavimo takų obstrukcija'] },
-      { t: 'Įvertintas papildomų išteklių poreikis', s: ['Personalas (pvz., vyresnis kolega)', 'Įranga: masinio kraujo perpylimo, sudėtingų kvėpavimo takų rinkinys'] },
-      { t: 'Informuoti: kraujo bankas, radiologija, operacinė, intensyvioji terapija' },
-      { t: 'Visi laikosi visuotinių atsargumo priemonių' },
-      { t: 'Kiekvienas narys patikrino savo įrangą, visi žino, kaip kviesti pagalbą' },
-      { t: 'Patalpa ir skysčiai pašildyti' },
-      { t: 'Nariai turėjo galimybę užduoti klausimus ir išsakyti rūpesčius' }
-    ]
-  },
+  // ───────── ATMIST (A skirtukas) ─────────
   'atmist': {
     title: 'ATMIST perdavimas', short: 'ATMIST',
-    intro: 'Standartizuotas ikihospitalinės informacijos perdavimas – mažiau prarandamos informacijos. Prieš perdavimą lyderis atlieka 5 s apžiūrą.',
+    intro: 'Standartizuotas ikihospitalinės informacijos perdavimas – mažiau prarandamos informacijos. Prieš perdavimą A narys (komandos vadas) atlieka 5 s apžiūrą.',
     items: [
       { t: 'A – amžius, lytis, svarbi anamnezė', s: ['Pvz., nėštumas, antikoaguliantai (varfarinas)'] },
       { t: 'T – traumos laikas', k: true },
@@ -229,42 +250,11 @@ E.sarasai = {
       { t: 'T – taikytas gydymas ir kas numatoma atvykus', k: true, s: ['Turniketai ir jų uždėjimo laikas', 'Kitos intervencijos', 'Skirti vaistai', 'Kas numatoma (pvz., masinė transfuzija)'] }
     ]
   },
-  'l-pir': {
-    title: 'Lyderis – 5 s apžiūra ir pirminė apžiūra', short: 'Pirminė',
-    items: [
-      { h: '5 sekundžių apžiūra' },
-      { t: 'Atlikta 5 s apžiūra – vertinimo trikampis', k: true, s: ['Socialinė sąveika: rami / susijaudinęs / nėra', 'Kvėpavimo pastangos: normalios / padidėjusios / nėra', 'Odos perfuzija: rožinė / blyški, marmuruota / nėra'] },
-      { t: 'Atmesta: katastrofinis kraujavimas, kvėpavimo takų obstrukcija, trauminis širdies sustojimas', k: true },
-      { t: 'Garsiai paskelbta: tęsiamas Planas A arba aktyvuojamas Escape planas', k: true },
-      { h: 'Pirminės apžiūros metu' },
-      { t: 'Pacientas atidengtas visai apžiūrai' },
-      { t: 'Lyderis stovi prie lovos kojūgalio, šalia rašytojo, ir nesikiša į procedūras' },
-      { t: 'Gaunami A, B, C narių radiniai (closed-loop komunikacija)' },
-      { t: 'Darbas perskirstomas pagal klinikinę situaciją' },
-      { t: 'Prireikus aktyvuotas masinio kraujavimo protokolas' },
-      { t: 'Taikoma hipotermijos prevencija' },
-      { t: 'Gyvybinės funkcijos nuolat vertinamos ir registruojamos' },
-      { t: 'Iškilus netikėtai problemai – STOP (10 už 10)' }
-    ]
-  },
-  'l-plan': {
-    title: 'Lyderis – po pirminės apžiūros', short: 'Planavimas',
-    items: [
-      { t: 'Algoritmas pereitas dar kartą – radinių apžvalga (10 už 10)', k: true },
-      { t: 'Su komanda aptartas pirminis gydymas / planas', k: true },
-      { t: 'Įvertintas atsakas į gydymą' },
-      { t: 'Visi komandos nariai žino paciento problemas ir ištyrimo / gydymo etapą' },
-      { t: 'Patikrinti gydymo tikslai (sąrašas „Gydymo tikslai ir kokybė“)' },
-      { t: 'Nuspręsta dėl tolesnio kelio: vaizdiniai tyrimai, operacinė, intensyvioji terapija, pervežimas' },
-      { t: 'Informuoti priimantys skyriai, dokumentacija keliauja su pacientu' },
-      { t: 'Atlikta arba suplanuota antrinė apžiūra, neatlikti elementai įrašyti' }
-    ]
-  },
 
   // ───────── BENDRI ─────────
   'stop': {
     title: 'STOP · 10 už 10', short: 'STOP',
-    intro: '10 sekundžių pauzė gali sutaupyti 10 minučių bevaisio darbo. Lyderis skelbia STOP diagnostikos pradžioje, planuojant gydymo prioritetus, būklei netikėtai pablogėjus arba kai komanda jaučiasi „įstrigusi“.',
+    intro: '10 sekundžių pauzė gali sutaupyti 10 minučių bevaisio darbo. Komandos vadas (A) skelbia STOP diagnostikos pradžioje, planuojant gydymo prioritetus, būklei netikėtai pablogėjus arba kai komanda jaučiasi „įstrigusi“.',
     items: [
       { t: 'Problema? – kokia pagrindinė problema dabar', k: true },
       { t: 'Komanda? – visi sustoja ir klauso' },
@@ -280,11 +270,11 @@ E.sarasai = {
     items: [
       { t: 'Naudojama closed-loop komunikacija', k: true },
       { t: 'Horizontalūs darbo santykiai' },
-      { t: 'Komandos nariai aiškiai praneša lyderiui apie radinius / problemas' },
-      { t: 'Lyderis aiškiai perduoda komandai paciento ikihospitalinę būklę' },
-      { t: 'Lyderis perskirsto darbą pagal klinikinę situaciją' },
+      { t: 'Komandos nariai aiškiai praneša komandos vadui apie radinius / problemas' },
+      { t: 'Komandos vadas aiškiai perduoda komandai paciento ikihospitalinę būklę' },
+      { t: 'Komandos vadas perskirsto darbą pagal klinikinę situaciją' },
       { t: 'Laikomasi algoritmo' },
-      { t: 'Po pirminės apžiūros lyderis pereina algoritmą dar kartą – radinių apžvalga, aptariamas pirminis gydymas / planas', k: true },
+      { t: 'Po pirminės apžiūros komandos vadas pereina algoritmą dar kartą – radinių apžvalga, aptariamas pirminis gydymas / planas', k: true },
       { t: 'Po pirminės apžiūros įvertinamas atsakas į gydymą' },
       { t: 'Nėra nereikalingos komunikacijos ir pašalinių kalbų' },
       { t: 'Laikomasi kokybės ir aseptikos standartų' },
@@ -368,27 +358,31 @@ E.puslapiai = {
   eiga: {
     title: 'ETC eiga: nuo pranešimo iki antrinės apžiūros', sub: 'Planas A, 5 s apžiūra, Escape, cABCDE',
     html: '<h3>Prioritetai: cABC</h3><p>Seka padeda išvengti dažniausių išvengiamų mirties priežasčių: <b>c</b> – katastrofinis kraujavimas, <b>A</b> – kvėpavimo takų obstrukcija, <b>B</b> – krūtinės ląstos sužalojimai, <b>C</b> – kraujotakos šokas. Toliau – D (neurologija) ir E (atidengimas, temperatūra).</p>' +
-      '<h3>1. Prieš atvykstant</h3><p>Gavęs įspėjimą (geriausia ATMIST formatu), lyderis surenka komandą: pristato narius, paskirsto vaidmenis A, B, C ir rašytoją, patikrina kompetencijas, suformuluoja <b>Planą A</b> (standartinė pirminė apžiūra) ir aptaria <b>Planą B</b> (pvz., skubiai į operacinę, netikėtas širdies sustojimas). Kiekvienas narys patikrina savo įrangą, patalpa ir skysčiai pašildomi.</p>' +
-      link('#/s/l-pas', 'Komandos instruktažas', 'Lyderio sąrašas') +
-      '<h3>2. Atvykus – 5 sekundžių apžiūra</h3><p>Prieš perdavimą lyderis per kelias sekundes įvertina pacientą pagal <b>vertinimo trikampį</b>. Tikslas – atmesti tris gyvybei pavojingas būkles: katastrofinį kraujavimą, kvėpavimo takų obstrukciją ir trauminį širdies sustojimą, ir patvirtinti, kad Planas A vis dar tinka.</p>' + tri +
+      '<p><b>Komandos vadas – A narys.</b> Atskiro lyderio nėra.</p>' +
+      '<h3>1. Prieš atvykstant</h3><p>Gavęs įspėjimą (geriausia ATMIST formatu), A narys surenka komandą: pristato narius, paskirsto vaidmenis A, B, C ir rašytoją, patikrina kompetencijas, suformuluoja <b>Planą A</b> (standartinė pirminė apžiūra) ir aptaria <b>Planą B</b> (pvz., skubiai į operacinę, netikėtas širdies sustojimas). Kiekvienas narys patikrina savo įrangą, patalpa ir skysčiai pašildomi.</p>' +
+      link('#/v/A?f=0', 'A – instruktažas ir pasiruošimas') +
+      '<h3>2. Atvykus – 5 sekundžių apžiūra</h3><p>Prieš perdavimą A narys per kelias sekundes įvertina pacientą pagal <b>vertinimo trikampį</b>. Tikslas – atmesti tris gyvybei pavojingas būkles: katastrofinį kraujavimą, kvėpavimo takų obstrukciją ir trauminį širdies sustojimą, ir patvirtinti, kad Planas A vis dar tinka.</p>' + tri +
       '<p class="muted">Ramus pacientas, normaliai kvėpuojantis, rožine oda greičiausiai skubios intervencijos nereikalauja. Susijaudinęs, sunkiai kvėpuojantis, marmuruota oda – greičiausiai reikia gyvybę gelbstinčių veiksmų nedelsiant.</p>' +
-      '<h3>3. Sprendimas garsiai</h3><p>Lyderis aiškiai paskelbia rezultatą. Dažniausiai tęsiamas Planas A. Radus gyvybei pavojingą būklę, komanda iš karto nukreipiama ją spręsti – aktyvuojamas Escape planas.</p>' +
+      '<h3>3. Sprendimas garsiai</h3><p>A narys aiškiai paskelbia rezultatą. Dažniausiai tęsiamas Planas A. Radus gyvybei pavojingą būklę, komanda iš karto nukreipiama ją spręsti – aktyvuojamas Escape planas.</p>' +
       link('#/s/esc-kraujas', 'Escape: katastrofinis kraujavimas') + link('#/s/esc-kt', 'Escape: kvėpavimo takų obstrukcija') + link('#/s/esc-tss', 'Escape: trauminis širdies sustojimas') +
-      '<h3>4. Perdavimas (ATMIST)</h3>' + link('#/s/atmist', 'ATMIST perdavimas') +
-      '<h3>5. Horizontali pirminė apžiūra</h3><p>A, B ir C dirba <b>vienu metu</b> ir prireikus padeda vieni kitiems. Pacientas atidengiamas ir saugomas nuo hipotermijos. Lyderis stovi prie kojūgalio šalia rašytojo, nesikiša, renka radinius ir perskirsto darbą.</p>' +
-      link('#/v/A?f=1', 'A – pirminė apžiūra') + link('#/v/B?f=1', 'B – pirminė apžiūra') + link('#/v/C?f=1', 'C – pirminė apžiūra') +
-      '<h3>6. Planavimas – 10 už 10</h3><p>Po pirminės apžiūros lyderis sustabdo komandą: radinių apžvalga, darbinė diagnozė, atsakas į gydymą, tolesnis kelias (vaizdiniai tyrimai, operacinė, intensyvioji terapija, pervežimas).</p>' +
-      link('#/s/stop', 'STOP · 10 už 10') + link('#/s/kokybe', 'Gydymo tikslai ir kokybė') +
+      '<h3>4. Perdavimas (ATMIST)</h3>' + link('#/v/A?f=1', 'ATMIST perdavimas') +
+      '<h3>5. Horizontali pirminė apžiūra</h3><p>A, B ir C dirba <b>vienu metu</b> ir prireikus padeda vieni kitiems. Pacientas atidengiamas ir saugomas nuo hipotermijos.</p><ul>' +
+      '<li><b>C</b> – iškart atvykus pacientui, nelaukdamas A nurodymo, įveda PVK arba intrakaulinę adatą ir visiems pacientams nustato kraujo grupę ir gliukozę.</li>' +
+      '<li><b>B</b> – pilna apžiūra stetoskopu ir rankomis: kaklas, krūtinė, pilvas, dubuo, tarpvietė, galūnės (dėl kraujavimo) – ne ilgiau nei 2 min. Radinius A nariui praneša <b>tik baigęs</b> visą apžiūrą. Nugara apžiūrima <b>prieš e-FAST</b>.</li>' +
+      '<li><b>A</b> – kvėpavimo takai, deguonis, neurologija; renka B ir C radinius ir perskirsto darbą.</li></ul>' +
+      link('#/v/A?f=2', 'A – pirminė apžiūra') + link('#/v/B?f=1', 'B – pirminė apžiūra') + link('#/v/C?f=1', 'C – pirminė apžiūra') +
+      '<h3>6. Planavimas – 10 už 10</h3><p>Po pirminės apžiūros A narys sustabdo komandą: radinių apžvalga, darbinė diagnozė, atsakas į gydymą, tolesnis kelias (vaizdiniai tyrimai, operacinė, intensyvioji terapija, pervežimas).</p>' +
+      link('#/v/A?f=3', 'A – po pirminės apžiūros') + link('#/s/stop', 'STOP · 10 už 10') + link('#/s/kokybe', 'Gydymo tikslai ir kokybė') +
       '<h3>7. Antrinė apžiūra</h3><p>Sistemingai nuo galvos iki kojų, iš priekio ir nugaros, pakartotinai vertinant gyvybines funkcijas ir GKS, peržiūrint tyrimų rezultatus. Stabiliam pacientui – iškart po pirminės apžiūros, nestabiliam – etapais, kai leidžia gaivinimas. Surenkama anamnezė (AMPLE). Neatlikti elementai įrašomi į problemų sąrašą, kad nebūtų pamiršti.</p>' +
       '<p class="muted">Būklei bet kada pablogėjus – vėl pirminė apžiūra.</p>',
-    saltinis: 'ETC vadovas 4.1, 2 sk.; ETC vertinimo lapas'
+    saltinis: 'ETC vadovas 4.1, 2 sk.; ETC vertinimo lapas; kuopos pirminio ištyrimo pakeitimai (2026-10-07)'
   },
   komunikacija: {
     title: 'Komunikacija komandoje', sub: 'Closed loop, SBAR, PACE, CRM principai',
-    html: '<h3>Closed-loop komunikacija</h3><p>Nurodymas adresuojamas konkrečiam žmogui vardu → gavėjas pakartoja → atlikęs praneša „atlikta“. Taip niekas neprarandama ir lyderis žino, kas padaryta.</p>' +
-      '<h3>SBAR – kai reikia lyderio dėmesio</h3><ul><li><b>S – situacija:</b> kas vyksta dabar.</li><li><b>B – aplinkybės:</b> kas žinoma apie pacientą ir sužalojimą.</li><li><b>A – vertinimas:</b> ką manau, kad tai reiškia.</li><li><b>R – rekomendacija:</b> ko man reikia / ką siūlau daryti.</li></ul>' +
+    html: '<h3>Closed-loop komunikacija</h3><p>Nurodymas adresuojamas konkrečiam žmogui vardu → gavėjas pakartoja → atlikęs praneša „atlikta“. Taip niekas neprarandama ir komandos vadas žino, kas padaryta.</p>' +
+      '<h3>SBAR – kai reikia komandos vado dėmesio</h3><ul><li><b>S – situacija:</b> kas vyksta dabar.</li><li><b>B – aplinkybės:</b> kas žinoma apie pacientą ir sužalojimą.</li><li><b>A – vertinimas:</b> ką manau, kad tai reiškia.</li><li><b>R – rekomendacija:</b> ko man reikia / ką siūlau daryti.</li></ul>' +
       '<h3>PACE – kai nerimauji dėl saugumo</h3><p>Kiekvienas komandos narys privalo pasakyti, jei mato pavojų pacientui. Laipsniškai:</p><ul><li><b>P – paklausk:</b> „Ar esi tikras dėl…?“</li><li><b>A – įspėk:</b> „Ar nemanai, kad tai sukels…?“</li><li><b>C – mesk iššūkį:</b> „Bijau, kad tai pakenks pacientui.“</li><li><b>E – skubūs veiksmai:</b> „Sustok! Kviečiu pagalbą.“</li></ul>' +
-      '<h3>Autoriteto gradientas</h3><p>Geras lyderis sukuria aplinką, kurioje jaunesni nariai nebijo išsakyti nuomonės, ir pats priima patarimus. Svarbu, kas teisinga, o ne kas teisus.</p>' +
+      '<h3>Autoriteto gradientas</h3><p>Geras komandos vadas sukuria aplinką, kurioje jaunesni nariai nebijo išsakyti nuomonės, ir pats priima patarimus. Svarbu, kas teisinga, o ne kas teisus.</p>' +
       '<h3>Fiksacijos klaidos</h3><ul><li><b>„Tai ir tik tai“</b> – tunelinis mąstymas, kitos galimybės nesvarstomos.</li><li><b>„Viskas, išskyrus tai“</b> – ieškoma smulkmenų, ignoruojant pavojingiausią priežastį.</li><li><b>„Viskas gerai“</b> – pavojaus ženklai nurašomi artefaktams.</li></ul><p>Padeda: antra nuomonė, „10 už 10“, žvilgsnis tarsi įėjus į kambarį pirmą kartą.</p>' +
       '<h3>15 CRM principų</h3><ol><li>Pažink aplinką</li><li>Numatyk ir planuok</li><li>Laiku kviesk pagalbą</li><li>Būk lyderis ir sekėjas, būk ryžtingas</li><li>Paskirstyk darbo krūvį (10 už 10)</li><li>Mobilizuok visus išteklius</li><li>Bendrauk efektyviai – kalbėk</li><li>Naudok visą turimą informaciją</li><li>Užkirsk kelią fiksacijos klaidoms</li><li>Tikrink ir dar kartą tikrink</li><li>Naudok kognityvines pagalbos priemones</li><li>Pakartotinai vertink (10 už 10)</li><li>Dirbk komandoje, koordinuok ir remk kitus</li><li>Išmintingai paskirstyk dėmesį</li><li>Dinamiškai nustatyk prioritetus</li></ol>' +
       link('#/s/komanda', 'Komandos darbo sąrašas') + link('#/s/stop', 'STOP · 10 už 10'),
@@ -397,7 +391,7 @@ E.puslapiai = {
   isdestymas: {
     title: 'Darbo vietos išdėstymas', sub: 'Kur stovi A, B, C ir kur kokia įranga',
     html: schema +
-      '<ul><li><b>A</b> – prie galvūgalio: kvėpavimo takų priemonės ir drenai, atsiurbėjas, DPV, deguonis, telemetrija.</li><li><b>B</b> – vienoje pusėje, šalia echoskopo. Iš šios pusės – privažiavimas ir paciento iškrovimas.</li><li><b>C</b> – kitoje pusėje, prie stovo skysčiams ir infuzomatams.</li><li>Vaistai, PVK, tvarsliava – atskirai, už praėjimo; gali būti su ratukais.</li></ul>' +
+      '<ul><li><b>A</b> – komandos vadas, prie galvūgalio: kvėpavimo takų priemonės ir drenai, atsiurbėjas, DPV, deguonis, telemetrija.</li><li><b>B</b> – vienoje pusėje, šalia echoskopo. Iš šios pusės – privažiavimas ir paciento iškrovimas.</li><li><b>C</b> – kitoje pusėje, prie stovo skysčiams ir infuzomatams.</li><li>Vaistai, PVK, tvarsliava – atskirai, už praėjimo; gali būti su ratukais.</li></ul>' +
       link('#/v/A?f=0', 'A – pasiruošimas') + link('#/v/B?f=0', 'B – pasiruošimas') + link('#/v/C?f=0', 'C – pasiruošimas'),
     saltinis: 'ETC įgūdžių lapas (darbo vietos schema)'
   },
