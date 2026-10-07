@@ -11,7 +11,7 @@ const E = window.ETC;
 const KOMP = 'Pagal kompetenciją', MED = 'Medicinos personalui', GYD = 'Gydytojui', INT = 'Intubuojantiems gydytojams';
 const link = (href, t, s) => `<a class="row" href="${href}"><div>${t}${s ? '<small>' + s + '</small>' : ''}</div><span class="ar">›</span></a>`;
 
-E.versija = '2026-10-07 (2)';
+E.versija = '2026-10-08 (vaistai sutikrinti su TCCC 2026 ir PCS)';
 
 // ───────── VAIDMENYS ─────────
 E.vaidmenys = [
@@ -328,10 +328,10 @@ E.sarasai = {
       { t: 'Sustabdytas kraujo netekimas (netaikoma kraujavimui į pilvo ertmę)', k: true },
       { t: 'Atkuriamas cirkuliuojančio kraujo tūris' },
       { t: 'Pacientas pakankamai nuskausmintas opioidais' },
-      { t: 'Laikomasi AKS tikslų', k: true, s: ['Hemoraginis šokas be galvos traumos požymių – VAKS (MAP) 65 mm Hg', 'Galvos smegenų trauma – sAKS 110–120 mm Hg'] },
+      { t: 'Laikomasi AKS tikslų', k: true, s: ['Hemoraginis šokas be galvos traumos požymių – VAKS (MAP) 65 mm Hg', 'Galvos smegenų trauma – sAKS 110–120 mm Hg'], i: 'TCCC 2026: gaivinti, kol čiuopiamas radialinis pulsas, pagerėja sąmonė arba sAKS 100 mm Hg; galvos smegenų traumai – sAKS > 100 mm Hg, SpO₂ ≥ 92 %.' },
       { t: 'Taikoma hipotermijos prevencija' },
-      { t: 'Skirta traneksamo rūgštis' },
-      { t: 'Esant kraujo transfuzijai užtikrinamas kalcio kiekis' },
+      { t: 'Skirta traneksamo rūgštis', i: 'TCCC 2026: 2 g lėta IV / IO injekcija, ne vėliau nei per 3 val. nuo sužalojimo.' },
+      { t: 'Esant kraujo transfuzijai užtikrinamas kalcio kiekis', i: 'TCCC 2026: perpylus bet kokių kraujo produktų – 1 g kalcio (30 ml 10 % kalcio gliukonato) IV / IO po pirmojo perpilto vieneto.' },
       { t: 'Esant galvos smegenų traumai', s: ['Manitolis arba 3 % NaCl', 'Galvūgalis pakeltas 30°'] },
       { t: 'Bent 2 didelio kalibro PVK arba IO adata' },
       { t: 'Imobilizuoti lūžgaliai ir kaklas (jei įtariama)' },
@@ -454,42 +454,65 @@ E.puslapiai = {
     title: 'Kraujo suderinamumas', sub: 'Eritrocitai, plazma, trombocitai, krioprecipitatas',
     html: kraujas +
       '<p class="muted">Eritrocitų universalus donoras – O−, plazmos – AB. Lentelę slinkite į šoną, jei netelpa ekrane.</p>' +
-      link('#/igudis/23', 'Įgūdis #23 – kraujo grupė ir transfuzija'),
-    saltinis: 'ETC įgūdžių lapas (Combined Blood Compatibility Table), išversta'
+      '<h3>Trombocitai ir RhD</h3><p>RhD neigiamoms vaisingo amžiaus moterims – RhD neigiami trombocitai; jei skirta RhD teigiamų – rekomenduojama skirti anti-D imunoglobuliną (250 TV pakanka 5 suaugusiųjų dozėms per 6 sav.). O grupės trombocitai ne O grupės recipientui – tik kraštutiniu atveju ir tik mažo anti-A / anti-B titro.</p>' +
+      '<h3>TCCC 2026: ką perpilti hemoraginio šoko atveju</h3><ol><li>Šaltai laikytas mažo titro O grupės pilnas kraujas</li><li>Iš anksto ištirtų donorų mažo titro O grupės šviežias pilnas kraujas</li><li>Plazma, eritrocitai ir trombocitai santykiu 1:1:1</li><li>Plazma ir eritrocitai santykiu 1:1</li><li>Tik plazma arba tik eritrocitai</li></ol>' +
+      '<p>Gaivinti, kol čiuopiamas radialinis pulsas, pagerėja sąmonė arba sAKS pasiekia 100 mm Hg. Perpylus bet kokių kraujo produktų (įskaitant pilną kraują) – 1 g kalcio (30 ml 10 % kalcio gliukonato) IV / IO po pirmojo vieneto.</p>' +
+      link('#/vaistas/kalcis', 'Kalcio gliukonatas') + link('#/igudis/23', 'Įgūdis #23 – kraujo grupė ir transfuzija'),
+    saltinis: 'ETC įgūdžių lapas (Combined Blood Compatibility Table), išversta; TCCC gairės 2026-05-01; NHS Scotland trombocitų parinkimo tvarka'
   },
   skiedimas: {
     title: 'Vaistų skiedimo lentelės', sub: 'IV boliusai ir infuzomatai (ETC)',
-    html: '<div class="warn">Medicinos personalui. Tai paruošimo atmintinė iš ETC įgūdžių lentelių – vaistą ir dozę skiria gydytojas.</div>' +
+    html: '<div class="warn">Medicinos personalui. Tai paruošimo atmintinė iš ETC įgūdžių lentelių – vaistą ir dozę skiria gydytojas. Pastabos „PCS“ – iš gamintojo preparato charakteristikų santraukos.</div>' +
       '<h3>IV boliusu</h3>' +
-      sk('Ketaminas – sedacija', '10 ml švirkštas: 250 mg + 5 ml NaCl = 25 mg/ml', '1–2 mg/kg. Esant šokui – dozė mažinama 50 %.') +
-      sk('Rokuroniumas', '10 ml švirkštas: 100 mg, neskiestas = 10 mg/ml', '0,5–1,5 mg/kg') +
-      sk('Traneksamo rūgštis', '2000 mg į 100 ml arba 250 ml NaCl', '2 g greita infuzija') +
-      sk('Fentanilis', '2 ml švirkštas: 100 mcg, neskiestas = 50 mcg/ml', '0,5–1 mcg/kg') +
+      sk('Ketaminas – sedacija', '10 ml švirkštas: 250 mg (5 ml × 50 mg/ml) + 5 ml NaCl = 25 mg/ml', '1–2 mg/kg, lėtai. Esant šokui – dozė mažinama 50 %. Jei ampulė 100 mg/ml – koncentracija bus kita.') +
+      sk('Rokuroniumas', '10 ml švirkštas: 100 mg, neskiestas = 10 mg/ml', '0,5–1,5 mg/kg. PCS: intubacijai 0,6 mg/kg, greitosios sekos indukcijai 1,0 mg/kg.') +
+      sk('Traneksamo rūgštis', '2000 mg į 100 ml arba 250 ml NaCl', '2 g infuzija. PCS – ne greičiau kaip 1 ml/min 100 mg/ml tirpalo (100 mg/min; 2 g – ne trumpiau kaip 20 min). TCCC 2026 – 2 g lėta IV / IO injekcija.') +
+      sk('Fentanilis', '2 ml švirkštas: 100 mcg, neskiestas = 50 mcg/ml', '0,5–1 mcg/kg, lėtai') +
       sk('Morfinas', '10 ml švirkštas: 10 mg + 9 ml NaCl = 1 mg/ml', '0,1 mg/kg') +
-      sk('Kalcio gliukonatas', '3 g (30 ml) į 250 ml NaCl', '3 g greita infuzija') +
-      sk('Naloksonas', '10 ml švirkštas: 0,4 mg + 9 ml NaCl = 0,04 mg/ml', 'Po 0,2 mg (5 ml) kas 2–3 min iki efekto. Maks. 2 mg.') +
-      sk('Ondansetronas', '20 ml švirkštas: 8 mg + 16 ml NaCl', 'Suleisti lėtai IV') +
-      sk('Metoklopramidas', '10 ml švirkštas: 10 mg + 8 ml NaCl', 'Suleisti lėtai IV') +
-      sk('Atropinas', '10 ml švirkštas: 1 mg + 9 ml NaCl = 0,1 mg/ml', 'Po 0,5 mg kas 1–2 min, iki 3 mg') +
+      sk('Kalcio gliukonatas', '3 g (30 ml 10 %) į 250 ml NaCl', '3 g infuzija. PCS – ne greičiau kaip 0,45 mmol/min (ne trumpiau kaip 15 min). Nemaišyti su bikarbonatu, fosfatais, ceftriaksonu.') +
+      sk('Naloksonas', '10 ml švirkštas: 0,4 mg + 9 ml NaCl = 0,04 mg/ml', 'Po 0,2 mg (5 ml) kas 2–3 min iki efekto. Maks. 2 mg (PCS – jei po 10 mg nėra atsako, peržiūrėti diagnozę).') +
+      sk('Ondansetronas', '20 ml švirkštas: 8 mg + 16 ml NaCl = 0,4 mg/ml', 'Suleisti lėtai IV – ne greičiau kaip per 30 s (PCS).') +
+      sk('Metoklopramidas', '10 ml švirkštas: 10 mg + 8 ml NaCl = 1 mg/ml', 'Suleisti lėtai IV – ne trumpiau kaip per 3 min (PCS).') +
+      sk('Atropinas', '10 ml švirkštas: 1 mg (ampulė 1 mg / 1 ml) + 9 ml NaCl = 0,1 mg/ml', 'Po 0,5 mg kas 1–2 min, iki 3 mg') +
       '<h3>IV per infuzomatą</h3>' +
-      sk('Noradrenalinas', '50 ml švirkštas: 4 mg + 46 ml 5 % gliukozės = 80 mcg/ml', '0,1–1 mcg/kg/min. Maždaug nuo 6 ml/val., maks. 50 ml/val.') +
-      sk('Ketaminas', '50 ml švirkštas: 500 mg + 40 ml NaCl = 10 mg/ml', 'Nuo 0,5 mg/kg/val. (maždaug nuo 5 ml/val.)') +
+      sk('Noradrenalinas', '50 ml švirkštas: 4 mg + 46 ml 5 % gliukozės = 80 mcg/ml', '0,1–1 mcg/kg/min. Maždaug nuo 6 ml/val., maks. 50 ml/val. (apskaičiuota ~80 kg pacientui). PCS standartinis tirpalas – 40 mcg/ml (2 mg / 50 ml): tikrinkite, kurį ruošiate. Per centrinę veną.') +
+      sk('Ketaminas', '50 ml švirkštas: 500 mg + 40 ml NaCl = 10 mg/ml', 'Nuo 0,5 mg/kg/val. (~100 kg pacientui – maždaug nuo 5 ml/val.)') +
       sk('Morfinas', '10 ml švirkštas: 10 mg + 9 ml NaCl = 1 mg/ml', 'Pradinis 1–2 mg/val. (1–2 ml/val.)') +
-      sk('Fentanilis', '50 ml švirkštas: 1000 mcg + 30 ml NaCl = 20 mcg/ml', '1–3 mcg/kg/val. (maždaug nuo 5 ml/val.)') +
+      sk('Fentanilis', '50 ml švirkštas: 1000 mcg + 30 ml NaCl = 20 mcg/ml', '1–3 mcg/kg/val. (~100 kg pacientui – maždaug nuo 5 ml/val.)') +
       '<p class="muted">Kuopos kortelių dozės skausmui malšinti gali skirtis nuo šių ETC lentelių – žr. vaisto puslapį.</p>' +
       link('#/vaistai', 'Visi vaistai') + link('#/igudis/24', 'Įgūdis #24 – IV vaistų paruošimas') + link('#/igudis/25', 'Įgūdis #25 – infuzomatas'),
-    saltinis: 'ETC įgūdžių lapas (Vaistai IV boliusu, Vaistai IV per infuzomatą)'
+    saltinis: 'ETC įgūdžių lapas (Vaistai IV boliusu, Vaistai IV per infuzomatą); gamintojų PCS (JK eMC); TCCC gairės 2026-05-01'
   },
   skausmas: {
-    title: 'Skausmo malšinimas', sub: 'Titravimas, tikslai, nemedikamentinės priemonės',
+    title: 'Skausmo malšinimas', sub: 'TCCC 2026, titravimas, nemedikamentinės priemonės',
     html: '<h3>Įvertinkite</h3><p>Paprašykite pacientą įvertinti skausmą nuo 0 (nėra) iki 10 (stipriausias įsivaizduojamas). Kartokite po kiekvienos dozės.</p>' +
+      '<h3>TCCC 2026</h3><p><b>Gali tęsti užduotį</b> – kovinės žaizdos vaistų rinkinys (CWMP): paracetamolis 1000–1300 mg per burną kas 8 val.; meloksikamas 15 mg per burną kartą per parą; suzetriginas 100 mg per burną vieną kartą, po to 50 mg kas 12 val. (jei prieinamas).</p>' +
+      '<p><b>Negali tęsti užduoties</b> – jei dar nevartojo, CWMP, IR ketaminas: 25 mg (0,2–0,3 mg/kg) IV / IO lėtai per 1 min, arba 100 mg IM, arba 50 mg į nosį (100 mg/ml); arba esketaminas 14 ar 28 mg į nosį vieną kartą (jei prieinamas). Kartoti kas 30 min. Tikslas – sumažėjęs skausmas arba atsiradęs nistagmas.</p>' +
+      '<ul><li>Prieš skiriant ketaminą – užrašyti AVPU, pacientą nuginkluoti.</li><li>Stebėti kvėpavimo takus, kvėpavimą ir kraujotaką.</li><li>Benzodiazepinų nederinti nei su ketaminu / esketaminu, nei su opioidais. Iš dalies disocijavusiam – saugiau papildyti ketamino.</li><li>Pykinimui – ondansetronas 4 mg ODT / IV / IO / IM kas 8 val.</li><li>Tikslas – toleruojamas skausmas, ne visiškas jo pašalinimas.</li></ul>' +
+      '<p class="muted">TCCC 2026 gairėse fentanilio, morfino ir naloksono nebėra. Jei kuopa juos naudoja – vadovautis kuopos kortele ir mediko nurodymais.</p>' +
       '<h3>Titruokite</h3><p>Geriau kelios mažesnės dozės nedideliais intervalais nei viena didelė. <b>Norimas efektas</b> – skausmas sumažėja bent 3 balais (pvz., buvo 8/10, tapo 5/10). Nesiekite 3/10 ar mažiau – reikės didelių dozių ir atsiras komplikacijų. Registruokite visas skirtas dozes.</p>' +
       '<h3>Kur sustoti – pagal kuopos korteles</h3><ul><li><b>Morfinas:</b> skyrimas nutraukiamas, kai kvėpavimo dažnis &lt; 10 k./min.</li><li><b>Ketaminas:</b> kartoti, kol atsiranda nistagmas.</li><li><b>Naloksonas:</b> titruoti iki kvėpavimo dažnio &gt; 10 k./min, neprarandant skausmo malšinimo.</li></ul>' +
-      '<h3>Ypač atsargiai, kai yra</h3><ul><li>sumažėjęs sąmonės lygis</li><li>kvėpavimo sutrikimas</li><li>šokas – vaisto poveikis gali gerokai vėluoti</li><li>hipotermija</li><li>apsinuodijimas (alkoholis, narkotikai)</li><li>senyvas amžius</li></ul>' +
+      '<h3>Ypač atsargiai, kai yra</h3><ul><li>sumažėjęs sąmonės lygis</li><li>kvėpavimo sutrikimas</li><li>šokas – vaisto poveikis gali gerokai vėluoti; opioidų dozes mažinti</li><li>hipotermija</li><li>apsinuodijimas (alkoholis, narkotikai)</li><li>senyvas amžius</li></ul>' +
       '<h3>Be vaistų</h3><ul><li>Palaikykite akių ir fizinį kontaktą, paaiškinkite, kas vyksta, įspėkite prieš skausmingą procedūrą, saugokite orumą.</li><li>Kuo anksčiau imobilizuokite lūžius.</li><li>Uždenkite nudegimus.</li><li>Kuo anksčiau nukelkite nuo kietų neštuvų / lentų.</li><li>Šildykite – drebulys stiprina skausmą.</li></ul>' +
-      '<p>Analgetikai dažniausiai skiriami kartu su vėmimą slopinančiais vaistais.</p>' +
-      link('#/vaistas/ketaminas', 'Ketaminas') + link('#/vaistas/morfinas', 'Morfinas') + link('#/vaistas/naloksonas', 'Naloksonas') + link('#/vaistas/ondansetronas', 'Ondansetronas'),
-    saltinis: 'TCCC vaistų vadovas (M. Grinevičius); kuopos vaistų kortelės; ETC vadovas 4.1, 2 sk.'
+      link('#/vaistas/ketaminas', 'Ketaminas') + link('#/vaistas/morfinas', 'Morfinas') + link('#/vaistas/naloksonas', 'Naloksonas') + link('#/vaistas/ondansetronas', 'Ondansetronas') + link('#/p/tccc', 'TCCC 2026: vaistai ir tikslai'),
+    saltinis: 'TCCC gairės 2026-05-01 (Deployed Medicine); TCCC vaistų vadovas (M. Grinevičius); kuopos vaistų kortelės; ETC vadovas 4.1, 2 sk.'
+  },
+  tccc: {
+    title: 'TCCC 2026: vaistai ir tikslai', sub: 'Committee on TCCC gairės, 2026-05-01 (Deployed Medicine)',
+    html: '<div class="warn">Santrauka iš oficialių TCCC gairių. Kuopos kortelių dozės kai kur skiriasi – vaisto puslapyje tai pažymėta „Šaltiniai skiriasi“. Galutinai sprendžia kuopos medikas.</div>' +
+      '<h3>Kraujavimas</h3><ul><li><b>TXA</b> – 2 g lėta IV / IO injekcija kuo greičiau, bet ne vėliau nei per 3 val. nuo sužalojimo. Indikacijos: tikėtina transfuzija (hemoraginis šokas, didelės amputacijos, penetruojanti liemens trauma, stiprus kraujavimas), reikšminga galvos smegenų trauma ar pakitusi sąmonė po sprogimo / bukos traumos.</li>' +
+      '<li><b>Kalcis</b> – perpylus bet kokių kraujo produktų (įskaitant pilną kraują): 1 g kalcio (30 ml 10 % kalcio gliukonato arba 10 ml 10 % kalcio chlorido) IV / IO po pirmojo vieneto.</li>' +
+      '<li><b>Skysčiai</b> (pirmenybės tvarka): šaltai laikytas mažo titro O pilnas kraujas → šviežias mažo titro O pilnas kraujas → plazma : eritrocitai : trombocitai 1:1:1 → plazma : eritrocitai 1:1 → tik plazma ar eritrocitai. Kristaloidų sąraše nėra.</li>' +
+      '<li><b>Tikslas</b> – čiuopiamas radialinis pulsas, pagerėjusi sąmonė arba sAKS 100 mm Hg; pasiekus – skysčius sustabdyti. Kartu – hipotermijos prevencija.</li></ul>' +
+      '<h3>Galvos smegenų trauma</h3><ul><li>SpO₂ ≥ 92 %, sAKS &gt; 100 mm Hg.</li><li>Išvaržos požymiai: 250 ml 3 % arba 5 % NaCl (arba 30 ml 23,4 %) IV / IO per ≥ 10 min; nėra atsako – kartoti po 20 min (maks. 2 dozės). Profilaktiškai neskirti; tai ne gaivinimo skystis.</li><li>Galvą ir liemenį pakelti &gt; 30°, jei nėra šoko ir leidžia situacija. Neurologinę būklę vertinti kas 5–10 min.</li></ul>' +
+      '<h3>Skausmas</h3><ul><li>Gali tęsti užduotį – CWMP: paracetamolis 1000–1300 mg per burną kas 8 val.; meloksikamas 15 mg per burną kartą per parą; suzetriginas 100 mg per burną vieną kartą, po to 50 mg kas 12 val.</li><li>Negali tęsti užduoties: jei dar nevartojo – CWMP, IR ketaminas 25 mg (0,2–0,3 mg/kg) IV / IO per 1 min, 100 mg IM arba 50 mg IN (100 mg/ml), arba esketaminas 14 ar 28 mg IN vieną kartą; kartoti kas 30 min. Tikslas – sumažėjęs skausmas ar nistagmas.</li><li>Prieš ketaminą – AVPU, nuginkluoti. Benzodiazepinų nederinti su ketaminu / esketaminu ar opioidais.</li><li>Pykinimas: ondansetronas 4 mg ODT / IV / IO / IM kas 8 val.</li></ul>' +
+      '<h3>Sedacija (paramedikams / gydytojams)</h3><ul><li>Ketaminas 1–2 mg/kg lėtai IV / IO arba 300 mg (2–3 mg/kg) IM.</li><li>Emergencijos reakcija – midazolamas 0,5–2 mg IV / IO.</li></ul>' +
+      '<h3>Antibiotikai (atviros kovinės žaizdos)</h3><ul><li>Per burną: cefadroksilis 1 g kartą per parą (alternatyva – cefaleksinas 500 mg kas 6 val.).</li><li>IV / IO / IM: ceftriaksonas 2 g kartą per parą.</li><li>Penetruojanti akies trauma: ceftriaksonas 2 g IV ar IM arba cefadroksilis 1 g per burną kuo skubiau.</li></ul>' +
+      '<p class="muted">Kuopos kortelėse – amoksiklavas, TCCC vadove (M. Grinevičius) – ertapenemas ir moksifloksacinas.</p>' +
+      '<h3>Nudegimai</h3><p>Jei nudegę daugiau nei 20 % kūno paviršiaus – skysčius pradėti, kai tik yra IV / IO prieiga. Pradinis greitis: nudegusio ploto % × 10 ml/val. (40–80 kg); kiekvienam 10 kg virš 80 kg – +100 ml/val.</p>' +
+      link('#/vaistas/txa', 'Traneksamo rūgštis') + link('#/vaistas/ketaminas', 'Ketaminas') + link('#/vaistas/kalcis', 'Kalcio gliukonatas') + link('#/vaistas/nacl-hipert', 'Hipertoninis NaCl') + link('#/p/kraujas', 'Kraujo suderinamumas') +
+      '<a class="row" href="https://learning-media.allogy.com/api/v1/pdf/18ccfdfc-a076-47e9-8a34-376efdd81b43/contents" target="_blank" rel="noopener"><div>TCCC gairės 2026-05-01 (PDF)<small>Deployed Medicine</small></div><span class="ar">↗</span></a>',
+    saltinis: 'TCCC gairės, 2026-05-01, Committee on TCCC (Deployed Medicine)'
   }
 };
 })();

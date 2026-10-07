@@ -26,6 +26,7 @@ const V = {
       '<h2>Laikai</h2><div id="tm">' + timersHtml() + '</div>' +
       '<h2>Greitai</h2>' +
       row('#/vaistai', 'Vaistai ir dozės') +
+      ((E.puslapiai || {}).tccc ? row('#/p/tccc', 'TCCC 2026: vaistai ir tikslai') : '') +
       row('#/s/stop', 'STOP · 10 už 10') +
       row('#/s/kokybe', 'Gydymo tikslai ir kokybė') +
       row('#/s/komanda', 'Komandos darbas') +
@@ -96,7 +97,9 @@ const V = {
     (v.dozes || []).forEach(d => {
       h += `<div class="dose"><div class="lb">${esc(d.k)}${d.c ? ' · ' + esc(d.d) : ''}</div><div class="big">${esc(d.c ? calc(d.c, w) : d.d)}</div>${d.p ? '<div class="lb">' + br(d.p) + '</div>' : ''}</div>`;
     });
+    if ((v.tccc || []).length) h += '<div class="dose tc"><div class="lb">TCCC gairės 2026</div><ul>' + v.tccc.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul></div>';
     (v.ispejimai || []).forEach(x => { h += '<div class="warn">' + esc(x) + '</div>'; });
+    if ((v.skiriasi || []).length) h += `<details class="warn"${learn ? ' open' : ''}><summary>Šaltiniai skiriasi (${v.skiriasi.length}) – sprendžia medikas</summary><ul>` + v.skiriasi.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul></details>';
     if (v.pradzia) h += `<div class="kv"><b>Veikimo pradžia</b><span>${br(v.pradzia)}</span></div>`;
     if (v.trukme) h += `<div class="kv"><b>Veikimo trukmė</b><span>${br(v.trukme)}</span></div>`;
     if (learn) {
@@ -108,6 +111,7 @@ const V = {
       h += `<div class="kv"><b>Šalutinis</b><span>${esc(v.salutinis)}</span></div>`;
     }
     if (v.saltinis) h += '<p class="muted" style="margin-top:12px">Šaltinis: ' + esc(v.saltinis) + '</p>';
+    if (learn && (v.nuorodos || []).length) h += '<h2>Šaltinių nuorodos</h2>' + v.nuorodos.map(([t, u]) => `<a class="row" href="${esc(u)}" target="_blank" rel="noopener"><div>${esc(t)}</div><span class="ar">↗</span></a>`).join('');
     return h;
   },
 
