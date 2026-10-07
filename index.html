@@ -22,7 +22,33 @@ header{position:sticky;top:0;z-index:5;display:flex;gap:8px;align-items:center;p
 .seg button.on{background:var(--tx);color:var(--bg);font-weight:600}
 .ib{flex:none;width:42px;height:42px;border:0;border-radius:10px;background:var(--card);color:var(--tx);display:flex;align-items:center;justify-content:center}
 .ib svg{width:22px;height:22px}
-main{max-width:720px;margin:0 auto;padding:12px 12px 90px}
+main{max-width:720px;margin:0 auto;padding:12px 12px calc(96px + env(safe-area-inset-bottom))}
+nav#nav{position:fixed;left:0;right:0;bottom:0;z-index:6;display:flex;justify-content:center;background:var(--card);border-top:1px solid var(--line);padding:4px 4px max(4px,env(safe-area-inset-bottom))}
+#nav a{flex:1;max-width:144px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;color:var(--tx2);text-decoration:none;font-size:11px;border-radius:10px}
+#nav a svg{width:22px;height:22px}
+#nav a.on{color:var(--acc);font-weight:700;background:var(--accbg)}
+h3{scroll-margin-top:72px}
+.row small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.role .rs{display:block;opacity:.85;font-size:12px;margin-top:2px}
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 10px}
+.toc button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:16px;padding:6px 12px;font:inherit;font-size:14px}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.tcard{display:flex;flex-direction:column;gap:2px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--tx);text-decoration:none;min-height:120px}
+.tcard small{color:var(--tx2);font-size:13px;line-height:1.35}
+.tcard .prog{margin-top:auto}
+.tz{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:34px;padding:0 6px;border-radius:9px;background:var(--line);color:var(--tx);font-weight:800;margin-bottom:4px;align-self:flex-start}
+.prog-card{display:block;color:var(--tx);text-decoration:none}
+.esme{border-left:4px solid var(--acc)}.esme ul{margin:6px 0 0;padding-left:18px}.esme li{margin:4px 0}
+.ind{margin:8px 0;font-size:15px}
+.warn.wl ul{margin:4px 0 0;padding-left:18px}.warn.wl li{margin:5px 0}
+details.alt{border:1px solid var(--line);border-radius:12px;background:var(--card);padding:10px 12px;margin:10px 0}
+details.alt summary{cursor:pointer;font-weight:600}details.alt ul{margin:6px 0 0;padding-left:18px}details.alt li{margin:5px 0}
+details.card summary{cursor:pointer}
+.vbox{margin:8px 0 14px}
+.vthumb{background:#000 center/cover no-repeat;cursor:pointer;display:block;border:0;width:100%}
+.vthumb .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:64px;height:44px;border-radius:12px;background:rgba(200,0,0,.9);color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center}
+.vcap b{display:block;font-size:15px;line-height:1.3}.vcap small{display:block;color:var(--tx2);font-size:13px}
+.pn{display:flex;justify-content:space-between;gap:8px;margin-top:16px}.pn .btn{text-decoration:none;text-align:center}
 h1{font-size:21px;margin:4px 0 10px;line-height:1.25}
 h2{font-size:14px;font-weight:600;color:var(--tx2);margin:18px 0 8px}
 h3{font-size:16px;margin:16px 0 4px}
@@ -78,6 +104,7 @@ mark{background:var(--hl);color:inherit;border-radius:3px}
   <button class="ib" id="srch" aria-label="Paieška"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
 </header>
 <main id="app"></main>
+<nav id="nav"><a href="#/" data-s="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>Pradžia</a><a href="#/sarasai" data-s="sarasai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg>Sąrašai</a><a href="#/vaistai" data-s="vaistai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="9" width="18" height="6" rx="3" transform="rotate(-45 12 12)"/><path d="M9.5 9.5l5 5"/></svg>Vaistai</a><a href="#/igudziai" data-s="igudziai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg>Įgūdžiai</a><a href="#/temos" data-s="temos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5M8 7h7"/></svg>Temos</a></nav>
 <script src="sarasai.js"></script>
 <script src="vaistai.js"></script>
 <script src="igudziai.js"></script>

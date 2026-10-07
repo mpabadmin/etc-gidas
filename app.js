@@ -19,7 +19,10 @@ function view(p, q) {
     case 's': return V.list(p[1]) + newPt();
     case 'vaistai': return V.drugs();
     case 'vaistas': return V.drug(p[1]);
-    case 'igudziai': return V.skills();
+    case 'igudziai': return V.skills(q);
+    case 'temos': return V.topics();
+    case 'tema': return V.topic(p[1]);
+    case 'sarasai': return V.lists();
     case 'igudis': return V.skill(p[1]);
     case 'p': return V.page(p[1]);
     case 'paieska': return V.search(q.q || '');
@@ -34,6 +37,8 @@ function render() {
   document.getElementById('mF').classList.toggle('on', mode === 'field');
   document.getElementById('mL').classList.toggle('on', mode === 'learn');
   backBtn.style.visibility = p.length ? 'visible' : 'hidden';
+  const sec = { vaistai: 'vaistai', vaistas: 'vaistai', igudziai: 'igudziai', igudis: 'igudziai', temos: 'temos', tema: 'temos', p: 'temos', sarasai: 'sarasai', s: 'sarasai', v: 'sarasai' }[p[0]] || (p.length ? '' : 'home');
+  document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('on', a.dataset.s === sec));
   try { app.innerHTML = view(p, q); }
   catch (err) { console.error(err); app.innerHTML = '<h1>Klaida</h1><p class="muted">Nepavyko atidaryti puslapio. Patikrinkite turinio failus.</p>'; }
   if (p[0] === 'paieska') { const i = document.getElementById('qs'); if (i) { i.focus(); try { i.setSelectionRange(i.value.length, i.value.length); } catch (e) {} } }
@@ -63,6 +68,14 @@ app.addEventListener('click', e => {
   switch (d.act) {
     case 'ck': ckToggle(d.l, +d.i); el.classList.toggle('on'); updCount(el.closest('.cl')); if (navigator.vibrate) navigator.vibrate(15); break;
     case 'go': location.hash = d.r; break;
+    case 'toc': { const t = document.getElementById(d.t); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); break; }
+    case 'yt': {
+      const f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + d.id + '?autoplay=1&rel=0';
+      f.title = 'Vaizdo įrašas'; f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen = true;
+      el.classList.remove('vthumb'); el.removeAttribute('style'); el.removeAttribute('data-act'); el.innerHTML = ''; el.appendChild(f);
+      break;
+    }
     case 'tm': tmEdit = d.k; updTimers(); break;
     case 'tm-now': setTm(Date.now()); break;
     case 'tm-set': {
@@ -92,6 +105,8 @@ app.addEventListener('click', e => {
       break;
   }
 });
+
+app.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.dataset && e.target.dataset.act === 'yt') e.target.click(); });
 
 app.addEventListener('input', e => {
   const t = e.target;

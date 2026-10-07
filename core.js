@@ -49,6 +49,10 @@ function snippet(text, toks) {
 }
 
 function calc(c, w) {
+  if (c.minute) {
+    const a = c.min * w, b = c.max * w;
+    return fmt(a) + '–' + fmt(b) + ' mcg/min' + (c.conc ? ' = ' + fmt(a * 60 / c.conc) + '–' + fmt(b * 60 / c.conc) + ' ml/val.' : '');
+  }
   let lo = (c.per != null ? c.per : c.min) * w, hi = c.max != null ? c.max * w : null;
   if (c.maxDose) { lo = Math.min(lo, c.maxDose); if (hi != null) hi = Math.min(hi, c.maxDose); }
   const u = c.u || 'mg';
@@ -120,9 +124,9 @@ function disclaimer() {
 
 function videoHtml(v) {
   const u = v.url || '', m = u.match(/(?:youtu\.be\/|[?&]v=|shorts\/|embed\/)([\w-]{11})/);
-  const cap = v.title ? '<div class="muted">' + esc(v.title) + '</div>' : '';
-  if (m) return `<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/${m[1]}" title="${esc(v.title || 'Video')}" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>${cap}`;
-  if (/\.(mp4|webm)(\?|$)/i.test(u)) return `<video controls preload="none" style="width:100%;border-radius:12px;margin:8px 0" src="${esc(u)}"></video>${cap}`;
+  const cap = '<div class="vcap"><b>' + esc(v.title || 'Vaizdo įrašas') + '</b>' + (v.ch || v.note ? '<small>' + esc([v.ch, v.note].filter(Boolean).join(' · ')) + '</small>' : '') + '</div>';
+  if (m) return `<div class="vbox"><div class="video vthumb" role="button" tabindex="0" data-act="yt" data-id="${m[1]}" aria-label="Paleisti: ${esc(v.title || 'video')}" style="background-image:url('https://i.ytimg.com/vi/${m[1]}/hqdefault.jpg')"><span class="play">▶</span></div>${cap}<a class="muted" href="https://www.youtube.com/watch?v=${m[1]}" target="_blank" rel="noopener">Atidaryti YouTube ↗</a></div>`;
+  if (/\.(mp4|webm)(\?|$)/i.test(u)) return `<div class="vbox"><video controls preload="none" style="width:100%;border-radius:12px" src="${esc(u)}"></video>${cap}</div>`;
   return `<a class="row" href="${esc(u)}" target="_blank" rel="noopener">${esc(v.title || u)}<span class="ar">↗</span></a>`;
 }
 
@@ -130,10 +134,11 @@ function buildIdx() {
   const I = [];
   const add = (kind, title, sub, text, r) => I.push({ kind, title, sub: sub || '', text: text || '', r, n: norm(title + ' ' + (sub || '') + ' ' + (text || '')), nt: norm(title), ns: norm(sub || '') });
   (E.vaistai || []).forEach(v => add('Vaistai', v.name, v.klase,
-    [v.ind, v.kontra, (v.dozes || []).map(d => d.k + ' ' + d.d + ' ' + (d.p || '')).join(' '), v.salutinis, v.pakuote, (v.pastabos || []).join(' '), (v.ispejimai || []).join(' '), (v.tccc || []).join(' '), (v.skiriasi || []).join(' ')].join(' '),
+    [v.ind, v.kontra, (v.dozes || []).map(d => d.k + ' ' + d.d + ' ' + (d.p || '')).join(' '), v.salutinis, v.pakuote, (v.pastabos || []).join(' '), (v.ispejimai || []).join(' '), (v.kortele || []).join(' ')].join(' '),
     '#/vaistas/' + v.id));
   (E.igudziai || []).forEach(s => add('Įgūdžiai', s.pav, '#' + s.id + ' · ' + s.sritis + ' · ' + (s.kam || ''),
-    [s.teorija, s.praktika, strip(s.aprasymas)].join(' '), '#/igudis/' + s.id));
+    [(s.esme || []).join(' '), (s.tccc || []).join(' '), s.teorija, s.praktika, strip(s.aprasymas), (s.video || []).map(v => v.title).join(' ')].join(' '), '#/igudis/' + s.id));
+  (E.temos || []).forEach(t => add('Mokymosi temos', t.pav, t.sub, t.apie, '#/tema/' + t.id));
   Object.keys(E.sarasai || {}).forEach(id => {
     const L = E.sarasai[id], r = listRoute(id);
     (L.items || []).forEach(it => { if (!it.h) add('Kontroliniai sąrašai', L.title, it.t, (it.s || []).join(' ') + ' ' + strip(it.i), r); });
