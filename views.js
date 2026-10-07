@@ -30,6 +30,7 @@ const V = {
       row('#/s/kokybe', 'Gydymo tikslai ir kokybė') +
       row('#/s/komanda', 'Komandos darbas') +
       (P.kraujas ? row('#/p/kraujas', 'Kraujo suderinamumas') : '') +
+      (P.skiedimas ? row('#/p/skiedimas', 'Vaistų skiedimo lentelės') : '') +
       row('#/nustatymai', 'Nustatymai');
   },
 
@@ -44,7 +45,7 @@ const V = {
       row('#/igudziai', 'Įgūdžiai', n + ' įgūdžiai · įsivertinta ' + rated + ' / ' + n) +
       row('#/vaistai', 'Vaistai', 'Pagrindiniai ir papildomi') +
       '<h2>Kontroliniai sąrašai</h2>' +
-      (E.escape || []).concat(['stop', 'komanda', 'kokybe']).map(id => S[id] ? row('#/s/' + id, S[id].title) : '').join('') +
+      (E.escape || []).concat(['atmist', 'stop', 'komanda', 'kokybe']).map(id => S[id] ? row('#/s/' + id, S[id].title) : '').join('') +
       row('#/nustatymai', 'Nustatymai');
   },
 
@@ -78,7 +79,7 @@ const V = {
     const grp = (t, a) => a.length ? '<h2>' + t + '</h2>' + a.map(v => row('#/vaistas/' + v.id, v.name, v.klase, v.kam && v.tipas !== 'pagr' ? tag(v.kam) : '')).join('') : '';
     return '<h1>Vaistai</h1>' +
       grp('Pagrindiniai (kuopos kortelės)', D.filter(v => v.tipas === 'pagr')) +
-      grp('Papildomi (ETC lentelės)', D.filter(v => v.tipas !== 'pagr')) +
+      grp('Papildomi (TCCC vadovas, ETC lentelės)', D.filter(v => v.tipas !== 'pagr')) +
       (mode === 'learn' ? '<p class="muted">Papildomi vaistai skirti tik pagal kompetenciją ir mediko nurodymu.</p>' : '');
   },
 
@@ -87,7 +88,7 @@ const V = {
     if (!v) return notFound();
     const w = LS.get('etc-svoris', 80), hasCalc = (v.dozes || []).some(d => d.c), learn = mode === 'learn';
     let h = `<h1>${esc(v.name)}</h1><p class="muted">${esc(v.klase || '')}</p>`;
-    h += `<span class="tag">${v.tipas === 'pagr' ? 'Pagrindinis · kortelė' : 'Papildomas · ETC lentelė'}</span>` + tag(v.kam);
+    h += `<span class="tag">${v.tipas === 'pagr' ? 'Pagrindinis · kortelė' : 'Papildomas'}</span>` + tag(v.kam);
     h += v.patvirtinta ? `<span class="tag grn">Patvirtino: ${esc(v.patvirtinta)}</span>` : '<span class="tag amb">Laukia mediko patvirtinimo</span>';
     if (v.ind) h += `<div class="kv"><b>Indikacijos</b><span>${esc(v.ind)}</span></div>`;
     if (v.kontra) h += `<div class="kv"><b>Kontraindikacijos</b><span>${esc(v.kontra)}</span></div>`;

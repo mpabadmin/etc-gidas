@@ -1,4 +1,4 @@
-const VERSION = 'etc-gidas-v1';
+const VERSION = 'etc-gidas-v2';
 const FILES = ['./', './index.html', './core.js', './views.js', './app.js', './sarasai.js', './vaistai.js', './igudziai.js', './manifest.webmanifest', './icon.svg'];
 
 self.addEventListener('install', e => {

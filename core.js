@@ -9,7 +9,7 @@ let tmEdit = null, installEv = null, IDX = null;
 
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const br = s => esc(s).replace(/\n/g, '<br>');
-const fmt = x => String(x >= 10 ? Math.round(x) : x >= 1 ? Math.round(x * 10) / 10 : Math.round(x * 100) / 100).replace('.', ',');
+const fmt = x => String(x >= 100 ? Math.round(x) : x >= 1 ? Math.round(x * 10) / 10 : Math.round(x * 100) / 100).replace('.', ',');
 const isDoc = g => /gydytoj/i.test(g || '');
 const hide = () => LS.get('etc-slepti', false);
 const tagCls = g => isDoc(g) ? 'red' : /kompetencij|medicinos/i.test(g || '') ? 'amb' : 'grn';
