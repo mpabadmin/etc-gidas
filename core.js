@@ -49,6 +49,10 @@ function snippet(text, toks) {
 }
 
 function calc(c, w) {
+  if (c.hour) {
+    const a = c.per * w, u = c.u || 'mg';
+    return fmt(a) + ' ' + u + '/val.' + (c.conc ? ' = ' + fmt(a / c.conc) + ' ml/val.' : '');
+  }
   if (c.minute) {
     const a = c.min * w, b = c.max * w;
     return fmt(a) + '–' + fmt(b) + ' mcg/min' + (c.conc ? ' = ' + fmt(a * 60 / c.conc) + '–' + fmt(b * 60 / c.conc) + ' ml/val.' : '');
@@ -134,7 +138,7 @@ function buildIdx() {
   const I = [];
   const add = (kind, title, sub, text, r) => I.push({ kind, title, sub: sub || '', text: text || '', r, n: norm(title + ' ' + (sub || '') + ' ' + (text || '')), nt: norm(title), ns: norm(sub || '') });
   (E.vaistai || []).forEach(v => add('Vaistai', v.name, v.klase,
-    [v.ind, v.kontra, (v.dozes || []).map(d => d.k + ' ' + d.d + ' ' + (d.p || '')).join(' '), v.salutinis, v.pakuote, (v.pastabos || []).join(' '), (v.ispejimai || []).join(' '), (v.kortele || []).join(' ')].join(' '),
+    [v.ind, v.kontra, (v.dozes || []).map(d => d.k + ' ' + d.d + ' ' + (d.p || '')).join(' '), v.salutinis, v.pakuote, (v.pastabos || []).join(' '), (v.ispejimai || []).join(' '), (v.stulpeliai || []).map(c => c.pav + ' ' + c.dozes.map(d => d.k + ' ' + d.d + ' ' + (d.p || '')).join(' ')).join(' ')].join(' '),
     '#/vaistas/' + v.id));
   (E.igudziai || []).forEach(s => add('Įgūdžiai', s.pav, '#' + s.id + ' · ' + s.sritis + ' · ' + (s.kam || ''),
     [(s.esme || []).join(' '), (s.tccc || []).join(' '), s.teorija, s.praktika, strip(s.aprasymas), (s.video || []).map(v => v.title).join(' ')].join(' '), '#/igudis/' + s.id));

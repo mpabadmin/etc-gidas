@@ -22,7 +22,7 @@ const listRow = id => {
   return row(listRoute(id), L.title, '', n ? `<span class="tag ${n === t ? 'grn' : 'amb'}">${n} / ${t}</span>` : '');
 };
 function doseShort(v, w) {
-  const d = (v.dozes || [])[0]; if (!d) return v.klase || '';
+  const d = (v.dozes || [])[0] || ((v.stulpeliai || [])[0] || { dozes: [] }).dozes[0]; if (!d) return v.klase || '';
   return d.k + ': ' + (d.c ? calc(d.c, w) + ' (' + w + ' kg)' : d.d);
 }
 function tocHtml(html) {
@@ -155,7 +155,7 @@ const V = {
   drugs() {
     const D = (E.vaistai || []).filter(v => ok(v.kam)), w = LS.get('etc-svoris', 80), field = mode === 'field';
     const G = E.vaistuGrupes || [{ id: undefined, pav: 'Vaistai' }];
-    let h = '<h1>Vaistai</h1><p class="muted">Pagrindinės dozės – pagal TCCC 2026 gaires ir gamintojo PCS. Kuopos kortelė ir kiti vietiniai šaltiniai – vaisto puslapyje, atskiroje skiltyje.</p>';
+    let h = '<h1>Vaistai</h1><p class="muted">Viena dozavimo schema – pagal TCCC 2026 gaires, gamintojo PCS ir ERC.</p>';
     G.forEach(g => {
       const a = D.filter(v => v.grupe === g.id);
       if (!a.length) return;
@@ -168,34 +168,29 @@ const V = {
   drug(id) {
     const v = drugById(id);
     if (!v) return notFound();
-    const w = LS.get('etc-svoris', 80), hasCalc = (v.dozes || []).some(d => d.c), learn = mode === 'learn';
+    const w = LS.get('etc-svoris', 80), learn = mode === 'learn';
+    const allD = (v.dozes || []).concat(...(v.stulpeliai || []).map(c => c.dozes));
+    const doseHtml = d => `<div class="dose"><div class="lb">${esc(d.k)}${d.c ? ' · ' + esc(d.d) : ''}</div><div class="big">${esc(d.c ? calc(d.c, w) : d.d)}</div>${d.p ? '<div class="lb">' + br(d.p) + '</div>' : ''}</div>`;
     let h = `<h1>${esc(v.name)}</h1><p class="muted">${esc(v.klase || '')}</p>`;
-    h += (v.tccc26 ? '<span class="tag grn">TCCC 2026</span>' : '<span class="tag">Nėra TCCC 2026</span>') +
-      (v.tipas === 'pagr' ? '<span class="tag">Kuopos kortelėje</span>' : '') + tag(v.kam);
+    h += (v.tccc26 ? '<span class="tag grn">TCCC 2026</span>' : '') + (v.tipas === 'pagr' ? '<span class="tag">Kuopos kortelėje</span>' : '') + tag(v.kam);
     h += v.patvirtinta ? `<span class="tag grn">Patvirtino: ${esc(v.patvirtinta)}</span>` : '<span class="tag amb">Laukia mediko patvirtinimo</span>';
     if (v.ind) h += `<p class="ind">${esc(v.ind)}</p>`;
-    if (hasCalc) h += '<h2>Paciento svoris, kg</h2>' + wChips(w);
-    h += '<h2>Dozė</h2>';
-    (v.dozes || []).forEach(d => {
-      h += `<div class="dose"><div class="lb">${esc(d.k)}${d.c ? ' · ' + esc(d.d) : ''}</div><div class="big">${esc(d.c ? calc(d.c, w) : d.d)}</div>${d.p ? '<div class="lb">' + br(d.p) + '</div>' : ''}</div>`;
-    });
+    if (allD.some(d => d.c)) h += '<h2>Paciento svoris, kg</h2>' + wChips(w);
+    if ((v.dozes || []).length) h += '<h2>Dozė</h2>' + v.dozes.map(doseHtml).join('');
+    if ((v.stulpeliai || []).length) h += '<div class="cols">' + v.stulpeliai.map(c => `<div class="col"><div class="colh"><b>${esc(c.pav)}</b>${c.sub ? '<small>' + esc(c.sub) + '</small>' : ''}</div>${c.dozes.map(doseHtml).join('')}</div>`).join('') + '</div>';
     const iw = v.ispejimai || [];
     if (iw.length) h += '<div class="warn wl"><b>Įspėjimai</b>' + (iw.length > 1 ? ul(iw) : '<div>' + esc(iw[0]) + '</div>') + '</div>';
-    if (v.kontra) h += `<div class="kv"><b>Kontraindikacijos</b><span>${esc(v.kontra)}</span></div>`;
-    if (v.pradzia) h += `<div class="kv"><b>Veikimo pradžia</b><span>${br(v.pradzia)}</span></div>`;
-    if (v.trukme) h += `<div class="kv"><b>Veikimo trukmė</b><span>${br(v.trukme)}</span></div>`;
-    if (!learn && v.salutinis) h += `<div class="kv"><b>Šalutinis</b><span>${esc(v.salutinis)}</span></div>`;
-    if ((v.kortele || []).length) h += `<details class="alt"${learn ? ' open' : ''}><summary>Kuopos kortelė ir kiti šaltiniai (${v.kortele.length})</summary><p class="muted">Mažiau patikimi nei TCCC gairės ir PCS. Jei skiriasi – vadovaukitės aukščiau pateiktomis dozėmis; sprendžia medikas.</p>${ul(v.kortele)}</details>`;
-    if (learn) {
-      if (v.salutinis) h += `<div class="kv"><b>Šalutinis poveikis</b><span>${esc(v.salutinis)}</span></div>`;
-      if (v.pakuote) h += `<div class="kv"><b>Pakuotė</b><span>${br(v.pakuote)}</span></div>`;
-      if ((v.pastabos || []).length) h += '<h3>Pastabos</h3>' + ul(v.pastabos);
-      if ((v.susije || []).length) h += '<h2>Susiję vaistai</h2>' + v.susije.map(s => { const o = drugById(s); return o && ok(o.kam) ? row('#/vaistas/' + o.id, o.name, o.klase) : ''; }).join('');
-    } else if ((v.pastabos || []).length) {
-      h += `<details class="alt"><summary>Pastabos (${v.pastabos.length})</summary>${ul(v.pastabos)}</details>`;
-    }
-    if (v.saltinis) h += '<p class="muted" style="margin-top:12px">Šaltiniai: ' + esc(v.saltinis) + '</p>';
-    if (learn && (v.nuorodos || []).length) h += '<h2>Šaltinių nuorodos</h2>' + v.nuorodos.map(([t, u]) => `<a class="row" href="${esc(u)}" target="_blank" rel="noopener"><div>${esc(t)}</div><span class="ar">↗</span></a>`).join('');
+    let more = '';
+    if (v.kontra) more += `<div class="kv"><b>Kontraindikacijos</b><span>${esc(v.kontra)}</span></div>`;
+    if (v.pradzia) more += `<div class="kv"><b>Veikimo pradžia</b><span>${br(v.pradzia)}</span></div>`;
+    if (v.trukme) more += `<div class="kv"><b>Veikimo trukmė</b><span>${br(v.trukme)}</span></div>`;
+    if (v.salutinis) more += `<div class="kv"><b>Šalutinis poveikis</b><span>${esc(v.salutinis)}</span></div>`;
+    if (v.pakuote) more += `<div class="kv"><b>Pakuotė</b><span>${br(v.pakuote)}</span></div>`;
+    if ((v.pastabos || []).length) more += '<h3>Pastabos</h3>' + ul(v.pastabos);
+    if (v.saltinis) more += '<p class="muted" style="margin-top:10px">Šaltiniai: ' + esc(v.saltinis) + '</p>';
+    if ((v.nuorodos || []).length) more += v.nuorodos.map(([t, u]) => `<a class="row" href="${esc(u)}" target="_blank" rel="noopener"><div>${esc(t)}</div><span class="ar">↗</span></a>`).join('');
+    if (more) h += `<details class="alt"${learn ? ' open' : ''}><summary>Kontraindikacijos ir daugiau</summary>${more}</details>`;
+    if ((v.susije || []).length) h += '<h2>Susiję vaistai</h2>' + v.susije.map(s => { const o = drugById(s); return o && ok(o.kam) ? row('#/vaistas/' + o.id, o.name, o.klase) : ''; }).join('');
     return h;
   },
 
