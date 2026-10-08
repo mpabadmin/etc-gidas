@@ -11,9 +11,9 @@ const E = window.ETC;
 const KOMP = 'Pagal kompetenciją', MED = 'Medicinos personalui', GYD = 'Gydytojui', INT = 'Intubuojantiems gydytojams';
 const link = (href, t, s) => `<a class="row" href="${href}"><div>${t}${s ? '<small>' + s + '</small>' : ''}</div><span class="ar">›</span></a>`;
 
-E.versija = '2026-10-08 v8 (pranešimai apie klaidas su ekrano vaizdu; 80 vaizdo įrašų – nauji Geeky Medics, Level Up RN, RegisteredNurseRN, CoTCCC)';
+E.versija = '2026-10-08 v9 (pranešimų priėmimas įjungtas; pranešimai apie klaidas su ekrano vaizdu; 80 vaizdo įrašų – nauji Geeky Medics, Level Up RN, RegisteredNurseRN, CoTCCC)';
 // Pranešimų priėmimo adresas: Google Apps Script žiniatinklio programos /exec URL (žr. tools/atsiliepimai.gs)
-E.atsiliepimai = { url: '' };
+E.atsiliepimai = { url: 'https://script.google.com/macros/s/AKfycbyUpzDmAClJ40FMltkHi21Ozc4PpItRr3u6yy4rU0DKNGe7JkRBnOr0y42wLwpJcBau/exec' };
 
 // ───────── VAIDMENYS ─────────
 E.vaidmenys = [
