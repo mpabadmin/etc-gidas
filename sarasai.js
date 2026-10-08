@@ -11,7 +11,7 @@ const E = window.ETC;
 const KOMP = 'Pagal kompetenciją', MED = 'Medicinos personalui', GYD = 'Gydytojui', INT = 'Intubuojantiems gydytojams';
 const link = (href, t, s) => `<a class="row" href="${href}"><div>${t}${s ? '<small>' + s + '</small>' : ''}</div><span class="ar">›</span></a>`;
 
-E.versija = '2026-10-08 v10 (pranešimų priėmimas įjungtas; pranešimai apie klaidas su ekrano vaizdu; 80 vaizdo įrašų – nauji Geeky Medics, Level Up RN, RegisteredNurseRN, CoTCCC)';
+E.versija = '2026-10-08 v11 (terminas: „masyvus kraujavimas“ vietoje „katastrofinis“; pranešimai apie klaidas su ekrano vaizdu; 80 vaizdo įrašų)';
 // Pranešimų priėmimo adresas: Google Apps Script žiniatinklio programos /exec URL (žr. tools/atsiliepimai.gs)
 E.atsiliepimai = { url: 'https://script.google.com/macros/s/AKfycbyUpzDmAClJ40FMltkHi21Ozc4PpItRr3u6yy4rU0DKNGe7JkRBnOr0y42wLwpJcBau/exec' };
 
@@ -30,10 +30,10 @@ E.escape = ['esc-kraujas', 'esc-kt', 'esc-tss'];
 
 E.sarasai = {
   'esc-kraujas': {
-    title: 'Katastrofinis kraujavimas', short: 'Kraujavimas',
+    title: 'Masyvus kraujavimas', short: 'Kraujavimas',
     intro: 'Komandos vadas (A) aiškiai paskelbia prioritetinę problemą. Pirminė apžiūra netęsiama, kol kraujavimas nesustabdytas.',
     items: [
-      { t: 'A (komandos vadas) aiškiai paskelbė: katastrofinis kraujavimas', k: true },
+      { t: 'A (komandos vadas) aiškiai paskelbė: masyvus kraujavimas', k: true },
       { t: 'B ir C nariams nurodyta stabdyti kraujavimą', k: true },
       { t: 'Taikytas tiesioginis spaudimas' },
       { t: 'Uždėtas turniketas, pažymėtas laikas', k: true, i: 'Pradžios ekrane spauskite kortelę „Turniketas“ → „Dabar“.' },
@@ -81,7 +81,7 @@ E.sarasai = {
       { t: 'Patikrintos narių kompetencijos, jaunesniems paskirta vyresniųjų parama' },
       { t: 'Paskirstyti vaidmenys: A, B, C, rašytojas', k: true },
       { t: 'Suformuluotas Planas A', k: true },
-      { t: 'Aptartas Planas B ir Escape planai', s: ['Skubus perkėlimas į operacinę', 'Netikėtas širdies sustojimas', 'Katastrofinis kraujavimas, kvėpavimo takų obstrukcija'] },
+      { t: 'Aptartas Planas B ir Escape planai', s: ['Skubus perkėlimas į operacinę', 'Netikėtas širdies sustojimas', 'Masyvus kraujavimas, kvėpavimo takų obstrukcija'] },
       { t: 'Įvertintas papildomų išteklių poreikis', s: ['Personalas (pvz., vyresnis kolega)', 'Įranga: masinio kraujo perpylimo sistema, sudėtingų kvėpavimo takų rinkinys'] },
       { t: 'Informuoti: kraujo bankas, radiologija, operacinė, intensyvioji terapija' },
       { t: 'Laikomasi standartinių atsargumo priemonių' },
@@ -118,7 +118,7 @@ E.sarasai = {
       { h: '5 sekundžių apžiūra' },
       { t: 'Atlikta 5 s apžiūra – vertinimo trikampis', k: true, s: ['Socialinė sąveika: ramus / susijaudinęs / nėra', 'Kvėpavimo pastangos: normalios / padidėjusios / nėra', 'Odos perfuzija: rožinė / blyški, marmuruota / nėra'],
         i: 'Plačiau – tema „ETC eiga“.' },
-      { t: 'Atmesta: katastrofinis kraujavimas, kvėpavimo takų obstrukcija, trauminis širdies sustojimas', k: true },
+      { t: 'Atmesta: masyvus kraujavimas, kvėpavimo takų obstrukcija, trauminis širdies sustojimas', k: true },
       { t: 'Garsiai paskelbta: tęsiamas Planas A arba aktyvuojamas Escape planas', k: true },
       { t: 'Perimtas ATMIST perdavimas (skirtukas ATMIST)' },
       { h: 'Kvėpavimo takai ir neurologija' },
@@ -244,7 +244,7 @@ E.sarasai = {
       { t: 'Paruošta greito infuzavimo / masinio kraujo perpylimo sistema, kraujo komponentai', g: MED },
       { t: 'Pašildyti skysčiai' },
       { t: 'Paruošti vaistai (žr. „Vaistų skiedimo lentelės“)', g: MED },
-      { t: 'Escape planas: katastrofinis kraujavimas', k: true }
+      { t: 'Escape planas: masyvus kraujavimas', k: true }
     ]
   },
   'c-pir': {
@@ -400,14 +400,14 @@ const sk = (n, prep, dose) => `<div class="card"><b>${n}</b><div>${prep}</div><d
 E.puslapiai = {
   eiga: {
     title: 'ETC eiga: nuo pranešimo iki antrinės apžiūros', sub: 'Planas A, 5 s apžiūra, Escape, cABCDE',
-    html: '<h3>Prioritetai: cABC</h3><p>Seka nukreipia dėmesį į dažniausias išvengiamas mirties priežastis: <b>c</b> – katastrofinis kraujavimas, <b>A</b> – kvėpavimo takų obstrukcija, <b>B</b> – krūtinės ląstos sužalojimai, <b>C</b> – kraujotakos šokas. Toliau – D (neurologija) ir E (atidengimas, temperatūra).</p>' +
+    html: '<h3>Prioritetai: cABC</h3><p>Seka nukreipia dėmesį į dažniausias išvengiamas mirties priežastis: <b>c</b> – masyvus kraujavimas, <b>A</b> – kvėpavimo takų obstrukcija, <b>B</b> – krūtinės ląstos sužalojimai, <b>C</b> – kraujotakos šokas. Toliau – D (neurologija) ir E (atidengimas, temperatūra).</p>' +
       '<p><b>Komandos vadas – A narys.</b> Atskiro lyderio nėra.</p>' +
       '<h3>1. Prieš atvykstant</h3><p>Gavęs išankstinį pranešimą (geriausia ATMIST formatu), A narys surenka komandą: pristato narius, paskirsto vaidmenis A, B, C ir rašytoją, patikrina kompetencijas, suformuluoja <b>Planą A</b> (standartinė pirminė apžiūra) ir aptaria <b>Planą B</b> (pvz., skubiai į operacinę, netikėtas širdies sustojimas). Kiekvienas narys patikrina savo įrangą, patalpa ir skysčiai pašildomi.</p>' +
       link('#/v/A?f=0', 'A – instruktažas ir pasiruošimas') +
-      '<h3>2. Atvykus – 5 sekundžių apžiūra</h3><p>Prieš perdavimą A narys per kelias sekundes įvertina pacientą pagal <b>vertinimo trikampį</b>. Tikslas – atmesti tris gyvybei pavojingas būkles: katastrofinį kraujavimą, kvėpavimo takų obstrukciją ir trauminį širdies sustojimą, ir patvirtinti, kad Planas A vis dar tinka.</p>' + tri +
+      '<h3>2. Atvykus – 5 sekundžių apžiūra</h3><p>Prieš perdavimą A narys per kelias sekundes įvertina pacientą pagal <b>vertinimo trikampį</b>. Tikslas – atmesti tris gyvybei pavojingas būkles: masyvų kraujavimą, kvėpavimo takų obstrukciją ir trauminį širdies sustojimą, ir patvirtinti, kad Planas A vis dar tinka.</p>' + tri +
       '<p class="muted">Ramus, normaliai kvėpuojantis, rožinės odos pacientas greičiausiai skubios intervencijos nereikalauja. Susijaudinusiam, sunkiai kvėpuojančiam, marmuruotos odos pacientui greičiausiai nedelsiant reikia gyvybę gelbstinčių veiksmų.</p>' +
       '<h3>3. Sprendimas garsiai</h3><p>A narys aiškiai paskelbia rezultatą. Dažniausiai tęsiamas Planas A. Radus gyvybei pavojingą būklę, komanda iškart nukreipiama ją spręsti – aktyvuojamas Escape planas.</p>' +
-      link('#/s/esc-kraujas', 'Escape: katastrofinis kraujavimas') + link('#/s/esc-kt', 'Escape: kvėpavimo takų obstrukcija') + link('#/s/esc-tss', 'Escape: trauminis širdies sustojimas') +
+      link('#/s/esc-kraujas', 'Escape: masyvus kraujavimas') + link('#/s/esc-kt', 'Escape: kvėpavimo takų obstrukcija') + link('#/s/esc-tss', 'Escape: trauminis širdies sustojimas') +
       '<h3>4. Perdavimas (ATMIST)</h3><p>A narys priima perdavimą. C narys tuo metu jau įveda PVK arba IO adatą – nurodymo jam nereikia.</p>' + link('#/v/A?f=1', 'ATMIST perdavimas') +
       '<h3>5. Horizontali pirminė apžiūra</h3><p>A, B ir C dirba <b>vienu metu</b> ir prireikus padeda vieni kitiems. Pacientas saugomas nuo hipotermijos.</p><ul>' +
       '<li><b>C</b> – iškart atvykus pacientui, nelaukdamas A nurodymo, įveda PVK arba IO adatą ir visiems pacientams nustato kraujo grupę ir gliukozę. Toliau – AKS, šoko požymiai, vaistai, kraujo komponentai.</li>' +
