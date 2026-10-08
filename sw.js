@@ -1,9 +1,10 @@
-const VERSION = 'etc-gidas-v9';
+const VERSION = 'etc-gidas-v10';
 const IMG = 'etc-gidas-img-1';
 const FILES = ['./', './index.html', './core.js', './views.js', './fb.js', './vendor/html2canvas.min.js', './app.js', './sarasai.js', './vaistai.js', './igudziai.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './favicon-32.png', './favicon-64.png', './apple-touch-icon.png', './img/logo-balt.png', './img/logo-juod.png', './img/qr.svg'];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(VERSION).then(c => c.addAll(FILES)));
+  // cache: 'reload' – apeiti naršyklės HTTP talpyklą (GitHub Pages max-age 600), kad nauja versija gautų naujus failus
+  e.waitUntil(caches.open(VERSION).then(c => c.addAll(FILES.map(u => new Request(u, { cache: 'reload' })))));
   self.skipWaiting();
 });
 
@@ -23,7 +24,7 @@ self.addEventListener('fetch', e => {
     return;
   }
   if (req.method !== 'GET' || url.origin !== self.location.origin) return;
-  const net = fetch(req).then(res => {
+  const net = (req.mode === 'navigate' ? fetch(req) : fetch(req, { cache: 'no-cache' })).then(res => {
     if (res && res.ok) {
       const copy = res.clone();
       return caches.open(VERSION).then(c => c.put(req, copy)).then(() => res);
