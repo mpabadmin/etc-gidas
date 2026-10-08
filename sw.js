@@ -1,4 +1,4 @@
-const VERSION = 'etc-gidas-v7';
+const VERSION = 'etc-gidas-v8';
 const IMG = 'etc-gidas-img-1';
 const FILES = ['./', './index.html', './core.js', './views.js', './fb.js', './vendor/html2canvas.min.js', './app.js', './sarasai.js', './vaistai.js', './igudziai.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './favicon-32.png', './favicon-64.png', './apple-touch-icon.png', './img/logo-balt.png', './img/logo-juod.png', './img/qr.svg'];
 
