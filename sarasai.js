@@ -11,7 +11,7 @@ const E = window.ETC;
 const KOMP = 'Pagal kompetenciją', MED = 'Medicinos personalui', GYD = 'Gydytojui', INT = 'Intubuojantiems gydytojams';
 const link = (href, t, s) => `<a class="row" href="${href}"><div>${t}${s ? '<small>' + s + '</small>' : ''}</div><span class="ar">›</span></a>`;
 
-E.versija = '2026-10-08 v5 (vaistai – pagal TCCC 2026 ir PCS; įgūdžių esmė ir vaizdo įrašai; nauja struktūra)';
+E.versija = '2026-10-08 v6 (48 įgūdžiai su TCCC iliustracijomis ir video; vaistai – viena schema; 1040 medkuopos logotipas)';
 
 // ───────── VAIDMENYS ─────────
 E.vaidmenys = [
@@ -504,7 +504,7 @@ E.puslapiai = {
   },
   tccc: {
     title: 'TCCC 2026: vaistai ir tikslai', sub: 'Committee on TCCC gairės, 2026-05-01 (Deployed Medicine)',
-    html: '<div class="warn">Santrauka iš oficialių TCCC gairių. Programėlėje pagrindinės dozės pateiktos pagal šias gaires ir gamintojo PCS; kuopos kortelės, TCCC vadovo (M. Grinevičius) ir ETC lentelių duomenys – vaisto puslapio skiltyje „Kuopos kortelė ir kiti šaltiniai“. Galutinai sprendžia kuopos medikas.</div>' +
+    html: '<div class="warn">Santrauka iš oficialių TCCC gairių. Programėlėje pagrindinės dozės pateiktos pagal šias gaires ir gamintojo PCS; jei šaltiniai skiriasi – naudojamas vienas patikimiausias. Galutinai sprendžia kuopos medikas.</div>' +
       '<h3>Kraujavimas</h3><ul><li><b>TXA</b> – 2 g lėta IV / IO injekcija kuo greičiau, bet ne vėliau nei per 3 val. nuo sužalojimo. Indikacijos: tikėtina transfuzija (hemoraginis šokas, didelės amputacijos, penetruojanti liemens trauma, stiprus kraujavimas), reikšminga galvos smegenų trauma ar pakitusi sąmonė po sprogimo / bukos traumos.</li>' +
       '<li><b>Kalcis</b> – perpylus bet kokių kraujo produktų (įskaitant pilną kraują): 1 g kalcio (30 ml 10 % kalcio gliukonato arba 10 ml 10 % kalcio chlorido) IV / IO po pirmojo vieneto.</li>' +
       '<li><b>Skysčiai</b> (pirmenybės tvarka): šaltai laikytas mažo titro O pilnas kraujas → šviežias mažo titro O pilnas kraujas → plazma : eritrocitai : trombocitai 1:1:1 → plazma : eritrocitai 1:1 → tik plazma ar eritrocitai. Kristaloidų sąraše nėra.</li>' +
@@ -527,21 +527,21 @@ E.puslapiai = {
 E.temos = [
   { id: 'pagrindai', zenklas: '1', pav: 'Pagrindai ir komanda', sub: 'ETC eiga, vaidmenys, komunikacija, darbo vieta',
     apie: 'Kaip dirba traumos komanda: pasiruošimas, 5 s apžiūra, horizontali pirminė apžiūra, „10 už 10“ ir antrinė apžiūra. A narys – komandos vadas.',
-    puslapiai: ['eiga', 'isdestymas', 'komunikacija'], sarasai: ['a-pas', 'atmist', 'stop', 'komanda', 'kokybe'], igudziai: [1], vaistai: [] },
+    puslapiai: ['eiga', 'isdestymas', 'komunikacija'], sarasai: ['a-pas', 'atmist', 'stop', 'komanda', 'kokybe'], igudziai: [1, 41, 46], vaistai: [] },
   { id: 'a', zenklas: 'A', cls: 'rA', pav: 'A – kvėpavimo takai ir neurologija', sub: 'Kvėpavimo takai, deguonis, intubacija, sąmonė',
     apie: 'A narys užtikrina kvėpavimo takus saugodamas kaklą, deguonį ir ventiliaciją, vertina neurologiją (D) ir vadovauja komandai.',
-    puslapiai: ['kvepavimas'], sarasai: ['esc-kt', 'a-pir', 'a-plan'], igudziai: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], vaistai: ['ketaminas', 'midazolamas', 'rokuroniumas'] },
+    puslapiai: ['kvepavimas'], sarasai: ['esc-kt', 'a-pir', 'a-plan'], igudziai: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 18], vaistai: ['ketaminas', 'midazolamas', 'rokuroniumas'] },
   { id: 'b', zenklas: 'B', cls: 'rB', pav: 'B – kvėpavimas ir apžiūra', sub: 'Krūtinė, drenavimas, e-FAST, dubuo, hipotermija',
     apie: 'B narys per ≤ 2 min apžiūri kaklą, krūtinę, pilvą, dubenį, tarpvietę ir galūnes, atmeta 6 gyvybei pavojingas krūtinės būkles, su C apverčia pacientą ir apžiūri nugarą prieš e-FAST.',
-    puslapiai: ['kvepavimas'], sarasai: ['b-pir'], igudziai: [13, 14, 15, 16, 17, 18, 19, 20], vaistai: [] },
+    puslapiai: ['kvepavimas'], sarasai: ['b-pir'], igudziai: [13, 37, 38, 14, 15, 16, 17, 20, 19], vaistai: [] },
   { id: 'c', zenklas: 'C', cls: 'rC', pav: 'C – kraujotaka ir šokas', sub: 'PVK / IO, kraujas, vaistai, infuzijos',
     apie: 'C narys iškart įveda PVK ar IO, nustato kraujo grupę ir gliukozę, vertina šoką, ruošia vaistus ir kraujo komponentus.',
-    puslapiai: ['kraujas', 'skiedimas'], sarasai: ['esc-kraujas', 'esc-tss', 'c-pir'], igudziai: [21, 22, 23, 24, 25, 26, 27], vaistai: ['txa', 'kalcis', 'noradrenalinas', 'nacl-hipert'] },
+    puslapiai: ['kraujas', 'skiedimas'], sarasai: ['esc-kraujas', 'esc-tss', 'c-pir'], igudziai: [35, 36, 40, 21, 22, 23, 26, 27, 39], vaistai: ['txa', 'kalcis', 'noradrenalinas', 'nacl-hipert'] },
   { id: 'antrine', zenklas: 'D/E', pav: 'Antrinė apžiūra', sub: 'Nuo galvos iki kojų: veidas, akys, kaklas, žaizdos, galūnės',
     apie: 'Sistemingai nuo galvos iki kojų, iš priekio ir nugaros; anamnezė AMPLE; neatlikti elementai įrašomi į problemų sąrašą.',
-    puslapiai: [], sarasai: ['antrine', 'a-ant', 'b-ant', 'c-ant'], igudziai: [28, 29, 30, 31, 32, 33, 34], vaistai: ['cefadroksilis', 'ceftriaksonas'] },
+    puslapiai: [], sarasai: ['antrine', 'a-ant', 'b-ant', 'c-ant'], igudziai: [42, 44, 45, 28, 29, 30, 31, 32, 33, 48, 34], vaistai: ['cefadroksilis', 'ceftriaksonas'] },
   { id: 'vaistai', zenklas: 'Rx', pav: 'Vaistai ir skausmas', sub: 'TCCC 2026, skausmo malšinimas, skiedimas',
-    apie: 'Pagrindinės dozės – pagal TCCC 2026 gaires ir gamintojo PCS. Kuopos kortelė, TCCC vadovas (M. Grinevičius) ir ETC lentelės – papildomi šaltiniai.',
-    puslapiai: ['tccc', 'skausmas', 'skiedimas'], sarasai: [], igudziai: [24, 25, 27], vaistai: ['txa', 'ketaminas', 'paracetamolis', 'meloksikamas', 'ondansetronas', 'ceftriaksonas'] }
+    apie: 'Viena dozavimo schema – pagal TCCC 2026 gaires, gamintojo PCS ir ERC.',
+    puslapiai: ['tccc', 'skausmas', 'skiedimas'], sarasai: [], igudziai: [43, 47, 24, 25, 27], vaistai: ['txa', 'ketaminas', 'paracetamolis', 'meloksikamas', 'ondansetronas', 'ceftriaksonas'] }
 ];
 })();

@@ -130,7 +130,7 @@ function videoHtml(v) {
   const u = v.url || '', m = u.match(/(?:youtu\.be\/|[?&]v=|shorts\/|embed\/)([\w-]{11})/);
   const cap = '<div class="vcap"><b>' + esc(v.title || 'Vaizdo įrašas') + '</b>' + (v.ch || v.note ? '<small>' + esc([v.ch, v.note].filter(Boolean).join(' · ')) + '</small>' : '') + '</div>';
   if (m) return `<div class="vbox"><div class="video vthumb" role="button" tabindex="0" data-act="yt" data-id="${m[1]}" aria-label="Paleisti: ${esc(v.title || 'video')}" style="background-image:url('https://i.ytimg.com/vi/${m[1]}/hqdefault.jpg')"><span class="play">▶</span></div>${cap}<a class="muted" href="https://www.youtube.com/watch?v=${m[1]}" target="_blank" rel="noopener">Atidaryti YouTube ↗</a></div>`;
-  if (/\.(mp4|webm)(\?|$)/i.test(u)) return `<div class="vbox"><video controls preload="none" style="width:100%;border-radius:12px" src="${esc(u)}"></video>${cap}</div>`;
+  if (/\.(mp4|webm)(\?|$)/i.test(u)) return `<div class="vbox"><div class="video vthumb vmp4" role="button" tabindex="0" data-act="mp4" data-src="${esc(u)}" aria-label="Paleisti: ${esc(v.title || 'video')}"><span class="vt">${esc(v.title || 'Vaizdo įrašas')}</span><span class="play">▶</span></div>${cap}${v.page ? `<a class="muted" href="${esc(v.page)}" target="_blank" rel="noopener">Atidaryti tccc.org.ua ↗</a>` : ''}</div>`;
   return `<a class="row" href="${esc(u)}" target="_blank" rel="noopener">${esc(v.title || u)}<span class="ar">↗</span></a>`;
 }
 
@@ -141,7 +141,7 @@ function buildIdx() {
     [v.ind, v.kontra, (v.dozes || []).map(d => d.k + ' ' + d.d + ' ' + (d.p || '')).join(' '), v.salutinis, v.pakuote, (v.pastabos || []).join(' '), (v.ispejimai || []).join(' '), (v.stulpeliai || []).map(c => c.pav + ' ' + c.dozes.map(d => d.k + ' ' + d.d + ' ' + (d.p || '')).join(' ')).join(' ')].join(' '),
     '#/vaistas/' + v.id));
   (E.igudziai || []).forEach(s => add('Įgūdžiai', s.pav, '#' + s.id + ' · ' + s.sritis + ' · ' + (s.kam || ''),
-    [(s.esme || []).join(' '), (s.tccc || []).join(' '), s.teorija, s.praktika, strip(s.aprasymas), (s.video || []).map(v => v.title).join(' ')].join(' '), '#/igudis/' + s.id));
+    [s.aprasas, (s.esme || []).join(' '), (s.zingsniai || []).join(' '), (s.klaidos || []).join(' '), (s.tccc || []).join(' '), s.teorija, s.praktika, strip(s.aprasymas), (s.video || []).map(v => v.title).join(' ')].join(' '), '#/igudis/' + s.id));
   (E.temos || []).forEach(t => add('Mokymosi temos', t.pav, t.sub, t.apie, '#/tema/' + t.id));
   Object.keys(E.sarasai || {}).forEach(id => {
     const L = E.sarasai[id], r = listRoute(id);

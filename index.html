@@ -8,7 +8,10 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <title>ETC kišeninis gidas</title>
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-64.png" type="image/png" sizes="64x64">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="ETC gidas">
 <style>
 :root{--bg:#F7F6F2;--card:#fff;--line:#E2E0D8;--tx:#2C2C2A;--tx2:#5F5E5A;--acc:#0C447C;--accbg:#E6F1FB;--red:#791F1F;--redbg:#FCEBEB;--amb:#633806;--ambbg:#FAEEDA;--grn:#085041;--grnbg:#E1F5EE;--hl:#FAC775}
 body.field{--bg:#1C1C1B;--card:#2C2C2A;--line:#444441;--tx:#F1EFE8;--tx2:#B4B2A9;--acc:#B5D4F4;--accbg:#0C447C;--red:#FCEBEB;--redbg:#791F1F;--amb:#FAC775;--ambbg:#633806;--grn:#9FE1CB;--grnbg:#085041;--hl:#854F0B}
@@ -49,6 +52,14 @@ details.card summary{cursor:pointer}
 .vthumb{background:#000 center/cover no-repeat;cursor:pointer;display:block;border:0;width:100%}
 .vthumb .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:64px;height:44px;border-radius:12px;background:rgba(200,0,0,.9);color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center}
 .vcap b{display:block;font-size:15px;line-height:1.3}.vcap small{display:block;color:var(--tx2);font-size:13px}
+.brand{display:flex;align-items:center;gap:10px;margin:2px 0 6px}.brand img{height:40px;width:auto}.brand span{font-size:13px;color:var(--tx2);line-height:1.3}
+.lg-l{display:none}body.learn .lg-d{display:none}body.learn .lg-l{display:inline}
+@media(prefers-color-scheme:dark){body.learn .lg-d{display:inline}body.learn .lg-l{display:none}}
+.steps{counter-reset:st;list-style:none;padding:0;margin:8px 0}.steps li{counter-increment:st;position:relative;padding:8px 0 8px 40px;border-bottom:1px solid var(--line)}.steps li::before{content:counter(st);position:absolute;left:0;top:8px;width:28px;height:28px;border-radius:50%;background:var(--accbg);color:var(--acc);font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px}
+.qr{display:block;width:180px;height:180px;margin:10px auto;border-radius:10px;background:#fff;padding:6px}
+.lead{font-size:16px;margin:10px 0}
+.figs{display:grid;gap:10px;margin:10px 0}.fig{margin:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}.fig img{display:block;width:100%;height:auto}.fig figcaption{background:var(--card);color:var(--tx);padding:8px 10px;font-size:14px}.fig figcaption small{display:block;color:var(--tx2);font-size:11px;margin-top:2px}
+.vmp4{background:linear-gradient(135deg,#0C447C,#1C1C1B)}.vmp4 .vt{position:absolute;left:12px;right:12px;top:10px;color:#fff;font-size:14px;font-weight:600;text-align:left}.video video{position:absolute;inset:0;width:100%;height:100%;background:#000}
 .pn{display:flex;justify-content:space-between;gap:8px;margin-top:16px}.pn .btn{text-decoration:none;text-align:center}
 h1{font-size:21px;margin:4px 0 10px;line-height:1.25}
 h2{font-size:14px;font-weight:600;color:var(--tx2);margin:18px 0 8px}

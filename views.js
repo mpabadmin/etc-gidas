@@ -33,6 +33,15 @@ function tocHtml(html) {
 }
 const videos = a => (a || []).length ? '<h2>Vaizdo įrašai</h2>' + a.map(videoHtml).join('') : '';
 
+const brand = () => '<div class="brand"><img class="lg-d" src="img/logo-balt.png" alt="LŠS Vilniaus 1040 medicinos šaulių kuopa"><img class="lg-l" src="img/logo-juod.png" alt="LŠS Vilniaus 1040 medicinos šaulių kuopa"></div>';
+const installed = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+const installRow = () => installed() ? '' : row('#/idiegimas', 'Įdiekite programėlę telefone', 'Android ir iPhone – 1 minutė, veikia be interneto');
+
+const GRUPES = [['K', 'Komanda, apžiūra ir pervežimas'], ['A', 'A – kvėpavimo takai ir neurologija'], ['B', 'B – kvėpavimas, krūtinė, dubuo'], ['C', 'C – kraujavimas ir kraujotaka'], ['S', 'D/E – galva, antrinė apžiūra, žaizdos'], ['V', 'Vaistai ir skausmas']];
+const grupesPav = g => (GRUPES.find(x => x[0] === g) || ['', ''])[1];
+const skillOrder = () => GRUPES.reduce((a, [g]) => a.concat((E.igudziai || []).filter(s => s.grupe === g)), []).concat((E.igudziai || []).filter(s => !GRUPES.some(([g]) => g === s.grupe)));
+const figHtml = f => `<figure class="fig"><a href="${esc(f.src)}" target="_blank" rel="noopener"><img loading="lazy" src="${esc(f.src)}" alt="${esc(f.cap)}"></a><figcaption>${esc(f.cap)}<small>Iliustracija: Joint Trauma System (Deployed Medicine)${f.orig ? ` · <a href="${esc(f.orig)}" target="_blank" rel="noopener">tccc.org.ua</a>` : ''}</small></figcaption></figure>`;
+
 const V = {
   home() { return mode === 'field' ? V.homeField() : V.homeLearn(); },
 
@@ -51,7 +60,7 @@ const V = {
   homeField() {
     const P = E.puslapiai || {}, w = LS.get('etc-svoris', 80);
     const quick = ['txa', 'ketaminas', 'kalcis', 'paracetamolis', 'ondansetronas', 'nacl-hipert'].map(drugById).filter(v => v && ok(v.kam));
-    return disclaimer() +
+    return brand() + disclaimer() +
       '<h2>Escape planas</h2>' + V.escRows() +
       '<h2>Mano vaidmuo – pirminė apžiūra</h2>' + V.roles(true) +
       '<h2>Laikai</h2><div id="tm">' + timersHtml() + '</div>' +
@@ -65,12 +74,12 @@ const V = {
       (P.tccc ? row('#/p/tccc', 'TCCC 2026: vaistai ir tikslai') : '') +
       (P.kraujas ? row('#/p/kraujas', 'Kraujo suderinamumas') : '') +
       (P.skiedimas ? row('#/p/skiedimas', 'Vaistų skiedimo lentelės') : '') +
-      row('#/nustatymai', 'Nustatymai');
+      installRow() + row('#/nustatymai', 'Nustatymai');
   },
 
   homeLearn() {
     const S = E.igudziai || [], R = ratings(), n = S.length, rated = S.filter(s => R[s.id]).length, good = S.filter(s => R[s.id] >= 3).length;
-    return disclaimer() +
+    return brand() + disclaimer() +
       '<input type="search" id="q" placeholder="Paieška: vaistas, įgūdis, veiksmas" autocomplete="off">' +
       `<a class="card prog-card" href="#/igudziai"><b>Mano pažanga</b><div class="muted">Įsivertinta ${rated} / ${n} įgūdžių · atlieku (3–4) – ${good}</div>${progBar(rated, n)}</a>` +
       '<h2>Temos</h2>' + V.topicCards() +
@@ -79,7 +88,7 @@ const V = {
       row('#/sarasai', 'Kontroliniai sąrašai', 'Escape planai, A, B, C, antrinė apžiūra, STOP') +
       row('#/igudziai', 'Įgūdžiai', n + ' įgūdžiai su esme, vaizdo įrašais ir šaltiniais') +
       row('#/vaistai', 'Vaistai', 'Pagal paskirtį · TCCC 2026 ir PCS') +
-      row('#/nustatymai', 'Nustatymai');
+      installRow() + row('#/nustatymai', 'Nustatymai');
   },
 
   topicCards() {
@@ -196,18 +205,16 @@ const V = {
 
   skills(q) {
     const all = (E.igudziai || []).filter(s => ok(s.kam)), R = ratings();
-    const F = [['', 'Visi'], ['A', 'A'], ['B', 'B'], ['C', 'C'], ['S', 'Antrinė'], ['N', 'Neįsivertinti'], ['V', '▶ Su video']];
+    const F = [['', 'Visi'], ['K', 'Komanda'], ['A', 'A'], ['B', 'B'], ['C', 'C'], ['S', 'D/E'], ['V', 'Vaistai'], ['N', 'Neįsivertinti'], ['P', '▶ Video']];
     const f = q.f || '';
-    const grp = s => s.sritis === 'Antrinė apžiūra' ? 'S' : (s.potema || '').charAt(0);
-    const S = all.filter(s => !f || (f === 'N' ? !R[s.id] : f === 'V' ? (s.video || []).length : grp(s) === f));
+    const S = all.filter(s => !f || (f === 'N' ? !R[s.id] : f === 'P' ? (s.video || []).length : s.grupe === f));
     const rated = all.filter(s => R[s.id]).length;
-    let h = `<h1>Įgūdžiai</h1><p class="muted">Įsivertinta ${rated} / ${all.length}</p>` + progBar(rated, all.length);
+    let h = `<h1>Įgūdžiai</h1><p class="muted">${all.length} įgūdžiai · įsivertinta ${rated}</p>` + progBar(rated, all.length);
     h += '<div class="tabs">' + F.map(([k, l]) => tabBtn(l, '#/igudziai' + (k ? '?f=' + k : ''), k === f)).join('') + '</div>';
-    let last = '';
-    S.forEach(s => {
-      const g = s.sritis + (s.potema ? ' · ' + s.potema : '');
-      if (g !== last) { h += '<h2>' + esc(g) + '</h2>'; last = g; }
-      h += row('#/igudis/' + s.id, s.pav, '#' + s.id + ' · ' + (s.kam || '') + ((s.video || []).length ? ' · ▶ ' + s.video.length : ''), rateBadge(R, s.id));
+    GRUPES.forEach(([g, gp]) => {
+      const a = S.filter(s => s.grupe === g);
+      if (!a.length) return;
+      h += '<h2>' + esc(gp) + '</h2>' + a.map(s => row('#/igudis/' + s.id, s.pav, '#' + s.id + ' · ' + (s.kam || '') + ((s.vaizdai || []).length ? ' · ▣ ' + s.vaizdai.length : '') + ((s.video || []).length ? ' · ▶ ' + s.video.length : ''), rateBadge(R, s.id))).join('');
     });
     return h + (S.length ? '' : '<p class="muted">Nėra įgūdžių pagal šį filtrą.</p>');
   },
@@ -216,17 +223,22 @@ const V = {
     const s = skillById(id);
     if (!s) return notFound();
     const r = ratings()[s.id] || 0, learn = mode === 'learn';
-    const all = (E.igudziai || []).filter(x => ok(x.kam)), i = all.indexOf(s);
-    let h = `<h1>${esc(s.pav)}</h1><span class="tag">#${s.id}</span><span class="tag">${esc(s.sritis + (s.potema ? ' · ' + s.potema : ''))}</span>` + tag(s.kam);
+    const all = skillOrder().filter(x => ok(x.kam)), i = all.indexOf(s);
+    let h = `<h1>${esc(s.pav)}</h1><span class="tag">#${s.id}</span><span class="tag">${esc(grupesPav(s.grupe))}</span>` + tag(s.kam) + (s.id > 34 ? '<span class="tag">Papildomas</span>' : '');
+    if (s.aprasas) h += `<p class="lead">${esc(s.aprasas)}</p>`;
+    if ((s.vaizdai || []).length) h += '<div class="figs">' + s.vaizdai.map(figHtml).join('') + '</div>';
     if ((s.esme || []).length) h += '<div class="card esme"><b>Esmė</b>' + ul(s.esme) + '</div>';
+    if ((s.zingsniai || []).length) h += '<h2>Žingsniai</h2><ol class="steps">' + s.zingsniai.map(x => '<li>' + esc(x) + '</li>').join('') + '</ol>';
+    if ((s.klaidos || []).length) h += '<div class="warn wl"><b>Dažnos klaidos ir pavojai</b>' + ul(s.klaidos) + '</div>';
     if ((s.tccc || []).length) h += '<div class="dose tc"><div class="lb">TCCC gairės 2026</div>' + ul(s.tccc) + '</div>';
     h += videos(s.video);
+    if (s.kortele) h += `<a class="row" href="${esc(s.kortele.url)}" target="_blank" rel="noopener"><div>TCCC įgūdžio kortelė<small>${esc(s.kortele.pav)} · tccc.org.ua (JTS)</small></div><span class="ar">↗</span></a>`;
     if (learn) {
       if (s.teorija || s.praktika) h += '<h2>Ką išmokti</h2>' + (s.teorija ? `<div class="kv"><b>Teorija</b><span>${br(s.teorija)}</span></div>` : '') + (s.praktika ? `<div class="kv"><b>Praktika</b><span>${br(s.praktika)}</span></div>` : '');
       if (s.aprasymas) h += '<div>' + s.aprasymas + '</div>';
     }
     const link = (lb, src, url) => url ? `<a class="row" href="${esc(url)}" target="_blank" rel="noopener"><div>${esc(lb)}<small>${esc(src || url)}</small></div><span class="ar">↗</span></a>` : (src ? `<p class="muted">${esc(lb)}: ${esc(src)}</p>` : '');
-    if ((s.esmeSrc || []).length) h += '<p class="muted">Esmės šaltiniai: ' + esc(s.esmeSrc.join('; ')) + '</p>';
+    if ((s.esmeSrc || []).length) h += '<p class="muted">Šaltiniai: ' + esc(s.esmeSrc.join('; ')) + '</p>';
     if (learn) h += link('Teorijos šaltinis', s.saltT, s.nuorT) + link('Praktikos šaltinis', s.saltP, s.nuorP);
     if (s.pastabos) h += '<p class="muted">' + br(s.pastabos) + '</p>';
     h += '<h2>Mano įsivertinimas</h2><div class="chips">' + [1, 2, 3, 4].map(x => `<button class="${x === r ? 'on' : ''}" data-act="rate" data-id="${s.id}" data-v="${x}">${x}</button>`).join('') + '</div>';
@@ -247,6 +259,26 @@ const V = {
     return `<h1>Paieška</h1><input type="search" id="qs" placeholder="Vaistas, įgūdis, veiksmas" autocomplete="off" value="${esc(q)}"><div id="res">${results(q)}</div>`;
   },
 
+  install() {
+    let h = '<h1>Kaip įsidiegti programėlę</h1><p class="muted">Programėlė įsidiegia iš naršyklės – parduotuvės nereikia. Įdiegta ji atsidaro visame ekrane ir veikia be interneto.</p>';
+    if (installed()) h += '<div class="card">Ši programėlė jau įdiegta šiame įrenginyje.</div>';
+    else if (installEv) h += '<button class="btn" data-act="install" style="width:100%;margin:6px 0 10px">Įdiegti dabar</button>';
+    h += '<h2>Android (Chrome)</h2><ol class="steps">' +
+      '<li>Atidarykite <b>etc.1040medkuopa.lt</b> naršyklėje <b>Chrome</b>.</li>' +
+      '<li>Jei apačioje pasirodo pasiūlymas „Įdiegti programą“ – paspauskite jį. Jei ne – viršuje dešinėje paspauskite meniu <b>⋮</b>.</li>' +
+      '<li>Pasirinkite <b>„Įdiegti programą“</b> arba <b>„Pridėti prie pradžios ekrano“</b> ir patvirtinkite <b>„Įdiegti“</b>.</li>' +
+      '<li>Ženkliukas <b>„ETC gidas“</b> atsiras pradžios ekrane ir programų sąraše.</li></ol>' +
+      '<p class="muted">Samsung naršyklėje: meniu ☰ → „Pridėti puslapį prie“ → „Pradžios ekranas“.</p>' +
+      '<h2>iPhone / iPad (Safari)</h2><ol class="steps">' +
+      '<li>Atidarykite <b>etc.1040medkuopa.lt</b> naršyklėje <b>Safari</b>.</li>' +
+      '<li>Paspauskite <b>„Bendrinti“</b> – kvadratą su rodykle aukštyn (naujesnėse iOS versijose pirmiausia paspauskite <b>⋯</b> šalia adreso juostos, tada „Bendrinti“).</li>' +
+      '<li>Slinkite žemyn ir pasirinkite <b>„Įtraukti į pradžios ekraną“</b> (angl. „Add to Home Screen“).</li>' +
+      '<li>Paspauskite <b>„Įtraukti“</b> viršuje dešinėje – ženkliukas atsiras pradžios ekrane.</li></ol>' +
+      '<h2>Po įdiegimo</h2><ul><li>Pirmą kartą atidarykite su internetu – turinys išsisaugos telefone.</li><li>Programėlė atsinaujina pati, kai atidaroma su internetu. Jei reikia – Nustatymai → „Atnaujinti turinį“.</li><li>Vaizdo įrašams ir iliustracijoms iš TCCC reikia interneto.</li></ul>' +
+      '<h2>Pasidalinkite</h2><p class="muted">Nuskenuokite telefono kamera:</p><img class="qr" src="img/qr.svg" alt="QR kodas: etc.1040medkuopa.lt"><p style="text-align:center"><b>etc.1040medkuopa.lt</b></p>';
+    return h;
+  },
+
   settings() {
     const b = (act, t, s) => `<button class="row" data-act="${act}"><div>${t}<small>${s}</small></div></button>`;
     const inst = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
@@ -257,7 +289,7 @@ const V = {
     h += '<h2>Programėlė</h2>';
     if (inst) h += '<p class="muted">Programėlė įdiegta ir veikia be interneto (vaizdo įrašams reikia interneto).</p>';
     else if (installEv) h += b('install', 'Įdiegti į telefoną', 'Atsiras ženkliukas pradžios ekrane');
-    else h += '<div class="card">iPhone: Safari → „Bendrinti“ → „Įtraukti į pradžios ekraną“.<br>Android: Chrome → ⋮ → „Įdiegti programą“.</div>';
+    else h += row('#/idiegimas', 'Kaip įsidiegti telefone', 'Android ir iPhone instrukcija, QR kodas');
     h += b('upd', 'Atnaujinti turinį', 'Reikia interneto ryšio');
     h += '<h2>Apie</h2><p class="muted">Turinio versija: ' + esc(E.versija || '—') + '. Parengė 1040 medkuopa pagal European Trauma Course. Vaistų dozės – pagal TCCC 2026 gaires ir gamintojo PCS. Tai atminties priemonė, ne oficialus ETC vadovas.</p>';
     h += '<a class="row" href="https://publications.europeantraumacourse.com/view/845868233/" target="_blank" rel="noopener"><div>Oficialus ETC vadovas<small>publications.europeantraumacourse.com</small></div><span class="ar">↗</span></a>';

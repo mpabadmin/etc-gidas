@@ -236,7 +236,7 @@ window.ETC.vaistai = [
           {
             "k": "IM",
             "d": "300 mg (2–3 mg/kg)",
-            "p": "50 mg/ml – 6 ml (TCCC 2026)."
+            "p": "100 mg/ml – 3 ml; 50 mg/ml – 6 ml (didelį tūrį svarstykite dalyti į 2 vietas). Dozė – TCCC 2026."
           },
           {
             "k": "Infuzomatu",
@@ -246,7 +246,7 @@ window.ETC.vaistai = [
               "conc": 10,
               "hour": true
             },
-            "p": "500 mg + 40 ml NaCl = 10 mg/ml (50 ml švirkštas; ETC)."
+            "p": "500 mg (10 ml, 50 mg/ml) + 40 ml NaCl = 50 ml, 10 mg/ml (ETC). Su 100 mg/ml ampulėmis – 5 ml + 45 ml NaCl."
           },
           {
             "k": "Emergencijos reakcija",

@@ -27,6 +27,7 @@ function view(p, q) {
     case 'p': return V.page(p[1]);
     case 'paieska': return V.search(q.q || '');
     case 'nustatymai': return V.settings();
+    case 'idiegimas': return V.install();
     default: return notFound();
   }
 }
@@ -69,6 +70,12 @@ app.addEventListener('click', e => {
     case 'ck': ckToggle(d.l, +d.i); el.classList.toggle('on'); updCount(el.closest('.cl')); if (navigator.vibrate) navigator.vibrate(15); break;
     case 'go': location.hash = d.r; break;
     case 'toc': { const t = document.getElementById(d.t); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); break; }
+    case 'mp4': {
+      const v = document.createElement('video');
+      v.src = d.src; v.controls = true; v.autoplay = true; v.playsInline = true; v.preload = 'auto';
+      el.classList.remove('vthumb', 'vmp4'); el.removeAttribute('data-act'); el.innerHTML = ''; el.appendChild(v);
+      break;
+    }
     case 'yt': {
       const f = document.createElement('iframe');
       f.src = 'https://www.youtube-nocookie.com/embed/' + d.id + '?autoplay=1&rel=0';
@@ -106,7 +113,7 @@ app.addEventListener('click', e => {
   }
 });
 
-app.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.dataset && e.target.dataset.act === 'yt') e.target.click(); });
+app.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.dataset && /^(yt|mp4)$/.test(e.target.dataset.act || '')) e.target.click(); });
 
 app.addEventListener('input', e => {
   const t = e.target;
@@ -123,7 +130,7 @@ app.addEventListener('input', e => {
 
 setInterval(() => { if (!tmEdit) updTimers(); }, 30000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden && !tmEdit) updTimers(); });
-addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEv = e; if (route().p[0] === 'nustatymai') render(); });
+addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEv = e; if (['nustatymai', 'idiegimas', undefined].indexOf(route().p[0]) >= 0) render(); });
 if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 
 onNav(true);
