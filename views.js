@@ -286,6 +286,9 @@ const V = {
     h += `<div class="ck${hide() ? ' on' : ''}" data-act="hide"><span class="bx">✓</span><div style="flex:1">Slėpti tik gydytojui skirtus veiksmus ir vaistus<div class="muted">Lieka tai, ką atlieka komandos nariai.</div></div></div>`;
     h += '<h2>Pacientas</h2>' + b('new-pt', 'Naujas pacientas', 'Išvalo visus pažymėjimus ir laikus');
     h += '<h2>Mokymasis</h2>' + b('reset-ivert', 'Ištrinti įsivertinimus', 'Visi 1–4 balai bus pašalinti');
+    h += '<h2>Atsiliepimai</h2>' + b('fb', 'Pranešti apie klaidą ar pasiūlyti', 'Komentaras ir ekrano vaizdas – keliauja gido rengėjams');
+    const nOut = FB.pending();
+    if (nOut) h += b('fb-flush', 'Neišsiųsti pranešimai: ' + nOut, FB.configured() ? 'Siųsti dabar (reikia interneto)' : 'Bus išsiųsti, kai bus įjungtas priėmimas');
     h += '<h2>Programėlė</h2>';
     if (inst) h += '<p class="muted">Programėlė įdiegta ir veikia be interneto (vaizdo įrašams reikia interneto).</p>';
     else if (installEv) h += b('install', 'Įdiegti į telefoną', 'Atsiras ženkliukas pradžios ekrane');

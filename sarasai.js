@@ -11,7 +11,9 @@ const E = window.ETC;
 const KOMP = 'Pagal kompetenciją', MED = 'Medicinos personalui', GYD = 'Gydytojui', INT = 'Intubuojantiems gydytojams';
 const link = (href, t, s) => `<a class="row" href="${href}"><div>${t}${s ? '<small>' + s + '</small>' : ''}</div><span class="ar">›</span></a>`;
 
-E.versija = '2026-10-08 v6 (48 įgūdžiai su TCCC iliustracijomis ir video; vaistai – viena schema; 1040 medkuopos logotipas)';
+E.versija = '2026-10-08 v7 (pranešimai apie klaidas su ekrano vaizdu programėlėje)';
+// Pranešimų priėmimo adresas: Google Apps Script žiniatinklio programos /exec URL (žr. tools/atsiliepimai.gs)
+E.atsiliepimai = { url: '' };
 
 // ───────── VAIDMENYS ─────────
 E.vaidmenys = [

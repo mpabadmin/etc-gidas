@@ -25,6 +25,7 @@ header{position:sticky;top:0;z-index:5;display:flex;gap:8px;align-items:center;p
 .seg button.on{background:var(--tx);color:var(--bg);font-weight:600}
 .ib{flex:none;width:42px;height:42px;border:0;border-radius:10px;background:var(--card);color:var(--tx);display:flex;align-items:center;justify-content:center}
 .ib svg{width:22px;height:22px}
+@media(max-width:360px){header{gap:6px;padding-left:8px;padding-right:8px}.ib{width:38px}.seg button{font-size:14px}}
 main{max-width:720px;margin:0 auto;padding:12px 12px calc(96px + env(safe-area-inset-bottom))}
 nav#nav{position:fixed;left:0;right:0;bottom:0;z-index:6;display:flex;justify-content:center;background:var(--card);border-top:1px solid var(--line);padding:4px 4px max(4px,env(safe-area-inset-bottom))}
 #nav a{flex:1;max-width:144px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;color:var(--tx2);text-decoration:none;font-size:11px;border-radius:10px}
@@ -107,12 +108,38 @@ mark{background:var(--hl);color:inherit;border-radius:3px}
 .video{position:relative;padding-top:56.25%;border-radius:12px;overflow:hidden;background:var(--line);margin:8px 0}
 .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .btn{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:10px;padding:10px 14px;font:inherit}
+#fb{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center}
+#fb[hidden]{display:none}
+html.fbopen,html.fbopen body{overflow:hidden}
+.fbp{background:var(--bg);color:var(--tx);width:100%;max-width:720px;max-height:94vh;max-height:94dvh;overflow:auto;overscroll-behavior:contain;border-radius:16px 16px 0 0;padding:10px 14px calc(18px + env(safe-area-inset-bottom))}
+@media(min-width:760px){#fb{align-items:center}.fbp{border-radius:16px;max-height:90vh}}
+.fbhd{display:flex;align-items:center;gap:8px;position:sticky;top:-10px;background:var(--bg);padding:6px 0;z-index:1}.fbhd h1{flex:1;margin:0;font-size:19px}
+.opts{display:flex;flex-wrap:wrap;gap:6px}
+.opts button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:18px;padding:8px 12px;font:inherit;font-size:14px}
+.opts button.on{background:var(--tx);color:var(--bg);border-color:var(--tx);font-weight:600}
+.opts button.krit.on{background:var(--redbg);color:var(--red);border-color:var(--red)}
+.fl{display:block;margin:14px 0 4px;font-weight:600;font-size:15px}
+textarea{display:block;width:100%;font:inherit;color:var(--tx);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;resize:vertical}
+.fbp input{width:100%}
+.fbsel{margin-top:8px;font-size:14px}
+.shots{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:6px 0}
+.shot{position:relative;width:86px;height:130px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--tx2);text-align:center;padding:4px}
+.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
+.shot button{position:absolute;top:3px;right:3px;width:28px;height:28px;border-radius:50%;border:0;background:rgba(0,0,0,.7);color:#fff;font-size:18px;line-height:1}
+.shotb{display:flex;gap:8px;flex-wrap:wrap}.shotb .btn{flex:1;text-align:center;cursor:pointer;font-size:15px}
+.btn.pri{display:block;width:100%;margin-top:14px;background:var(--acc);color:var(--bg);border-color:var(--acc);font-weight:700;font-size:17px;padding:12px}
+.btn.pri:disabled{opacity:.6}
+#fb-msg.err{color:var(--red);font-weight:600}
+.hp{position:absolute!important;left:-9999px;width:1px!important;height:1px;opacity:0}
+.fbok{text-align:center;padding:18px 4px 6px}.fbok h1{font-size:20px}.fbic{width:56px;height:56px;margin:4px auto 8px;border-radius:50%;background:var(--grnbg);color:var(--grn);font-size:30px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.fbrow{display:block;width:100%;margin-top:18px;text-align:center}
 </style>
 </head>
 <body class="field">
 <header>
   <button class="ib" id="back" aria-label="Atgal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
   <div class="seg"><button id="mF">Taikymas</button><button id="mL">Mokymasis</button></div>
+  <button class="ib" id="fbb" aria-label="Pranešti apie klaidą ar pasiūlyti" title="Pranešti apie klaidą"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.3 7.6L3.5 20.5l1.4-4.6a8.5 8.5 0 1 1 15.6-4.4z"/><path d="M12 7.5v4.5M12 15.6v.01"/></svg></button>
   <button class="ib" id="srch" aria-label="Paieška"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
 </header>
 <main id="app"></main>
@@ -122,6 +149,7 @@ mark{background:var(--hl);color:inherit;border-radius:3px}
 <script src="igudziai.js"></script>
 <script src="core.js"></script>
 <script src="views.js"></script>
+<script src="fb.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

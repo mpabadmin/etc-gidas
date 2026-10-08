@@ -4,6 +4,8 @@ const backBtn = document.getElementById('back');
 let depth = 0;
 const dec = s => { try { return decodeURIComponent(s); } catch (e) { return s; } };
 const newPt = () => '<button class="btn" data-act="new-pt" style="width:100%;margin-top:16px">Naujas pacientas – išvalyti žymėjimus</button>';
+const FB_PAGES = ['v', 's', 'vaistai', 'vaistas', 'igudis', 'tema', 'p'];
+const fbLink = () => '<button class="btn fbrow" data-act="fb">Pastebėjote klaidą ar turite pasiūlymą? Praneškite</button>';
 
 function route() {
   const raw = (location.hash || '#/').slice(1), qi = raw.indexOf('?'), q = {};
@@ -40,7 +42,7 @@ function render() {
   backBtn.style.visibility = p.length ? 'visible' : 'hidden';
   const sec = { vaistai: 'vaistai', vaistas: 'vaistai', igudziai: 'igudziai', igudis: 'igudziai', temos: 'temos', tema: 'temos', p: 'temos', sarasai: 'sarasai', s: 'sarasai', v: 'sarasai' }[p[0]] || (p.length ? '' : 'home');
   document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('on', a.dataset.s === sec));
-  try { app.innerHTML = view(p, q); }
+  try { app.innerHTML = view(p, q) + (FB_PAGES.indexOf(p[0]) >= 0 ? fbLink() : ''); }
   catch (err) { console.error(err); app.innerHTML = '<h1>Klaida</h1><p class="muted">Nepavyko atidaryti puslapio. Patikrinkite turinio failus.</p>'; }
   if (p[0] === 'paieska') { const i = document.getElementById('qs'); if (i) { i.focus(); try { i.setSelectionRange(i.value.length, i.value.length); } catch (e) {} } }
 }
@@ -60,6 +62,7 @@ addEventListener('hashchange', () => onNav(false));
 backBtn.onclick = () => { if (depth > 0) history.back(); else location.replace('#/'); };
 document.getElementById('mF').onclick = () => setMode('field');
 document.getElementById('mL').onclick = () => setMode('learn');
+document.getElementById('fbb').onclick = () => FB.open();
 document.getElementById('srch').onclick = () => { if (route().p[0] !== 'paieska') location.hash = '#/paieska'; };
 
 app.addEventListener('click', e => {
@@ -105,6 +108,11 @@ app.addEventListener('click', e => {
     case 'new-pt': if (confirm('Naujas pacientas: išvalyti visus pažymėjimus ir laikus?')) { LS.set('etc-ck', {}); LS.set('etc-laikai', {}); render(); } break;
     case 'hide': LS.set('etc-slepti', !hide()); IDX = null; render(); break;
     case 'reset-ivert': if (confirm('Ištrinti visus įsivertinimus?')) { LS.set('etc-ivert', {}); render(); } break;
+    case 'fb': FB.open(); break;
+    case 'fb-flush':
+      if (!FB.configured()) { alert('Pranešimų priėmimas dar neįjungtas. Pranešimai bus išsiųsti automatiškai, kai jis veiks.'); break; }
+      if (!navigator.onLine) { alert('Nėra interneto ryšio.'); break; }
+      el.disabled = true; FB.flush().then(n => { alert(n ? 'Išsiųsta: ' + n + '.' : 'Išsiųsti nepavyko – bandysime vėliau.'); render(); }); break;
     case 'install': if (installEv) { installEv.prompt(); installEv.userChoice.finally(() => { installEv = null; render(); }); } break;
     case 'upd':
       if (!navigator.onLine) { alert('Atnaujinti galima tik su interneto ryšiu.'); break; }
