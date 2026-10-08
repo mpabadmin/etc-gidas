@@ -5,8 +5,12 @@
  * pranešimas patenka į šią Google lentelę (lapas „Atsiliepimai“), ekrano vaizdai – į Google Drive aplanką.
  *
  * ĮDIEGIMAS (vieną kartą, ~3 min.)
+ *  0. Paskyra: jei Google paskyrai įjungta „Advanced Protection“ (Papildoma apsauga), ji neleis paleisti šio scenarijaus
+ *     (klaida „Access blocked … not approved by Advanced Protection“, 400 policy_enforced). Tokiu atveju viską darykite
+ *     atskiroje kuopos Gmail paskyroje (pvz., atskirame Chrome profilyje); lentelę galite bendrinti su savo pagrindine paskyra.
  *  1. Google Drive → Naujas → Google Sheets. Pavadinkite „ETC gido atsiliepimai“.
- *  2. Lentelėje: Plėtiniai (Extensions) → Apps Script. Ištrinkite, kas ten yra, įklijuokite visą šį failą, paspauskite 💾.
+ *  2. Lentelėje: Plėtiniai (Extensions) → Apps Script. Viršuje „Untitled project“ pervadinkite „ETC gido atsiliepimai“.
+ *     Ištrinkite, kas ten yra, įklijuokite visą šį failą, paspauskite 💾.
  *  3. Viršuje pasirinkite funkciją „pradeti“ → Vykdyti (Run) → Peržiūrėti leidimus → savo paskyra →
  *     „Advanced“ → „Go to … (unsafe)“ → Allow. (Tai jūsų pačių scenarijus, todėl Google jo netikrino.)
  *  4. Diegti (Deploy) → Naujas diegimas (New deployment) → ⚙ → Žiniatinklio programa (Web app).
@@ -32,7 +36,8 @@ const BUSENOS = ['Naujas', 'Perduota', 'Pataisyta', 'Atmesta', 'Reikia aptarti']
 const TIPAI = { klaida: 'Klaida turinyje', doze: 'Vaisto dozė / skaičiuoklė', technine: 'Techninė klaida',
   truksta: 'Trūksta turinio', pasiulymas: 'Pasiūlymas' };
 const SVARBOS = { kritine: 'Kritinė', svarbi: 'Svarbi', smulki: 'Smulki' };
-const PRANESTI_KRITINES = true; // el. laiškas lentelės savininkui, kai gaunamas „Kritinė“ pranešimas
+const PRANESTI_KRITINES = true; // el. laiškas, kai gaunamas „Kritinė“ pranešimas
+const EL_PASTAS_KRITINEMS = ''; // kam siųsti (pvz., jūsų pagrindinis el. paštas); tuščia – lentelės savininkui
 const RIBOS = { tekstas: 4000, trumpas: 300, vaizdai: 3, vaizdoBase64: 5000000, per10min: 60 };
 const C = {};
 ANTRASTES.forEach((h, i) => { C[h] = i + 1; });
@@ -160,7 +165,7 @@ function doPost(e) {
   }
   if (PRANESTI_KRITINES && svarba === 'Kritinė') {
     try {
-      const kam = PropertiesService.getScriptProperties().getProperty('EL_PASTAS');
+      const kam = EL_PASTAS_KRITINEMS || PropertiesService.getScriptProperties().getProperty('EL_PASTAS');
       if (kam) MailApp.sendEmail(kam, 'ETC gidas: KRITINĖ pastaba ' + nr,
         'Gautas kritinis pranešimas ' + nr + '.\n\nPuslapis: ' + t_(d.puslapis, 300) + ' (' + t_(d.marsrutas, 300) + ')\n\n' +
         komentaras + '\n\nLentelė: ' + lentele_().getUrl());

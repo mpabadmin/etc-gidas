@@ -8,7 +8,7 @@
 5. Be ryšio pranešimas laukia telefone ir išsiunčiamas automatiškai (iki 10 pranešimų).
 
 ## Įdiegimas (vieną kartą)
-Žr. `atsiliepimai.gs` viršuje. Gautą `/exec` adresą įrašykite `sarasai.js` → `E.atsiliepimai = { url: '…' }` ir padidinkite `sw.js` versiją.
+Žr. `atsiliepimai.gs` viršuje. Paskyra su Google „Advanced Protection“ scenarijaus paleisti neleidžia – naudokite atskirą kuopos Gmail paskyrą; eksportas daromas prisijungus prie jos, lentelę galima bendrinti su pagrindine paskyra peržiūrai. Gautą `/exec` adresą įrašykite `sarasai.js` → `E.atsiliepimai = { url: '…' }` ir padidinkite `sw.js` versiją.
 
 ## Darbo eiga su Claude
 1. Lentelėje: meniu **ETC gidas → Eksportuoti naujus Claude (ZIP)** → atsisiųskite ZIP.
