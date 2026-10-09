@@ -139,11 +139,11 @@ window.ETC.vaistai = [
     "grupe": "skausmas",
     "tipas": "pagr",
     "tccc26": true,
-    "ind": "Nuskausminimas – kai sužeistasis negali tęsti užduoties (TCCC 2026). Sedacija – procedūroms ir intubacijai (TCCC 2026 kovos paramedikams / gydytojams; ETC).",
+    "ind": "Nuskausminimas – vidutinis ar stiprus skausmas, ypač esant šokui ar kvėpavimo sutrikimui. Sedacija – procedūroms ir intubacijai (ETC).",
     "kontra": "Alergija. PCS: būklės, kai kraujospūdžio padidėjimas būtų pavojingas, eklampsija / preeklampsija, sunki koronarinė ar miokardo liga, insultas, galvos smegenų trauma (žr. įspėjimą – TCCC vertina kitaip).",
     "dozes": [],
     "ispejimai": [
-      "Prieš skiriant – užrašyti AVPU, nuginkluoti; stebėti kvėpavimo takus, kvėpavimą ir kraujotaką (TCCC 2026).",
+      "Prieš skiriant – užrašyti AVPU; stebėti kvėpavimo takus, kvėpavimą ir kraujotaką.",
       "Tikrinkite ampulės stiprumą (50 ar 100 mg/ml) – nuo jo priklauso ml.",
       "Nederinti su benzodiazepinais; iš dalies disocijavusiam – saugiau papildyti ketamino (TCCC 2026).",
       "Sumažėjus kvėpavimui – „uostymo“ padėtis; nepadeda – pagalbinė ventiliacija (TCCC 2026). Sedacijai – būti pasiruošus užtikrinti kvėpavimo takus."
@@ -155,7 +155,7 @@ window.ETC.vaistai = [
     "pastabos": [
       "Galvos smegenų ar akies trauma ketaminui nėra kliūtis (TCCC 2026), bet sedacija apsunkina neurologinį vertinimą; gamintojo PCS galvos traumą nurodo kaip kontraindikaciją – sprendžia medikas.",
       "Esketaminas (jei prieinamas): 14 arba 28 mg į nosį vieną kartą (TCCC 2026).",
-      "Kartu – kovinės žaizdos vaistų rinkinys (CWMP), jei dar nevartotas (TCCC 2026).",
+      "Kartu – paracetamolis ir (jei nėra kontraindikacijų) meloksikamas: skirtingų grupių derinys mažina bendrą dozę (ETC).",
       "Greitai leidžiant į veną – laikina apnėja ir kraujospūdžio padidėjimas (PCS). Ketaminą paprastai saugu skirti jau gavusiam opioidų.",
       "Nistagmas – nevalingi, ritmingi akių judesiai."
     ],
@@ -265,7 +265,7 @@ window.ETC.vaistai = [
     "tipas": "papild",
     "tccc26": true,
     "kam": "",
-    "ind": "Skausmas: per burną – kovinės žaizdos vaistų rinkinio (CWMP) dalis (TCCC 2026); į veną – kai negalima gerti (PCS).",
+    "ind": "Skausmas: per burną – kai pacientas gali gerti (TCCC 2026); į veną – kai negalima gerti (PCS). Derinamas su kitų grupių analgetikais.",
     "kontra": "PCS: padidėjęs jautrumas paracetamoliui; į veną – sunkus kepenų nepakankamumas.",
     "dozes": [],
     "ispejimai": [
@@ -275,7 +275,7 @@ window.ETC.vaistai = [
     "salutinis": "Retai – alerginės reakcijos. Perdozavus – kepenų pažeidimas.",
     "pakuote": "Tabletės 500 mg; infuzinis tirpalas 10 mg/ml (100 ml = 1 g)",
     "pastabos": [
-      "CWMP (TCCC 2026): paracetamolis + meloksikamas 15 mg kartą per parą + suzetriginas (jei prieinamas). Negalinčiam tęsti užduoties – CWMP kartu su ketaminu."
+      "Derinys: paracetamolis + meloksikamas; stipriam skausmui – kartu su ketaminu ar opioidu (mažesnė bendra dozė, ETC)."
     ],
     "susije": [
       "meloksikamas",
@@ -304,7 +304,7 @@ window.ETC.vaistai = [
           {
             "k": "Dozė",
             "d": "1000–1300 mg kas 8 val.",
-            "p": "500 mg tabletės – 2 tab. (1000 mg); CWMP – 2 × 650 mg prailginto atpalaidavimo."
+            "p": "500 mg tabletės – 2 tab. (1000 mg) arba 2 × 650 mg prailginto atpalaidavimo."
           }
         ]
       },
@@ -329,12 +329,12 @@ window.ETC.vaistai = [
   {
     "id": "meloksikamas",
     "name": "Meloksikamas",
-    "klase": "Nuskausminamieji (CWMP, NVNU)",
+    "klase": "Nuskausminamieji (NVNU)",
     "grupe": "skausmas",
     "tipas": "papild",
     "tccc26": true,
-    "kam": "Visiems (CWMP)",
-    "ind": "Skausmas – kovinės žaizdos vaistų rinkinio (CWMP) dalis: kai sužeistasis gali tęsti užduotį; negalinčiam tęsti – CWMP (jei dar nevartotas) kartu su ketaminu (TCCC 2026).",
+    "kam": "Visiems",
+    "ind": "Lengvas ar vidutinis skausmas, kai pacientas gali gerti; derinamas su paracetamoliu, stipriam skausmui – kartu su ketaminu (TCCC 2026).",
     "kontra": "PCS: padidėjęs jautrumas NVNU / aspirinui (astma, nosies polipai, angioedema, dilgėlinė); virškinamojo trakto kraujavimas ar perforacija (taip pat anksčiau nuo NVNU); aktyvi ar pasikartojanti opa; smegenų kraujavimas anamnezėje ar kiti kraujavimo sutrikimai; sunkus kepenų nepakankamumas; sunkus nedializuojamas inkstų nepakankamumas; sunkus širdies nepakankamumas; III nėštumo trimestras; < 16 m.",
     "dozes": [
       {
@@ -350,7 +350,7 @@ window.ETC.vaistai = [
     "salutinis": "Dispepsija, pykinimas, pilvo skausmas, viduriavimas.",
     "pakuote": "Tabletės 15 mg",
     "pastabos": [
-      "CWMP (TCCC 2026): paracetamolis + meloksikamas + suzetriginas. Jei dar nevartotas – ir negalinčiam tęsti užduoties, kartu su ketaminu."
+      "Derinys: paracetamolis + meloksikamas; stipriam skausmui – kartu su ketaminu."
     ],
     "susije": [
       "paracetamolis",
@@ -378,7 +378,7 @@ window.ETC.vaistai = [
     "klase": "Nuskausminamieji (opioidas)",
     "grupe": "skausmas",
     "tipas": "pagr",
-    "ind": "Stiprus skausmas. TCCC 2026 morfino nebenumato – negalinčiam tęsti užduoties rekomenduoja ketaminą (arba esketaminą į nosį).",
+    "ind": "Stiprus skausmas – titruojant IV mažomis dozėmis (ETC). Esant šokui ar kvėpavimo sutrikimui saugesnis ketaminas.",
     "kontra": "Alergija. PCS: ūminis kvėpavimo slopinimas, obstrukcinė kvėpavimo takų liga, galvos trauma, padidėjęs intrakranijinis spaudimas, smegenų edema, koma, traukulių ligos, MAO inhibitoriai (per 2 sav.), paralyžinis žarnų nepraeinamumas, feochromocitoma.",
     "dozes": [
       {
@@ -402,7 +402,7 @@ window.ETC.vaistai = [
     "salutinis": "Pykinimas, vėmimas, kvėpavimo slopinimas, kraujospūdžio sumažėjimas, sutrikusi žarnyno veikla.",
     "pakuote": "Ampulės 10 mg / 1 ml (10 mg/ml)",
     "pastabos": [
-      "TCCC 2026 morfino nebenumato – negalinčiam tęsti užduoties rekomenduoja ketaminą.",
+      "Esant šokui ar kvėpavimo sutrikimui saugesnis ketaminas (TCCC 2026 morfino nebenumato).",
       "NextGen Combat Medic: 10 mg morfino ≈ 100 mcg fentanilio."
     ],
     "susije": [

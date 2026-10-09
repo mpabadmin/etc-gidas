@@ -141,7 +141,7 @@ function buildIdx() {
     [v.ind, v.kontra, (v.dozes || []).map(d => d.k + ' ' + d.d + ' ' + (d.p || '')).join(' '), v.salutinis, v.pakuote, (v.pastabos || []).join(' '), (v.ispejimai || []).join(' '), (v.stulpeliai || []).map(c => c.pav + ' ' + c.dozes.map(d => d.k + ' ' + d.d + ' ' + (d.p || '')).join(' ')).join(' ')].join(' '),
     '#/vaistas/' + v.id));
   (E.igudziai || []).forEach(s => add('Įgūdžiai', s.pav, '#' + s.id + ' · ' + s.sritis + ' · ' + (s.kam || ''),
-    [s.aprasas, (s.esme || []).join(' '), (s.zingsniai || []).join(' '), (s.klaidos || []).join(' '), (s.tccc || []).join(' '), s.teorija, s.praktika, strip(s.aprasymas), (s.video || []).map(v => v.title).join(' ')].join(' '), '#/igudis/' + s.id));
+    [s.aprasas, (s.esme || []).join(' '), (s.zingsniai || []).join(' '), (s.klaidos || []).join(' '), s.teorija, s.praktika, strip(s.aprasymas), (s.video || []).map(v => v.title).join(' ')].join(' '), '#/igudis/' + s.id));
   (E.temos || []).forEach(t => add('Mokymosi temos', t.pav, t.sub, t.apie, '#/tema/' + t.id));
   Object.keys(E.sarasai || {}).forEach(id => {
     const L = E.sarasai[id], r = listRoute(id);

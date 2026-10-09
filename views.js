@@ -71,7 +71,6 @@ const V = {
       row('#/s/stop', 'STOP · 10 už 10') +
       row('#/s/antrine', 'Antrinė apžiūra nuo galvos iki kojų') +
       row('#/s/kokybe', 'Gydymo tikslai ir kokybė') +
-      (P.tccc ? row('#/p/tccc', 'TCCC 2026: vaistai ir tikslai') : '') +
       (P.kraujas ? row('#/p/kraujas', 'Kraujo suderinamumas') : '') +
       (P.skiedimas ? row('#/p/skiedimas', 'Vaistų skiedimo lentelės') : '') +
       installRow() + row('#/nustatymai', 'Nustatymai');
@@ -86,7 +85,7 @@ const V = {
       '<h2>Komandos vaidmenys</h2>' + V.roles(false) +
       '<h2>Viskas vienoje vietoje</h2>' +
       row('#/sarasai', 'Kontroliniai sąrašai', 'Escape planai, A, B, C, antrinė apžiūra, STOP') +
-      row('#/igudziai', 'Įgūdžiai', n + ' įgūdžiai su esme, vaizdo įrašais ir šaltiniais') +
+      row('#/igudziai', 'Įgūdžiai', n + ' įgūdžiai: žingsniai, svarbiausi priminimai, praktiniai video') +
       row('#/vaistai', 'Vaistai', 'Pagal paskirtį · TCCC 2026 ir PCS') +
       installRow() + row('#/nustatymai', 'Nustatymai');
   },
@@ -226,13 +225,11 @@ const V = {
     const all = skillOrder().filter(x => ok(x.kam)), i = all.indexOf(s);
     let h = `<h1>${esc(s.pav)}</h1><span class="tag">#${s.id}</span><span class="tag">${esc(grupesPav(s.grupe))}</span>` + tag(s.kam) + (s.id > 34 ? '<span class="tag">Papildomas</span>' : '');
     if (s.aprasas) h += `<p class="lead">${esc(s.aprasas)}</p>`;
-    if ((s.vaizdai || []).length) h += '<div class="figs">' + s.vaizdai.map(figHtml).join('') + '</div>';
-    if ((s.esme || []).length) h += '<div class="card esme"><b>Esmė</b>' + ul(s.esme) + '</div>';
     if ((s.zingsniai || []).length) h += '<h2>Žingsniai</h2><ol class="steps">' + s.zingsniai.map(x => '<li>' + esc(x) + '</li>').join('') + '</ol>';
+    if ((s.esme || []).length) h += '<div class="card esme"><b>Svarbu</b>' + ul(s.esme) + '</div>';
     if ((s.klaidos || []).length) h += '<div class="warn wl"><b>Dažnos klaidos ir pavojai</b>' + ul(s.klaidos) + '</div>';
-    if ((s.tccc || []).length) h += '<div class="dose tc"><div class="lb">TCCC gairės 2026</div>' + ul(s.tccc) + '</div>';
+    if ((s.vaizdai || []).length) h += '<div class="figs">' + s.vaizdai.map(figHtml).join('') + '</div>';
     h += videos(s.video);
-    if (s.kortele) h += `<a class="row" href="${esc(s.kortele.url)}" target="_blank" rel="noopener"><div>TCCC įgūdžio kortelė<small>${esc(s.kortele.pav)} · tccc.org.ua (JTS)</small></div><span class="ar">↗</span></a>`;
     if (learn) {
       if (s.teorija || s.praktika) h += '<h2>Ką išmokti</h2>' + (s.teorija ? `<div class="kv"><b>Teorija</b><span>${br(s.teorija)}</span></div>` : '') + (s.praktika ? `<div class="kv"><b>Praktika</b><span>${br(s.praktika)}</span></div>` : '');
       if (s.aprasymas) h += '<div>' + s.aprasymas + '</div>';
@@ -240,7 +237,6 @@ const V = {
     const link = (lb, src, url) => url ? `<a class="row" href="${esc(url)}" target="_blank" rel="noopener"><div>${esc(lb)}<small>${esc(src || url)}</small></div><span class="ar">↗</span></a>` : (src ? `<p class="muted">${esc(lb)}: ${esc(src)}</p>` : '');
     if ((s.esmeSrc || []).length) h += '<p class="muted">Šaltiniai: ' + esc(s.esmeSrc.join('; ')) + '</p>';
     if (learn) h += link('Teorijos šaltinis', s.saltT, s.nuorT) + link('Praktikos šaltinis', s.saltP, s.nuorP);
-    if (s.pastabos) h += '<p class="muted">' + br(s.pastabos) + '</p>';
     h += '<h2>Mano įsivertinimas</h2><div class="chips">' + [1, 2, 3, 4].map(x => `<button class="${x === r ? 'on' : ''}" data-act="rate" data-id="${s.id}" data-v="${x}">${x}</button>`).join('') + '</div>';
     h += '<p class="muted">1 – nežinau · 2 – žinau teoriją · 3 – atlieku su pagalba · 4 – atlieku savarankiškai</p>';
     const prev = all[i - 1], next = all[i + 1];
