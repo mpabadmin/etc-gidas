@@ -148,6 +148,11 @@ function buildIdx() {
     (L.items || []).forEach(it => { if (!it.h) add('Kontroliniai sąrašai', L.title, it.t, (it.s || []).join(' ') + ' ' + strip(it.i), r); });
   });
   Object.keys(E.puslapiai || {}).forEach(id => { const p = E.puslapiai[id]; add('Mokymosi temos', p.title, '', strip(p.html), '#/p/' + id); });
+  // Įrankiai (tools.js)
+  add('Įrankiai', 'MIST kortelė', 'Vizuali sužeistojo kortelė: mechanizmas, sužalojimai kūno schemoje, požymiai, gydymas', 'mist handover perdavimas sužeistasis kortelė atmist kūno schema žaizda turniketas', '#/mist');
+  add('Įrankiai', '9-Line MEDEVAC', '9 eilučių evakuacijos prašymas su kodais', '9 line nine line 9line medevac evakuacija koordinatės mgrs gps skubumas urgent priority routine radijas', '#/9line');
+  add('Įrankiai', 'GKS skaičiuoklė', 'Glasgow komos skalė (GCS at 40), GKS-P', 'gks glasgow gcs koma sąmonė akys kalba motorika vyzdžiai', '#/gks');
+  add('Įrankiai', 'TST rūšiavimas', 'Ten Second Triage – rūšiavimas per 10 sekundžių', 'tst ten second triage triažas rūšiavimas masinė nelaimė p1 p2 p3', '#/tst');
   return I;
 }
 
@@ -162,7 +167,7 @@ function results(q) {
   }).sort((a, b) => b.sc - a.sc);
   if (!hits.length) return '<p class="muted">Nieko nerasta.</p>';
   let h = '';
-  ['Vaistai', 'Įgūdžiai', 'Kontroliniai sąrašai', 'Mokymosi temos'].forEach(k => {
+  ['Įrankiai', 'Vaistai', 'Įgūdžiai', 'Kontroliniai sąrašai', 'Mokymosi temos'].forEach(k => {
     const a = hits.filter(x => x.e.kind === k);
     if (!a.length) return;
     h += `<h2>${k} · ${a.length}</h2>` + a.slice(0, 20).map(({ e }) => {

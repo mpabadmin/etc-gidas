@@ -1,6 +1,7 @@
 // ETC kišeninis gidas – VAISTAI
 // Viena schema kiekvienam vaistui. Šaltinių prioritetas: TCCC gairės 2026-05-01 → gamintojo PCS → ERC / RCUK.
 // Jei šaltiniai skiriasi – naudojamas vienas patikimiausias. Ketamino sedacijos dozės – ETC įgūdžių lentelės (sutampa su TCCC 2026).
+// Tvarka – nuo dažniausiai iki rečiausiai naudojamų (Ukrainos karo traumos patirtis): nuskausminamieji pirmiausia, naloksonas – paskutinis.
 // Laukai: grupe – paskirtis; tipas 'pagr' – yra kuopos vaistų kortelėje; tccc26 – yra TCCC 2026 gairėse; kam – kas skiria;
 //   dozes – dozės; stulpeliai – [{pav, sub, dozes}] – rodomi greta (pvz., nuskausminimas / sedacija); ispejimai – svarbiausi įspėjimai;
 //   nuorodos – [pavadinimas, URL]. Patvirtinus mediko: patvirtinta: 'Vardas Pavardė, data'.
@@ -11,20 +12,20 @@ window.ETC = window.ETC || {};
 
 window.ETC.vaistuGrupes = [
   {
+    "id": "skausmas",
+    "pav": "Nuskausminamieji"
+  },
+  {
     "id": "kraujas",
     "pav": "Kraujavimas ir transfuzija"
   },
   {
-    "id": "skausmas",
-    "pav": "Skausmas ir sedacija"
+    "id": "antibiotikai",
+    "pav": "Antibiotikai"
   },
   {
     "id": "vemimas",
     "pav": "Pykinimas ir vėmimas"
-  },
-  {
-    "id": "antibiotikai",
-    "pav": "Antibiotikai"
   },
   {
     "id": "galva",
@@ -33,105 +34,14 @@ window.ETC.vaistuGrupes = [
   {
     "id": "gaivinimas",
     "pav": "Kraujotaka ir intubacija"
+  },
+  {
+    "id": "retai",
+    "pav": "Retai naudojami: emergencijai ir perdozavimui"
   }
 ];
 
 window.ETC.vaistai = [
-  {
-    "id": "txa",
-    "name": "Traneksamo rūgštis (TXA)",
-    "klase": "Antifibrinolitikas",
-    "grupe": "kraujas",
-    "tipas": "pagr",
-    "tccc26": true,
-    "ind": "Kai tikėtina transfuzija (hemoraginis šokas, didelė amputacija, penetruojanti liemens trauma, stiprus kraujavimas), reikšminga galvos smegenų trauma ar pakitusi sąmonė po sprogimo / bukos traumos (TCCC 2026).",
-    "kontra": "PCS: padidėjęs jautrumas; ūminė venų ar arterijų trombozė; fibrinolizė po vartojimo koaguliopatijos (DIK), išskyrus vyraujančią fibrinolizę su ūminiu sunkiu kraujavimu; traukulių anamnezė; negalima leisti intratekališkai, epidurališkai, intraventrikuliškai ar į galvos smegenis.",
-    "dozes": [
-      {
-        "k": "IV / IO (TCCC 2026)",
-        "d": "2 g lėtai – kuo anksčiau, ne vėliau kaip per 3 val. nuo sužalojimo",
-        "p": "4 ampulės po 500 mg / 5 ml = 20 ml. Leisti ne greičiau kaip 1 ml/min – apie 20 min (PCS)."
-      }
-    ],
-    "ispejimai": [
-      "Po 3 val. nuo sužalojimo neskirti. Pažymėkite traumos laiką pradžios ekrane – „TXA iki“ parodys terminą.",
-      "Per greitai leidžiant – hipotenzija (PCS).",
-      "Tik IV / IO; nemaišyti su krauju ir penicilino tirpalais (PCS)."
-    ],
-    "salutinis": "Pykinimas, vėmimas, viduriavimas, galvos skausmas, kraujospūdžio sumažėjimas (per greitai leidžiant), galimi traukuliai (ypač jei yra pasireiškę anksčiau).",
-    "pakuote": "Ampulės 500 mg / 5 ml (100 mg/ml)",
-    "pastabos": [
-      "Po pirmojo perpilto kraujo produkto – kalcis (TCCC 2026)."
-    ],
-    "susije": [
-      "kalcis"
-    ],
-    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); PCS (Cyklokapron); ETC vertinimo lapas",
-    "nuorodos": [
-      [
-        "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
-        "https://learning-media.allogy.com/api/v1/pdf/18ccfdfc-a076-47e9-8a34-376efdd81b43/contents"
-      ],
-      [
-        "Deployed Medicine – TCCC kolekcija (reikia prisijungti)",
-        "https://deployedmedicine.allogy.net/learner/collections/11"
-      ],
-      [
-        "PCS – Cyklokapron (traneksamo rūgštis) (JK eMC)",
-        "https://www.medicines.org.uk/emc/product/1077/smpc"
-      ],
-      [
-        "NextGen Combat Medic – Tranexamic Acid",
-        "https://nextgencombatmedic.com/2024/12/21/tranexamic-acid/"
-      ]
-    ]
-  },
-  {
-    "id": "kalcis",
-    "name": "Kalcio gliukonatas 10 %",
-    "klase": "Elektrolitai",
-    "grupe": "kraujas",
-    "tipas": "papild",
-    "tccc26": true,
-    "kam": "Medicinos personalui",
-    "ind": "Perpylus bet kokį kraujo produktą (įskaitant pilną kraują) – po pirmojo perpilto vieneto (TCCC 2026).",
-    "kontra": "PCS: hiperkalcemija, hiperkalciurija, apsinuodijimas širdies glikozidais; vartojantiems širdies glikozidus (digoksiną) – kontraindikuotina, išskyrus gyvybei grėsmingą sunkią hipokalcemiją ar hiperkalemiją.",
-    "dozes": [
-      {
-        "k": "IV / IO (TCCC 2026)",
-        "d": "30 ml 10 % kalcio gliukonato (arba 10 ml 10 % kalcio chlorido)",
-        "p": "Po pirmojo perpilto kraujo produkto vieneto. Leisti ne greičiau kaip per ~15 min (PCS: ≤ 0,45 mmol kalcio/min)."
-      }
-    ],
-    "ispejimai": [
-      "Su ceftriaksonu nemaišyti ir neleisti vienu metu; esant hipovolemijai – nelašinti ir paeiliui (PCS).",
-      "Nemaišyti su natrio bikarbonatu ar fosfatais (PCS).",
-      "Ekstravazacija sukelia audinių nekrozę (PCS)."
-    ],
-    "pakuote": "10 % tirpalas (100 mg/ml kalcio gliukonato)",
-    "pastabos": [
-      "TCCC „1 g kalcio“ – tai 30 ml 10 % kalcio gliukonato arba 10 ml 10 % kalcio chlorido (apie 6,3–6,8 mmol kalcio).",
-      "Gydymo kokybės kriterijus: užtikrinamas kalcio kiekis esant kraujo transfuzijai."
-    ],
-    "susije": [
-      "txa"
-    ],
-    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); PCS (kalcio gliukonatas 10 %); ETC vertinimo lapas",
-    "nuorodos": [
-      [
-        "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
-        "https://learning-media.allogy.com/api/v1/pdf/18ccfdfc-a076-47e9-8a34-376efdd81b43/contents"
-      ],
-      [
-        "Deployed Medicine – TCCC kolekcija (reikia prisijungti)",
-        "https://deployedmedicine.allogy.net/learner/collections/11"
-      ],
-      [
-        "PCS – kalcio gliukonatas 10 % (JK eMC)",
-        "https://www.medicines.org.uk/emc/product/6264/smpc"
-      ]
-    ]
-  },
   {
     "id": "ketaminas",
     "name": "Ketaminas",
@@ -160,9 +70,9 @@ window.ETC.vaistai = [
       "Nistagmas – nevalingi, ritmingi akių judesiai."
     ],
     "susije": [
-      "midazolamas",
       "paracetamolis",
-      "ondansetronas"
+      "ondansetronas",
+      "midazolamas"
     ],
     "saltinis": "TCCC gairės 2026-05-01; ETC įgūdžių lentelės (sedacija, infuzomatas); PCS (Ketalar)",
     "nuorodos": [
@@ -255,6 +165,124 @@ window.ETC.vaistai = [
           }
         ]
       }
+    ]
+  },
+  {
+    "id": "fentanilis",
+    "name": "Fentanilis",
+    "klase": "Nuskausminamieji (opioidas)",
+    "grupe": "skausmas",
+    "tipas": "papild",
+    "kam": "Medicinos personalui",
+    "ind": "Stiprus skausmas. TCCC 2026 fentanilio nebenumato (ankstesnėse TCCC gairėse buvo).",
+    "kontra": "PCS: alergija opioidams, kvėpavimo slopinimas, obstrukcinė kvėpavimo takų liga, MAO inhibitoriai (per 2 sav.).",
+    "dozes": [
+      {
+        "k": "IV / IO",
+        "d": "50 mcg (0,5–1 mcg/kg) lėtai · ml 50 mcg/ml",
+        "c": {
+          "min": 0.5,
+          "max": 1,
+          "conc": 50,
+          "u": "mcg"
+        },
+        "p": "Kartoti kas 30 min pagal poreikį (ankstesnės TCCC gairės)."
+      },
+      {
+        "k": "Į nosį",
+        "d": "100 mcg",
+        "p": "Kartoti kas 30 min pagal poreikį (ankstesnės TCCC gairės)."
+      }
+    ],
+    "ispejimai": [
+      "Leisti lėtai – greita injekcija gali sukelti raumenų, taip pat krūtinės, rigidiškumą (PCS).",
+      "Kvėpavimo slopinimas iki apnėjos – antagonistas naloksonas (PCS).",
+      "Nederinti su benzodiazepinais (TCCC, PCS)."
+    ],
+    "pradzia": "1–2 min (į veną), pikas 2–5 min",
+    "trukme": "30–60 min (į veną)",
+    "salutinis": "Kvėpavimo slopinimas, pykinimas, sedacija, raumenų rigidiškumas.",
+    "pakuote": "50 mcg/ml tirpalas",
+    "pastabos": [
+      "TCCC 2026 fentanilio nebenumato (ankstesnėse gairėse buvo)."
+    ],
+    "susije": [
+      "morfinas",
+      "ketaminas",
+      "naloksonas"
+    ],
+    "saltinis": "ankstesnės TCCC gairės (ATP-P, JSOM); PCS (fentanilis); NextGen Combat Medic",
+    "nuorodos": [
+      [
+        "Ankstesnės TCCC gairės (ATP-P, JSOM) – analgezija",
+        "https://www.jsomonline.com/Library/Flipbook/ATPEng/files/basic-html/page24.html"
+      ],
+      [
+        "PCS – fentanilis 50 mcg/ml (JK eMC)",
+        "https://www.medicines.org.uk/emc/product/100051/smpc"
+      ],
+      [
+        "NextGen Combat Medic – kai nėra ketamino",
+        "https://nextgencombatmedic.com/2024/11/18/what-if-you-didnt-have-ketamine-as-a-68w-combat-medic"
+      ]
+    ]
+  },
+  {
+    "id": "morfinas",
+    "name": "Morfinas",
+    "klase": "Nuskausminamieji (opioidas)",
+    "grupe": "skausmas",
+    "tipas": "pagr",
+    "ind": "Stiprus skausmas – titruojant IV mažomis dozėmis (ETC). Esant šokui ar kvėpavimo sutrikimui saugesnis ketaminas.",
+    "kontra": "Alergija. PCS: ūminis kvėpavimo slopinimas, obstrukcinė kvėpavimo takų liga, galvos trauma, padidėjęs intrakranijinis spaudimas, smegenų edema, koma, traukulių ligos, MAO inhibitoriai (per 2 sav.), paralyžinis žarnų nepraeinamumas, feochromocitoma.",
+    "dozes": [
+      {
+        "k": "IV (PCS)",
+        "d": "2,5–15 mg lėtai, titruojant pagal atsaką",
+        "p": "Pradėti nuo mažesnės dozės. Įprastai ne dažniau kaip kas 4 val., bet dozė ir intervalas titruojami, kol pasiekiamas nuskausminimas. Skiedimas: 1 ml (10 mg) iki 10 ml = 1 mg/ml."
+      },
+      {
+        "k": "IM (PCS)",
+        "d": "10 mg (5–20 mg) kas 4 val.",
+        "p": "Neskiesto 10 mg/ml – 1 ml."
+      }
+    ],
+    "ispejimai": [
+      "Kvėpavimo slopinimas – stebėti; antagonistas – naloksonas.",
+      "Šokas, hipotenzija, senyvas amžius – mažesnės dozės (PCS). Šoko atveju TCCC rekomenduoja ketaminą.",
+      "Nederinti su benzodiazepinais (PCS, TCCC 2026)."
+    ],
+    "pradzia": "5–10 min (į veną)\n10–30 min (į raumenis)",
+    "trukme": "3–5 val.",
+    "salutinis": "Pykinimas, vėmimas, kvėpavimo slopinimas, kraujospūdžio sumažėjimas, sutrikusi žarnyno veikla.",
+    "pakuote": "Ampulės 10 mg / 1 ml (10 mg/ml)",
+    "pastabos": [
+      "Esant šokui ar kvėpavimo sutrikimui saugesnis ketaminas (TCCC 2026 morfino nebenumato).",
+      "NextGen Combat Medic: 10 mg morfino ≈ 100 mcg fentanilio."
+    ],
+    "susije": [
+      "ketaminas",
+      "ondansetronas",
+      "naloksonas"
+    ],
+    "saltinis": "PCS (morfino sulfatas 10 mg/ml); TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine)",
+    "nuorodos": [
+      [
+        "PCS – morfino sulfatas 10 mg/ml (JK eMC)",
+        "https://www.medicines.org.uk/emc/product/13178/smpc"
+      ],
+      [
+        "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
+        "https://learning-media.allogy.com/api/v1/pdf/18ccfdfc-a076-47e9-8a34-376efdd81b43/contents"
+      ],
+      [
+        "Ankstesnės TCCC gairės (ATP-P, JSOM) – analgezija",
+        "https://www.jsomonline.com/Library/Flipbook/ATPEng/files/basic-html/page24.html"
+      ],
+      [
+        "NextGen Combat Medic – kai nėra ketamino",
+        "https://nextgencombatmedic.com/2024/11/18/what-if-you-didnt-have-ketamine-as-a-68w-combat-medic"
+      ]
     ]
   },
   {
@@ -373,220 +401,35 @@ window.ETC.vaistai = [
     ]
   },
   {
-    "id": "morfinas",
-    "name": "Morfinas",
-    "klase": "Nuskausminamieji (opioidas)",
-    "grupe": "skausmas",
-    "tipas": "pagr",
-    "ind": "Stiprus skausmas – titruojant IV mažomis dozėmis (ETC). Esant šokui ar kvėpavimo sutrikimui saugesnis ketaminas.",
-    "kontra": "Alergija. PCS: ūminis kvėpavimo slopinimas, obstrukcinė kvėpavimo takų liga, galvos trauma, padidėjęs intrakranijinis spaudimas, smegenų edema, koma, traukulių ligos, MAO inhibitoriai (per 2 sav.), paralyžinis žarnų nepraeinamumas, feochromocitoma.",
-    "dozes": [
-      {
-        "k": "IV (PCS)",
-        "d": "2,5–15 mg lėtai, titruojant pagal atsaką",
-        "p": "Pradėti nuo mažesnės dozės. Įprastai ne dažniau kaip kas 4 val., bet dozė ir intervalas titruojami, kol pasiekiamas nuskausminimas. Skiedimas: 1 ml (10 mg) iki 10 ml = 1 mg/ml."
-      },
-      {
-        "k": "IM (PCS)",
-        "d": "10 mg (5–20 mg) kas 4 val.",
-        "p": "Neskiesto 10 mg/ml – 1 ml."
-      }
-    ],
-    "ispejimai": [
-      "Kvėpavimo slopinimas – stebėti; antagonistas – naloksonas.",
-      "Šokas, hipotenzija, senyvas amžius – mažesnės dozės (PCS). Šoko atveju TCCC rekomenduoja ketaminą.",
-      "Nederinti su benzodiazepinais (PCS, TCCC 2026)."
-    ],
-    "pradzia": "5–10 min (į veną)\n10–30 min (į raumenis)",
-    "trukme": "3–5 val.",
-    "salutinis": "Pykinimas, vėmimas, kvėpavimo slopinimas, kraujospūdžio sumažėjimas, sutrikusi žarnyno veikla.",
-    "pakuote": "Ampulės 10 mg / 1 ml (10 mg/ml)",
-    "pastabos": [
-      "Esant šokui ar kvėpavimo sutrikimui saugesnis ketaminas (TCCC 2026 morfino nebenumato).",
-      "NextGen Combat Medic: 10 mg morfino ≈ 100 mcg fentanilio."
-    ],
-    "susije": [
-      "naloksonas",
-      "ketaminas",
-      "ondansetronas"
-    ],
-    "saltinis": "PCS (morfino sulfatas 10 mg/ml); TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine)",
-    "nuorodos": [
-      [
-        "PCS – morfino sulfatas 10 mg/ml (JK eMC)",
-        "https://www.medicines.org.uk/emc/product/13178/smpc"
-      ],
-      [
-        "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
-        "https://learning-media.allogy.com/api/v1/pdf/18ccfdfc-a076-47e9-8a34-376efdd81b43/contents"
-      ],
-      [
-        "Ankstesnės TCCC gairės (ATP-P, JSOM) – analgezija",
-        "https://www.jsomonline.com/Library/Flipbook/ATPEng/files/basic-html/page24.html"
-      ],
-      [
-        "NextGen Combat Medic – kai nėra ketamino",
-        "https://nextgencombatmedic.com/2024/11/18/what-if-you-didnt-have-ketamine-as-a-68w-combat-medic"
-      ]
-    ]
-  },
-  {
-    "id": "fentanilis",
-    "name": "Fentanilis",
-    "klase": "Nuskausminamieji (opioidas)",
-    "grupe": "skausmas",
-    "tipas": "papild",
-    "kam": "Medicinos personalui",
-    "ind": "Stiprus skausmas. TCCC 2026 fentanilio nebenumato (ankstesnėse TCCC gairėse buvo).",
-    "kontra": "PCS: alergija opioidams, kvėpavimo slopinimas, obstrukcinė kvėpavimo takų liga, MAO inhibitoriai (per 2 sav.).",
-    "dozes": [
-      {
-        "k": "IV / IO",
-        "d": "50 mcg (0,5–1 mcg/kg) lėtai · ml 50 mcg/ml",
-        "c": {
-          "min": 0.5,
-          "max": 1,
-          "conc": 50,
-          "u": "mcg"
-        },
-        "p": "Kartoti kas 30 min pagal poreikį (ankstesnės TCCC gairės)."
-      },
-      {
-        "k": "Į nosį",
-        "d": "100 mcg",
-        "p": "Kartoti kas 30 min pagal poreikį (ankstesnės TCCC gairės)."
-      }
-    ],
-    "ispejimai": [
-      "Leisti lėtai – greita injekcija gali sukelti raumenų, taip pat krūtinės, rigidiškumą (PCS).",
-      "Kvėpavimo slopinimas iki apnėjos – antagonistas naloksonas (PCS).",
-      "Nederinti su benzodiazepinais (TCCC, PCS)."
-    ],
-    "pradzia": "1–2 min (į veną), pikas 2–5 min",
-    "trukme": "30–60 min (į veną)",
-    "salutinis": "Kvėpavimo slopinimas, pykinimas, sedacija, raumenų rigidiškumas.",
-    "pakuote": "50 mcg/ml tirpalas",
-    "pastabos": [
-      "TCCC 2026 fentanilio nebenumato (ankstesnėse gairėse buvo)."
-    ],
-    "susije": [
-      "naloksonas",
-      "morfinas",
-      "ketaminas"
-    ],
-    "saltinis": "ankstesnės TCCC gairės (ATP-P, JSOM); PCS (fentanilis); NextGen Combat Medic",
-    "nuorodos": [
-      [
-        "Ankstesnės TCCC gairės (ATP-P, JSOM) – analgezija",
-        "https://www.jsomonline.com/Library/Flipbook/ATPEng/files/basic-html/page24.html"
-      ],
-      [
-        "PCS – fentanilis 50 mcg/ml (JK eMC)",
-        "https://www.medicines.org.uk/emc/product/100051/smpc"
-      ],
-      [
-        "NextGen Combat Medic – kai nėra ketamino",
-        "https://nextgencombatmedic.com/2024/11/18/what-if-you-didnt-have-ketamine-as-a-68w-combat-medic"
-      ]
-    ]
-  },
-  {
-    "id": "naloksonas",
-    "name": "Naloksonas",
-    "klase": "Opioidų antagonistas",
-    "grupe": "skausmas",
-    "tipas": "pagr",
-    "ind": "Opioidų sukelto kvėpavimo slopinimo šalinimas.",
-    "kontra": "Alergija.",
-    "dozes": [
-      {
-        "k": "IV (PCS)",
-        "d": "0,1–0,2 mg, toliau po 0,1 mg kas 2 min",
-        "p": "Titruoti iki kvėpavimo dažnio > 10 k./min, neprarandant nuskausminimo. Skiedimas: 0,4 mg (1 ml) + 9 ml NaCl = 0,04 mg/ml; 0,1 mg = 2,5 ml."
-      },
-      {
-        "k": "IM (PCS)",
-        "d": "0,4 mg (iki 2 mg), kartoti kas 2–3 min",
-        "p": "Kai IV neįmanoma. Po 10 mg be atsako – peržiūrėti diagnozę."
-      },
-      {
-        "k": "Į nosį (Nyxoid)",
-        "d": "1,8 mg į vieną šnervę",
-        "p": "Nėra atsako – po 2–3 min kita šnerve."
-      }
-    ],
-    "ispejimai": [
-      "Veikia 1–4 val.; kai kurie opioidai – ilgiau: stebėti, ar neatsinaujina kvėpavimo slopinimas (PCS).",
-      "Per greitas atstatymas – abstinencija, hipertenzija, aritmijos, plaučių edema (PCS)."
-    ],
-    "pradzia": "1–2 min (į veną)\n2–5 min (į raumenis)",
-    "trukme": "1–4 val., priklauso nuo dozės (PCS)",
-    "salutinis": "Pykinimas, vėmimas, sujaudinimas, susilpnėjęs nuskausminimas.",
-    "pakuote": "Ampulės 0,4 mg / 1 ml (0,4 mg/ml)",
-    "pastabos": [
-      "TCCC 2026 naloksono nenumato."
-    ],
-    "susije": [
-      "morfinas",
-      "fentanilis"
-    ],
-    "saltinis": "PCS (naloksonas 400 mcg/ml, Nyxoid); ankstesnės TCCC gairės (ATP-P, JSOM)",
-    "nuorodos": [
-      [
-        "PCS – naloksonas 400 mcg/ml (JK eMC)",
-        "https://www.medicines.org.uk/emc/product/6589/smpc"
-      ],
-      [
-        "PCS – Nyxoid 1,8 mg nosies purškalas (JK eMC)",
-        "https://www.medicines.org.uk/emc/product/9292/smpc"
-      ],
-      [
-        "Ankstesnės TCCC gairės (ATP-P, JSOM) – naloksonas, ondansetronas",
-        "https://www.jsomonline.com/Library/Flipbook/ATPEng/files/basic-html/page25.html"
-      ]
-    ]
-  },
-  {
-    "id": "midazolamas",
-    "name": "Midazolamas",
-    "klase": "Benzodiazepinas",
-    "grupe": "skausmas",
+    "id": "txa",
+    "name": "Traneksamo rūgštis (TXA)",
+    "klase": "Antifibrinolitikas",
+    "grupe": "kraujas",
     "tipas": "pagr",
     "tccc26": true,
-    "ind": "TCCC 2026 – tik ketamino sukelta emergencijos reakcija. PCS – sedacija, premedikacija.",
-    "kontra": "PCS: padidėjęs jautrumas benzodiazepinams; sąmoningai sedacijai – sunkus kvėpavimo nepakankamumas ar ūminis kvėpavimo slopinimas.",
+    "ind": "Kai tikėtina transfuzija (hemoraginis šokas, didelė amputacija, penetruojanti liemens trauma, stiprus kraujavimas), reikšminga galvos smegenų trauma ar pakitusi sąmonė po sprogimo / bukos traumos (TCCC 2026).",
+    "kontra": "PCS: padidėjęs jautrumas; ūminė venų ar arterijų trombozė; fibrinolizė po vartojimo koaguliopatijos (DIK), išskyrus vyraujančią fibrinolizę su ūminiu sunkiu kraujavimu; traukulių anamnezė; negalima leisti intratekališkai, epidurališkai, intraventrikuliškai ar į galvos smegenis.",
     "dozes": [
       {
-        "k": "IV / IO",
-        "d": "0,5–2 mg lėtai",
-        "p": "TCCC 2026 – ketamino emergencijos reakcijai. Sedacijai titruoti po 1 mg (apie 1 mg per 30 s); daugiau kaip 5 mg (≥ 60 m. – 3,5 mg) paprastai nereikia (PCS)."
-      },
-      {
-        "k": "IM (PCS)",
-        "d": "0,07–0,1 mg/kg · ml 5 mg/ml tirpalo",
-        "c": {
-          "min": 0.07,
-          "max": 0.1,
-          "conc": 5
-        },
-        "p": "≥ 60 m. – 0,025–0,05 mg/kg."
+        "k": "IV / IO (TCCC 2026)",
+        "d": "2 g lėtai – kuo anksčiau, ne vėliau kaip per 3 val. nuo sužalojimo",
+        "p": "4 ampulės po 500 mg / 5 ml = 20 ml. Leisti ne greičiau kaip 1 ml/min – apie 20 min (PCS)."
       }
     ],
     "ispejimai": [
-      "Nederinti su opioidais (TCCC 2026, PCS) – kvėpavimo slopinimas.",
-      "Didžiausias poveikis po 5–10 min – prieš kartojant palaukti (PCS)."
+      "Po 3 val. nuo sužalojimo neskirti. Pažymėkite traumos laiką pradžios ekrane – „TXA iki“ parodys terminą.",
+      "Per greitai leidžiant – hipotenzija (PCS).",
+      "Tik IV / IO; nemaišyti su krauju ir penicilino tirpalais (PCS)."
     ],
-    "pradzia": "apie 2 min (į veną)\n5–10 min (į raumenis)",
-    "trukme": "30–90 min (į veną)\n1–6 val. (į raumenis)",
-    "salutinis": "Kvėpavimo slopinimas, sumažėjęs kraujospūdis, pykinimas, vėmimas.",
-    "pakuote": "Buteliukas 5 mg / 5 ml (1 mg/ml)\nAmpulės 5 mg / 1 ml (5 mg/ml)",
+    "salutinis": "Pykinimas, vėmimas, viduriavimas, galvos skausmas, kraujospūdžio sumažėjimas (per greitai leidžiant), galimi traukuliai (ypač jei yra pasireiškę anksčiau).",
+    "pakuote": "Ampulės 500 mg / 5 ml (100 mg/ml)",
     "pastabos": [
-      "Sukelia anterogradinę amneziją: pacientas neprisimena įvykių po vaisto suleidimo, paprastai iki 1 val."
+      "Po pirmojo perpilto kraujo produkto – kalcis (TCCC 2026)."
     ],
     "susije": [
-      "ketaminas"
+      "kalcis"
     ],
-    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); PCS (midazolamas 5 mg/ml)",
+    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); PCS (Cyklokapron); ETC vertinimo lapas",
     "nuorodos": [
       [
         "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
@@ -597,8 +440,260 @@ window.ETC.vaistai = [
         "https://deployedmedicine.allogy.net/learner/collections/11"
       ],
       [
-        "PCS – midazolamas injekcinis (JK eMC)",
-        "https://www.medicines.org.uk/emc/product/6420/smpc"
+        "PCS – Cyklokapron (traneksamo rūgštis) (JK eMC)",
+        "https://www.medicines.org.uk/emc/product/1077/smpc"
+      ],
+      [
+        "NextGen Combat Medic – Tranexamic Acid",
+        "https://nextgencombatmedic.com/2024/12/21/tranexamic-acid/"
+      ]
+    ]
+  },
+  {
+    "id": "kalcis",
+    "name": "Kalcio gliukonatas 10 %",
+    "klase": "Elektrolitai",
+    "grupe": "kraujas",
+    "tipas": "papild",
+    "tccc26": true,
+    "kam": "Medicinos personalui",
+    "ind": "Perpylus bet kokį kraujo produktą (įskaitant pilną kraują) – po pirmojo perpilto vieneto (TCCC 2026).",
+    "kontra": "PCS: hiperkalcemija, hiperkalciurija, apsinuodijimas širdies glikozidais; vartojantiems širdies glikozidus (digoksiną) – kontraindikuotina, išskyrus gyvybei grėsmingą sunkią hipokalcemiją ar hiperkalemiją.",
+    "dozes": [
+      {
+        "k": "IV / IO (TCCC 2026)",
+        "d": "30 ml 10 % kalcio gliukonato (arba 10 ml 10 % kalcio chlorido)",
+        "p": "Po pirmojo perpilto kraujo produkto vieneto. Leisti ne greičiau kaip per ~15 min (PCS: ≤ 0,45 mmol kalcio/min)."
+      }
+    ],
+    "ispejimai": [
+      "Su ceftriaksonu nemaišyti ir neleisti vienu metu; esant hipovolemijai – nelašinti ir paeiliui (PCS).",
+      "Nemaišyti su natrio bikarbonatu ar fosfatais (PCS).",
+      "Ekstravazacija sukelia audinių nekrozę (PCS)."
+    ],
+    "pakuote": "10 % tirpalas (100 mg/ml kalcio gliukonato)",
+    "pastabos": [
+      "TCCC „1 g kalcio“ – tai 30 ml 10 % kalcio gliukonato arba 10 ml 10 % kalcio chlorido (apie 6,3–6,8 mmol kalcio).",
+      "Gydymo kokybės kriterijus: užtikrinamas kalcio kiekis esant kraujo transfuzijai."
+    ],
+    "susije": [
+      "txa"
+    ],
+    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); PCS (kalcio gliukonatas 10 %); ETC vertinimo lapas",
+    "nuorodos": [
+      [
+        "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
+        "https://learning-media.allogy.com/api/v1/pdf/18ccfdfc-a076-47e9-8a34-376efdd81b43/contents"
+      ],
+      [
+        "Deployed Medicine – TCCC kolekcija (reikia prisijungti)",
+        "https://deployedmedicine.allogy.net/learner/collections/11"
+      ],
+      [
+        "PCS – kalcio gliukonatas 10 % (JK eMC)",
+        "https://www.medicines.org.uk/emc/product/6264/smpc"
+      ]
+    ]
+  },
+  {
+    "id": "ceftriaksonas",
+    "name": "Ceftriaksonas",
+    "klase": "Antibiotikai (cefalosporinas)",
+    "grupe": "antibiotikai",
+    "tipas": "papild",
+    "tccc26": true,
+    "kam": "Medicinos personalui",
+    "ind": "Atviros kovinės žaizdos ir invazinės procedūros, kai pacientas negali gerti; penetruojanti akies trauma (TCCC 2026).",
+    "kontra": "PCS: padidėjęs jautrumas ceftriaksonui ar kitiems cefalosporinams; sunki alergija (pvz., anafilaksija) kitiems beta laktamams anamnezėje.",
+    "dozes": [
+      {
+        "k": "IV / IO / IM (TCCC 2026)",
+        "d": "2 g kartą per parą",
+        "p": "IV infuzija: 2 g į 40 ml tirpalo be kalcio, ≥ 30 min; arba lėtai IV per 5 min. IM: į vieną vietą ≤ 1 g – 2 g dalyti į dvi vietas (PCS)."
+      }
+    ],
+    "ispejimai": [
+      "Su kalcio tirpalais nemaišyti ir neleisti vienu metu; esant hipovolemijai – nelašinti ir paeiliui (PCS).",
+      "Ištirpintas lidokainu – niekada neleisti į veną (PCS)."
+    ],
+    "salutinis": "Viduriavimas, bėrimas, kepenų fermentų padidėjimas.",
+    "pakuote": "Milteliai flakone 1 g arba 2 g",
+    "pastabos": [
+      "Gali gerti – cefadroksilis 1 g per burną kartą per parą (TCCC 2026)."
+    ],
+    "susije": [
+      "cefadroksilis",
+      "kalcis"
+    ],
+    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); PCS (ceftriaksonas 2 g)",
+    "nuorodos": [
+      [
+        "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
+        "https://learning-media.allogy.com/api/v1/pdf/18ccfdfc-a076-47e9-8a34-376efdd81b43/contents"
+      ],
+      [
+        "Deployed Medicine – TCCC kolekcija (reikia prisijungti)",
+        "https://deployedmedicine.allogy.net/learner/collections/11"
+      ],
+      [
+        "PCS – ceftriaksonas 2 g (JK eMC)",
+        "https://www.medicines.org.uk/emc/product/15078/smpc"
+      ]
+    ]
+  },
+  {
+    "id": "cefadroksilis",
+    "name": "Cefadroksilis",
+    "klase": "Antibiotikai (cefalosporinas)",
+    "grupe": "antibiotikai",
+    "tipas": "papild",
+    "tccc26": true,
+    "kam": "Medicinos personalui",
+    "ind": "Visos atviros kovinės žaizdos ir invazinės procedūros, kai pacientas gali gerti; penetruojanti akies trauma (TCCC 2026).",
+    "kontra": "PCS: padidėjęs jautrumas cefalosporinams; sunkios reakcijos į penicilinus ar kitus beta laktamus anamnezėje.",
+    "dozes": [
+      {
+        "k": "Per burną (TCCC 2026)",
+        "d": "1 g kartą per parą",
+        "p": "500 mg kapsulės – 2 kapsulės."
+      }
+    ],
+    "ispejimai": [
+      "Ne sunki alergija penicilinams – atsargiai (kryžminė alergija 5–10 %, PCS)."
+    ],
+    "salutinis": "Viduriavimas, pykinimas, bėrimas.",
+    "pakuote": "Kapsulės 500 mg",
+    "pastabos": [
+      "PCS: odos ir minkštųjų audinių infekcijų gydymui – 1 g 2 kartus per parą (1 g kartą per parą – tik streptokokiniam tonzilitui), maks. 4 g per parą; TCCC 2026 atviroms kovinėms žaizdoms – 1 g kartą per parą.",
+      "Negalinčiam gerti – ceftriaksonas 2 g IV / IO / IM kartą per parą (TCCC 2026).",
+      "Nudegimams vien dėl nudegimo antibiotikų neskirti – skiriama pagal žaizdas (TCCC 2026)."
+    ],
+    "susije": [
+      "ceftriaksonas"
+    ],
+    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); PCS (cefadroksilis 500 mg)",
+    "nuorodos": [
+      [
+        "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
+        "https://learning-media.allogy.com/api/v1/pdf/18ccfdfc-a076-47e9-8a34-376efdd81b43/contents"
+      ],
+      [
+        "Deployed Medicine – TCCC kolekcija (reikia prisijungti)",
+        "https://deployedmedicine.allogy.net/learner/collections/11"
+      ],
+      [
+        "PCS – cefadroksilis 500 mg (JK eMC)",
+        "https://www.medicines.org.uk/emc/product/6543/smpc"
+      ]
+    ]
+  },
+  {
+    "id": "ertapenemas",
+    "name": "Ertapenemas",
+    "klase": "Antibiotikai (karbapenemas)",
+    "grupe": "antibiotikai",
+    "tipas": "papild",
+    "kam": "Medicinos personalui",
+    "ind": "Sunkių infekcijų gydymas. TCCC 2026 nebenumato (IV / IO / IM – ceftriaksonas).",
+    "kontra": "PCS: alergija karbapenemams; sunki alergija (pvz., anafilaksija) kitiems beta laktamams.",
+    "dozes": [
+      {
+        "k": "IV infuzija (PCS)",
+        "d": "1 g kartą per parą",
+        "p": "10 ml injekcinio vandens ar 0,9 % NaCl → į 50 ml 0,9 % NaCl, per 30 min."
+      }
+    ],
+    "ispejimai": [
+      "Nederinti su valproatu (PCS)."
+    ],
+    "salutinis": "Viduriavimas, bėrimas.",
+    "pakuote": "1 g flakonas",
+    "susije": [
+      "ceftriaksonas"
+    ],
+    "saltinis": "PCS (Invanz, EMA); TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine)",
+    "nuorodos": [
+      [
+        "PCS – Invanz (ertapenemas), EMA",
+        "https://www.ema.europa.eu/en/documents/product-information/invanz-epar-product-information_en.pdf"
+      ],
+      [
+        "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
+        "https://learning-media.allogy.com/api/v1/pdf/18ccfdfc-a076-47e9-8a34-376efdd81b43/contents"
+      ]
+    ]
+  },
+  {
+    "id": "amoksiklavas",
+    "name": "Amoksiklavas",
+    "klase": "Antibiotikai (penicilinas)",
+    "grupe": "antibiotikai",
+    "tipas": "pagr",
+    "ind": "Sunkių infekcijų gydymas. TCCC 2026 šio antibiotiko nenumato (IV / IO / IM – ceftriaksonas).",
+    "kontra": "PCS: padidėjęs jautrumas penicilinams; sunki staigi padidėjusio jautrumo reakcija (pvz., anafilaksija) kitam beta laktamui (cefalosporinui, karbapenemui, monobaktamui) anamnezėje; gelta / kepenų pažeidimas nuo amoksicilino su klavulano rūgštimi anamnezėje.",
+    "dozes": [
+      {
+        "k": "IV (PCS)",
+        "d": "1,2 g kas 8 val.",
+        "p": "Boliusu: ištirpinti 20 ml injekcinio vandens, leisti per 3–4 min. Infuzijai: į 50–100 ml 0,9 % NaCl, per 30–40 min. Į raumenis neleisti."
+      }
+    ],
+    "ispejimai": [
+      "Nemaišyti su gliukozės tirpalais, krauju (PCS)."
+    ],
+    "salutinis": "Viduriavimas, pykinimas, vėmimas, bėrimas, galvos skausmas.",
+    "pakuote": "Milteliai flakone: 1 g amoksicilino + 200 mg klavulano rūgšties",
+    "pastabos": [
+      "Klavulano rūgštis apsaugo amoksiciliną nuo kai kurių bakterijų fermentų."
+    ],
+    "susije": [
+      "ceftriaksonas",
+      "cefadroksilis"
+    ],
+    "saltinis": "PCS (amoksicilinas / klavulano rūgštis 1000/200 mg); TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine)",
+    "nuorodos": [
+      [
+        "PCS – amoksicilinas / klavulano rūgštis 1000/200 mg (JK eMC)",
+        "https://www.medicines.org.uk/emc/product/7211/smpc"
+      ],
+      [
+        "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
+        "https://learning-media.allogy.com/api/v1/pdf/18ccfdfc-a076-47e9-8a34-376efdd81b43/contents"
+      ]
+    ]
+  },
+  {
+    "id": "moksifloksacinas",
+    "name": "Moksifloksacinas",
+    "klase": "Antibiotikai (fluorochinolonas)",
+    "grupe": "antibiotikai",
+    "tipas": "papild",
+    "kam": "Medicinos personalui",
+    "ind": "Bakterinės infekcijos. TCCC 2026 nebenumato (per burną – cefadroksilis).",
+    "kontra": "PCS: < 18 m., nėštumas, žindymas, QT pailgėjimas, nekoreguota hipokalemija, kliniškai reikšminga bradikardija, širdies nepakankamumas su sumažėjusia KS išstūmimo frakcija, simptominės aritmijos anamnezėje, kiti QT ilginantys vaistai, ankstesnė chinolonų sukelta sausgyslių pažaida, sunkus kepenų nepakankamumas.",
+    "dozes": [
+      {
+        "k": "Per burną (PCS)",
+        "d": "400 mg kartą per parą"
+      }
+    ],
+    "ispejimai": [
+      "Sausgyslių pažeidimas, psichikos ar neuropatijos simptomai – nutraukti (PCS)."
+    ],
+    "salutinis": "Pykinimas, galvos skausmas.",
+    "pakuote": "400 mg tabletės",
+    "susije": [
+      "cefadroksilis"
+    ],
+    "saltinis": "PCS (moksifloksacinas); TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine)",
+    "nuorodos": [
+      [
+        "PCS – moksifloksacinas 400 mg (JK eMC)",
+        "https://www.medicines.org.uk/emc/product/6771/smpc"
+      ],
+      [
+        "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
+        "https://learning-media.allogy.com/api/v1/pdf/18ccfdfc-a076-47e9-8a34-376efdd81b43/contents"
       ]
     ]
   },
@@ -680,208 +775,6 @@ window.ETC.vaistai = [
     ]
   },
   {
-    "id": "cefadroksilis",
-    "name": "Cefadroksilis",
-    "klase": "Antibiotikai (cefalosporinas)",
-    "grupe": "antibiotikai",
-    "tipas": "papild",
-    "tccc26": true,
-    "kam": "Medicinos personalui",
-    "ind": "Visos atviros kovinės žaizdos ir invazinės procedūros, kai pacientas gali gerti; penetruojanti akies trauma (TCCC 2026).",
-    "kontra": "PCS: padidėjęs jautrumas cefalosporinams; sunkios reakcijos į penicilinus ar kitus beta laktamus anamnezėje.",
-    "dozes": [
-      {
-        "k": "Per burną (TCCC 2026)",
-        "d": "1 g kartą per parą",
-        "p": "500 mg kapsulės – 2 kapsulės."
-      }
-    ],
-    "ispejimai": [
-      "Ne sunki alergija penicilinams – atsargiai (kryžminė alergija 5–10 %, PCS)."
-    ],
-    "salutinis": "Viduriavimas, pykinimas, bėrimas.",
-    "pakuote": "Kapsulės 500 mg",
-    "pastabos": [
-      "PCS: odos ir minkštųjų audinių infekcijų gydymui – 1 g 2 kartus per parą (1 g kartą per parą – tik streptokokiniam tonzilitui), maks. 4 g per parą; TCCC 2026 atviroms kovinėms žaizdoms – 1 g kartą per parą.",
-      "Negalinčiam gerti – ceftriaksonas 2 g IV / IO / IM kartą per parą (TCCC 2026).",
-      "Nudegimams vien dėl nudegimo antibiotikų neskirti – skiriama pagal žaizdas (TCCC 2026)."
-    ],
-    "susije": [
-      "ceftriaksonas"
-    ],
-    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); PCS (cefadroksilis 500 mg)",
-    "nuorodos": [
-      [
-        "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
-        "https://learning-media.allogy.com/api/v1/pdf/18ccfdfc-a076-47e9-8a34-376efdd81b43/contents"
-      ],
-      [
-        "Deployed Medicine – TCCC kolekcija (reikia prisijungti)",
-        "https://deployedmedicine.allogy.net/learner/collections/11"
-      ],
-      [
-        "PCS – cefadroksilis 500 mg (JK eMC)",
-        "https://www.medicines.org.uk/emc/product/6543/smpc"
-      ]
-    ]
-  },
-  {
-    "id": "ceftriaksonas",
-    "name": "Ceftriaksonas",
-    "klase": "Antibiotikai (cefalosporinas)",
-    "grupe": "antibiotikai",
-    "tipas": "papild",
-    "tccc26": true,
-    "kam": "Medicinos personalui",
-    "ind": "Atviros kovinės žaizdos ir invazinės procedūros, kai pacientas negali gerti; penetruojanti akies trauma (TCCC 2026).",
-    "kontra": "PCS: padidėjęs jautrumas ceftriaksonui ar kitiems cefalosporinams; sunki alergija (pvz., anafilaksija) kitiems beta laktamams anamnezėje.",
-    "dozes": [
-      {
-        "k": "IV / IO / IM (TCCC 2026)",
-        "d": "2 g kartą per parą",
-        "p": "IV infuzija: 2 g į 40 ml tirpalo be kalcio, ≥ 30 min; arba lėtai IV per 5 min. IM: į vieną vietą ≤ 1 g – 2 g dalyti į dvi vietas (PCS)."
-      }
-    ],
-    "ispejimai": [
-      "Su kalcio tirpalais nemaišyti ir neleisti vienu metu; esant hipovolemijai – nelašinti ir paeiliui (PCS).",
-      "Ištirpintas lidokainu – niekada neleisti į veną (PCS)."
-    ],
-    "salutinis": "Viduriavimas, bėrimas, kepenų fermentų padidėjimas.",
-    "pakuote": "Milteliai flakone 1 g arba 2 g",
-    "pastabos": [
-      "Gali gerti – cefadroksilis 1 g per burną kartą per parą (TCCC 2026)."
-    ],
-    "susije": [
-      "cefadroksilis",
-      "kalcis"
-    ],
-    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); PCS (ceftriaksonas 2 g)",
-    "nuorodos": [
-      [
-        "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
-        "https://learning-media.allogy.com/api/v1/pdf/18ccfdfc-a076-47e9-8a34-376efdd81b43/contents"
-      ],
-      [
-        "Deployed Medicine – TCCC kolekcija (reikia prisijungti)",
-        "https://deployedmedicine.allogy.net/learner/collections/11"
-      ],
-      [
-        "PCS – ceftriaksonas 2 g (JK eMC)",
-        "https://www.medicines.org.uk/emc/product/15078/smpc"
-      ]
-    ]
-  },
-  {
-    "id": "amoksiklavas",
-    "name": "Amoksiklavas",
-    "klase": "Antibiotikai (penicilinas)",
-    "grupe": "antibiotikai",
-    "tipas": "pagr",
-    "ind": "Sunkių infekcijų gydymas. TCCC 2026 šio antibiotiko nenumato (IV / IO / IM – ceftriaksonas).",
-    "kontra": "PCS: padidėjęs jautrumas penicilinams; sunki staigi padidėjusio jautrumo reakcija (pvz., anafilaksija) kitam beta laktamui (cefalosporinui, karbapenemui, monobaktamui) anamnezėje; gelta / kepenų pažeidimas nuo amoksicilino su klavulano rūgštimi anamnezėje.",
-    "dozes": [
-      {
-        "k": "IV (PCS)",
-        "d": "1,2 g kas 8 val.",
-        "p": "Boliusu: ištirpinti 20 ml injekcinio vandens, leisti per 3–4 min. Infuzijai: į 50–100 ml 0,9 % NaCl, per 30–40 min. Į raumenis neleisti."
-      }
-    ],
-    "ispejimai": [
-      "Nemaišyti su gliukozės tirpalais, krauju (PCS)."
-    ],
-    "salutinis": "Viduriavimas, pykinimas, vėmimas, bėrimas, galvos skausmas.",
-    "pakuote": "Milteliai flakone: 1 g amoksicilino + 200 mg klavulano rūgšties",
-    "pastabos": [
-      "Klavulano rūgštis apsaugo amoksiciliną nuo kai kurių bakterijų fermentų."
-    ],
-    "susije": [
-      "ceftriaksonas",
-      "cefadroksilis"
-    ],
-    "saltinis": "PCS (amoksicilinas / klavulano rūgštis 1000/200 mg); TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine)",
-    "nuorodos": [
-      [
-        "PCS – amoksicilinas / klavulano rūgštis 1000/200 mg (JK eMC)",
-        "https://www.medicines.org.uk/emc/product/7211/smpc"
-      ],
-      [
-        "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
-        "https://learning-media.allogy.com/api/v1/pdf/18ccfdfc-a076-47e9-8a34-376efdd81b43/contents"
-      ]
-    ]
-  },
-  {
-    "id": "ertapenemas",
-    "name": "Ertapenemas",
-    "klase": "Antibiotikai (karbapenemas)",
-    "grupe": "antibiotikai",
-    "tipas": "papild",
-    "kam": "Medicinos personalui",
-    "ind": "Sunkių infekcijų gydymas. TCCC 2026 nebenumato (IV / IO / IM – ceftriaksonas).",
-    "kontra": "PCS: alergija karbapenemams; sunki alergija (pvz., anafilaksija) kitiems beta laktamams.",
-    "dozes": [
-      {
-        "k": "IV infuzija (PCS)",
-        "d": "1 g kartą per parą",
-        "p": "10 ml injekcinio vandens ar 0,9 % NaCl → į 50 ml 0,9 % NaCl, per 30 min."
-      }
-    ],
-    "ispejimai": [
-      "Nederinti su valproatu (PCS)."
-    ],
-    "salutinis": "Viduriavimas, bėrimas.",
-    "pakuote": "1 g flakonas",
-    "susije": [
-      "ceftriaksonas"
-    ],
-    "saltinis": "PCS (Invanz, EMA); TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine)",
-    "nuorodos": [
-      [
-        "PCS – Invanz (ertapenemas), EMA",
-        "https://www.ema.europa.eu/en/documents/product-information/invanz-epar-product-information_en.pdf"
-      ],
-      [
-        "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
-        "https://learning-media.allogy.com/api/v1/pdf/18ccfdfc-a076-47e9-8a34-376efdd81b43/contents"
-      ]
-    ]
-  },
-  {
-    "id": "moksifloksacinas",
-    "name": "Moksifloksacinas",
-    "klase": "Antibiotikai (fluorochinolonas)",
-    "grupe": "antibiotikai",
-    "tipas": "papild",
-    "kam": "Medicinos personalui",
-    "ind": "Bakterinės infekcijos. TCCC 2026 nebenumato (per burną – cefadroksilis).",
-    "kontra": "PCS: < 18 m., nėštumas, žindymas, QT pailgėjimas, nekoreguota hipokalemija, kliniškai reikšminga bradikardija, širdies nepakankamumas su sumažėjusia KS išstūmimo frakcija, simptominės aritmijos anamnezėje, kiti QT ilginantys vaistai, ankstesnė chinolonų sukelta sausgyslių pažaida, sunkus kepenų nepakankamumas.",
-    "dozes": [
-      {
-        "k": "Per burną (PCS)",
-        "d": "400 mg kartą per parą"
-      }
-    ],
-    "ispejimai": [
-      "Sausgyslių pažeidimas, psichikos ar neuropatijos simptomai – nutraukti (PCS)."
-    ],
-    "salutinis": "Pykinimas, galvos skausmas.",
-    "pakuote": "400 mg tabletės",
-    "susije": [
-      "cefadroksilis"
-    ],
-    "saltinis": "PCS (moksifloksacinas); TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine)",
-    "nuorodos": [
-      [
-        "PCS – moksifloksacinas 400 mg (JK eMC)",
-        "https://www.medicines.org.uk/emc/product/6771/smpc"
-      ],
-      [
-        "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
-        "https://learning-media.allogy.com/api/v1/pdf/18ccfdfc-a076-47e9-8a34-376efdd81b43/contents"
-      ]
-    ]
-  },
-  {
     "id": "nacl-hipert",
     "name": "Hipertoninis NaCl",
     "klase": "3 % arba 5 % (ruošiamas iš 10 %)",
@@ -918,6 +811,43 @@ window.ETC.vaistai = [
       [
         "Deployed Medicine – TCCC kolekcija (reikia prisijungti)",
         "https://deployedmedicine.allogy.net/learner/collections/11"
+      ]
+    ]
+  },
+  {
+    "id": "rokuroniumas",
+    "name": "Rokuroniumas",
+    "klase": "Raumenų relaksantas",
+    "grupe": "gaivinimas",
+    "tipas": "papild",
+    "kam": "Intubuojantiems gydytojams",
+    "ind": "Intubacija, greitosios sekos indukcija.",
+    "dozes": [
+      {
+        "k": "Greitosios sekos indukcija (PCS)",
+        "d": "1 mg/kg · ml 10 mg/ml tirpalo",
+        "c": {
+          "per": 1,
+          "conc": 10
+        }
+      },
+      {
+        "k": "Palaikomoji (PCS)",
+        "d": "0,15 mg/kg · ml 10 mg/ml tirpalo",
+        "c": {
+          "per": 0.15,
+          "conc": 10
+        }
+      }
+    ],
+    "ispejimai": [
+      "Būtina dirbtinė plaučių ventiliacija; skiria tik patyręs gydytojas (PCS)."
+    ],
+    "saltinis": "PCS (rokuronio bromidas 10 mg/ml)",
+    "nuorodos": [
+      [
+        "PCS – rokuronio bromidas 10 mg/ml (JK eMC)",
+        "https://www.medicines.org.uk/emc/product/13173/smpc"
       ]
     ]
   },
@@ -989,39 +919,114 @@ window.ETC.vaistai = [
     "ispejimai": []
   },
   {
-    "id": "rokuroniumas",
-    "name": "Rokuroniumas",
-    "klase": "Raumenų relaksantas",
-    "grupe": "gaivinimas",
-    "tipas": "papild",
-    "kam": "Intubuojantiems gydytojams",
-    "ind": "Intubacija, greitosios sekos indukcija.",
+    "id": "midazolamas",
+    "name": "Midazolamas",
+    "klase": "Benzodiazepinas",
+    "grupe": "retai",
+    "tipas": "pagr",
+    "tccc26": true,
+    "ind": "TCCC 2026 – tik ketamino sukelta emergencijos reakcija. PCS – sedacija, premedikacija.",
+    "kontra": "PCS: padidėjęs jautrumas benzodiazepinams; sąmoningai sedacijai – sunkus kvėpavimo nepakankamumas ar ūminis kvėpavimo slopinimas.",
     "dozes": [
       {
-        "k": "Greitosios sekos indukcija (PCS)",
-        "d": "1 mg/kg · ml 10 mg/ml tirpalo",
-        "c": {
-          "per": 1,
-          "conc": 10
-        }
+        "k": "IV / IO",
+        "d": "0,5–2 mg lėtai",
+        "p": "TCCC 2026 – ketamino emergencijos reakcijai. Sedacijai titruoti po 1 mg (apie 1 mg per 30 s); daugiau kaip 5 mg (≥ 60 m. – 3,5 mg) paprastai nereikia (PCS)."
       },
       {
-        "k": "Palaikomoji (PCS)",
-        "d": "0,15 mg/kg · ml 10 mg/ml tirpalo",
+        "k": "IM (PCS)",
+        "d": "0,07–0,1 mg/kg · ml 5 mg/ml tirpalo",
         "c": {
-          "per": 0.15,
-          "conc": 10
-        }
+          "min": 0.07,
+          "max": 0.1,
+          "conc": 5
+        },
+        "p": "≥ 60 m. – 0,025–0,05 mg/kg."
       }
     ],
     "ispejimai": [
-      "Būtina dirbtinė plaučių ventiliacija; skiria tik patyręs gydytojas (PCS)."
+      "Nederinti su opioidais (TCCC 2026, PCS) – kvėpavimo slopinimas.",
+      "Didžiausias poveikis po 5–10 min – prieš kartojant palaukti (PCS)."
     ],
-    "saltinis": "PCS (rokuronio bromidas 10 mg/ml)",
+    "pradzia": "apie 2 min (į veną)\n5–10 min (į raumenis)",
+    "trukme": "30–90 min (į veną)\n1–6 val. (į raumenis)",
+    "salutinis": "Kvėpavimo slopinimas, sumažėjęs kraujospūdis, pykinimas, vėmimas.",
+    "pakuote": "Buteliukas 5 mg / 5 ml (1 mg/ml)\nAmpulės 5 mg / 1 ml (5 mg/ml)",
+    "pastabos": [
+      "Sukelia anterogradinę amneziją: pacientas neprisimena įvykių po vaisto suleidimo, paprastai iki 1 val."
+    ],
+    "susije": [
+      "ketaminas"
+    ],
+    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); PCS (midazolamas 5 mg/ml)",
     "nuorodos": [
       [
-        "PCS – rokuronio bromidas 10 mg/ml (JK eMC)",
-        "https://www.medicines.org.uk/emc/product/13173/smpc"
+        "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
+        "https://learning-media.allogy.com/api/v1/pdf/18ccfdfc-a076-47e9-8a34-376efdd81b43/contents"
+      ],
+      [
+        "Deployed Medicine – TCCC kolekcija (reikia prisijungti)",
+        "https://deployedmedicine.allogy.net/learner/collections/11"
+      ],
+      [
+        "PCS – midazolamas injekcinis (JK eMC)",
+        "https://www.medicines.org.uk/emc/product/6420/smpc"
+      ]
+    ]
+  },
+  {
+    "id": "naloksonas",
+    "name": "Naloksonas",
+    "klase": "Opioidų antagonistas",
+    "grupe": "retai",
+    "tipas": "pagr",
+    "ind": "Opioidų sukelto kvėpavimo slopinimo šalinimas.",
+    "kontra": "Alergija.",
+    "dozes": [
+      {
+        "k": "IV (PCS)",
+        "d": "0,1–0,2 mg, toliau po 0,1 mg kas 2 min",
+        "p": "Titruoti iki kvėpavimo dažnio > 10 k./min, neprarandant nuskausminimo. Skiedimas: 0,4 mg (1 ml) + 9 ml NaCl = 0,04 mg/ml; 0,1 mg = 2,5 ml."
+      },
+      {
+        "k": "IM (PCS)",
+        "d": "0,4 mg (iki 2 mg), kartoti kas 2–3 min",
+        "p": "Kai IV neįmanoma. Po 10 mg be atsako – peržiūrėti diagnozę."
+      },
+      {
+        "k": "Į nosį (Nyxoid)",
+        "d": "1,8 mg į vieną šnervę",
+        "p": "Nėra atsako – po 2–3 min kita šnerve."
+      }
+    ],
+    "ispejimai": [
+      "Veikia 1–4 val.; kai kurie opioidai – ilgiau: stebėti, ar neatsinaujina kvėpavimo slopinimas (PCS).",
+      "Per greitas atstatymas – abstinencija, hipertenzija, aritmijos, plaučių edema (PCS)."
+    ],
+    "pradzia": "1–2 min (į veną)\n2–5 min (į raumenis)",
+    "trukme": "1–4 val., priklauso nuo dozės (PCS)",
+    "salutinis": "Pykinimas, vėmimas, sujaudinimas, susilpnėjęs nuskausminimas.",
+    "pakuote": "Ampulės 0,4 mg / 1 ml (0,4 mg/ml)",
+    "pastabos": [
+      "TCCC 2026 naloksono nenumato."
+    ],
+    "susije": [
+      "morfinas",
+      "fentanilis"
+    ],
+    "saltinis": "PCS (naloksonas 400 mcg/ml, Nyxoid); ankstesnės TCCC gairės (ATP-P, JSOM)",
+    "nuorodos": [
+      [
+        "PCS – naloksonas 400 mcg/ml (JK eMC)",
+        "https://www.medicines.org.uk/emc/product/6589/smpc"
+      ],
+      [
+        "PCS – Nyxoid 1,8 mg nosies purškalas (JK eMC)",
+        "https://www.medicines.org.uk/emc/product/9292/smpc"
+      ],
+      [
+        "Ankstesnės TCCC gairės (ATP-P, JSOM) – naloksonas, ondansetronas",
+        "https://www.jsomonline.com/Library/Flipbook/ATPEng/files/basic-html/page25.html"
       ]
     ]
   }

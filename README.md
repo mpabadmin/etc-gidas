@@ -6,6 +6,7 @@ Adresas: https://etc.1040medkuopa.lt
 ## Režimai
 - **Taikymas** – Escape planai, vaidmenų (A, B, C) pirminės apžiūros sąrašai, laikai (trauma, turniketas, TXA iki), paciento svoris ir dažniausi vaistai su apskaičiuota doze.
 - **Mokymasis** – temos (pagrindai, A, B, C, antrinė apžiūra, vaistai), 48 įgūdžiai (aprašas, TCCC iliustracijos, esmė, žingsniai, dažnos klaidos, TCCC 2026, iki 2 vaizdo įrašų, TCCC įgūdžio kortelė, įsivertinimas), mokymosi puslapiai, paieška.
+- **Įrankiai** (`tools.js`, Taikymas → Greitai; Mokymasis → Įrankiai) – vizuali MIST kortelė (`#/mist`: kūno schema su žymėmis, požymių lentelė, gydymas, skaitymo režimas), 9-Line MEDEVAC (`#/9line`, GPS → MGRS, kaip March gide), GKS skaičiuoklė (`#/gks`, GCS at 40, GKS-P, perkėlimas į MIST), TST rūšiavimas (`#/tst`, NHS Ten Second Triage, skaičiavimas). Duomenys – tik telefone (`localStorage`: `etc-mist`, `etc-9line`, `etc-gks`, `etc-tst`).
 - **Įdiegimas** – instrukcija Android ir iPhone (#/idiegimas) su QR kodu.
 - **Pranešimai** – mygtukas viršuje: komentaras + ekrano vaizdas → Google lentelė (žr. `tools/ATSILIEPIMAI.md`).
 
@@ -13,7 +14,8 @@ Adresas: https://etc.1040medkuopa.lt
 | Failas | Kas jame |
 |---|---|
 | `sarasai.js` | Vaidmenys, kontroliniai sąrašai, Escape planai, mokymosi puslapiai, temos (`E.temos`) |
-| `vaistai.js` | Vaistai, grupės (`E.vaistuGrupes`), dozės ir skaičiuoklė |
+| `vaistai.js` | Vaistai, grupės (`E.vaistuGrupes`), dozės ir skaičiuoklė; tvarka – nuo dažniausiai naudojamų (nuskausminamieji) iki rečiausių (midazolamas, naloksonas) |
+| `tools.js` | Įrankiai: MIST kortelė, 9-Line MEDEVAC, GKS skaičiuoklė, TST rūšiavimas |
 | `igudziai.js` | Įgūdžiai: aprašas, esmė, žingsniai, klaidos, TCCC 2026, iliustracijos, video, kortelė, šaltiniai |
 | `img/tccc/` | TCCC (Joint Trauma System, Deployed Medicine) iliustracijos iš tccc.org.ua (WebP, 800 px) |
 | `img/logo-*.png`, `icon-*.png` | LŠS Vilniaus 1040 medicinos šaulių kuopos logotipas ir programėlės ženkliukai |

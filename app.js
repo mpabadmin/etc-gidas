@@ -4,7 +4,7 @@ const backBtn = document.getElementById('back');
 let depth = 0;
 const dec = s => { try { return decodeURIComponent(s); } catch (e) { return s; } };
 const newPt = () => '<button class="btn" data-act="new-pt" style="width:100%;margin-top:16px">Naujas pacientas – išvalyti žymėjimus</button>';
-const FB_PAGES = ['v', 's', 'vaistai', 'vaistas', 'igudis', 'tema', 'p'];
+const FB_PAGES = ['v', 's', 'vaistai', 'vaistas', 'igudis', 'tema', 'p', '9line', 'mist', 'gks', 'tst'];
 const fbLink = () => '<button class="btn fbrow" data-act="fb">Pastebėjote klaidą ar turite pasiūlymą? Praneškite</button>';
 
 function route() {
@@ -30,6 +30,10 @@ function view(p, q) {
     case 'paieska': return V.search(q.q || '');
     case 'nustatymai': return V.settings();
     case 'idiegimas': return V.install();
+    case '9line': return NL.view();
+    case 'mist': return MC.view();
+    case 'gks': return GK.view();
+    case 'tst': return TS.view();
     default: return notFound();
   }
 }
@@ -40,7 +44,7 @@ function render() {
   document.getElementById('mF').classList.toggle('on', mode === 'field');
   document.getElementById('mL').classList.toggle('on', mode === 'learn');
   backBtn.style.visibility = p.length ? 'visible' : 'hidden';
-  const sec = { vaistai: 'vaistai', vaistas: 'vaistai', igudziai: 'igudziai', igudis: 'igudziai', temos: 'temos', tema: 'temos', p: 'temos', sarasai: 'sarasai', s: 'sarasai', v: 'sarasai' }[p[0]] || (p.length ? '' : 'home');
+  const sec = { vaistai: 'vaistai', vaistas: 'vaistai', igudziai: 'igudziai', igudis: 'igudziai', temos: 'temos', tema: 'temos', p: 'temos', sarasai: 'sarasai', s: 'sarasai', v: 'sarasai', '9line': 'home', mist: 'home', gks: 'home', tst: 'home' }[p[0]] || (p.length ? '' : 'home');
   document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('on', a.dataset.s === sec));
   try { app.innerHTML = view(p, q) + (FB_PAGES.indexOf(p[0]) >= 0 ? fbLink() : ''); }
   catch (err) { console.error(err); app.innerHTML = '<h1>Klaida</h1><p class="muted">Nepavyko atidaryti puslapio. Patikrinkite turinio failus.</p>'; }
@@ -69,6 +73,11 @@ app.addEventListener('click', e => {
   const el = e.target.closest('[data-act]');
   if (!el) return;
   const d = el.dataset;
+  // Įrankiai (tools.js): 9-Line, MIST kortelė, GKS, TST
+  if (/^nl-/.test(d.act)) { NL.act(el); return; }
+  if (/^mc-/.test(d.act)) { MC.act(el, e); return; }
+  if (/^gk-/.test(d.act)) { GK.act(el); return; }
+  if (/^ts-/.test(d.act)) { TS.act(el); return; }
   switch (d.act) {
     case 'ck': ckToggle(d.l, +d.i); el.classList.toggle('on'); updCount(el.closest('.cl')); if (navigator.vibrate) navigator.vibrate(15); break;
     case 'go': location.hash = d.r; break;
@@ -121,10 +130,24 @@ app.addEventListener('click', e => {
   }
 });
 
-app.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.dataset && /^(yt|mp4)$/.test(e.target.dataset.act || '')) e.target.click(); });
+app.addEventListener('keydown', e => {
+  const t = e.target, a = t.dataset && t.dataset.act;
+  if (e.key === 'Enter' && /^(yt|mp4)$/.test(a || '')) t.click();
+  if ((e.key === 'Enter' || e.key === ' ') && a === 'mc-mdel' && !(t instanceof HTMLButtonElement)) { e.preventDefault(); MC.act(t, e); } // SVG žymė
+});
+
+// Įrankių laukai: įvedimas be perpiešimo (time laukams – ir 'change', nes kai kurios naršyklės 'input' nesiunčia)
+function toolInput(t) {
+  const d = t.dataset || {};
+  if (d.nl) { NL.onInput(t); return true; }
+  if (d.mc || d.mcf || d.mcm != null) { MC.onInput(t); return true; }
+  return false;
+}
+app.addEventListener('change', e => { if (e.target.type === 'time') toolInput(e.target); });
 
 app.addEventListener('input', e => {
   const t = e.target;
+  if (toolInput(t)) return;
   if (t.id !== 'q' && t.id !== 'qs') return;
   let res = document.getElementById('res');
   if (!res) { res = document.createElement('div'); res.id = 'res'; t.after(res); }

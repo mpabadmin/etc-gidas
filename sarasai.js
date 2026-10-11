@@ -11,7 +11,7 @@ const E = window.ETC;
 const KOMP = 'Pagal kompetenciją', MED = 'Medicinos personalui', GYD = 'Gydytojui', INT = 'Intubuojantiems gydytojams';
 const link = (href, t, s) => `<a class="row" href="${href}"><div>${t}${s ? '<small>' + s + '</small>' : ''}</div><span class="ar">›</span></a>`;
 
-E.versija = '2026-10-09 v12 (įgūdžių turinys perrašytas pagal ETC: žingsniai pirmiausia, be TCCC intarpų; tik tikslios iliustracijos ir praktiniai video)';
+E.versija = '2026-10-11 v13 (MIST kortelė, 9-Line, GKS skaičiuoklė, TST; vaistai pagal naudojimo dažnį)';
 // Pranešimų priėmimo adresas: Google Apps Script žiniatinklio programos /exec URL (žr. tools/atsiliepimai.gs)
 E.atsiliepimai = { url: 'https://script.google.com/macros/s/AKfycbyUpzDmAClJ40FMltkHi21Ozc4PpItRr3u6yy4rU0DKNGe7JkRBnOr0y42wLwpJcBau/exec' };
 
@@ -472,20 +472,20 @@ E.puslapiai = {
     html: '<div class="warn">Medicinos personalui. Tai paruošimo atmintinė iš ETC įgūdžių lentelių – vaistą ir dozę skiria gydytojas. Pastabos „PCS“ – iš gamintojo preparato charakteristikų santraukos. Pagrindinės dozės – vaisto puslapyje.</div>' +
       '<h3>IV boliusu</h3>' +
       sk('Ketaminas – sedacija', '10 ml švirkštas: 250 mg (5 ml × 50 mg/ml) + 5 ml NaCl = 25 mg/ml', '1–2 mg/kg, lėtai. Esant šokui – dozė mažinama 50 %. Jei ampulė 100 mg/ml – koncentracija bus kita.') +
-      sk('Rokuroniumas', '10 ml švirkštas: 100 mg, neskiestas = 10 mg/ml', '0,5–1,5 mg/kg. PCS: intubacijai 0,6 mg/kg, greitosios sekos indukcijai 1,0 mg/kg.') +
-      sk('Traneksamo rūgštis', '2000 mg į 100 ml arba 250 ml NaCl', '2 g infuzija. PCS – ne greičiau kaip 1 ml/min 100 mg/ml tirpalo (100 mg/min; 2 g – ne trumpiau kaip 20 min). TCCC 2026 – 2 g lėta IV / IO injekcija.') +
       sk('Fentanilis', '2 ml švirkštas: 100 mcg, neskiestas = 50 mcg/ml', '0,5–1 mcg/kg, lėtai') +
       sk('Morfinas', '10 ml švirkštas: 10 mg + 9 ml NaCl = 1 mg/ml', '0,1 mg/kg') +
+      sk('Traneksamo rūgštis', '2000 mg į 100 ml arba 250 ml NaCl', '2 g infuzija. PCS – ne greičiau kaip 1 ml/min 100 mg/ml tirpalo (100 mg/min; 2 g – ne trumpiau kaip 20 min). TCCC 2026 – 2 g lėta IV / IO injekcija.') +
       sk('Kalcio gliukonatas', '3 g (30 ml 10 %) į 250 ml NaCl', '3 g infuzija. PCS – ne greičiau kaip 0,45 mmol/min (ne trumpiau kaip 15 min). Nemaišyti su bikarbonatu, fosfatais, ceftriaksonu.') +
-      sk('Naloksonas', '10 ml švirkštas: 0,4 mg + 9 ml NaCl = 0,04 mg/ml', 'Po 0,2 mg (5 ml) kas 2–3 min iki efekto. Maks. 2 mg (PCS – jei po 10 mg nėra atsako, peržiūrėti diagnozę).') +
       sk('Ondansetronas', '20 ml švirkštas: 8 mg + 16 ml NaCl = 0,4 mg/ml', 'Suleisti lėtai IV – ne greičiau kaip per 30 s (PCS).') +
       sk('Metoklopramidas', '10 ml švirkštas: 10 mg + 8 ml NaCl = 1 mg/ml', 'Suleisti lėtai IV – ne trumpiau kaip per 3 min (PCS).') +
+      sk('Rokuroniumas', '10 ml švirkštas: 100 mg, neskiestas = 10 mg/ml', '0,5–1,5 mg/kg. PCS: intubacijai 0,6 mg/kg, greitosios sekos indukcijai 1,0 mg/kg.') +
       sk('Atropinas', '10 ml švirkštas: 1 mg (ampulė 1 mg / 1 ml) + 9 ml NaCl = 0,1 mg/ml', 'Po 0,5 mg kas 1–2 min, iki 3 mg') +
+      sk('Naloksonas', '10 ml švirkštas: 0,4 mg + 9 ml NaCl = 0,04 mg/ml', 'Po 0,2 mg (5 ml) kas 2–3 min iki efekto. Maks. 2 mg (PCS – jei po 10 mg nėra atsako, peržiūrėti diagnozę).') +
       '<h3>IV per infuzomatą</h3>' +
-      sk('Noradrenalinas', '50 ml švirkštas: 4 mg + 46 ml 5 % gliukozės = 80 mcg/ml', '0,1–1 mcg/kg/min. Maždaug nuo 6 ml/val., maks. 50 ml/val. (apskaičiuota ~80 kg pacientui). PCS: 2 mg + 48 ml 5 % gliukozės = 40 mcg/ml, pradinis greitis 10–20 ml/val. – tikrinkite, kurį tirpalą ruošiate. Per centrinę veną.') +
       sk('Ketaminas', '50 ml švirkštas: 500 mg + 40 ml NaCl = 10 mg/ml', 'Nuo 0,5 mg/kg/val. (~100 kg pacientui – maždaug nuo 5 ml/val.)') +
-      sk('Morfinas', '10 ml švirkštas: 10 mg + 9 ml NaCl = 1 mg/ml', 'Pradinis 1–2 mg/val. (1–2 ml/val.)') +
       sk('Fentanilis', '50 ml švirkštas: 1000 mcg + 30 ml NaCl = 20 mcg/ml', '1–3 mcg/kg/val. (~100 kg pacientui – maždaug nuo 5 ml/val.)') +
+      sk('Morfinas', '10 ml švirkštas: 10 mg + 9 ml NaCl = 1 mg/ml', 'Pradinis 1–2 mg/val. (1–2 ml/val.)') +
+      sk('Noradrenalinas', '50 ml švirkštas: 4 mg + 46 ml 5 % gliukozės = 80 mcg/ml', '0,1–1 mcg/kg/min. Maždaug nuo 6 ml/val., maks. 50 ml/val. (apskaičiuota ~80 kg pacientui). PCS: 2 mg + 48 ml 5 % gliukozės = 40 mcg/ml, pradinis greitis 10–20 ml/val. – tikrinkite, kurį tirpalą ruošiate. Per centrinę veną.') +
       '<p class="muted">Pagrindinės dozės – vaisto puslapyje (TCCC 2026 / PCS). Šių ETC lentelių dozės kai kur skiriasi – jei skiriasi, vadovaukitės vaisto puslapiu.</p>' +
       link('#/vaistai', 'Visi vaistai') + link('#/igudis/24', 'Įgūdis #24 – IV vaistų paruošimas') + link('#/igudis/25', 'Įgūdis #25 – infuzomatas'),
     saltinis: 'ETC įgūdžių lapas (Vaistai IV boliusu, Vaistai IV per infuzomatą); gamintojų PCS (JK eMC); TCCC gairės 2026-05-01'
@@ -501,7 +501,7 @@ E.puslapiai = {
       '<h3>Kur sustoti</h3><ul><li><b>Ketaminas:</b> sumažėjęs skausmas arba atsiradęs nistagmas.</li><li><b>Opioidai:</b> skyrimas nutraukiamas, kai kvėpavimo dažnis &lt; 10 k./min (kuopos kortelė).</li><li><b>Naloksonas:</b> po 0,1 mg kas 2 min iki kvėpavimo dažnio &gt; 10 k./min, neprarandant nuskausminimo (PCS).</li></ul>' +
       '<h3>Ypač atsargiai, kai yra</h3><ul><li>sumažėjęs sąmonės lygis</li><li>kvėpavimo sutrikimas</li><li>šokas – vaisto poveikis gali gerokai vėluoti; opioidų dozes mažinti</li><li>hipotermija</li><li>apsinuodijimas (alkoholis, narkotikai)</li><li>senyvas amžius</li></ul>' +
       '<h3>Be vaistų</h3><ul><li>Palaikykite akių ir fizinį kontaktą, paaiškinkite, kas vyksta, įspėkite prieš skausmingą procedūrą, saugokite orumą.</li><li>Kuo anksčiau imobilizuokite lūžius.</li><li>Uždenkite nudegimus.</li><li>Kuo anksčiau nukelkite nuo kietų neštuvų / lentų.</li><li>Šildykite – drebulys stiprina skausmą.</li><li>Procedūroms (drenas, lūžių manipuliacijos) – vietinė ar regioninė nejautra pagal kompetenciją.</li></ul>' +
-      link('#/vaistas/ketaminas', 'Ketaminas') + link('#/vaistas/paracetamolis', 'Paracetamolis') + link('#/vaistas/meloksikamas', 'Meloksikamas') + link('#/vaistas/morfinas', 'Morfinas') + link('#/vaistas/fentanilis', 'Fentanilis') + link('#/vaistas/naloksonas', 'Naloksonas') + link('#/vaistas/ondansetronas', 'Ondansetronas') + link('#/igudis/43', 'Įgūdis #43: skausmo vertinimas ir malšinimas'),
+      link('#/vaistas/ketaminas', 'Ketaminas') + link('#/vaistas/fentanilis', 'Fentanilis') + link('#/vaistas/morfinas', 'Morfinas') + link('#/vaistas/paracetamolis', 'Paracetamolis') + link('#/vaistas/meloksikamas', 'Meloksikamas') + link('#/vaistas/ondansetronas', 'Ondansetronas') + link('#/vaistas/naloksonas', 'Naloksonas') + link('#/igudis/43', 'Įgūdis #43: skausmo vertinimas ir malšinimas'),
     saltinis: 'ETC vadovas 4.1, 2 sk. „Analgezija“ (2.3 lentelė); TCCC gairės 2026-05-01 (Deployed Medicine) ir gamintojų PCS – dozės; kuopos vaistų kortelės'
   }
 };
@@ -514,18 +514,18 @@ E.temos = [
     puslapiai: ['eiga', 'isdestymas', 'komunikacija'], sarasai: ['a-pas', 'atmist', 'stop', 'komanda', 'kokybe'], igudziai: [1, 41, 46], vaistai: [] },
   { id: 'a', zenklas: 'A', cls: 'rA', pav: 'A – kvėpavimo takai ir neurologija', sub: 'Kvėpavimo takai, deguonis, intubacija, sąmonė',
     apie: 'A narys užtikrina kvėpavimo takus saugodamas kaklą, deguonį ir ventiliaciją, vertina neurologiją (D) ir vadovauja komandai.',
-    puslapiai: ['kvepavimas'], sarasai: ['esc-kt', 'a-pir', 'a-plan'], igudziai: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 18], vaistai: ['ketaminas', 'midazolamas', 'rokuroniumas'] },
+    puslapiai: ['kvepavimas'], sarasai: ['esc-kt', 'a-pir', 'a-plan'], igudziai: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 18], vaistai: ['ketaminas', 'rokuroniumas', 'midazolamas'] },
   { id: 'b', zenklas: 'B', cls: 'rB', pav: 'B – kvėpavimas ir apžiūra', sub: 'Krūtinė, drenavimas, e-FAST, dubuo, hipotermija',
     apie: 'B narys per ≤ 2 min apžiūri kaklą, krūtinę, pilvą, dubenį, tarpvietę ir galūnes, atmeta 6 gyvybei pavojingas krūtinės būkles, su C apverčia pacientą ir apžiūri nugarą prieš e-FAST.',
     puslapiai: ['kvepavimas'], sarasai: ['b-pir'], igudziai: [13, 37, 38, 14, 15, 16, 17, 20, 19], vaistai: [] },
   { id: 'c', zenklas: 'C', cls: 'rC', pav: 'C – kraujotaka ir šokas', sub: 'PVK / IO, kraujas, vaistai, infuzijos',
     apie: 'C narys iškart įveda PVK ar IO, nustato kraujo grupę ir gliukozę, vertina šoką, ruošia vaistus ir kraujo komponentus.',
-    puslapiai: ['kraujas', 'skiedimas'], sarasai: ['esc-kraujas', 'esc-tss', 'c-pir'], igudziai: [35, 36, 40, 21, 22, 23, 26, 27, 39], vaistai: ['txa', 'kalcis', 'noradrenalinas', 'nacl-hipert'] },
+    puslapiai: ['kraujas', 'skiedimas'], sarasai: ['esc-kraujas', 'esc-tss', 'c-pir'], igudziai: [35, 36, 40, 21, 22, 23, 26, 27, 39], vaistai: ['txa', 'kalcis', 'nacl-hipert', 'noradrenalinas'] },
   { id: 'antrine', zenklas: 'D/E', pav: 'Antrinė apžiūra', sub: 'Nuo galvos iki kojų: veidas, akys, kaklas, žaizdos, galūnės',
     apie: 'Sistemingai nuo galvos iki kojų, iš priekio ir nugaros; anamnezė AMPLE; neatlikti elementai įrašomi į problemų sąrašą.',
-    puslapiai: [], sarasai: ['antrine', 'a-ant', 'b-ant', 'c-ant'], igudziai: [42, 44, 45, 28, 29, 30, 31, 32, 33, 48, 34], vaistai: ['cefadroksilis', 'ceftriaksonas'] },
+    puslapiai: [], sarasai: ['antrine', 'a-ant', 'b-ant', 'c-ant'], igudziai: [42, 44, 45, 28, 29, 30, 31, 32, 33, 48, 34], vaistai: ['ceftriaksonas', 'cefadroksilis'] },
   { id: 'vaistai', zenklas: 'Rx', pav: 'Vaistai ir skausmas', sub: 'Dozės, skausmo malšinimas, skiedimas',
     apie: 'Viena dozavimo schema – pagal TCCC 2026 gaires, gamintojo PCS ir ERC.',
-    puslapiai: ['skausmas', 'skiedimas'], sarasai: [], igudziai: [43, 47, 24, 25, 27], vaistai: ['txa', 'ketaminas', 'paracetamolis', 'meloksikamas', 'ondansetronas', 'ceftriaksonas'] }
+    puslapiai: ['skausmas', 'skiedimas'], sarasai: [], igudziai: [43, 47, 24, 25, 27], vaistai: ['ketaminas', 'paracetamolis', 'meloksikamas', 'txa', 'ceftriaksonas', 'ondansetronas'] }
 ];
 })();

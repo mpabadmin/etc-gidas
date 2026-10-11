@@ -36,6 +36,10 @@ const videos = a => (a || []).length ? '<h2>Vaizdo įrašai</h2>' + a.map(videoH
 const brand = () => '<div class="brand"><img class="lg-d" src="img/logo-balt.png" alt="LŠS Vilniaus 1040 medicinos šaulių kuopa"><img class="lg-l" src="img/logo-juod.png" alt="LŠS Vilniaus 1040 medicinos šaulių kuopa"></div>';
 const installed = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone;
 const installRow = () => installed() ? '' : row('#/idiegimas', 'Įdiekite programėlę telefone', 'Android ir iPhone – 1 minutė, veikia be interneto');
+// Įrankiai (tools.js): būsena rodoma po pavadinimu
+const toolRows = () => typeof MC === 'undefined' ? '' :
+  row('#/mist', 'MIST kortelė', MC.status()) + row('#/9line', '9-Line MEDEVAC', NL.status()) +
+  row('#/gks', 'GKS skaičiuoklė', GK.status()) + row('#/tst', 'TST rūšiavimas', TS.status());
 
 const GRUPES = [['K', 'Komanda, apžiūra ir pervežimas'], ['A', 'A – kvėpavimo takai ir neurologija'], ['B', 'B – kvėpavimas, krūtinė, dubuo'], ['C', 'C – kraujavimas ir kraujotaka'], ['S', 'D/E – galva, antrinė apžiūra, žaizdos'], ['V', 'Vaistai ir skausmas']];
 const grupesPav = g => (GRUPES.find(x => x[0] === g) || ['', ''])[1];
@@ -59,7 +63,7 @@ const V = {
 
   homeField() {
     const P = E.puslapiai || {}, w = LS.get('etc-svoris', 80);
-    const quick = ['txa', 'ketaminas', 'kalcis', 'paracetamolis', 'ondansetronas', 'nacl-hipert'].map(drugById).filter(v => v && ok(v.kam));
+    const quick = ['ketaminas', 'fentanilis', 'txa', 'kalcis', 'paracetamolis', 'ceftriaksonas', 'ondansetronas'].map(drugById).filter(v => v && ok(v.kam));
     return brand() + disclaimer() +
       '<h2>Escape planas</h2>' + V.escRows() +
       '<h2>Mano vaidmuo – pirminė apžiūra</h2>' + V.roles(true) +
@@ -67,7 +71,7 @@ const V = {
       '<h2>Paciento svoris, kg</h2>' + wChips(w) +
       '<h2>Dažniausi vaistai</h2>' + quick.map(v => row('#/vaistas/' + v.id, v.name, doseShort(v, w), v.tccc26 ? '<span class="tag grn">TCCC</span>' : '')).join('') +
       row('#/vaistai', 'Visi vaistai', (E.vaistai || []).length + ' vaistai pagal paskirtį') +
-      '<h2>Greitai</h2>' +
+      '<h2>Greitai</h2>' + toolRows() +
       row('#/s/stop', 'STOP · 10 už 10') +
       row('#/s/antrine', 'Antrinė apžiūra nuo galvos iki kojų') +
       row('#/s/kokybe', 'Gydymo tikslai ir kokybė') +
@@ -83,6 +87,7 @@ const V = {
       `<a class="card prog-card" href="#/igudziai"><b>Mano pažanga</b><div class="muted">Įsivertinta ${rated} / ${n} įgūdžių · atlieku (3–4) – ${good}</div>${progBar(rated, n)}</a>` +
       '<h2>Temos</h2>' + V.topicCards() +
       '<h2>Komandos vaidmenys</h2>' + V.roles(false) +
+      '<h2>Įrankiai</h2>' + toolRows() +
       '<h2>Viskas vienoje vietoje</h2>' +
       row('#/sarasai', 'Kontroliniai sąrašai', 'Escape planai, A, B, C, antrinė apžiūra, STOP') +
       row('#/igudziai', 'Įgūdžiai', n + ' įgūdžiai: žingsniai, svarbiausi priminimai, praktiniai video') +
