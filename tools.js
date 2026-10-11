@@ -611,8 +611,10 @@ const TS = (() => {
   };
   const CAT = { p1: ['P1', 'Neatidėliotina', 'tp1'], p2: ['P2', 'Skubi', 'tp2'], p3: ['P3', 'Gali palaukti / vaikšto', 'tp3'], nb: ['NEKVĖPUOJA', 'Gaivinimas – tik jei leidžia ištekliai', 'tnb'] };
   const KS = ['p1', 'p2', 'p3', 'nb'];
+  const STALE = 15 * 60e3; // po 15 min neveiklumo eiga pradedama nuo 1 klausimo (skaičiavimas lieka)
+  let shownAt = 0;         // apsauga nuo atsitiktinio dvigubo bakstelėjimo
   const def = () => ({ st: 'q1', path: [], res: null, n: { p1: 0, p2: 0, p3: 0, nb: 0 } });
-  function get() {
+  function get(noStale) {
     const raw = LS.get(KEY, null), s = Object.assign(def(), raw && typeof raw === 'object' ? raw : {});
     if (!Q[s.st]) s.st = 'q1';
     if (!Array.isArray(s.path)) s.path = [];
@@ -620,6 +622,7 @@ const TS = (() => {
     s.n = Object.assign(def().n, s.n && typeof s.n === 'object' ? s.n : {});
     KS.forEach(k => { s.n[k] = Math.max(0, Math.min(999, parseInt(s.n[k], 10) || 0)); });
     if (s.res && !CAT[s.res.c]) s.res = null;
+    if (!noStale && (s.st !== 'q1' || s.res || s.path.length) && !(s.at > Date.now() - STALE)) { s.st = 'q1'; s.path = []; s.res = null; save(s); }
     return s;
   }
   const save = s => LS.set(KEY, s);
@@ -635,8 +638,8 @@ const TS = (() => {
       const C = CAT[s.res.c];
       return `<section class="tres ${C[2]}" aria-live="polite"><div class="trc">${C[0]}</div><div class="trn">${esc(C[1])}</div>` +
         (s.res.a ? `<div class="tra">Veiksmai: ${esc(s.res.a)}</div>` : '') + `<div class="trw">${esc(why(s))}</div>` +
-        `<button class="trnext" data-act="ts-next">Kitas sužeistasis ›</button><button class="btn tbk" data-act="ts-back">‹ Atgal – taisyti atsakymą</button>` +
-        `<div class="trw">Pridėta prie skaičiavimo: ${C[0] === 'NEKVĖPUOJA' ? 'Nekvėpuoja' : C[0]} = ${s.n[s.res.c]}</div></section>`;
+        `<div class="trw">Pridėta prie skaičiavimo: ${C[0] === 'NEKVĖPUOJA' ? 'Nekvėpuoja' : C[0]} = ${s.n[s.res.c]}</div>` +
+        `<button class="trnext" data-act="ts-next">Kitas sužeistasis ›</button><button class="btn tbk" data-act="ts-back">‹ Atgal – taisyti atsakymą</button></section>`;
     }
     const q = Q[s.st];
     return `<section class="tq" aria-live="polite"><div class="tqh"><span class="tqn">Klausimas ${q.n}</span>` +
@@ -663,8 +666,9 @@ const TS = (() => {
   function view() {
     const s = get(), learn = mode === 'learn';
     let h = '<h1>TST – rūšiavimas per 10 sekundžių</h1>';
-    if (learn) h += '<div class="card">Ten Second Triage (TST) – Jungtinės Karalystės civilinė masinių nelaimių rūšiavimo priemonė (NHS England, 2023), pakeitusi ankstesnį „triage sieve“. Ją gali taikyti bet kuris pirmasis atvykęs reaguotojas: keli paprasti klausimai, apie 10 sekundžių vienam sužeistajam, be fiziologinių matavimų. Mūsų darbe galioja vietinės SOP ir TCCC rūšiavimo kategorijos – TST yra pagalbinė atmintinė.</div>';
+    shownAt = Date.now();
     h += card(s) + tally(s) + flow(s);
+    if (learn) h += '<div class="card">Ten Second Triage (TST) – Jungtinės Karalystės civilinė masinių nelaimių rūšiavimo priemonė (NHS England, 2023), pakeitusi ankstesnį „triage sieve“. Ją gali taikyti bet kuris pirmasis atvykęs reaguotojas: keli paprasti klausimai, apie 10 sekundžių vienam sužeistajam, be fiziologinių matavimų. Mūsų darbe galioja vietinės SOP ir TCCC rūšiavimo kategorijos – TST yra pagalbinė atmintinė.</div>';
     h += '<div class="card"><b>Svarbu</b><ul class="tnotes"><li>Vaikas, kuris dar nekalba – atsakykite „nekalba“ (→ 4 klausimas).</li><li>TST nenaudoja fiziologinių matavimų (pulso, KD, kapiliarų prisipildymo).</li><li>Skirta vienam vertintojui.</li><li>Po rūšiavimo kartokite – pakartotinis rūšiavimas, būklė keičiasi.</li></ul></div>';
     if (learn) h += '<p class="muted">Šaltiniai: NHS England, Ten Second Triage tool (2023 m. balandis); Vassallo J. et al. The Ten Second Triage tool. Trauma 2023.</p>' +
       '<a class="row" href="https://www.england.nhs.uk/long-read/ten-second-triage-tool/" target="_blank" rel="noopener"><div>Ten Second Triage tool<small>NHS England</small></div><span class="ar">↗</span></a>' +
@@ -672,7 +676,9 @@ const TS = (() => {
     return h;
   }
   function act(el) {
-    const s = get(), d = el.dataset, k = d.k;
+    const s = get(true), d = el.dataset, k = d.k;
+    if ((d.act === 'ts-ans' || d.act === 'ts-next' || d.act === 'ts-back') && Date.now() - shownAt < 450) return;
+    s.at = Date.now();
     switch (d.act) {
       case 'ts-ans': {
         if (s.res) return;
@@ -693,7 +699,7 @@ const TS = (() => {
       default: return;
     }
     save(s);
-    const y = scrollY; render();
+    const y = scrollY; render(); shownAt = Date.now();
     if (d.act === 'ts-ans' || d.act === 'ts-next' || d.act === 'ts-back') { const c = app.querySelector('.tq, .tres'); if (c && c.getBoundingClientRect().top < 0) c.scrollIntoView({ block: 'start' }); else scrollTo(0, y); }
     else scrollTo(0, y);
   }
