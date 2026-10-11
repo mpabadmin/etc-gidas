@@ -223,6 +223,16 @@ details.alt .tw table{font-size:13px}
 .vt td.ab{color:var(--abn);font-weight:800}
 .vt .vdel td,.vt .vdel th{padding:2px;border-bottom:0}.vt .vdel .x{width:40px;height:40px;font-size:18px}
 .vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+/* keli sužeistieji: skirtukai virš MIST kortelės */
+.ptabs{position:relative;display:flex;gap:6px;overflow-x:auto;margin:0 -12px 10px;padding:2px 12px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.ptabs::-webkit-scrollbar{display:none}
+.ptabs button{flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:52px;min-height:48px;border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:12px;padding:4px 12px;font:inherit;font-size:18px;font-weight:800;line-height:1.1;touch-action:manipulation}
+.ptabs button small{display:block;max-width:9em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;font-weight:600;color:var(--tx2)}
+.ptabs button.on{background:var(--tx);color:var(--bg);border-color:var(--tx)}.ptabs button.on small{color:var(--bg);opacity:.85}
+.ptabs .add{position:sticky;right:0;background:var(--accbg);color:var(--acc);border-color:var(--accbg);font-size:26px;font-weight:700;box-shadow:-6px 0 0 var(--bg)}
+@media(max-width:360px){.mcid .in2{grid-template-columns:1fr}}
+.outp .nlh small{flex:none}
+.rdacts{margin:14px 0 4px}
 /* GKS */
 .gsec .nlh small{font-weight:800;color:var(--acc);font-size:15px}
 .gopt{display:flex;align-items:center;gap:12px;width:100%;min-height:52px;padding:6px 12px 6px 6px;margin:6px 0 0;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--tx);font:inherit;text-align:left;line-height:1.25}
@@ -244,7 +254,7 @@ details.alt .tw table{font-size:13px}
 .yn{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
 .yn button{min-height:92px;border-radius:14px;font:inherit;font-size:28px;font-weight:800;letter-spacing:1px;border:2px solid var(--tx);cursor:pointer}
 .yn .yes{background:var(--tx);color:var(--bg)}.yn .no{background:var(--card);color:var(--tx)}
-.yn button,.trnext,.tres .tbk,.tlr button{touch-action:manipulation}.trnext{margin-top:22px}
+.yn button,.trnext,.tres .tbk,.tlr button,.tchild{touch-action:manipulation}.tchild{display:block;width:100%;margin-top:10px}.fchild{margin:8px 0 0}.trnext{margin-top:22px}
 .tres{border-radius:16px;padding:16px 14px;margin:0 0 12px;text-align:center}
 .trc{font-size:58px;font-weight:900;line-height:1;letter-spacing:1px}
 .tnb .trc{font-size:36px}

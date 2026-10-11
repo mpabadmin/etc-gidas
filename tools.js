@@ -1,6 +1,17 @@
 'use strict';
-// ETC kišeninis gidas – įrankiai: 9 eilučių MEDEVAC prašymas (NL, perkelta iš March gido), vizuali MIST kortelė (MC),
-// GKS skaičiuoklė (GK), Ten Second Triage rūšiavimas (TS). Bendri pagalbininkai: MGRS, kopijavimas, bendrinimas, skaitymo režimas.
+// ETC kišeninis gidas – įrankiai: 9 eilučių MEDEVAC prašymas (NL, perkelta iš March gido), vizuali MIST kortelė su keliais sužeistaisiais (MC),
+// GKS skaičiuoklė (GK), Ten Second Triage rūšiavimas (TS). NL, MC ir GK kodas toks pat kaip March gide – skiriasi tik TCFG.
+
+// ───────── Programėlės nustatymai (vienintelis NL / MC / GK kodo skirtumas tarp ETC ir March gido) ─────────
+const TCFG = {
+  pre: 'etc-',          // localStorage raktų prefiksas
+  laikai: 'etc-laikai', // pradžios ekrano laikmačiai { trauma, turn }
+  // nuorodos puslapių apačioje: [adresas, pavadinimas, paantraštė]
+  nl: () => [['#/mist', 'MIST kortelė', MC.status()], ['#/igudis/46', 'Pasiruošimas pervežimui ir perdavimas', 'Įgūdis #46']],
+  mc: () => [['#/gks', 'GKS skaičiuoklė', GK.status()], ['#/9line', '9-Line MEDEVAC', NL.status()], ['#/s/atmist', 'ATMIST perdavimas', 'Kontrolinis sąrašas'], ['#/igudis/46', 'Pasiruošimas pervežimui ir perdavimas', 'Įgūdis #46']],
+  gk: () => [['#/mist', 'MIST kortelė', MC.status()], ['#/igudis/12', 'Vyzdžiai, AVPU, galūnių simetrija ir GKS', 'Įgūdis #12']],
+  migrate: null // ankstesnių formatų perkėlimas (ETC – nereikia; vienos kortelės formatą perkelia MC)
+};
 
 // ───────── WGS84 → MGRS (8 skaitmenų = 10 m tikslumas) ─────────
 function toMGRS(lat, lon, digits) {
@@ -52,16 +63,23 @@ function shareText(title, t) {
   if (navigator.share) navigator.share({ title, text: t }).catch(() => {});
   else copyText(t);
 }
-function readMode(title, lines) {
+// Skaitymo režimas per visą ekraną; btns – papildomi mygtukai apačioje: [[pavadinimas, funkcija], …]
+function readMode(title, lines, btns) {
   let el = document.getElementById('rd');
   if (!el) {
     el = document.createElement('div'); el.id = 'rd'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true');
-    el.addEventListener('click', e => { if (e.target.closest('[data-rd=x]')) closeRead(); });
+    el.addEventListener('click', e => {
+      const b = e.target.closest('[data-rd]'); if (!b) return;
+      if (b.dataset.rd === 'x') closeRead(); else { const f = (el.rdBtns || [])[+b.dataset.rd]; if (f) f[1](); }
+    });
     document.body.appendChild(el);
   }
+  el.rdBtns = Array.isArray(btns) ? btns : [];
   el.setAttribute('aria-label', title);
   el.innerHTML = `<div class="rdp"><div class="rdh"><b>${esc(title)}</b><button class="ib" data-rd="x" aria-label="Uždaryti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>` +
-    lines.map(x => `<div class="rdl">${x}</div>`).join('') + '<p class="muted">Uždaryti – ✕ arba mygtukas „Atgal“.</p></div>';
+    lines.map(x => `<div class="rdl">${x}</div>`).join('') +
+    (el.rdBtns.length ? '<div class="acts rdacts">' + el.rdBtns.map((b, i) => `<button class="btn" data-rd="${i}">${esc(b[0])}</button>`).join('') + '</div>' : '') +
+    '<p class="muted">Uždaryti – ✕ arba mygtukas „Atgal“.</p></div>';
   el.hidden = false; document.documentElement.classList.add('fbopen');
   try { history.pushState(Object.assign({}, history.state, { rd: 1 }), ''); } catch (e) {}
   const x = el.querySelector('[data-rd=x]'); if (x) x.focus();
@@ -79,17 +97,21 @@ const nowHM = () => hm(Date.now());
 // Lietuviškos daugiskaitos formos: plural(3, ['žymė', 'žymės', 'žymių']) → '3 žymės'
 const plural = (n, f) => n + ' ' + (n % 10 === 1 && n % 100 !== 11 ? f[0] : n % 10 >= 2 && (n % 100 < 10 || n % 100 >= 20) ? f[1] : f[2]);
 const HM_RE = /^([01]\d|2[0-3]):[0-5]\d$/;
+// Nuorodos įrankių puslapių apačioje (TCFG.nl / mc / gk): [adresas, pavadinimas, paantraštė]
+const tcfgRows = a => (a || []).map(x => row(x[0], x[1], x[2])).join('');
 
-// ───────── 9 eilučių MEDEVAC (turinys ir MGRS – kaip March gide) ─────────
+// ───────── 9 eilučių MEDEVAC (turinys ir MGRS – vienodi ETC ir March giduose) ─────────
 const NL = (() => {
-  const KEY = 'etc-9line';
+  const KEY = TCFG.pre + '9line';
   const def = () => ({ peace: false, l1: '', freq: '', cs: '', sfx: '', p: { A: 0, B: 0, C: 0, D: 0, E: 0 }, eq: [], lit: 0, amb: 0, sec: '', wounds: '', mark: '', markTxt: '', nat: { A: 0, B: 0, C: 0, D: 0, E: 0 }, cbrn: [], terrain: '' });
+  const num99 = v => Math.max(0, Math.min(99, parseInt(v, 10) || 0));
   const get = () => {
-    const raw = LS.get(KEY, {}), d = def(), s = Object.assign(d, raw && typeof raw === 'object' ? raw : {});
+    const raw = LS.get(KEY, {}), d = def(), s = Object.assign(d, raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {});
     ['l1', 'freq', 'cs', 'sfx', 'sec', 'wounds', 'mark', 'markTxt', 'terrain'].forEach(k => { if (typeof s[k] !== 'string') s[k] = s[k] == null ? '' : String(s[k]); });
-    ['eq', 'cbrn'].forEach(k => { if (!Array.isArray(s[k])) s[k] = []; });
-    s.lit = +s.lit || 0; s.amb = +s.amb || 0; s.peace = !!s.peace;
-    s.p = Object.assign(def().p, s.p); s.nat = Object.assign(def().nat, s.nat); return s;
+    ['eq', 'cbrn'].forEach(k => { s[k] = Array.isArray(s[k]) ? s[k].filter(x => typeof x === 'string') : []; });
+    s.lit = num99(s.lit); s.amb = num99(s.amb); s.peace = !!s.peace;
+    ['p', 'nat'].forEach(g => { const o = s[g] && typeof s[g] === 'object' ? s[g] : {}; s[g] = def()[g]; Object.keys(s[g]).forEach(k => { s[g][k] = num99(o[k]); }); });
+    return s;
   };
   const save = s => LS.set(KEY, s);
   const PREC = [['A', 'Skubi', 'Urgent'], ['B', 'Skubi chirurginė', 'Urgent surgical'], ['C', 'Prioritetinė', 'Priority'], ['D', 'Įprastinė', 'Routine'], ['E', 'Patogumo', 'Convenience']];
@@ -168,7 +190,7 @@ const NL = (() => {
       : card(9, s, '<div class="opts">' + CBRN.map(([k, t]) => chip('nl-cbrn', k, s.cbrn.indexOf(k) >= 0, (k === '-' ? '' : k + ' – ') + t)).join('') + '</div>');
     h += `<section class="outp"><div class="nlh"><b>Perduoti</b></div><pre id="nl-out">${esc(text(s))}</pre>` +
       '<div class="acts"><button class="btn pri" data-act="nl-read">Skaityti per radiją</button><button class="btn" data-act="nl-copy">Kopijuoti</button><button class="btn" data-act="nl-share">Bendrinti</button><button class="btn" data-act="nl-clear">Išvalyti</button></div></section>';
-    h += row('#/mist', 'MIST kortelė', MC.status()) + row('#/igudis/46', 'Pasiruošimas pervežimui ir perdavimas', 'Įgūdis #46');
+    h += tcfgRows(TCFG.nl());
     return h;
   }
 
@@ -213,33 +235,63 @@ const NL = (() => {
   return { view, act, onInput, status, lines, text };
 })();
 
-// ───────── MIST kortelė (vizuali: kūno schema, požymių lentelė) ─────────
+// ───────── MIST kortelė (vizuali: kūno schema, požymių lentelė; keli sužeistieji – kiekvienam sava kortelė) ─────────
 const MC = (() => {
-  const KEY = 'etc-mist';
+  const KEY = TCFG.pre + 'mist';
   const MECH = ['Šautinė žaizda', 'Skeveldros', 'Sprogimas', 'Bukas sužalojimas', 'Nudegimas', 'Kritimas', 'Eismo įvykis', 'Kita'];
   // Žymės: [raktas, raidė, pavadinimas, spalva, raidės spalva]
   const MK = [['Z', 'Ž', 'Žaizda', '#C2410C', '#fff'], ['K', 'K', 'Kraujavimas', '#C0182B', '#fff'], ['L', 'L', 'Lūžis', '#1D5FB4', '#fff'],
     ['N', 'N', 'Nudegimas', '#F2B705', '#1B1B1B'], ['A', 'A', 'Amputacija', '#6B2A8C', '#fff'], ['T', 'T', 'Turniketas', '#111111', '#fff']];
   const mkT = k => MK.find(x => x[0] === k) || MK[0];
+  // Gydymas: [raktas, pavadinimas, lygis]. Lygis 'CMC' – March gide slepiama, kai įjungta „Rodyti tik CLS“ (ETC gide ok('CMC') visada tiesa).
   const TX = [['tq', 'Turniketas'], ['pack', 'Tamponavimas'], ['press', 'Spaudžiamasis tvarstis'], ['occl', 'Okliuzinis tvarstis'], ['dec', 'Dekompresija'],
-    ['aw', 'Kvėpavimo takai'], ['iv', 'IV / IO'], ['txa', 'TXA'], ['blood', 'Kraujas'], ['ca', 'Kalcis'], ['an', 'Analgezija'], ['ab', 'Antibiotikai'],
+    ['aw', 'Kvėpavimo takai'], ['iv', 'IV / IO', 'CMC'], ['txa', 'TXA', 'CMC'], ['blood', 'Kraujas', 'CMC'], ['ca', 'Kalcis', 'CMC'], ['an', 'Analgezija'], ['ab', 'Antibiotikai'],
     ['spl', 'Įtvaras'], ['hypo', 'Hipotermijos prevencija']];
+  const txShown = (x, s) => !x[2] || typeof ok !== 'function' || ok(x[2]) || s.tx.indexOf(x[0]) >= 0; // jau pažymėtas – rodomas, kad būtų galima atžymėti
   const AVPU = [['A', 'budrus'], ['V', 'balsas'], ['P', 'skausmas'], ['U', 'nereaguoja']];
   const SEX = [['V', 'Vyras'], ['M', 'Moteris']];
   const VF = ['t', 'av', 'hr', 'rr', 'bp', 'spo2', 'gcs', 'pain'];
   const blankF = () => ({ t: '', av: '', hr: '', rr: '', bp: '', spo2: '', gcs: '', pain: '' });
   const def = () => ({ id: '', sex: '', t0: '', mech: [], mechTxt: '', mk: [], injTxt: '', vit: [], f: blankF(), tx: [], tqT: '', txaT: '', txTxt: '' });
   const str = v => v == null ? '' : String(v);
-  function get() {
-    const raw = LS.get(KEY, null), s = Object.assign(def(), raw && typeof raw === 'object' ? raw : {});
+  // Vienos kortelės tvarkymas (netikėti duomenys – nelūžta)
+  function fix(raw) {
+    const s = Object.assign(def(), raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {});
     ['id', 'sex', 't0', 'mechTxt', 'injTxt', 'tqT', 'txaT', 'txTxt'].forEach(k => { s[k] = str(s[k]); });
     ['mech', 'mk', 'vit', 'tx'].forEach(k => { if (!Array.isArray(s[k])) s[k] = []; });
-    s.f = Object.assign(blankF(), s.f && typeof s.f === 'object' ? s.f : {});
+    s.mech = s.mech.filter(x => typeof x === 'string'); s.tx = s.tx.filter(x => typeof x === 'string');
+    const f = s.f && typeof s.f === 'object' ? s.f : {}; s.f = blankF(); VF.forEach(k => { s.f[k] = str(f[k]); });
     s.mk = s.mk.filter(m => m && (m.s === 'f' || m.s === 'b') && isFinite(m.x) && isFinite(m.y)).map(m => ({ t: mkT(m.t)[0], s: m.s, x: +m.x, y: +m.y, tm: str(m.tm) }));
-    s.vit = s.vit.filter(v => v && typeof v === 'object');
+    s.vit = s.vit.filter(v => v && typeof v === 'object').map(v => { const o = { ts: str(v.ts) }; VF.slice(1).concat('gcsD').forEach(k => { o[k] = str(v[k]); }); return o; });
     return s;
   }
-  const save = s => LS.set(KEY, s);
+  // Saugojimas: { v: 2, cur, pts: [kortelė, …] }. Ankstesnis vienos kortelės formatas perkeliamas; kiti seni formatai – TCFG.migrate
+  // (originalas – KEY-v1); nežinomas formatas – kopija į KEY-v1 ir nauja kortelė.
+  const fresh = () => ({ v: 2, cur: 0, pts: [def()] });
+  const cards = a => a.filter(p => p && typeof p === 'object' && !Array.isArray(p)).map(fix);
+  function load() {
+    const raw = LS.get(KEY, null);
+    let st = null;
+    if (raw && typeof raw === 'object' && !Array.isArray(raw)) {
+      if (raw.v === 2 && Array.isArray(raw.pts)) st = { v: 2, cur: parseInt(raw.cur, 10) || 0, pts: cards(raw.pts) };
+      else if (!('pts' in raw) && !('v' in raw)) { st = { v: 2, cur: 0, pts: [fix(raw)] }; LS.set(KEY, st); }
+    }
+    if (!st && raw != null) {
+      if (LS.get(KEY + '-v1', null) == null) LS.set(KEY + '-v1', raw);
+      let m = null;
+      try { m = typeof TCFG.migrate === 'function' ? TCFG.migrate(raw) : null; } catch (e) { m = null; }
+      st = m && Array.isArray(m.pts) ? { v: 2, cur: parseInt(m.cur, 10) || 0, pts: cards(m.pts) } : fresh();
+      LS.set(KEY, st);
+    }
+    if (!st) st = fresh();
+    if (!st.pts.length) st.pts.push(def());
+    st.cur = Math.max(0, Math.min(st.cur, st.pts.length - 1));
+    return st;
+  }
+  const save = st => LS.set(KEY, st);
+  const curOf = st => st.pts[st.cur];
+  // Pradžios ekrano laikmačiai (sužeidimas, turniketas) taikomi tik pirmajam sužeistajam
+  const timers = st => st.cur === 0 ? LS.get(TCFG.laikai, {}) || {} : {};
   let tool = 'Z', undo = [];
   const snap = s => { undo.push(JSON.stringify(s.mk)); if (undo.length > 30) undo.shift(); };
 
@@ -315,15 +367,23 @@ const MC = (() => {
   const lc = a => a.map((x, i) => i === 0 || ACR.test(x) ? x : x.toLowerCase()).join(', ');
   function txList(s) { return TX.filter(([k]) => s.tx.indexOf(k) >= 0).map(([k, t]) => k === 'tq' && s.tqT ? t + ' ' + s.tqT : k === 'txa' && s.txaT ? t + ' ' + s.txaT : t); }
   const sexName = s => (SEX.find(x => x[0] === s.sex) || ['', ''])[1].toLowerCase();
-  function parts(s) {
-    const hd = ['MIST' + (s.id.trim() ? ' – ' + s.id.trim() : ''), sexName(s)].filter(Boolean).join(' · ');
+  // n / tot – sužeistojo numeris ir kiek iš viso (kai keli – antraštėje „MIST 2/3“)
+  function parts(s, n, tot) {
+    const hd = ['MIST' + (tot > 1 ? ' ' + n + '/' + tot : '') + (s.id.trim() ? ' – ' + s.id.trim() : ''), sexName(s)].filter(Boolean).join(' · ');
     const M = [lc(s.mech), s.mechTxt.trim()].filter(Boolean).join('; ') + (s.t0 ? (s.mech.length || s.mechTxt.trim() ? '; ' : '') + 'sužeista ' + s.t0 : '');
     const S = s.vit.slice().reverse().map(vitLine);
     return { hd, M: M || '—', I: injText(s) || '—', S: S.length ? S : ['—'], T: [lc(txList(s)), s.txTxt.trim()].filter(Boolean).join('; ') || '—' };
   }
-  function text(s) { const P = parts(s); return [P.hd, 'M: ' + P.M, 'I: ' + P.I, 'S: ' + P.S.join('\n   '), 'T: ' + P.T].join('\n'); }
+  function text(s, n, tot) { const P = parts(s, n, tot); return [P.hd, 'M: ' + P.M, 'I: ' + P.I, 'S: ' + P.S.join('\n   '), 'T: ' + P.T].join('\n'); }
+  const curText = st => text(curOf(st), st.cur + 1, st.pts.length);
+  const allText = st => st.pts.map((p, i) => text(p, i + 1, st.pts.length)).join('\n\n');
   function status() {
-    const s = get(), a = [];
+    const st = load(), n = st.pts.length;
+    if (n > 1) {
+      const mk = st.pts.reduce((a, p) => a + p.mk.length, 0), vit = st.pts.reduce((a, p) => a + p.vit.length, 0);
+      return [plural(n, ['sužeistasis', 'sužeistieji', 'sužeistųjų']), mk ? plural(mk, ['žymė', 'žymės', 'žymių']) : vit ? plural(vit, ['matavimas', 'matavimai', 'matavimų']) : ''].filter(Boolean).join(' · ');
+    }
+    const s = st.pts[0], a = [];
     if (s.id.trim()) a.push(s.id.trim());
     if (s.mk.length) a.push(plural(s.mk.length, ['žymė', 'žymės', 'žymių']));
     if (s.vit.length) a.push(plural(s.vit.length, ['matavimas', 'matavimai', 'matavimų']));
@@ -332,19 +392,28 @@ const MC = (() => {
   }
 
   function secHead(letter, title, sub) { return `<div class="mcl"><span class="lt">${letter}</span><b>${title}</b>${sub ? '<small>' + sub + '</small>' : ''}</div>`; }
+  const tabLabel = (i, id) => 'Sužeistasis ' + (i + 1) + (id ? ' – ' + id : '');
+  function tabs(st) {
+    return '<div class="ptabs" role="tablist" aria-label="Sužeistieji">' + st.pts.map((p, i) => {
+      const id = p.id.trim(), on = i === st.cur;
+      return `<button class="${on ? 'on' : ''}" data-act="mc-sel" data-k="${i}" role="tab" aria-selected="${on}" aria-label="${esc(tabLabel(i, id))}">${i + 1}${id ? '<small>' + esc(id) + '</small>' : ''}</button>`;
+    }).join('') + '<button class="add" data-act="mc-add" aria-label="Pridėti sužeistąjį" title="Pridėti sužeistąjį">+</button></div>';
+  }
 
   function view() {
-    const s = get(), learn = mode === 'learn', T = LS.get('etc-laikai', {}), F = s.f;
+    const st = load(), s = curOf(st), n = st.cur + 1, tot = st.pts.length, learn = mode === 'learn', T = timers(st), F = s.f;
+    const Tall = st.cur === 0 ? T : LS.get(TCFG.laikai, {}) || {};
     let h = '<h1>MIST kortelė</h1>';
-    if (learn) h += '<p class="muted">MIST – struktūruotas sužeistojo perdavimas: <b>M</b> – mechanizmas ir laikas, <b>I</b> – sužalojimai, <b>S</b> – požymiai ir jų dinamika, <b>T</b> – suteiktas gydymas. Kortelė pildoma eigoje ir perskaitoma perduodant (žr. ATMIST).</p>';
-    h += '<article class="mc" aria-label="MIST kortelė">';
-    h += '<div class="mch"><b>MIST</b><span>sužeistojo kortelė</span></div>';
+    if (learn) h += '<p class="muted">MIST – struktūruotas sužeistojo perdavimas: <b>M</b> – mechanizmas ir laikas, <b>I</b> – sužalojimai, <b>S</b> – požymiai ir jų dinamika, <b>T</b> – suteiktas gydymas. Kortelė pildoma eigoje ir perskaitoma perduodant. Keli sužeistieji – kiekvienam atskira kortelė (skirtukai 1, 2, … ir „+“).</p>';
+    h += tabs(st);
+    h += `<article class="mc" aria-label="MIST kortelė – sužeistasis ${n}">`;
+    h += `<div class="mch"><b>MIST</b><span>${tot > 1 ? 'sužeistasis ' + n + ' iš ' + tot : 'sužeistojo kortelė'}</span></div>`;
     // antraštė: ID, lytis, sužeidimo laikas
     h += `<div class="mcid"><div class="in2"><label>ID / šaukinys<input class="inp" data-mc="id" value="${esc(s.id)}" autocomplete="off" placeholder="pvz. Vilkas 2"></label>` +
       `<div><span class="lbl0">Lytis</span><div class="chips">${SEX.map(([k, t]) => chip('mc-sex', k, s.sex === k, t)).join('')}</div></div></div>` +
       `<div class="tline"><span>Sužeidimo laikas</span><input type="time" class="inp" data-mc="t0" value="${esc(s.t0)}" aria-label="Sužeidimo laikas">` +
       (T.trauma ? `<button class="btn sm" data-act="mc-t0" data-k="tm">⏱ Laikmatis ${hm(T.trauma)}</button>` : '') + '<button class="btn sm" data-act="mc-now" data-k="t0">Dabar</button></div>' +
-      (T.trauma ? '' : '<p class="muted mt0">Traumos laikmatis nenustatytas (Pradžia → Laikai).</p>') + '</div>';
+      (st.cur > 0 ? (Tall.trauma || Tall.turn ? '<p class="muted mt0">Pradžios ekrano laikmačiai taikomi tik pirmajam sužeistajam.</p>' : '') : T.trauma ? '' : '<p class="muted mt0">Traumos laikmatis nenustatytas (Pradžia → Laikai).</p>') + '</div>';
     // M
     h += '<section class="mcs sM">' + secHead('M', 'Mechanizmas', 'galima keli') +
       '<div class="opts">' + MECH.map(m => chip('mc-mech', m, s.mech.indexOf(m) >= 0, esc(m))).join('') + '</div>' +
@@ -379,15 +448,17 @@ const MC = (() => {
     h += '</section>';
     // T
     h += '<section class="mcs sT">' + secHead('T', 'Gydymas', 'pažymėkite, kas atlikta') +
-      '<div class="opts">' + TX.map(([k, t]) => chip('mc-tx', k, s.tx.indexOf(k) >= 0, esc(t))).join('') + '</div>' +
+      '<div class="opts">' + TX.filter(x => txShown(x, s)).map(([k, t]) => chip('mc-tx', k, s.tx.indexOf(k) >= 0, esc(t))).join('') + '</div>' +
       (s.tx.indexOf('tq') >= 0 ? `<div class="tline"><span>Turniketo laikas</span><input type="time" class="inp" data-mc="tqT" value="${esc(s.tqT)}" aria-label="Turniketo laikas"><button class="btn sm" data-act="mc-now" data-k="tqT">Dabar</button></div>` : '') +
       (s.tx.indexOf('txa') >= 0 ? `<div class="tline"><span>TXA laikas</span><input type="time" class="inp" data-mc="txaT" value="${esc(s.txaT)}" aria-label="TXA laikas"><button class="btn sm" data-act="mc-now" data-k="txaT">Dabar</button></div>` : '') +
       `<textarea class="inp" data-mc="txTxt" rows="2" placeholder="Vaistai, dozės, būdai ir laikai, pvz. ketaminas 25 mg IV 14:20" aria-label="Gydymo patikslinimas">${esc(s.txTxt)}</textarea></section>`;
     h += '</article>';
-    h += `<section class="outp"><div class="nlh"><b>Perduoti</b></div><pre id="mc-out">${esc(text(s))}</pre>` +
+    h += `<section class="outp"><div class="nlh"><b>Perduoti</b>${tot > 1 ? `<small class="muted">sužeistasis ${n} iš ${tot}</small>` : ''}</div><pre id="mc-out">${esc(text(s, n, tot))}</pre>` +
       '<div class="acts"><button class="btn pri" data-act="mc-read">Skaityti</button><button class="btn" data-act="mc-copy">Kopijuoti</button><button class="btn" data-act="mc-share">Bendrinti</button></div>' +
-      '<div class="acts"><button class="btn dng" data-act="mc-new">Naujas sužeistasis – išvalyti kortelę</button></div></section>';
-    h += row('#/gks', 'GKS skaičiuoklė', GK.status()) + row('#/9line', '9-Line MEDEVAC', NL.status()) + row('#/s/atmist', 'ATMIST perdavimas', 'Kontrolinis sąrašas') + row('#/igudis/46', 'Pasiruošimas pervežimui ir perdavimas', 'Įgūdis #46');
+      (tot > 1 ? `<div class="acts"><button class="btn" data-act="mc-copyall">Kopijuoti visus (${tot})</button><button class="btn" data-act="mc-shareall">Bendrinti visus</button></div>` : '') +
+      `<div class="acts"><button class="btn" data-act="mc-add">+ Kitas sužeistasis</button><button class="btn dng" data-act="mc-new">${tot > 1 ? 'Išvalyti šią kortelę' : 'Naujas sužeistasis – išvalyti kortelę'}</button></div>` +
+      (tot > 1 ? `<div class="acts"><button class="btn dng" data-act="mc-pdel">Ištrinti sužeistąjį ${n}</button><button class="btn dng" data-act="mc-allclr">Išvalyti visus</button></div>` : '') + '</section>';
+    h += tcfgRows(TCFG.mc());
     return h;
   }
 
@@ -409,10 +480,26 @@ const MC = (() => {
   }
 
   function act(el, e) {
-    const s = get(), d = el.dataset, k = d.k;
+    const st = load(), s = curOf(st), d = el.dataset, k = d.k, n = st.cur + 1, tot = st.pts.length;
     switch (d.act) {
+      // ── sužeistieji ──
+      case 'mc-sel': { const i = +k; if (!(i >= 0 && i < tot) || i === st.cur) return; st.cur = i; undo = []; save(st); render(); return; }
+      case 'mc-add': {
+        if (tot >= 30) { toast('Daugiausia 30 sužeistųjų'); return; }
+        st.pts.push(def()); st.cur = st.pts.length - 1; undo = []; save(st); render(); scrollTo(0, 0);
+        toast('Pridėtas sužeistasis ' + st.pts.length); return;
+      }
+      case 'mc-pdel': {
+        if (tot < 2) return;
+        if (!confirm('Ištrinti sužeistąjį ' + n + (s.id.trim() ? ' (' + s.id.trim() + ')' : '') + ' ir visą jo kortelę?')) return;
+        st.pts.splice(st.cur, 1); st.cur = Math.min(st.cur, st.pts.length - 1); undo = []; save(st); render(); scrollTo(0, 0);
+        toast('Sužeistasis ištrintas'); return;
+      }
+      case 'mc-allclr': if (!confirm('Išvalyti visų ' + plural(tot, ['sužeistojo', 'sužeistųjų', 'sužeistųjų']) + ' korteles?')) return; undo = []; save(fresh()); render(); scrollTo(0, 0); toast('Visos kortelės išvalytos'); return;
+      case 'mc-new': if (!confirm(tot > 1 ? 'Išvalyti visą sužeistojo ' + n + ' MIST kortelę?' : 'Naujas sužeistasis: išvalyti visą MIST kortelę?')) return; undo = []; st.pts[st.cur] = def(); save(st); render(); scrollTo(0, 0); toast('Kortelė išvalyta'); return;
+      // ── kortelė ──
       case 'mc-sex': s.sex = s.sex === k ? '' : k; break;
-      case 'mc-t0': { const T = LS.get('etc-laikai', {}); if (!T.trauma) { toast('Traumos laikmatis nenustatytas'); return; } s.t0 = hm(T.trauma); toast('Sužeidimo laikas ' + s.t0); break; }
+      case 'mc-t0': { const T = timers(st); if (!T.trauma) { toast('Traumos laikmatis nenustatytas'); return; } s.t0 = hm(T.trauma); toast('Sužeidimo laikas ' + s.t0); break; }
       case 'mc-now': s[k] = nowHM(); break;
       case 'mc-mech': { const i = s.mech.indexOf(k); if (i >= 0) s.mech.splice(i, 1); else s.mech.push(k); break; }
       case 'mc-tool': {
@@ -427,7 +514,7 @@ const MC = (() => {
         snap(s);
         const m = { t: tool, s: d.s === 'b' ? 'b' : 'f', x: Math.round(p.x * 10) / 10, y: Math.round(p.y * 10) / 10, tm: '' };
         if (tool === 'T') {
-          const T = LS.get('etc-laikai', {});
+          const T = timers(st);
           m.tm = T.turn ? hm(T.turn) : nowHM();
           if (s.tx.indexOf('tq') < 0) s.tx.push('tq');
           if (!s.tqT) s.tqT = m.tm;
@@ -444,13 +531,13 @@ const MC = (() => {
       case 'mc-vit': {
         const f = s.f;
         if (!VF.slice(1).some(x => String(f[x]).trim() !== '')) { toast('Įveskite bent vieną požymį'); return; }
-        const n = (v, lo, hi) => { v = String(v).trim(); return v === '' || (/^\d{1,3}$/.test(v) && +v >= lo && +v <= hi); };
+        const n3 = (v, lo, hi) => { v = String(v).trim(); return v === '' || (/^\d{1,3}$/.test(v) && +v >= lo && +v <= hi); };
         if (f.t && !HM_RE.test(f.t)) { toast('Laikas: pvz. 14:05'); return; }
-        if (!n(f.hr, 0, 300)) { toast('ŠSD: skaičius 0–300'); return; }
-        if (!n(f.rr, 0, 99)) { toast('KD: skaičius 0–99'); return; }
-        if (!n(f.spo2, 0, 100)) { toast('SpO₂: skaičius 0–100'); return; }
-        if (!n(f.gcs, 3, 15)) { toast('GKS: skaičius 3–15'); return; }
-        if (!n(f.pain, 0, 10)) { toast('Skausmas: skaičius 0–10'); return; }
+        if (!n3(f.hr, 0, 300)) { toast('ŠSD: skaičius 0–300'); return; }
+        if (!n3(f.rr, 0, 99)) { toast('KD: skaičius 0–99'); return; }
+        if (!n3(f.spo2, 0, 100)) { toast('SpO₂: skaičius 0–100'); return; }
+        if (!n3(f.gcs, 3, 15)) { toast('GKS: skaičius 3–15'); return; }
+        if (!n3(f.pain, 0, 10)) { toast('Skausmas: skaičius 0–10'); return; }
         if (String(f.bp).trim() && !/^\d{2,3}\s*\/\s*\d{2,3}$|^\d{2,3}$/.test(String(f.bp).trim())) { toast('AKS: pvz. 90/60 arba tik sistolinis, pvz. 90'); return; }
         const v = { ts: f.t || nowHM() };
         VF.slice(1).forEach(x => { v[x] = String(f[x] == null ? '' : f[x]).trim().replace(/\s*\/\s*/, '/'); });
@@ -461,26 +548,31 @@ const MC = (() => {
         const i = s.tx.indexOf(k);
         if (i >= 0) s.tx.splice(i, 1);
         else {
+          if (!TX.some(x => x[0] === k)) return;
           s.tx.push(k);
-          if (k === 'tq' && !s.tqT) { const T = LS.get('etc-laikai', {}); const tm = s.mk.find(m => m.t === 'T' && m.tm); s.tqT = tm ? tm.tm : T.turn ? hm(T.turn) : nowHM(); }
+          if (k === 'tq' && !s.tqT) { const T = timers(st); const tm = s.mk.find(m => m.t === 'T' && m.tm); s.tqT = tm ? tm.tm : T.turn ? hm(T.turn) : nowHM(); }
           if (k === 'txa' && !s.txaT) s.txaT = nowHM();
         }
         break;
       }
-      case 'mc-copy': return copyText(text(s));
-      case 'mc-share': return shareText('MIST', text(s));
+      // ── perdavimas ──
+      case 'mc-copy': return copyText(text(s, n, tot));
+      case 'mc-share': return shareText('MIST', text(s, n, tot));
+      case 'mc-copyall': return copyText(allText(st));
+      case 'mc-shareall': return shareText('MIST', allText(st));
       case 'mc-read': {
-        const P = parts(s), L = (c, l, t) => `<span class="rn ${c}">${l}</span>${esc(t)}`;
-        return readMode(P.hd, [L('rM', 'M', P.M), L('rI', 'I', P.I), L('rS', 'S', P.S.join('\n')), L('rT', 'T', P.T)]);
+        const P = parts(s, n, tot), L = (c, l, t) => `<span class="rn ${c}">${l}</span>${esc(t)}`, one = text(s, n, tot);
+        const B = [['Kopijuoti', () => copyText(one)]];
+        if (tot > 1) B.push(['Kopijuoti visus (' + tot + ')', () => copyText(allText(load()))]);
+        return readMode(P.hd, [L('rM', 'M', P.M), L('rI', 'I', P.I), L('rS', 'S', P.S.join('\n')), L('rT', 'T', P.T)], B);
       }
-      case 'mc-new': if (!confirm('Naujas sužeistasis: išvalyti visą MIST kortelę?')) return; undo = []; LS.set(KEY, def()); render(); scrollTo(0, 0); toast('Kortelė išvalyta'); return;
       default: return;
     }
-    save(s); render();
+    save(st); render();
   }
 
   function onInput(t) {
-    const s = get(), d = t.dataset;
+    const st = load(), s = curOf(st), d = t.dataset;
     if (d.mc) s[d.mc] = t.value;
     else if (d.mcf) s.f[d.mcf] = t.value;
     else if (d.mcm != null) {
@@ -488,23 +580,32 @@ const MC = (() => {
       if (s.tqT === m.tm || !s.tqT) s.tqT = t.value;
       m.tm = t.value;
     }
-    save(s);
-    const o = document.getElementById('mc-out'); if (o) o.textContent = text(s);
+    save(st);
+    const o = document.getElementById('mc-out'); if (o) o.textContent = curText(st);
+    if (d.mc === 'id') { // skirtuko užrašas be perpiešimo
+      const b = app.querySelector('.ptabs button.on'); if (!b) return;
+      const v = t.value.trim(); let sm = b.querySelector('small');
+      if (v) { if (!sm) { sm = document.createElement('small'); b.appendChild(sm); } sm.textContent = v; } else if (sm) sm.remove();
+      b.setAttribute('aria-label', tabLabel(st.cur, v));
+    }
   }
 
-  // GKS skaičiuoklė → S skiltis (naujas matavimas arba papildomas paskutinis to paties laiko)
+  // GKS skaičiuoklė → dabartinio sužeistojo S skiltis (naujas matavimas arba papildomas paskutinis to paties laiko)
   function addGcs(g) {
-    const s = get(), last = s.vit[s.vit.length - 1];
+    const st = load(), s = curOf(st), last = s.vit[s.vit.length - 1];
     if (last && last.ts === g.ts && !last.gcs) { last.gcs = g.v; last.gcsD = g.d; }
     else s.vit.push({ ts: g.ts, av: '', hr: '', rr: '', bp: '', spo2: '', gcs: g.v, gcsD: g.d, pain: '' });
-    save(s);
+    save(st);
+    return st.pts.length > 1 ? 'sužeistasis ' + (st.cur + 1) : '';
   }
-  return { view, act, onInput, status, text, addGcs, region };
+  // Dabartinis sužeistasis: { n, tot }
+  const current = () => { const st = load(); return { n: st.cur + 1, tot: st.pts.length }; };
+  return { view, act, onInput, status, text, addGcs, current, region };
 })();
 
 // ───────── GKS (Glasgow) skaičiuoklė – GCS at 40 ─────────
 const GK = (() => {
-  const KEY = 'etc-gks';
+  const KEY = TCFG.pre + 'gks';
   const G = [
     { k: 'e', lb: 'Akys', ab: 'A', o: [['4', 'Atsimerkia savaime'], ['3', 'Atsimerkia į garsą', 'kalbinamas'], ['2', 'Atsimerkia į spaudimą'], ['1', 'Neatsimerkia'], ['NT', 'Neįvertinama', 'pvz., uždarytos akys dėl patinimo']] },
     { k: 'v', lb: 'Kalba', ab: 'K', o: [['5', 'Orientuotas'], ['4', 'Sumišęs'], ['3', 'Pavieniai žodžiai'], ['2', 'Tik garsai'], ['1', 'Nėra'], ['NT', 'Neįvertinama', 'intubuotas']] },
@@ -514,11 +615,11 @@ const GK = (() => {
   const def = () => ({ e: '', v: '', m: '', p: '', h: [] });
   const okv = (k, v) => v === '' || (G.find(g => g.k === k) || { o: [] }).o.some(o => o[0] === v);
   function get() {
-    const raw = LS.get(KEY, null), s = Object.assign(def(), raw && typeof raw === 'object' ? raw : {});
+    const raw = LS.get(KEY, null), s = Object.assign(def(), raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {});
     ['e', 'v', 'm', 'p'].forEach(k => { s[k] = s[k] == null ? '' : String(s[k]); });
     ['e', 'v', 'm'].forEach(k => { if (!okv(k, s[k])) s[k] = ''; });
     if (['', '0', '1', '2'].indexOf(s.p) < 0) s.p = '';
-    if (!Array.isArray(s.h)) s.h = [];
+    s.h = Array.isArray(s.h) ? s.h.filter(x => x && typeof x === 'object').map(x => { const o = { ts: x.ts == null ? '' : String(x.ts), at: +x.at || 0 }; ['e', 'v', 'm', 'p'].forEach(k => { o[k] = x[k] == null ? '' : String(x[k]); }); return o; }) : [];
     return s;
   }
   const save = s => LS.set(KEY, s);
@@ -545,7 +646,7 @@ const GK = (() => {
     return h + '</div>';
   }
   function view() {
-    const s = get(), learn = mode === 'learn';
+    const s = get(), learn = mode === 'learn', who = MC.current();
     let h = '<h1>GKS skaičiuoklė</h1><p class="muted">Glasgow komos skalė (GCS at 40). Vertinkite geriausią atsaką; perduokite ir komponentus, ne vien sumą.</p>';
     G.forEach(g => {
       h += `<section class="nl gsec" role="radiogroup" aria-label="${g.lb}"><div class="nlh"><span class="nn">${g.ab}</span><b>${g.lb}</b><small class="gsel">${s[g.k] ? g.ab + s[g.k] : ''}</small></div>` +
@@ -557,6 +658,7 @@ const GK = (() => {
       `<p class="muted">GKS-P = GKS − nereaguojančių vyzdžių skaičius (0–2)${c.done && !c.nt ? '' : '; rodoma, kai įvertinti visi trys komponentai'}.</p></section>`;
     h += resBox(s);
     h += '<div class="acts"><button class="btn pri" data-act="gk-save">Išsaugoti su laiku</button><button class="btn" data-act="gk-mist">Į MIST</button><button class="btn" data-act="gk-clr">Išvalyti</button></div>';
+    if (who.tot > 1) h += `<p class="muted">„Į MIST“ – į sužeistojo ${who.n} kortelę (iš ${who.tot}). Kitą sužeistąjį pasirinkite MIST kortelėje.</p>`;
     if (s.h.length) h += '<h2>Istorija</h2><div class="vlist">' + s.h.map((x, i) => `<div class="vr"><span>${esc(histLine(x))}</span><button class="x" data-act="gk-hdel" data-k="${i}" aria-label="Ištrinti įrašą ${esc(x.ts)}">×</button></div>`).join('') + '</div>';
     if (learn) h += '<h2>Kaip vertinti</h2><div class="card esme"><ul>' +
       '<li><b>Patikrinkite</b> trukdžius: klausa, kalbos barjeras, intubacija, patinimas, sedacija, paralyžius.</li>' +
@@ -566,7 +668,7 @@ const GK = (() => {
       '<li>Registruokite komponentus (pvz., A3 K4 M5); neįvertinamą komponentą žymėkite NT ir sumos neskaičiuokite.</li></ul></div>' +
       '<p class="muted">Šaltinis: Teasdale G. et al. The Glasgow Coma Scale at 40 years: standing the test of time. Lancet Neurol 2014; GKS-P – Brennan P. M. et al., J Neurosurg 2018.</p>' +
       '<a class="row" href="https://www.glasgowcomascale.org/" target="_blank" rel="noopener"><div>Glasgow Coma Scale<small>glasgowcomascale.org</small></div><span class="ar">↗</span></a>';
-    h += row('#/mist', 'MIST kortelė', MC.status()) + row('#/igudis/12', 'Vyzdžiai, AVPU, galūnių simetrija ir GKS', 'Įgūdis #12');
+    h += tcfgRows(TCFG.gk());
     return h;
   }
   function act(el) {
@@ -587,8 +689,8 @@ const GK = (() => {
         const y = s.h[0];
         if (!y) { toast('Pirmiausia įvertinkite visus tris komponentus'); return; }
         const cy = calc(y);
-        MC.addGcs({ ts: y.ts, v: cy.nt ? 'NT' : String(cy.tot), d: cy.comp + (cy.gp != null ? ', GKS-P ' + cy.gp : '') });
-        toast('Į MIST kortelę įrašyta: ' + histLine(y)); break;
+        const who = MC.addGcs({ ts: y.ts, v: cy.nt ? 'NT' : String(cy.tot), d: cy.comp + (cy.gp != null ? ', GKS-P ' + cy.gp : '') });
+        toast('Į MIST kortelę' + (who ? ' (' + who + ')' : '') + ' įrašyta: ' + histLine(y)); break;
       }
       default: return;
     }
@@ -601,13 +703,13 @@ const GK = (() => {
 // ───────── TST – Ten Second Triage (NHS England, 2023) ─────────
 const TS = (() => {
   const KEY = 'etc-tst';
-  // Algoritmas: NHS England Ten Second Triage tool (2023 m. balandis); Vassallo et al., Trauma 2023
+  // Algoritmas: NHS England Ten Second Triage tool (2023 m. balandis); NARU TST papildoma informacija v1.0 (2023); Vassallo et al., Trauma 2024
   const Q = {
-    q1: { n: '1 / 4', q: 'Vaikšto?', yes: { c: 'p3' }, no: 'q2', y: 'vaikšto', nn: 'nevaikšto' },
+    q1: { n: '1 / 4', q: 'Vaikšto?', hint: 'Akivaizdžiai kritinės būklės vaikštantį pasodinkite – laikykite nevaikštančiu.', yes: { c: 'p3' }, no: 'q2', y: 'vaikšto', nn: 'nevaikšto' },
     q2: { n: '2 / 4', q: 'Gausus (masyvus) kraujavimas?', hint: 'TAIP – iškart: spaudimas, turniketas, tamponavimas.', yes: { c: 'p1', a: 'spaudimas, turniketas, tamponavimas' }, no: 'q3', y: 'gausus kraujavimas', nn: 'be gausaus kraujavimo' },
-    q3: { n: '3 / 4', q: 'Kalba?', hint: 'Vaikas, kuris dar nekalba – atsakykite „NE“.', yes: 'q3a', no: 'q4', y: 'kalba', nn: 'nekalba' },
-    q3a: { n: '3a', q: 'Penetruojantis liemens sužalojimas?', hint: 'Priekyje ar nugaroje.', yes: { c: 'p1' }, no: { c: 'p2' }, y: 'penetruojantis liemens sužalojimas', nn: 'be penetruojančio liemens sužalojimo' },
-    q4: { n: '4 / 4', q: 'Kvėpuoja?', hint: 'Atverkite kvėpavimo takus, jei galite.', yes: { c: 'p1', a: 'stabili šoninė padėtis' }, no: { c: 'nb' }, y: 'kvėpuoja', nn: 'nekvėpuoja' }
+    q3: { n: '3 / 4', q: 'Kalba?', hint: 'Tik dejuoja, murma – „NE“.', yes: 'q3a', no: 'q4', y: 'kalba', nn: 'nekalba' },
+    q3a: { n: '3a', q: 'Penetruojantis sužalojimas?', hint: 'Kaklas, krūtinė, pažastys, nugara, pilvas, kirkšnys, sėdmenys – priekyje, nugaroje ir šonuose.', yes: { c: 'p1' }, no: { c: 'p2' }, y: 'penetruojantis sužalojimas', nn: 'be penetruojančio sužalojimo' },
+    q4: { n: '4 / 4', q: 'Kvėpuoja?', hint: 'Atverkite kvėpavimo takus, jei galite.', yes: { c: 'p1', a: 'stabili šoninė padėtis' }, no: { c: 'nb', a: 'stabili šoninė padėtis; gaivinimas – tik jei leidžia ištekliai ir netrukdo stabdyti kraujavimo bei atverti kvėpavimo takų' }, y: 'kvėpuoja', nn: 'nekvėpuoja' }
   };
   const CAT = { p1: ['P1', 'Neatidėliotina', 'tp1'], p2: ['P2', 'Skubi', 'tp2'], p3: ['P3', 'Gali palaukti / vaikšto', 'tp3'], nb: ['NEKVĖPUOJA', 'Gaivinimas – tik jei leidžia ištekliai', 'tnb'] };
   const KS = ['p1', 'p2', 'p3', 'nb'];
@@ -631,7 +733,7 @@ const TS = (() => {
     const s = get(), t = total(s);
     return t ? 'Iš viso ' + t + ' · ' + KS.filter(k => s.n[k]).map(k => (k === 'nb' ? 'Nekv.' : CAT[k][0]) + ' ' + s.n[k]).join(' · ') : 'Ten Second Triage – rūšiavimas per 10 s';
   }
-  const why = s => s.path.map(p => p.a ? Q[p.q].y : Q[p.q].nn).join(' → ');
+  const why = s => s.path.map(p => p.a === 2 ? 'vaikas iki 2 metų' : p.a ? Q[p.q].y : Q[p.q].nn).join(' → ');
 
   function card(s) {
     if (s.res) {
@@ -645,7 +747,8 @@ const TS = (() => {
     return `<section class="tq" aria-live="polite"><div class="tqh"><span class="tqn">Klausimas ${q.n}</span>` +
       (s.path.length ? '<button class="btn sm" data-act="ts-back">‹ Atgal</button>' : '') + '</div>' +
       `<p class="tqq">${esc(q.q)}</p>${q.hint ? `<p class="tqs">${esc(q.hint)}</p>` : ''}` +
-      `<div class="yn"><button class="yes" data-act="ts-ans" data-k="1">TAIP</button><button class="no" data-act="ts-ans" data-k="0">NE</button></div></section>`;
+      `<div class="yn"><button class="yes" data-act="ts-ans" data-k="1">TAIP</button><button class="no" data-act="ts-ans" data-k="0">NE</button></div>` +
+      (s.st === 'q1' ? '<button class="btn tchild" data-act="ts-ans" data-k="child">Vaikas iki 2 metų → P1</button>' : '') + '</section>';
   }
   function tally(s) {
     return `<section class="nl tal"><div class="nlh"><b>Skaičiavimas</b><span class="ttot">Iš viso: <b>${total(s)}</b></span></div>` +
@@ -659,20 +762,21 @@ const TS = (() => {
     return '<section class="tfc" aria-label="TST schema"><div class="nlh"><b>Schema</b></div>' +
       fr('q1', '1. Vaikšto?', '', '<div class="fo tp3">P3<small>gali palaukti</small></div>') + no +
       fr('q2', '2. Gausus (masyvus) kraujavimas?', '', '<div class="fo tp1">P1<small>spaudimas, turniketas, tamponavimas</small></div>') + no +
-      fr('q3', '3. Kalba?', 'nekalbantis vaikas – NE', '<div class="fo fsub">Penetruojantis liemens sužalojimas?<span><b class="tp1"><small>TAIP</small>P1</b><b class="tp2"><small>NE</small>P2</b></span></div>') + no +
+      fr('q3', '3. Kalba?', 'dejuoja, murma – NE', '<div class="fo fsub">Penetruojantis sužalojimas (kaklas–sėdmenys)?<span><b class="tp1"><small>TAIP</small>P1</b><b class="tp2"><small>NE</small>P2</b></span></div>') + no +
       fr('q4', '4. Kvėpuoja?', 'atverkite kvėpavimo takus', '<div class="fo tp1">P1<small>stabili šoninė padėtis</small></div>') + no +
-      '<div class="fr fend"><div class="fo tnb">NEKVĖPUOJA<small>gaivinimas – tik jei leidžia ištekliai</small></div></div></section>';
+      '<div class="fr fend"><div class="fo tnb">NEKVĖPUOJA<small>šoninė padėtis; gaivinimas – tik jei leidžia ištekliai</small></div></div>' +
+      '<p class="muted fchild">Vaikas iki 2 metų – visada P1.</p></section>';
   }
   function view() {
     const s = get(), learn = mode === 'learn';
     let h = '<h1>TST – rūšiavimas per 10 sekundžių</h1>';
     shownAt = Date.now();
     h += card(s) + tally(s) + flow(s);
-    if (learn) h += '<div class="card">Ten Second Triage (TST) – Jungtinės Karalystės civilinė masinių nelaimių rūšiavimo priemonė (NHS England, 2023), pakeitusi ankstesnį „triage sieve“. Ją gali taikyti bet kuris pirmasis atvykęs reaguotojas: keli paprasti klausimai, apie 10 sekundžių vienam sužeistajam, be fiziologinių matavimų. Mūsų darbe galioja vietinės SOP ir TCCC rūšiavimo kategorijos – TST yra pagalbinė atmintinė.</div>';
-    h += '<div class="card"><b>Svarbu</b><ul class="tnotes"><li>Vaikas, kuris dar nekalba – atsakykite „nekalba“ (→ 4 klausimas).</li><li>TST nenaudoja fiziologinių matavimų (pulso, KD, kapiliarų prisipildymo).</li><li>Skirta vienam vertintojui.</li><li>Po rūšiavimo kartokite – pakartotinis rūšiavimas, būklė keičiasi.</li></ul></div>';
-    if (learn) h += '<p class="muted">Šaltiniai: NHS England, Ten Second Triage tool (2023 m. balandis); Vassallo J. et al. The Ten Second Triage tool. Trauma 2023.</p>' +
+    if (learn) h += '<div class="card">Ten Second Triage (TST) – Jungtinės Karalystės civilinė masinių nelaimių rūšiavimo priemonė (NHS England, 2023), pakeitusi ankstesnį „triage sieve“. Ją taiko visų tarnybų apmokyti pirmieji reaguotojai: keli paprasti klausimai, apie 10 sekundžių vienam sužeistajam, be fiziologinių matavimų. Mūsų darbe galioja vietinės SOP ir TCCC rūšiavimo kategorijos – TST yra pagalbinė atmintinė.</div>';
+    h += '<div class="card"><b>Svarbu</b><ul class="tnotes"><li>Vaikas iki 2 metų – visada P1.</li><li>Akivaizdžiai kritinės būklės vaikštantis – pasodinkite ir laikykite nevaikštančiu.</li><li>TST nenaudoja fiziologinių matavimų (pulso, KD, kapiliarų prisipildymo).</li><li>Skirta vienam vertintojui.</li><li>TST – ne vienkartinis vertinimas: kartokite, būklė keičiasi.</li></ul></div>';
+    if (learn) h += '<p class="muted">Šaltiniai: NHS England, Ten Second Triage tool (2023 m. balandis); Vassallo J. et al. Ten second triage: a novel and pragmatic approach to major incident triage. Trauma 2024;26(1); NARU, TST – Non Clinical Responders Supplementary Information, v1.0 (2023).</p>' +
       '<a class="row" href="https://www.england.nhs.uk/long-read/ten-second-triage-tool/" target="_blank" rel="noopener"><div>Ten Second Triage tool<small>NHS England</small></div><span class="ar">↗</span></a>' +
-      '<a class="row" href="https://doi.org/10.1177/14604086231156219" target="_blank" rel="noopener"><div>Vassallo et al., Trauma 2023<small>doi 10.1177/14604086231156219</small></div><span class="ar">↗</span></a>';
+      '<a class="row" href="https://doi.org/10.1177/14604086231156219" target="_blank" rel="noopener"><div>Vassallo et al., Trauma 2024<small>doi 10.1177/14604086231156219</small></div><span class="ar">↗</span></a>';
     return h;
   }
   function act(el) {
@@ -682,6 +786,7 @@ const TS = (() => {
     switch (d.act) {
       case 'ts-ans': {
         if (s.res) return;
+        if (k === 'child') { s.path.push({ q: s.st, a: 2 }); s.res = { c: 'p1', a: 'vaikas iki 2 metų – visada P1' }; s.n.p1 = Math.min(999, s.n.p1 + 1); if (navigator.vibrate) navigator.vibrate(40); break; }
         const q = Q[s.st], yes = k === '1', nx = yes ? q.yes : q.no;
         s.path.push({ q: s.st, a: yes ? 1 : 0 });
         if (typeof nx === 'string') s.st = nx;

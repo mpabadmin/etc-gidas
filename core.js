@@ -104,12 +104,12 @@ function updCount(box) {
 
 function timersHtml() {
   const T = LS.get('etc-laikai', {}), now = Date.now(), min = ts => Math.max(0, Math.floor((now - ts) / 60000));
-  const card = (k, lb, val, st) => `<button class="card" style="flex:1;text-align:left;font:inherit;color:inherit;${st}" data-act="tm" data-k="${k}"><div class="muted">${lb}</div><div style="font-weight:700">${val}</div></button>`;
+  const card = (k, lb, val, st) => `<button class="card" style="flex:1;min-width:0;overflow-wrap:anywhere;text-align:left;font:inherit;color:inherit;${st}" data-act="tm" data-k="${k}"><div class="muted">${lb}</div><div style="font-weight:700">${val}</div></button>`;
   const dl = T.trauma ? T.trauma + 3 * 3600e3 : 0;
   let h = '<div style="display:flex;gap:8px">';
   h += card('trauma', 'Trauma', T.trauma ? hm(T.trauma) + ' · ' + min(T.trauma) + ' min' : 'Nenurodyta', '');
   h += card('turn', 'Turniketas', T.turn ? hm(T.turn) + ' · ' + min(T.turn) + ' min' : 'Neuždėtas', T.turn ? 'background:var(--ambbg);color:var(--amb);border-color:var(--ambbg)' : '');
-  h += `<div class="card" style="flex:1;${dl && now > dl ? 'background:var(--redbg);color:var(--red);border-color:var(--redbg)' : ''}"><div class="muted">TXA iki</div><div style="font-weight:700">${dl ? (now > dl ? 'Praėjo 3 val.' : hm(dl)) : '—'}</div></div>`;
+  h += `<div class="card" style="flex:1;min-width:0;overflow-wrap:anywhere;${dl && now > dl ? 'background:var(--redbg);color:var(--red);border-color:var(--redbg)' : ''}"><div class="muted">TXA iki</div><div style="font-weight:700">${dl ? (now > dl ? 'Praėjo 3 val.' : hm(dl)) : '—'}</div></div>`;
   h += '</div>';
   if (tmEdit) h += `<div class="card"><div style="font-weight:600;margin-bottom:8px">${tmEdit === 'trauma' ? 'Traumos laikas' : 'Turniketo uždėjimo laikas'}</div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="tm-now">Dabar</button><input type="time" id="tm-in"><button class="btn" data-act="tm-set">Nustatyti</button><button class="btn" data-act="tm-clr">Išvalyti</button><button class="btn" data-act="tm-x">Uždaryti</button></div></div>`;
   return h;
@@ -149,7 +149,7 @@ function buildIdx() {
   });
   Object.keys(E.puslapiai || {}).forEach(id => { const p = E.puslapiai[id]; add('Mokymosi temos', p.title, '', strip(p.html), '#/p/' + id); });
   // Įrankiai (tools.js)
-  add('Įrankiai', 'MIST kortelė', 'Vizuali sužeistojo kortelė: mechanizmas, sužalojimai kūno schemoje, požymiai, gydymas', 'mist handover perdavimas sužeistasis kortelė atmist kūno schema žaizda turniketas', '#/mist');
+  add('Įrankiai', 'MIST kortelė', 'Vizuali sužeistojo kortelė: mechanizmas, sužalojimai kūno schemoje, požymiai, gydymas', 'mist handover perdavimas sužeistasis keli sužeistieji kortelė atmist kūno schema žaizda turniketas', '#/mist');
   add('Įrankiai', '9-Line MEDEVAC', '9 eilučių evakuacijos prašymas su kodais', '9 line nine line 9line medevac evakuacija koordinatės mgrs gps skubumas urgent priority routine radijas', '#/9line');
   add('Įrankiai', 'GKS skaičiuoklė', 'Glasgow komos skalė (GCS at 40), GKS-P', 'gks glasgow gcs koma sąmonė akys kalba motorika vyzdžiai', '#/gks');
   add('Įrankiai', 'TST rūšiavimas', 'Ten Second Triage – rūšiavimas per 10 sekundžių', 'tst ten second triage triažas rūšiavimas masinė nelaimė p1 p2 p3', '#/tst');

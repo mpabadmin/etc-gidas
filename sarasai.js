@@ -11,7 +11,7 @@ const E = window.ETC;
 const KOMP = 'Pagal kompetenciją', MED = 'Medicinos personalui', GYD = 'Gydytojui', INT = 'Intubuojantiems gydytojams';
 const link = (href, t, s) => `<a class="row" href="${href}"><div>${t}${s ? '<small>' + s + '</small>' : ''}</div><span class="ar">›</span></a>`;
 
-E.versija = '2026-10-11 v13.1 (MIST kortelė, 9-Line, GKS skaičiuoklė, TST su apsauga nuo dvigubo bakstelėjimo; vaistai pagal naudojimo dažnį; nuorodos tarp įgūdžių)';
+E.versija = '2026-10-11 v14 (MIST kortelė keliems sužeistiesiems; TST pagal NARU: vaikas iki 2 m. – P1, penetruojančio sužalojimo sritys; MIST, 9-Line, GKS – tokie patys kaip March gide)';
 // Pranešimų priėmimo adresas: Google Apps Script žiniatinklio programos /exec URL (žr. tools/atsiliepimai.gs)
 E.atsiliepimai = { url: 'https://script.google.com/macros/s/AKfycbyUpzDmAClJ40FMltkHi21Ozc4PpItRr3u6yy4rU0DKNGe7JkRBnOr0y42wLwpJcBau/exec' };
 
