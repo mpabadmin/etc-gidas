@@ -39,7 +39,7 @@ const installRow = () => installed() ? '' : row('#/idiegimas', 'Įdiekite progra
 // Įrankiai (tools.js): būsena rodoma po pavadinimu
 const toolRows = () => typeof MC === 'undefined' ? '' :
   row('#/mist', 'MIST kortelė', MC.status()) + row('#/9line', '9-Line MEDEVAC', NL.status()) +
-  row('#/gks', 'GKS skaičiuoklė', GK.status()) + row('#/tst', 'TST rūšiavimas', TS.status());
+  row('#/gks', 'GKS skaičiuoklė', GK.status()) + row('#/tst', 'TST rūšiavimas', TS.status()) + row('#/zymejimas', 'Vaistų žymėjimas', VZ.status());
 
 const GRUPES = [['K', 'Komanda, apžiūra ir pervežimas'], ['A', 'A – kvėpavimo takai ir neurologija'], ['B', 'B – kvėpavimas, krūtinė, dubuo'], ['C', 'C – kraujavimas ir kraujotaka'], ['S', 'D/E – galva, antrinė apžiūra, žaizdos'], ['V', 'Vaistai ir skausmas']];
 const grupesPav = g => (GRUPES.find(x => x[0] === g) || ['', ''])[1];
@@ -54,12 +54,13 @@ const V = {
       `<a class="role ${r.cls || ''}" href="#/v/${r.id}?f=${field ? pirmIdx(r) : 0}"><b>${esc(r.id)}</b><small>${esc(r.sub || '')}</small>${field ? '<small class="rs">Pirminė apžiūra</small>' : ''}</a>`).join('') + '</div>';
   },
 
-  // Greitai: įrankių plytelės (kaip March gide) – MIST, 9-Line, GKS, TST, kraujo suderinamumas, vaistų skiedimas
+  // Greitai: įrankių plytelės (kaip March gide) – vaistų žymėjimas (per visą plotį), MIST, 9-Line, GKS, TST, kraujo suderinamumas, vaistų skiedimas
   toolTiles() {
     const st = m => { try { return m().status(); } catch (e) { return ''; } }; // tools.js gali būti neįkeltas
-    const P = E.puslapiai || {}, mc = st(() => MC), nl = st(() => NL), gk = st(() => GK).replace(/^Paskutinė: /, ''), ts = st(() => TS);
+    const P = E.puslapiai || {}, mc = st(() => MC), nl = st(() => NL), gk = st(() => GK).replace(/^Paskutinė: /, ''), ts = st(() => TS), vz = st(() => VZ);
     const t = (href, ti, b, sm, lb) => `<a class="tool" href="${href}" aria-label="${esc(lb)}: ${esc(sm)}"><span class="ti">${ti}</span><b>${b}</b><small>${esc(sm)}</small></a>`;
     return '<div class="tools">' +
+      t('#/zymejimas', 'V', 'Vaistų žymėjimas', vz, 'Vaistų žymėjimas').replace('class="tool"', 'class="tool wide"') +
       t('#/mist', 'M', 'MIST', mc, 'MIST kortelė') + t('#/9line', '9', '9-Line', nl, '9-Line MEDEVAC prašymas') +
       t('#/gks', 'G', 'GKS', gk, 'GKS skaičiuoklė') + t('#/tst', 'T', 'TST', ts, 'TST rūšiavimas') +
       (P.kraujas ? t('#/p/kraujas', 'K', 'Kraujas', 'ABO ir RhD lentelė', 'Kraujo suderinamumas') : '') +

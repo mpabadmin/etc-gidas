@@ -810,3 +810,196 @@ const TS = (() => {
   }
   return { view, act, status };
 })();
+
+// ───────── Vaistų žymėjimas – suleistų vaistų įrašai (tik ETC gide) ─────────
+// Greitosios dozės (QD) – tik tikslios reikšmės iš vaistai.js dozių teksto (tikrinama teste). Kitos dozės įvedamos ranka.
+const VZ = (() => {
+  const KEY = TCFG.pre + 'vz';
+  const RT = { IV: 'IV', IO: 'IO', IM: 'IM', IN: 'Į nosį', PO: 'Per burną', ODT: 'ODT' };
+  const QD = {
+    ketaminas: [['IV', '25', 'mg'], ['IM', '100', 'mg'], ['IN', '50', 'mg']],
+    fentanilis: [['IV', '50', 'mcg'], ['IN', '100', 'mcg']],
+    morfinas: [['IM', '10', 'mg']],
+    paracetamolis: [['PO', '1000', 'mg'], ['IV', '1', 'g']],
+    meloksikamas: [['PO', '15', 'mg']],
+    txa: [['IV', '2', 'g']],
+    kalcis: [['IV', '30', 'ml']],
+    ceftriaksonas: [['IV', '2', 'g']],
+    cefadroksilis: [['PO', '1', 'g']],
+    ertapenemas: [['IV', '1', 'g']],
+    amoksiklavas: [['IV', '1,2', 'g']],
+    moksifloksacinas: [['PO', '400', 'mg']],
+    ondansetronas: [['IV', '4', 'mg'], ['ODT', '4', 'mg']],
+    metoklopramidas: [['IV', '10', 'mg']],
+    'nacl-hipert': [['IV', '250', 'ml']],
+    atropinas: [['IV', '0,5', 'mg']],
+    naloksonas: [['IM', '0,4', 'mg'], ['IN', '1,8', 'mg']]
+  };
+  const MIST_TX = { txa: 'txa', kalcis: 'ca', skausmas: 'an', antibiotikai: 'ab' }; // vaistas ar grupė → MIST gydymo lustas
+  const num = a => parseFloat(String(a).replace(',', '.'));
+  const fmtN = x => String(Math.round(x * 100) / 100).replace('.', ',');
+  const drugs = () => (E.vaistai || []).filter(v => typeof ok !== 'function' || ok(v.kam));
+  const drug = id => (E.vaistai || []).find(v => v.id === id);
+  const lines = v => (v.dozes || []).map(d => ({ k: d.k, d: d.d, c: d.c, p: '' })).concat(...(v.stulpeliai || []).map(s => (s.dozes || []).map(d => ({ k: d.k, d: d.d, c: d.c, p: s.pav }))));
+  function routes(v) {
+    const r = [], add = x => { if (r.indexOf(x) < 0) r.push(x); };
+    (QD[v.id] || []).forEach(q => add(q[0]));
+    lines(v).forEach(l => { const t = (l.p || '') + ' ' + l.k + ' ' + l.d;
+      if (/\bIV\b|Į veną|infuz/i.test(t)) add('IV'); if (/\bIO\b/.test(t)) add('IO'); if (/\bIM\b/.test(t)) add('IM');
+      if (/nos/i.test(t)) add('IN'); if (/burn/i.test(t)) add('PO'); if (/ODT/.test(t)) add('ODT'); });
+    const ord = Object.keys(RT);
+    return r.length ? r.sort((a, b) => ord.indexOf(a) - ord.indexOf(b)) : ['IV', 'IO', 'IM', 'IN', 'PO'];
+  }
+  function units(v) {
+    const u = [], add = x => { if (x && u.indexOf(x) < 0) u.push(x); };
+    (QD[v.id] || []).forEach(q => add(q[2]));
+    lines(v).forEach(l => { if (l.c) add(l.c.minute ? 'mcg/kg/min' : l.c.u || 'mg'); });
+    ['mg', 'mcg', 'g', 'ml'].forEach(add);
+    return u;
+  }
+  function get() {
+    const raw = LS.get(KEY, {}), s = { e: [] };
+    if (raw && Array.isArray(raw.e)) s.e = raw.e.filter(x => x && typeof x === 'object' && typeof x.v === 'string' && +x.t > 0).map(x => ({
+      id: String(x.id || x.t), t: +x.t, v: x.v, a: String(x.a == null ? '' : x.a).slice(0, 12), u: String(x.u || '').slice(0, 14), r: String(x.r || '').slice(0, 6), n: String(x.n || '').slice(0, 120), x: !!x.x }));
+    s.e.sort((a, b) => a.t - b.t);
+    return s;
+  }
+  const save = s => LS.set(KEY, { e: s.e });
+  const name = id => { const v = drug(id); return v ? v.name : id; };
+  const desc = e => [name(e.v), [e.a, e.u].filter(Boolean).join(' '), RT[e.r] || e.r].filter(Boolean).join(' ') + (e.n ? ' (' + e.n + ')' : '');
+  const ago = t => { const m = Math.max(0, Math.floor((Date.now() - t) / 60000)); return m < 1 ? 'ką tik' : m < 60 ? 'prieš ' + m + ' min' : 'prieš ' + Math.floor(m / 60) + ' val. ' + (m % 60) + ' min'; };
+  function totals(es) {
+    const by = {};
+    es.forEach(e => { const n = num(e.a); if (!isNaN(n) && e.u) by[e.u] = (by[e.u] || 0) + n; });
+    return Object.keys(by).map(u => fmtN(by[u]) + ' ' + u).join(' + ');
+  }
+  function status() {
+    const s = get(); if (!s.e.length) return 'Žymėkite suleistus vaistus';
+    const l = s.e[s.e.length - 1];
+    return plural(s.e.length, ['įrašas', 'įrašai', 'įrašų']) + ' · ' + hm(l.t) + ' ' + name(l.v).replace(/ \(.*\)$/, '');
+  }
+  // ── pasirinkimo skydelis (ne saugoma) ──
+  let sel = null, dr = null, edit = null;
+  function openDrug(id, entry) {
+    const v = drug(id); if (!v) return;
+    const s = get(), prev = s.e.filter(e => e.v === id).pop(), q = QD[id] || [];
+    sel = id; edit = entry ? entry.id : null;
+    if (entry) dr = { r: entry.r, a: entry.a, u: entry.u, t: entry.t, n: entry.n };
+    else if (prev) dr = { r: prev.r, a: prev.a, u: prev.u, t: null, n: '' };
+    else if (q.length === 1) dr = { r: q[0][0], a: q[0][1], u: q[0][2], t: null, n: '' };
+    else dr = { r: q.length ? q[0][0] : routes(v)[0], a: '', u: q.length ? q[0][2] : units(v)[0], t: null, n: '' };
+  }
+  const close = () => { sel = null; dr = null; edit = null; };
+  const tOf = () => dr.t == null ? Date.now() : dr.t;
+  const okBtn = () => (edit ? 'Išsaugoti: ' : 'Žymėti: ') + [dr.a ? dr.a + ' ' + dr.u : 'įveskite dozę', RT[dr.r] || dr.r].join(' ') + ' · ' + (dr.t == null ? 'dabar' : hm(dr.t));
+  function panel() {
+    const v = drug(sel); if (!v) return '';
+    const s = get(), es = s.e.filter(e => e.v === sel), last = es[es.length - 1], w = LS.get('etc-svoris', 80), q = QD[sel] || [];
+    let h = '<div class="vzbg" data-act="vz-x"></div><section class="vzp" role="dialog" aria-label="' + esc(v.name) + '">';
+    h += `<div class="vzh"><b>${esc(v.name)}</b><button class="ib" data-act="vz-x" aria-label="Uždaryti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>`;
+    if (es.length) h += `<p class="vzlast">Jau suleista ×${es.length}${totals(es) ? ' · iš viso ' + esc(totals(es)) : ''} · paskutinė ${hm(last.t)} (<span data-ago="${last.t}">${ago(last.t)}</span>)</p>`;
+    if (q.length) h += '<div class="lbl">Dozė</div><div class="opts vzq">' + q.map(([r, a, u]) => chip('vz-q', r + '|' + a + '|' + u, dr.r === r && dr.a === a && dr.u === u, `${esc(RT[r])} <b>${esc(a)} ${esc(u)}</b>`)).join('') + '</div>';
+    h += '<div class="lbl">' + (q.length ? 'Kita dozė' : 'Dozė') + '</div><div class="vzin"><input class="inp" data-vz="a" inputmode="decimal" autocomplete="off" placeholder="kiekis" value="' + esc(dr.a) + '" aria-label="Kiekis"><div class="seg2 vzu" role="group" aria-label="Vienetai">' + units(v).map(u => chip('vz-u', u, dr.u === u, esc(u))).join('') + '</div></div>';
+    h += '<div class="lbl">Kelias</div><div class="seg2 vzr" role="group" aria-label="Kelias">' + routes(v).map(r => chip('vz-r', r, dr.r === r, esc(RT[r]))).join('') + '</div>';
+    const tv = dr.t == null ? '' : hm(dr.t);
+    h += '<div class="lbl">Laikas</div><div class="vzt">' + chip('vz-t', '0', dr.t == null, 'Dabar') + chip('vz-t', '5', false, '−5 min') + chip('vz-t', '10', false, '−10 min') +
+      `<input class="inp" type="time" data-vz="t" value="${tv}" aria-label="Laikas"></div>`;
+    h += '<input class="inp" data-vz="n" maxlength="120" autocomplete="off" placeholder="Pastaba (nebūtina), pvz. kas suleido" value="' + esc(dr.n) + '" aria-label="Pastaba">';
+    const L = lines(v);
+    if (L.length) h += '<details class="vzref"><summary>Dozės pagal gidą' + (L.some(l => l.c) ? ' (' + w + ' kg)' : '') + '</summary><ul>' +
+      L.map(l => `<li><b>${esc((l.p ? l.p + ' · ' : '') + l.k)}:</b> ${esc(l.d)}${l.c ? ' → <b>' + esc(calc(l.c, w)) + '</b>' : ''}</li>`).join('') + `</ul><a href="#/vaistas/${esc(v.id)}">Visa informacija apie vaistą ›</a></details>`;
+    h += `<button class="btn pri vzok" data-act="vz-ok"${dr.a ? '' : ' disabled'}>${esc(okBtn())}</button>`;
+    if (edit) h += '<button class="btn vzdel" data-act="vz-del">Ištrinti įrašą</button>';
+    return h + '</section>';
+  }
+  function view() {
+    const s = get(), learn = mode === 'learn', G = E.vaistuGrupes || [], D = drugs();
+    let h = '<h1>Vaistų žymėjimas</h1>';
+    if (learn) h += '<p class="muted">Bakstelėkite vaistą, pasirinkite dozę ir „Žymėti“ – įrašomas laikas. Įrašus galima taisyti, perkelti į MIST kortelę, nukopijuoti ar perskaityti perduodant pacientą. Greitosios dozės – iš skilties Vaistai; vaistą ir dozę skiria tas, kas turi kompetenciją.</p>';
+    h += '<div class="lbl0">Svoris skaičiavimui, kg</div>' + wChips(LS.get('etc-svoris', 80));
+    const by = {}; s.e.forEach(e => { (by[e.v] = by[e.v] || []).push(e); });
+    G.forEach(g => {
+      const ds = D.filter(v => v.grupe === g.id); if (!ds.length) return;
+      h += `<div class="lbl">${esc(g.pav)}</div><div class="vzg">` + ds.map(v => {
+        const es = by[v.id] || [], l = es[es.length - 1];
+        return `<button class="vzd${es.length ? ' on' : ''}" data-act="vz-sel" data-k="${esc(v.id)}"><b>${esc(v.name)}</b>` +
+          (l ? `<small>×${es.length} · ${hm(l.t)} · <span data-ago="${l.t}">${ago(l.t)}</span></small>` : '') + '</button>';
+      }).join('') + '</div>';
+    });
+    const other = D.filter(v => !G.some(g => g.id === v.grupe));
+    if (other.length) h += '<div class="vzg">' + other.map(v => `<button class="vzd" data-act="vz-sel" data-k="${esc(v.id)}"><b>${esc(v.name)}</b></button>`).join('') + '</div>';
+    h += `<h2>Suleista${s.e.length ? ' · ' + s.e.length : ''}</h2>`;
+    if (!s.e.length) h += '<p class="muted">Įrašų dar nėra.</p>';
+    else h += '<div class="vzl">' + s.e.slice().reverse().map(e => `<button class="vze${e.x ? ' x' : ''}" data-act="vz-ed" data-k="${esc(e.id)}"><span class="vzet">${hm(e.t)}</span><span class="vzen"><b>${esc(name(e.v))}</b> ${esc([e.a, e.u].filter(Boolean).join(' '))} ${esc(RT[e.r] || e.r)}${e.n ? '<small>' + esc(e.n) + '</small>' : ''}</span><small class="vzea" data-ago="${e.t}">${ago(e.t)}</small></button>`).join('') + '</div>' +
+      '<p class="muted">Bakstelėkite įrašą, kad pataisytumėte ar ištrintumėte.' + (s.e.some(e => e.x) ? ' Pilki – jau perkelti į MIST.' : '') + '</p>';
+    h += '<div class="acts"><button class="btn pri" data-act="vz-read"' + (s.e.length ? '' : ' disabled') + '>Skaityti perduodant</button><button class="btn" data-act="vz-mist"' + (s.e.some(e => !e.x) ? '' : ' disabled') + '>Į MIST kortelę</button><button class="btn" data-act="vz-copy"' + (s.e.length ? '' : ' disabled') + '>Kopijuoti</button><button class="btn" data-act="vz-clr"' + (s.e.length ? '' : ' disabled') + '>Naujas pacientas</button></div>';
+    h += row('#/mist', 'MIST kortelė', MC.status()) + row('#/vaistai', 'Vaistai', 'Dozės, įspėjimai, skaičiuoklė');
+    if (sel) h += panel();
+    return h;
+  }
+  const text = s => 'SULEISTI VAISTAI\n' + s.e.map(e => hm(e.t) + ' ' + desc(e)).join('\n');
+  function toMist(s) {
+    try { MC.status(); } catch (e) {} // seni MIST duomenys perkeliami į naują formatą
+    let st = LS.get(TCFG.pre + 'mist', null);
+    if (!st || st.v !== 2 || !Array.isArray(st.pts) || !st.pts.length) st = { v: 2, cur: 0, pts: [{}] };
+    const cur = Math.min(Math.max(0, parseInt(st.cur, 10) || 0), st.pts.length - 1), p = st.pts[cur] = Object.assign({}, st.pts[cur]);
+    const nw = s.e.filter(e => !e.x); if (!nw.length) return;
+    p.tx = Array.isArray(p.tx) ? p.tx.slice() : [];
+    nw.forEach(e => { const v = drug(e.v), k = MIST_TX[e.v] || (v && MIST_TX[v.grupe]); if (k && p.tx.indexOf(k) < 0) p.tx.push(k); if (e.v === 'txa' && !p.txaT) p.txaT = hm(e.t); });
+    const add = nw.map(e => desc(e) + ' ' + hm(e.t)).join('; ');
+    p.txTxt = [String(p.txTxt || '').trim(), add].filter(Boolean).join('; ');
+    LS.set(TCFG.pre + 'mist', Object.assign({}, st, { cur }));
+    nw.forEach(e => { e.x = true; }); save(s);
+    toast('Perkelta į MIST' + (st.pts.length > 1 ? ' – sužeistasis ' + (cur + 1) : '') + ': ' + plural(nw.length, ['įrašas', 'įrašai', 'įrašų']));
+  }
+  function act(el) {
+    const d = el.dataset, k = d.k, y = scrollY;
+    const s = get();
+    switch (d.act) {
+      case 'vz-sel': openDrug(k); break;
+      case 'vz-ed': { const e = s.e.find(x => x.id === k); if (!e) return; openDrug(e.v, e); break; }
+      case 'vz-x': close(); break;
+      case 'vz-q': { if (!dr) return; const [r, a, u] = k.split('|'); dr.r = r; dr.a = a; dr.u = u; break; }
+      case 'vz-u': if (dr) dr.u = k; break;
+      case 'vz-r': if (dr) dr.r = k; break;
+      case 'vz-t': if (dr) dr.t = k === '0' ? null : Date.now() - (+k) * 60000; break;
+      case 'vz-ok': {
+        if (!dr || !sel || !String(dr.a).trim()) return toast('Įveskite dozę');
+        const a = String(dr.a).trim().replace('.', ',');
+        if (isNaN(num(a)) || num(a) <= 0) return toast('Dozė – skaičius, pvz. 50 arba 0,5');
+        const rec = { t: tOf(), v: sel, a, u: dr.u, r: dr.r, n: String(dr.n || '').trim() };
+        if (edit) { const e = s.e.find(x => x.id === edit); if (e) Object.assign(e, rec, { x: false }); }
+        else s.e.push(Object.assign({ id: rec.t.toString(36) + Math.random().toString(36).slice(2, 6), x: false }, rec));
+        s.e.sort((p, q) => p.t - q.t); save(s);
+        toast((edit ? 'Pataisyta: ' : 'Pažymėta: ') + desc(rec) + ' ' + hm(rec.t));
+        if (navigator.vibrate) navigator.vibrate(20);
+        close(); break;
+      }
+      case 'vz-del': if (!edit || !confirm('Ištrinti šį įrašą?')) return; s.e = s.e.filter(x => x.id !== edit); save(s); close(); break;
+      case 'vz-read': if (!s.e.length) return; return readMode('Suleisti vaistai', s.e.map(e => `<b>${hm(e.t)}</b> ${esc(desc(e))}<small>${esc(ago(e.t))}</small>`), [['Kopijuoti', () => copyText(text(s))]]);
+      case 'vz-copy': return copyText(text(s));
+      case 'vz-mist': toMist(s); break;
+      case 'vz-clr': if (!confirm('Naujas pacientas: ištrinti visus vaistų įrašus?')) return; LS.set(KEY, { e: [] }); close(); break;
+      default: return;
+    }
+    render(); scrollTo(0, y);
+    if (sel && /^vz-(sel|ed)$/.test(d.act)) { const i = app.querySelector('.vzp'); if (i) i.focus && i.setAttribute('tabindex', '-1'); }
+  }
+  function onInput(t) {
+    if (!dr) return;
+    const k = t.dataset.vz;
+    if (k === 'a') dr.a = t.value.replace(/[^\d.,]/g, '').slice(0, 8);
+    else if (k === 'n') dr.n = t.value.slice(0, 120);
+    else if (k === 't') {
+      if (!HM_RE.test(t.value)) { dr.t = null; }
+      else { const [hh, mm] = t.value.split(':').map(Number), x = new Date(); x.setHours(hh, mm, 0, 0); if (x.getTime() > Date.now() + 5 * 60000) x.setDate(x.getDate() - 1); dr.t = x.getTime(); }
+      app.querySelectorAll('.vzt button').forEach(b => { b.classList.toggle('on', b.dataset.k === '0' && dr.t == null); b.setAttribute('aria-pressed', b.classList.contains('on')); });
+    }
+    if (k === 'a' && t.value !== dr.a) t.value = dr.a;
+    const b = app.querySelector('.vzok'); if (b) { b.textContent = okBtn(); b.disabled = !dr.a; }
+    if (k === 'a') app.querySelectorAll('.vzq button').forEach(x => { const [r, a, u] = x.dataset.k.split('|'); const on = dr.r === r && dr.a === a && dr.u === u; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on); });
+  }
+  function tick() { app.querySelectorAll('[data-ago]').forEach(x => { x.textContent = ago(+x.dataset.ago); }); }
+  const isOpen = () => !!sel;
+  return { view, act, onInput, status, tick, close, isOpen, text, QD, get };
+})();

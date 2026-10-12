@@ -4,7 +4,7 @@ const backBtn = document.getElementById('back');
 let depth = 0;
 const dec = s => { try { return decodeURIComponent(s); } catch (e) { return s; } };
 const newPt = () => '<button class="btn" data-act="new-pt" style="width:100%;margin-top:16px">Naujas pacientas – išvalyti žymėjimus</button>';
-const FB_PAGES = ['v', 's', 'vaistai', 'vaistas', 'igudis', 'tema', 'p', '9line', 'mist', 'gks', 'tst'];
+const FB_PAGES = ['v', 's', 'vaistai', 'vaistas', 'igudis', 'tema', 'p', '9line', 'mist', 'gks', 'tst', 'zymejimas'];
 const fbLink = () => '<button class="btn fbrow" data-act="fb">Pastebėjote klaidą ar turite pasiūlymą? Praneškite</button>';
 
 function route() {
@@ -34,6 +34,7 @@ function view(p, q) {
     case 'mist': return MC.view();
     case 'gks': return GK.view();
     case 'tst': return TS.view();
+    case 'zymejimas': return VZ.view();
     default: return notFound();
   }
 }
@@ -43,8 +44,9 @@ function render() {
   document.body.className = mode;
   document.getElementById('mF').classList.toggle('on', mode === 'field');
   document.getElementById('mL').classList.toggle('on', mode === 'learn');
-  backBtn.style.visibility = p.length ? 'visible' : 'hidden';
-  const sec = { vaistai: 'vaistai', vaistas: 'vaistai', igudziai: 'igudziai', igudis: 'igudziai', temos: 'temos', tema: 'temos', p: 'temos', sarasai: 'sarasai', s: 'sarasai', v: 'sarasai', '9line': 'home', mist: 'home', gks: 'home', tst: 'home' }[p[0]] || (p.length ? '' : 'home');
+  backBtn.style.display = p.length ? '' : 'none'; // pradžios ekrane vietoje „Atgal“ – atnaujinimo mygtukas dešinėje
+  const ub = document.getElementById('upd'); if (ub) ub.style.display = p.length ? 'none' : '';
+  const sec = { vaistai: 'vaistai', vaistas: 'vaistai', igudziai: 'igudziai', igudis: 'igudziai', temos: 'temos', tema: 'temos', p: 'temos', sarasai: 'sarasai', s: 'sarasai', v: 'sarasai', '9line': 'home', mist: 'home', gks: 'home', tst: 'home', zymejimas: 'home' }[p[0]] || (p.length ? '' : 'home');
   document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('on', a.dataset.s === sec));
   try { app.innerHTML = view(p, q) + (FB_PAGES.indexOf(p[0]) >= 0 ? fbLink() : ''); }
   catch (err) { console.error(err); app.innerHTML = '<h1>Klaida</h1><p class="muted">Nepavyko atidaryti puslapio. Patikrinkite turinio failus.</p>'; }
@@ -58,6 +60,7 @@ function onNav(first) {
   depth = !p.length ? 0 : (s && s.d != null ? s.d : (first ? 0 : depth + 1));
   history.replaceState({ d: depth }, '');
   tmEdit = null;
+  if (!first) VZ.close();
   render();
   if (!first) scrollTo(0, 0);
 }
@@ -80,6 +83,7 @@ app.addEventListener('click', e => {
   if (/^mc-/.test(d.act)) { MC.act(el, e); return; }
   if (/^gk-/.test(d.act)) { GK.act(el); return; }
   if (/^ts-/.test(d.act)) { TS.act(el); return; }
+  if (/^vz-/.test(d.act)) { VZ.act(el); return; }
   switch (d.act) {
     case 'ck': ckToggle(d.l, +d.i); el.classList.toggle('on'); updCount(el.closest('.cl')); if (navigator.vibrate) navigator.vibrate(15); break;
     case 'go': location.hash = d.r; break;
@@ -143,6 +147,7 @@ function toolInput(t) {
   const d = t.dataset || {};
   if (d.nl) { NL.onInput(t); return true; }
   if (d.mc || d.mcf || d.mcm != null) { MC.onInput(t); return true; }
+  if (d.vz) { VZ.onInput(t); return true; }
   return false;
 }
 app.addEventListener('change', e => { if (e.target.type === 'time') toolInput(e.target); });
@@ -161,9 +166,56 @@ app.addEventListener('input', e => {
   } else history.replaceState(history.state, '', '#/paieska' + (empty ? '' : '?q=' + encodeURIComponent(v)));
 });
 
-setInterval(() => { if (!tmEdit) updTimers(); }, 30000);
+setInterval(() => { if (!tmEdit) updTimers(); VZ.tick(); }, 30000);
+addEventListener('keydown', e => { if (e.key === 'Escape' && VZ.isOpen()) { VZ.close(); render(); } });
 document.addEventListener('visibilitychange', () => { if (!document.hidden && !tmEdit) updTimers(); });
 addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEv = e; if (['nustatymai', 'idiegimas', undefined].indexOf(route().p[0]) >= 0) render(); });
 if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 
 onNav(true);
+
+// ───────── Atnaujinimas: mygtukas antraštėje (pradžios ekrane, šalia paieškos) ─────────
+// Bakstelėjus – tikrinama, ar serveryje yra nauja versija (service worker update); radus – įdiegiama ir puslapis perkraunamas.
+// Programėlė tikrina ir pati (atidarius ir grįžus po ≥ 30 min); radus naują versiją mygtukas pažymimas tašku.
+const UPD = (() => {
+  const btn = document.getElementById('upd');
+  let busy = false, avail = false, last = 0, had = !!(navigator.serviceWorker && navigator.serviceWorker.controller), reloading = false;
+  const ver = () => String((E && E.versija) || '').split(' (')[0];
+  function mark(on) {
+    avail = on; if (!btn) return;
+    btn.classList.toggle('new', on);
+    const t = on ? 'Yra nauja versija – bakstelėkite, kad atnaujintumėte' : 'Tikrinti, ar yra nauja versija';
+    btn.setAttribute('aria-label', t); btn.title = t;
+  }
+  const getReg = () => 'serviceWorker' in navigator ? navigator.serviceWorker.getRegistration().catch(() => null) : Promise.resolve(null);
+  function settle(r) { // laukiama, kol nauja versija įsidiegs ir pradės veikti (iki 15 s)
+    return new Promise(res => {
+      const w = r && (r.installing || r.waiting); if (!w) return res();
+      const tm = setTimeout(res, 15000);
+      w.addEventListener('statechange', () => { if (w.state === 'activated' || w.state === 'redundant') { clearTimeout(tm); res(); } });
+    });
+  }
+  function reload() { reloading = true; toast('Atnaujinama…'); setTimeout(() => location.reload(), 350); }
+  async function check(manual) {
+    if (busy) return; busy = true;
+    if (manual && btn) btn.classList.add('spin');
+    try {
+      const r = await getReg();
+      if (!r) { if (manual) reload(); return; }
+      if (manual && avail) { await settle(r); return reload(); }
+      if (manual && navigator.onLine === false) { toast('Nėra interneto ryšio – patikrinti nepavyko'); return; }
+      await r.update(); last = Date.now();
+      if (r.installing || r.waiting) { mark(true); if (manual) { await settle(r); return reload(); } }
+      else if (manual) toast('Naujausia versija · ' + ver());
+    } catch (e) { if (manual) toast('Nepavyko patikrinti – nėra ryšio?'); }
+    finally { busy = false; if (btn && !reloading) btn.classList.remove('spin'); }
+  }
+  if (btn) btn.onclick = () => check(true);
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('controllerchange', () => { if (had && !reloading) mark(true); had = true; });
+    getReg().then(r => { if (r) r.addEventListener('updatefound', () => { if (had) mark(true); }); });
+    addEventListener('load', () => setTimeout(() => check(false), 4000));
+    document.addEventListener('visibilitychange', () => { if (!document.hidden && Date.now() - last > 30 * 60000) check(false); });
+  }
+  return { check, mark, available: () => avail };
+})();

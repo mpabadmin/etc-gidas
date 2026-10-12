@@ -11,7 +11,7 @@ const E = window.ETC;
 const KOMP = 'Pagal kompetenciją', MED = 'Medicinos personalui', GYD = 'Gydytojui', INT = 'Intubuojantiems gydytojams';
 const link = (href, t, s) => `<a class="row" href="${href}"><div>${t}${s ? '<small>' + s + '</small>' : ''}</div><span class="ar">›</span></a>`;
 
-E.versija = '2026-10-12 v15 (Greitai – įrankių plytelės pradžios ekrane kaip March gide: MIST, 9-Line, GKS, TST, kraujo suderinamumas, vaistų skiedimas; MIST kortelė keliems sužeistiesiems; TST pagal NARU)';
+E.versija = '2026-10-12 v16 (vaistų žymėjimas – Greitai: suleisti vaistai, dozė, kelias, laikas, perkėlimas į MIST; atnaujinimo mygtukas; violetinės Greitai plytelės)';
 // Pranešimų priėmimo adresas: Google Apps Script žiniatinklio programos /exec URL (žr. tools/atsiliepimai.gs)
 E.atsiliepimai = { url: 'https://script.google.com/macros/s/AKfycbyUpzDmAClJ40FMltkHi21Ozc4PpItRr3u6yy4rU0DKNGe7JkRBnOr0y42wLwpJcBau/exec' };
 
