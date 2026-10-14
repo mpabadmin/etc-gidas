@@ -215,8 +215,24 @@ const V = {
     if (v.saltinis) more += '<p class="muted" style="margin-top:10px">Šaltiniai: ' + esc(v.saltinis) + '</p>';
     if ((v.nuorodos || []).length) more += v.nuorodos.map(([t, u]) => `<a class="row" href="${esc(u)}" target="_blank" rel="noopener"><div>${esc(t)}</div><span class="ar">↗</span></a>`).join('');
     if (more) h += `<details class="alt"${learn ? ' open' : ''}><summary>Kontraindikacijos ir daugiau</summary>${more}</details>`;
-    if ((v.susije || []).length) h += '<h2>Susiję vaistai</h2>' + v.susije.map(s => { const o = drugById(s); return o && ok(o.kam) ? row('#/vaistas/' + o.id, o.name, o.klase) : ''; }).join('');
+    h += V.drugLt(v, learn);
+    const alt = (v.alt || []).filter(a => !a.id || (drugById(a.id) && ok(drugById(a.id).kam)));
+    if (alt.length) h += '<h2>Alternatyva</h2>' + alt.map(a => a.id ? row('#/vaistas/' + a.id, drugById(a.id).name, a.t) : `<p class="muted altx">${esc(a.t)}</p>`).join('') +
+      (alt.some(a => a.id) ? '<p class="muted altn">Kitas vaistas tam pačiam tikslui – sprendžia skiriantysis; dozė – to vaisto puslapyje.</p>' : '');
+    const sus = (v.susije || []).filter(s => !alt.some(a => a.id === s));
+    if (sus.length) h += '<h2>Susiję vaistai</h2>' + sus.map(s => { const o = drugById(s); return o && ok(o.kam) ? row('#/vaistas/' + o.id, o.name, o.klase) : ''; }).join('');
     return h;
+  },
+
+  // Lietuvoje registruoti preparatai (VVKT VAPRIS) – papildoma vaisto aprašo skiltis
+  drugLt(v, learn) {
+    const L = v.lt; if (!L || !((L.p || []).length || L.ne || L.pa)) return '';
+    const ST = { T: ['Tiekiamas', 'grn'], L: ['Lygiagretus importas', 'grn'], U: ['Be registracijos numerio', 'amb'], N: ['Netiekiamas', 'red'] };
+    let h = (L.p || []).map(p => { const s = ST[p.s] || ['', '']; return `<div class="ltp"><div class="ltn"><b>${esc(p.n)}</b>${s[0] ? `<span class="tag ${s[1]}">${s[0]}</span>` : ''}</div><div class="ltd">${esc(p.d)}${p.r ? ' · ' + esc(p.r) : ''}</div></div>`; }).join('');
+    if (L.ne) h += `<div class="ltp"><div class="ltn"><span class="tag red">Netiekiami</span></div><div class="ltd">${esc(L.ne)}</div></div>`;
+    if (L.pa) h += `<p class="ltpa">${esc(L.pa)}</p>`;
+    h += '<p class="muted ltsrc">VVKT vaistinių preparatų registras, tikrinta 2026-10-14. Tiekimas keičiasi – naudokite tai, kas yra jūsų komplekte, ir tikrinkite koncentraciją ant ampulės.</p>';
+    return `<details class="alt lt"${learn ? ' open' : ''}><summary>Lietuvoje: preparatai ir pakuotės</summary>${h}</details>`;
   },
 
   skills(q) {

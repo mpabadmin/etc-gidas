@@ -7,7 +7,10 @@
 //   nuorodos – [pavadinimas, URL]. Patvirtinus mediko: patvirtinta: 'Vardas Pavardė, data'.
 // Skaičiuoklė (c): per – mg/kg; min/max – mg/kg intervalas; conc – mg/ml švirkšte; u – vienetai;
 //   minute: true – mcg/kg/min → mcg/min ir ml/val.; hour: true – mg/kg/val. → mg/val. ir ml/val.
-// Patikrinta: 2026-10-08.
+// lt – Lietuvoje registruoti preparatai (VVKT VAPRIS registras, tikrinta 2026-10-14): p – [{n pavadinimas, d stiprumas ir pakuotė, r registruotojas,
+//   s: T registruotas ir tiekiamas, L lygiagretus importas, U be registracijos numerio (tiekiamas), N netiekiamas}], ne – netiekiami, pa – pastaba.
+// alt – alternatyva tam pačiam tikslui: [{id – vaistas gide, t – kam}] (sprendžia skiriantysis). Antibiotikai – pagal suvartojimą Lietuvoje (VVKT 2024).
+// Patikrinta: 2026-10-08 (dozės), 2026-10-14 (Lietuvos preparatai).
 window.ETC = window.ETC || {};
 
 window.ETC.vaistuGrupes = [
@@ -165,6 +168,32 @@ window.ETC.vaistai = [
           }
         ]
       }
+    ],
+    "lt": {
+      "p": [
+        {
+          "n": "Ketamin Inresa",
+          "d": "50 mg/ml · ampulė 10 ml (500 mg) · neregistruotas (vardinis)",
+          "s": "N"
+        },
+        {
+          "n": "Ketamin",
+          "d": "50 mg/ml · ampulė 5 ml (250 mg) · neregistruotas (vardinis)",
+          "s": "N"
+        }
+      ],
+      "ne": "",
+      "pa": "Lietuvoje registruoto injekcinio ketamino nėra: registre tik du neregistruoti (vardiniai) įrašai, abu šiuo metu netiekiami. 10 mg/ml ketamino registre nėra. Psichotropinė medžiaga."
+    },
+    "alt": [
+      {
+        "id": "fentanilis",
+        "t": "nuskausminimui"
+      },
+      {
+        "id": "morfinas",
+        "t": "nuskausminimui"
+      }
     ]
   },
   {
@@ -225,6 +254,38 @@ window.ETC.vaistai = [
         "NextGen Combat Medic – kai nėra ketamino",
         "https://nextgencombatmedic.com/2024/11/18/what-if-you-didnt-have-ketamine-as-a-68w-combat-medic"
       ]
+    ],
+    "lt": {
+      "p": [
+        {
+          "n": "Fentanyl Kalceks",
+          "d": "50 mcg/ml · ampulė 2 ml (100 mcg)",
+          "r": "Kalceks",
+          "s": "T"
+        },
+        {
+          "n": "Fentanyl-hameln",
+          "d": "50 mcg/ml · ampulė 2 ml",
+          "s": "L"
+        },
+        {
+          "n": "Fentanyl PANPHARMA",
+          "d": "50 mcg/ml · ampulė 2 ml",
+          "s": "L"
+        }
+      ],
+      "ne": "Instanyl, PecFent (nosies purškalai) – registruoti, netiekiami",
+      "pa": "Narkotinė medžiaga. 10 ml ampulės – tik netiekiami lygiagretaus importo įrašai."
+    },
+    "alt": [
+      {
+        "id": "ketaminas",
+        "t": "nuskausminimui"
+      },
+      {
+        "id": "morfinas",
+        "t": "nuskausminimui"
+      }
     ]
   },
   {
@@ -283,6 +344,39 @@ window.ETC.vaistai = [
         "NextGen Combat Medic – kai nėra ketamino",
         "https://nextgencombatmedic.com/2024/11/18/what-if-you-didnt-have-ketamine-as-a-68w-combat-medic"
       ]
+    ],
+    "lt": {
+      "p": [
+        {
+          "n": "Morphine hydrochloride Kalceks",
+          "d": "10 mg/ml · ampulė 1 ml",
+          "r": "Kalceks",
+          "s": "T"
+        },
+        {
+          "n": "MORPHINE BBP",
+          "d": "10 mg/ml · ampulė 1 ml",
+          "s": "L"
+        },
+        {
+          "n": "Maracex",
+          "d": "20 mg/ml · ampulė 1 ml",
+          "r": "Kalceks",
+          "s": "T"
+        }
+      ],
+      "ne": "",
+      "pa": "Dėmesio: Maracex – 20 mg/ml, dvigubai stipresnis už įprastą 10 mg/ml. Narkotinė medžiaga."
+    },
+    "alt": [
+      {
+        "id": "fentanilis",
+        "t": "nuskausminimui"
+      },
+      {
+        "id": "ketaminas",
+        "t": "nuskausminimui"
+      }
     ]
   },
   {
@@ -352,6 +446,35 @@ window.ETC.vaistai = [
           }
         ]
       }
+    ],
+    "lt": {
+      "p": [
+        {
+          "n": "Paracetamol B.Braun",
+          "d": "10 mg/ml · infuzinis tirpalas 100 ml (1 g)",
+          "r": "B.Braun",
+          "s": "T"
+        },
+        {
+          "n": "Paracetamol Kabi",
+          "d": "10 mg/ml · 100 ml (1 g)",
+          "r": "Fresenius Kabi",
+          "s": "T"
+        },
+        {
+          "n": "Paracetamol Actavis, PARACETAMOL-GRINDEKS, Paracetamolis SANITAS, APAP",
+          "d": "tabletės 500 mg (nereceptiniai)",
+          "s": "T"
+        }
+      ],
+      "ne": "",
+      "pa": ""
+    },
+    "alt": [
+      {
+        "id": "meloksikamas",
+        "t": "lengvam ar vidutiniam skausmui"
+      }
     ]
   },
   {
@@ -398,6 +521,28 @@ window.ETC.vaistai = [
         "PCS – meloksikamas 15 mg (JK eMC)",
         "https://www.medicines.org.uk/emc/product/101306/smpc"
       ]
+    ],
+    "lt": {
+      "p": [
+        {
+          "n": "Movalis, Recoxa, MELOX",
+          "d": "tabletės 15 mg",
+          "s": "T"
+        },
+        {
+          "n": "Mexolan, Recoxa, MELOX",
+          "d": "15 mg/1,5 ml (10 mg/ml) · ampulė 1,5 ml, tik į raumenis",
+          "s": "T"
+        }
+      ],
+      "ne": "",
+      "pa": ""
+    },
+    "alt": [
+      {
+        "id": "paracetamolis",
+        "t": "lengvam ar vidutiniam skausmui"
+      }
     ]
   },
   {
@@ -447,6 +592,38 @@ window.ETC.vaistai = [
         "NextGen Combat Medic – Tranexamic Acid",
         "https://nextgencombatmedic.com/2024/12/21/tranexamic-acid/"
       ]
+    ],
+    "lt": {
+      "p": [
+        {
+          "n": "Ugurol",
+          "d": "100 mg/ml · ampulė 5 ml (500 mg)",
+          "s": "L"
+        },
+        {
+          "n": "TRANEXAMSAURE EBERTH",
+          "d": "100 mg/ml · ampulė 5 ml",
+          "s": "L"
+        },
+        {
+          "n": "Mefitax; Ugurol (Limedika)",
+          "d": "100 mg/ml · ampulė 5 ml",
+          "s": "U"
+        },
+        {
+          "n": "Tranexamic acid Kabi",
+          "d": "10 mg/ml (paruoštas) · 100 ml (1 g)",
+          "r": "Fresenius Kabi",
+          "s": "T"
+        }
+      ],
+      "ne": "Tranexamic acid Baxter, Unifarma (100 mg/ml) – registruoti, netiekiami",
+      "pa": "Atkreipkite dėmesį į koncentraciją: Kabi 10 mg/ml – 10 kartų skystesnis už ampules."
+    },
+    "alt": [
+      {
+        "t": "Lygiaverčio vaisto nėra"
+      }
     ]
   },
   {
@@ -493,52 +670,95 @@ window.ETC.vaistai = [
         "PCS – kalcio gliukonatas 10 % (JK eMC)",
         "https://www.medicines.org.uk/emc/product/6264/smpc"
       ]
+    ],
+    "lt": {
+      "p": [
+        {
+          "n": "Calcii gluconas",
+          "d": "10 % · ampulė 10 ml",
+          "s": "U"
+        },
+        {
+          "n": "Calciumgluconat B. Braun 10%",
+          "d": "100 mg/ml · ampulė 10 ml",
+          "s": "U"
+        }
+      ],
+      "ne": "",
+      "pa": "Lietuvoje registruoto injekcinio kalcio gliukonato nėra – registre tik tiekiami įrašai be registracijos numerio. Kalcio chlorido injekcijų (bolusui) registre nėra."
+    },
+    "alt": [
+      {
+        "t": "Kalcio chloridas 10 % (dozė – šiame puslapyje), jei yra"
+      }
     ]
   },
   {
-    "id": "ceftriaksonas",
-    "name": "Ceftriaksonas",
-    "klase": "Antibiotikai (cefalosporinas)",
+    "id": "amoksiklavas",
+    "name": "Amoksiklavas",
+    "klase": "Antibiotikai (penicilinas)",
     "grupe": "antibiotikai",
-    "tipas": "papild",
-    "tccc26": true,
-    "kam": "Medicinos personalui",
-    "ind": "Atviros kovinės žaizdos ir invazinės procedūros, kai pacientas negali gerti; penetruojanti akies trauma (TCCC 2026).",
-    "kontra": "PCS: padidėjęs jautrumas ceftriaksonui ar kitiems cefalosporinams; sunki alergija (pvz., anafilaksija) kitiems beta laktamams anamnezėje.",
+    "tipas": "pagr",
+    "ind": "Sunkių infekcijų gydymas. TCCC 2026 šio antibiotiko nenumato (IV / IO / IM – ceftriaksonas).",
+    "kontra": "PCS: padidėjęs jautrumas penicilinams; sunki staigi padidėjusio jautrumo reakcija (pvz., anafilaksija) kitam beta laktamui (cefalosporinui, karbapenemui, monobaktamui) anamnezėje; gelta / kepenų pažeidimas nuo amoksicilino su klavulano rūgštimi anamnezėje.",
     "dozes": [
       {
-        "k": "IV / IO / IM (TCCC 2026)",
-        "d": "2 g kartą per parą",
-        "p": "IV infuzija: 2 g į 40 ml tirpalo be kalcio, ≥ 30 min; arba lėtai IV per 5 min. IM: į vieną vietą ≤ 1 g – 2 g dalyti į dvi vietas (PCS)."
+        "k": "IV (PCS)",
+        "d": "1,2 g kas 8 val.",
+        "p": "Boliusu: ištirpinti 20 ml injekcinio vandens, leisti per 3–4 min. Infuzijai: į 50–100 ml 0,9 % NaCl, per 30–40 min. Į raumenis neleisti."
       }
     ],
     "ispejimai": [
-      "Su kalcio tirpalais nemaišyti ir neleisti vienu metu; esant hipovolemijai – nelašinti ir paeiliui (PCS).",
-      "Ištirpintas lidokainu – niekada neleisti į veną (PCS)."
+      "Nemaišyti su gliukozės tirpalais, krauju (PCS)."
     ],
-    "salutinis": "Viduriavimas, bėrimas, kepenų fermentų padidėjimas.",
-    "pakuote": "Milteliai flakone 1 g arba 2 g",
+    "salutinis": "Viduriavimas, pykinimas, vėmimas, bėrimas, galvos skausmas.",
+    "pakuote": "Milteliai flakone: 1 g amoksicilino + 200 mg klavulano rūgšties",
     "pastabos": [
-      "Gali gerti – cefadroksilis 1 g per burną kartą per parą (TCCC 2026)."
+      "Klavulano rūgštis apsaugo amoksiciliną nuo kai kurių bakterijų fermentų."
     ],
     "susije": [
-      "cefadroksilis",
-      "kalcis"
+      "ceftriaksonas",
+      "cefadroksilis"
     ],
-    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); PCS (ceftriaksonas 2 g)",
+    "saltinis": "PCS (amoksicilinas / klavulano rūgštis 1000/200 mg); TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine)",
     "nuorodos": [
+      [
+        "PCS – amoksicilinas / klavulano rūgštis 1000/200 mg (JK eMC)",
+        "https://www.medicines.org.uk/emc/product/7211/smpc"
+      ],
       [
         "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
         "https://learning-media.allogy.com/api/v1/pdf/18ccfdfc-a076-47e9-8a34-376efdd81b43/contents"
-      ],
-      [
-        "Deployed Medicine – TCCC kolekcija (reikia prisijungti)",
-        "https://deployedmedicine.allogy.net/learner/collections/11"
-      ],
-      [
-        "PCS – ceftriaksonas 2 g (JK eMC)",
-        "https://www.medicines.org.uk/emc/product/15078/smpc"
       ]
+    ],
+    "lt": {
+      "p": [
+        {
+          "n": "Amoksiklav",
+          "d": "1000/200 mg · milteliai, flakonas (IV)",
+          "r": "Sandoz",
+          "s": "T"
+        },
+        {
+          "n": "MEDOCLAV",
+          "d": "1000/200 mg · flakonas (IV)",
+          "r": "Medochemie",
+          "s": "T"
+        },
+        {
+          "n": "Amoksiklav, Augmentin, MEDOCLAV",
+          "d": "tabletės 875/125 mg",
+          "s": "T"
+        }
+      ],
+      "ne": "",
+      "pa": ""
+    },
+    "alt": [
+      {
+        "id": "ceftriaksonas",
+        "t": "IV antibiotikas"
+      }
     ]
   },
   {
@@ -585,6 +805,169 @@ window.ETC.vaistai = [
         "PCS – cefadroksilis 500 mg (JK eMC)",
         "https://www.medicines.org.uk/emc/product/6543/smpc"
       ]
+    ],
+    "lt": {
+      "p": [
+        {
+          "n": "Duracef",
+          "d": "kapsulės 500 mg; disperguojamosios tabletės 1 g",
+          "r": "Bausch Health",
+          "s": "T"
+        },
+        {
+          "n": "Biodroxil",
+          "d": "kapsulės 500 mg",
+          "r": "Sandoz",
+          "s": "T"
+        }
+      ],
+      "ne": "",
+      "pa": ""
+    },
+    "alt": [
+      {
+        "id": "moksifloksacinas",
+        "t": "per burną"
+      }
+    ]
+  },
+  {
+    "id": "ceftriaksonas",
+    "name": "Ceftriaksonas",
+    "klase": "Antibiotikai (cefalosporinas)",
+    "grupe": "antibiotikai",
+    "tipas": "papild",
+    "tccc26": true,
+    "kam": "Medicinos personalui",
+    "ind": "Atviros kovinės žaizdos ir invazinės procedūros, kai pacientas negali gerti; penetruojanti akies trauma (TCCC 2026).",
+    "kontra": "PCS: padidėjęs jautrumas ceftriaksonui ar kitiems cefalosporinams; sunki alergija (pvz., anafilaksija) kitiems beta laktamams anamnezėje.",
+    "dozes": [
+      {
+        "k": "IV / IO / IM (TCCC 2026)",
+        "d": "2 g kartą per parą",
+        "p": "IV infuzija: 2 g į 40 ml tirpalo be kalcio, ≥ 30 min; arba lėtai IV per 5 min. IM: į vieną vietą ≤ 1 g – 2 g dalyti į dvi vietas (PCS)."
+      }
+    ],
+    "ispejimai": [
+      "Su kalcio tirpalais nemaišyti ir neleisti vienu metu; esant hipovolemijai – nelašinti ir paeiliui (PCS).",
+      "Ištirpintas lidokainu – niekada neleisti į veną (PCS)."
+    ],
+    "salutinis": "Viduriavimas, bėrimas, kepenų fermentų padidėjimas.",
+    "pakuote": "Milteliai flakone 1 g arba 2 g",
+    "pastabos": [
+      "Gali gerti – cefadroksilis 1 g per burną kartą per parą (TCCC 2026)."
+    ],
+    "susije": [
+      "cefadroksilis",
+      "kalcis"
+    ],
+    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); PCS (ceftriaksonas 2 g)",
+    "nuorodos": [
+      [
+        "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
+        "https://learning-media.allogy.com/api/v1/pdf/18ccfdfc-a076-47e9-8a34-376efdd81b43/contents"
+      ],
+      [
+        "Deployed Medicine – TCCC kolekcija (reikia prisijungti)",
+        "https://deployedmedicine.allogy.net/learner/collections/11"
+      ],
+      [
+        "PCS – ceftriaksonas 2 g (JK eMC)",
+        "https://www.medicines.org.uk/emc/product/15078/smpc"
+      ]
+    ],
+    "lt": {
+      "p": [
+        {
+          "n": "Medaxone",
+          "d": "1 g · milteliai, flakonas",
+          "r": "Medochemie",
+          "s": "T"
+        },
+        {
+          "n": "Ceftriaxone Kabi",
+          "d": "1 g · flakonas",
+          "r": "Fresenius Kabi",
+          "s": "T"
+        },
+        {
+          "n": "Rezaxon",
+          "d": "1 g · flakonas",
+          "r": "Eletis Pharma",
+          "s": "T"
+        }
+      ],
+      "ne": "Ceftriaxone MIP, Ceftriaxone Venus Pharma 2 g – registruoti, netiekiami",
+      "pa": "Tiekiami tik 1 g flakonai – 2 g dozei reikia 2 flakonų."
+    },
+    "alt": [
+      {
+        "id": "amoksiklavas",
+        "t": "IV antibiotikas"
+      },
+      {
+        "id": "ertapenemas",
+        "t": "IV antibiotikas (LT netiekiamas)"
+      }
+    ]
+  },
+  {
+    "id": "moksifloksacinas",
+    "name": "Moksifloksacinas",
+    "klase": "Antibiotikai (fluorochinolonas)",
+    "grupe": "antibiotikai",
+    "tipas": "papild",
+    "kam": "Medicinos personalui",
+    "ind": "Bakterinės infekcijos. TCCC 2026 nebenumato (per burną – cefadroksilis).",
+    "kontra": "PCS: < 18 m., nėštumas, žindymas, QT pailgėjimas, nekoreguota hipokalemija, kliniškai reikšminga bradikardija, širdies nepakankamumas su sumažėjusia KS išstūmimo frakcija, simptominės aritmijos anamnezėje, kiti QT ilginantys vaistai, ankstesnė chinolonų sukelta sausgyslių pažaida, sunkus kepenų nepakankamumas.",
+    "dozes": [
+      {
+        "k": "Per burną (PCS)",
+        "d": "400 mg kartą per parą"
+      }
+    ],
+    "ispejimai": [
+      "Sausgyslių pažeidimas, psichikos ar neuropatijos simptomai – nutraukti (PCS)."
+    ],
+    "salutinis": "Pykinimas, galvos skausmas.",
+    "pakuote": "400 mg tabletės",
+    "susije": [
+      "cefadroksilis"
+    ],
+    "saltinis": "PCS (moksifloksacinas); TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine)",
+    "nuorodos": [
+      [
+        "PCS – moksifloksacinas 400 mg (JK eMC)",
+        "https://www.medicines.org.uk/emc/product/6771/smpc"
+      ],
+      [
+        "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
+        "https://learning-media.allogy.com/api/v1/pdf/18ccfdfc-a076-47e9-8a34-376efdd81b43/contents"
+      ]
+    ],
+    "lt": {
+      "p": [
+        {
+          "n": "Moxifloxacin Sandoz",
+          "d": "tabletės 400 mg",
+          "r": "Sandoz",
+          "s": "T"
+        },
+        {
+          "n": "FLOXELAN",
+          "d": "tabletės 400 mg",
+          "r": "Medochemie",
+          "s": "T"
+        }
+      ],
+      "ne": "Avelox, Moflaxa 400 mg/250 ml infuzinis tirpalas – registruoti, netiekiami",
+      "pa": ""
+    },
+    "alt": [
+      {
+        "id": "cefadroksilis",
+        "t": "per burną"
+      }
     ]
   },
   {
@@ -621,80 +1004,21 @@ window.ETC.vaistai = [
         "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
         "https://learning-media.allogy.com/api/v1/pdf/18ccfdfc-a076-47e9-8a34-376efdd81b43/contents"
       ]
-    ]
-  },
-  {
-    "id": "amoksiklavas",
-    "name": "Amoksiklavas",
-    "klase": "Antibiotikai (penicilinas)",
-    "grupe": "antibiotikai",
-    "tipas": "pagr",
-    "ind": "Sunkių infekcijų gydymas. TCCC 2026 šio antibiotiko nenumato (IV / IO / IM – ceftriaksonas).",
-    "kontra": "PCS: padidėjęs jautrumas penicilinams; sunki staigi padidėjusio jautrumo reakcija (pvz., anafilaksija) kitam beta laktamui (cefalosporinui, karbapenemui, monobaktamui) anamnezėje; gelta / kepenų pažeidimas nuo amoksicilino su klavulano rūgštimi anamnezėje.",
-    "dozes": [
+    ],
+    "lt": {
+      "p": [],
+      "ne": "Invanz, Ertapenem SUN, Ertapenem QILU 1 g – registruoti, netiekiami",
+      "pa": "Lietuvoje šiuo metu netiekiamas."
+    },
+    "alt": [
       {
-        "k": "IV (PCS)",
-        "d": "1,2 g kas 8 val.",
-        "p": "Boliusu: ištirpinti 20 ml injekcinio vandens, leisti per 3–4 min. Infuzijai: į 50–100 ml 0,9 % NaCl, per 30–40 min. Į raumenis neleisti."
-      }
-    ],
-    "ispejimai": [
-      "Nemaišyti su gliukozės tirpalais, krauju (PCS)."
-    ],
-    "salutinis": "Viduriavimas, pykinimas, vėmimas, bėrimas, galvos skausmas.",
-    "pakuote": "Milteliai flakone: 1 g amoksicilino + 200 mg klavulano rūgšties",
-    "pastabos": [
-      "Klavulano rūgštis apsaugo amoksiciliną nuo kai kurių bakterijų fermentų."
-    ],
-    "susije": [
-      "ceftriaksonas",
-      "cefadroksilis"
-    ],
-    "saltinis": "PCS (amoksicilinas / klavulano rūgštis 1000/200 mg); TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine)",
-    "nuorodos": [
-      [
-        "PCS – amoksicilinas / klavulano rūgštis 1000/200 mg (JK eMC)",
-        "https://www.medicines.org.uk/emc/product/7211/smpc"
-      ],
-      [
-        "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
-        "https://learning-media.allogy.com/api/v1/pdf/18ccfdfc-a076-47e9-8a34-376efdd81b43/contents"
-      ]
-    ]
-  },
-  {
-    "id": "moksifloksacinas",
-    "name": "Moksifloksacinas",
-    "klase": "Antibiotikai (fluorochinolonas)",
-    "grupe": "antibiotikai",
-    "tipas": "papild",
-    "kam": "Medicinos personalui",
-    "ind": "Bakterinės infekcijos. TCCC 2026 nebenumato (per burną – cefadroksilis).",
-    "kontra": "PCS: < 18 m., nėštumas, žindymas, QT pailgėjimas, nekoreguota hipokalemija, kliniškai reikšminga bradikardija, širdies nepakankamumas su sumažėjusia KS išstūmimo frakcija, simptominės aritmijos anamnezėje, kiti QT ilginantys vaistai, ankstesnė chinolonų sukelta sausgyslių pažaida, sunkus kepenų nepakankamumas.",
-    "dozes": [
+        "id": "ceftriaksonas",
+        "t": "IV antibiotikas"
+      },
       {
-        "k": "Per burną (PCS)",
-        "d": "400 mg kartą per parą"
+        "id": "amoksiklavas",
+        "t": "IV antibiotikas"
       }
-    ],
-    "ispejimai": [
-      "Sausgyslių pažeidimas, psichikos ar neuropatijos simptomai – nutraukti (PCS)."
-    ],
-    "salutinis": "Pykinimas, galvos skausmas.",
-    "pakuote": "400 mg tabletės",
-    "susije": [
-      "cefadroksilis"
-    ],
-    "saltinis": "PCS (moksifloksacinas); TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine)",
-    "nuorodos": [
-      [
-        "PCS – moksifloksacinas 400 mg (JK eMC)",
-        "https://www.medicines.org.uk/emc/product/6771/smpc"
-      ],
-      [
-        "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
-        "https://learning-media.allogy.com/api/v1/pdf/18ccfdfc-a076-47e9-8a34-376efdd81b43/contents"
-      ]
     ]
   },
   {
@@ -741,6 +1065,36 @@ window.ETC.vaistai = [
         "Ankstesnės TCCC gairės (ATP-P, JSOM) – naloksonas, ondansetronas",
         "https://www.jsomonline.com/Library/Flipbook/ATPEng/files/basic-html/page25.html"
       ]
+    ],
+    "lt": {
+      "p": [
+        {
+          "n": "Ondansetron Kalceks",
+          "d": "2 mg/ml · ampulė 4 ml (8 mg)",
+          "r": "Kalceks",
+          "s": "T"
+        },
+        {
+          "n": "Ondansetron Accord",
+          "d": "2 mg/ml · ampulė 4 ml (8 mg)",
+          "r": "Accord",
+          "s": "T"
+        },
+        {
+          "n": "Ondansetron Baxter",
+          "d": "2 mg/ml · ampulės 2 ml (4 mg) ir 4 ml (8 mg)",
+          "r": "Baxter",
+          "s": "T"
+        }
+      ],
+      "ne": "Burnoje disperguojamos tabletės (Ondansetron STADA 4 / 8 mg) – registruotos, netiekiamos; Zofran – netiekiamas",
+      "pa": "Tiekiamos 8 mg plėvele dengtos tabletės (nuryjamos)."
+    },
+    "alt": [
+      {
+        "id": "metoklopramidas",
+        "t": "pykinimui ir vėmimui"
+      }
     ]
   },
   {
@@ -772,6 +1126,36 @@ window.ETC.vaistai = [
         "PCS – metoklopramidas 5 mg/ml (JK eMC)",
         "https://www.medicines.org.uk/emc/product/6283/smpc"
       ]
+    ],
+    "lt": {
+      "p": [
+        {
+          "n": "ELITAN",
+          "d": "5 mg/ml · ampulė 2 ml (10 mg)",
+          "r": "Medochemie",
+          "s": "T"
+        },
+        {
+          "n": "Metoclopramid Polpharma",
+          "d": "10 mg/2 ml ampulė; tabletės 10 mg",
+          "r": "Polpharma",
+          "s": "T"
+        },
+        {
+          "n": "Cerucal",
+          "d": "tabletės 10 mg (injekcinio LT nėra)",
+          "r": "Teva",
+          "s": "T"
+        }
+      ],
+      "ne": "",
+      "pa": ""
+    },
+    "alt": [
+      {
+        "id": "ondansetronas",
+        "t": "pykinimui ir vėmimui"
+      }
     ]
   },
   {
@@ -812,6 +1196,29 @@ window.ETC.vaistai = [
         "Deployed Medicine – TCCC kolekcija (reikia prisijungti)",
         "https://deployedmedicine.allogy.net/learner/collections/11"
       ]
+    ],
+    "lt": {
+      "p": [
+        {
+          "n": "Sodium chloride Fresenius 10 %",
+          "d": "100 mg/ml · koncentratas, flakonas 100 ml",
+          "r": "Fresenius Kabi",
+          "s": "T"
+        },
+        {
+          "n": "Sodium Chloride B.Braun 5,85 %",
+          "d": "58,5 mg/ml · koncentratas, buteliukas 100 ml",
+          "r": "B.Braun",
+          "s": "T"
+        }
+      ],
+      "ne": "",
+      "pa": "3 %, 5 % ir 7,5 % NaCl infuzinių tirpalų Lietuvos registre nėra, 10 % NaCl 10 ml ampulių – taip pat. Registruoti tik koncentratai – paruošimas pagal ligoninės / kuopos SOP."
+    },
+    "alt": [
+      {
+        "t": "Manitolis – pagal SOP (gide nėra)"
+      }
     ]
   },
   {
@@ -849,6 +1256,28 @@ window.ETC.vaistai = [
         "PCS – rokuronio bromidas 10 mg/ml (JK eMC)",
         "https://www.medicines.org.uk/emc/product/13173/smpc"
       ]
+    ],
+    "lt": {
+      "p": [
+        {
+          "n": "Rocuronium bromide Kalceks",
+          "d": "10 mg/ml · flakonas 5 ml (50 mg)",
+          "r": "Kalceks",
+          "s": "T"
+        },
+        {
+          "n": "Rocuronium Inresa, Rocuronium bromide hameln, Rocuronio Hikma",
+          "d": "10 mg/ml · 5 ml",
+          "s": "L"
+        }
+      ],
+      "ne": "",
+      "pa": ""
+    },
+    "alt": [
+      {
+        "t": "Parenka intubuojantis gydytojas"
+      }
     ]
   },
   {
@@ -888,6 +1317,29 @@ window.ETC.vaistai = [
         "PCS – noradrenalinas 1 mg/ml (JK eMC)",
         "https://www.medicines.org.uk/emc/product/13172/smpc"
       ]
+    ],
+    "lt": {
+      "p": [
+        {
+          "n": "Norepinephrine Kabi",
+          "d": "1 mg/ml · ampulė 4 ml",
+          "r": "Fresenius Kabi",
+          "s": "T"
+        },
+        {
+          "n": "Norepinephrine Kalceks",
+          "d": "1 mg/ml · ampulė 4 ml",
+          "r": "Kalceks",
+          "s": "T"
+        }
+      ],
+      "ne": "",
+      "pa": "Tikrinkite ant ampulės, ar 1 mg/ml nurodyta bazei ar tartratui (2 mg tartrato = 1 mg bazės)."
+    },
+    "alt": [
+      {
+        "t": "Parenka gydytojas"
+      }
     ]
   },
   {
@@ -916,7 +1368,23 @@ window.ETC.vaistai = [
         "https://www.cprguidelines.eu/assets/posters/6.ALS-Algorithms-Bradycardia.pdf"
       ]
     ],
-    "ispejimai": []
+    "ispejimai": [],
+    "lt": {
+      "p": [
+        {
+          "n": "Atropine Sopharma, Atropinum sulfuricum-EGIS, Atropine Auxilia, ATROPIN BBP",
+          "d": "1 mg/ml · ampulė 1 ml",
+          "s": "T"
+        }
+      ],
+      "ne": "Atropine sulfate Basi 0,5 mg/ml – registruotas, netiekiamas",
+      "pa": "Tiekiamos 1 mg/ml ampulės: 0,5 mg = 0,5 ml."
+    },
+    "alt": [
+      {
+        "t": "Lygiaverčio vaisto nėra"
+      }
+    ]
   },
   {
     "id": "midazolamas",
@@ -972,6 +1440,36 @@ window.ETC.vaistai = [
         "PCS – midazolamas injekcinis (JK eMC)",
         "https://www.medicines.org.uk/emc/product/6420/smpc"
       ]
+    ],
+    "lt": {
+      "p": [
+        {
+          "n": "Midazolam B.Braun",
+          "d": "5 mg/ml · ampulė 1 ml; 1 mg/ml · ampulė 5 ml",
+          "r": "B.Braun",
+          "s": "T"
+        },
+        {
+          "n": "Midazolam Kalceks",
+          "d": "5 mg/ml · ampulė 1 ml; 1 mg/ml · ampulė 5 ml",
+          "r": "Kalceks",
+          "s": "T"
+        },
+        {
+          "n": "FULSED",
+          "d": "5 mg/ml · ampulė 1 ml",
+          "r": "Sun Pharmaceutical",
+          "s": "T"
+        }
+      ],
+      "ne": "Buccolam (burnos gleivinės tirpalas) – registruotas, netiekiamas",
+      "pa": "Psichotropinė medžiaga. Tos pačios ampulės būna 1 ir 5 mg/ml – tikrinkite."
+    },
+    "alt": [
+      {
+        "id": "ketaminas",
+        "t": "sedacijai"
+      }
     ]
   },
   {
@@ -1028,6 +1526,23 @@ window.ETC.vaistai = [
         "Ankstesnės TCCC gairės (ATP-P, JSOM) – naloksonas, ondansetronas",
         "https://www.jsomonline.com/Library/Flipbook/ATPEng/files/basic-html/page25.html"
       ]
+    ],
+    "lt": {
+      "p": [
+        {
+          "n": "FORVEL",
+          "d": "0,4 mg/ml · ampulė 1 ml",
+          "r": "Medochemie",
+          "s": "T"
+        }
+      ],
+      "ne": "Nyxoid 1,8 mg nosies purškalas – registruotas, netiekiamas",
+      "pa": ""
+    },
+    "alt": [
+      {
+        "t": "Lygiaverčio vaisto nėra"
+      }
     ]
   }
 ];

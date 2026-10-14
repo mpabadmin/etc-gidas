@@ -138,7 +138,8 @@ function buildIdx() {
   const I = [];
   const add = (kind, title, sub, text, r) => I.push({ kind, title, sub: sub || '', text: text || '', r, n: norm(title + ' ' + (sub || '') + ' ' + (text || '')), nt: norm(title), ns: norm(sub || '') });
   (E.vaistai || []).forEach(v => add('Vaistai', v.name, v.klase,
-    [v.ind, v.kontra, (v.dozes || []).map(d => d.k + ' ' + d.d + ' ' + (d.p || '')).join(' '), v.salutinis, v.pakuote, (v.pastabos || []).join(' '), (v.ispejimai || []).join(' '), (v.stulpeliai || []).map(c => c.pav + ' ' + c.dozes.map(d => d.k + ' ' + d.d + ' ' + (d.p || '')).join(' ')).join(' ')].join(' '),
+    [v.ind, v.kontra, (v.dozes || []).map(d => d.k + ' ' + d.d + ' ' + (d.p || '')).join(' '), v.salutinis, v.pakuote, (v.pastabos || []).join(' '), (v.ispejimai || []).join(' '), (v.stulpeliai || []).map(c => c.pav + ' ' + c.dozes.map(d => d.k + ' ' + d.d + ' ' + (d.p || '')).join(' ')).join(' '),
+      v.lt ? (v.lt.p || []).map(p => p.n).join(' ') + ' ' + (v.lt.ne || '') : ''].join(' '),
     '#/vaistas/' + v.id));
   (E.igudziai || []).forEach(s => add('Įgūdžiai', s.pav, '#' + s.id + ' · ' + s.sritis + ' · ' + (s.kam || ''),
     [s.aprasas, (s.esme || []).join(' '), (s.zingsniai || []).join(' '), (s.klaidos || []).join(' '), s.teorija, s.praktika, strip(s.aprasymas), (s.video || []).map(v => v.title).join(' ')].join(' '), '#/igudis/' + s.id));

@@ -11,7 +11,7 @@ const E = window.ETC;
 const KOMP = 'Pagal kompetenciją', MED = 'Medicinos personalui', GYD = 'Gydytojui', INT = 'Intubuojantiems gydytojams';
 const link = (href, t, s) => `<a class="row" href="${href}"><div>${t}${s ? '<small>' + s + '</small>' : ''}</div><span class="ar">›</span></a>`;
 
-E.versija = '2026-10-12 v17 (prislopinta Greitai plytelių spalva; vaistų žymėjimas – Greitai; atnaujinimo mygtukas)';
+E.versija = '2026-10-14 v18 (vaistai: skiltis „Lietuvoje“ – registruoti preparatai ir pakuotės pagal VVKT registrą, alternatyva tam pačiam tikslui; antibiotikai pagal suvartojimą Lietuvoje)';
 // Pranešimų priėmimo adresas: Google Apps Script žiniatinklio programos /exec URL (žr. tools/atsiliepimai.gs)
 E.atsiliepimai = { url: 'https://script.google.com/macros/s/AKfycbyUpzDmAClJ40FMltkHi21Ozc4PpItRr3u6yy4rU0DKNGe7JkRBnOr0y42wLwpJcBau/exec' };
 
