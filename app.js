@@ -2,9 +2,10 @@
 const app = document.getElementById('app');
 const backBtn = document.getElementById('back');
 let depth = 0;
+let night = !!LS.get('etc-naktis', false); // naktinis raudonas režimas
 const dec = s => { try { return decodeURIComponent(s); } catch (e) { return s; } };
 const newPt = () => '<button class="btn" data-act="new-pt" style="width:100%;margin-top:16px">Naujas pacientas – išvalyti žymėjimus</button>';
-const FB_PAGES = ['v', 's', 'vaistai', 'vaistas', 'igudis', 'tema', 'p', '9line', 'mist', 'gks', 'tst', 'zymejimas'];
+const FB_PAGES = ['v', 's', 'vaistai', 'vaistas', 'igudis', 'tema', 'p', '9line', 'mist', 'gks', 'tst', 'zymejimas', 'nudegimai', 'pilnas-kraujas', 'scenarijai'];
 const fbLink = () => '<button class="btn fbrow" data-act="fb">Pastebėjote klaidą ar turite pasiūlymą? Praneškite</button>';
 
 function route() {
@@ -35,18 +36,21 @@ function view(p, q) {
     case 'gks': return GK.view();
     case 'tst': return TS.view();
     case 'zymejimas': return VZ.view();
+    case 'nudegimai': return NB.view();
+    case 'pilnas-kraujas': return KR.view();
+    case 'scenarijai': return SC.view(p[1], q);
     default: return notFound();
   }
 }
 
 function render() {
   const { p, q } = route();
-  document.body.className = mode;
+  document.body.className = night ? 'field night' : mode; // naktinis režimas – visada tamsi paletė + raudonas filtras
   document.getElementById('mF').classList.toggle('on', mode === 'field');
   document.getElementById('mL').classList.toggle('on', mode === 'learn');
   backBtn.style.display = p.length ? '' : 'none'; // pradžios ekrane vietoje „Atgal“ – atnaujinimo mygtukas dešinėje
   const ub = document.getElementById('upd'); if (ub) ub.style.display = p.length ? 'none' : '';
-  const sec = { vaistai: 'vaistai', vaistas: 'vaistai', igudziai: 'igudziai', igudis: 'igudziai', temos: 'temos', tema: 'temos', p: 'temos', sarasai: 'sarasai', s: 'sarasai', v: 'sarasai', '9line': 'home', mist: 'home', gks: 'home', tst: 'home', zymejimas: 'home' }[p[0]] || (p.length ? '' : 'home');
+  const sec = { vaistai: 'vaistai', vaistas: 'vaistai', igudziai: 'igudziai', igudis: 'igudziai', temos: 'temos', tema: 'temos', p: 'temos', sarasai: 'sarasai', s: 'sarasai', v: 'sarasai', '9line': 'home', mist: 'home', gks: 'home', tst: 'home', zymejimas: 'home', nudegimai: 'home', 'pilnas-kraujas': 'home', scenarijai: 'igudziai' }[p[0]] || (p.length ? '' : 'home');
   document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('on', a.dataset.s === sec));
   try { app.innerHTML = view(p, q) + (FB_PAGES.indexOf(p[0]) >= 0 ? fbLink() : ''); }
   catch (err) { console.error(err); app.innerHTML = '<h1>Klaida</h1><p class="muted">Nepavyko atidaryti puslapio. Patikrinkite turinio failus.</p>'; }
@@ -84,6 +88,9 @@ app.addEventListener('click', e => {
   if (/^gk-/.test(d.act)) { GK.act(el); return; }
   if (/^ts-/.test(d.act)) { TS.act(el); return; }
   if (/^vz-/.test(d.act)) { VZ.act(el); return; }
+  if (/^nb-/.test(d.act)) { NB.act(el); return; }
+  if (/^kr-/.test(d.act)) { KR.act(el, e); return; }
+  if (/^sc-/.test(d.act)) { SC.act(el); return; }
   switch (d.act) {
     case 'ck': ckToggle(d.l, +d.i); el.classList.toggle('on'); updCount(el.closest('.cl')); if (navigator.vibrate) navigator.vibrate(15); break;
     case 'go': location.hash = d.r; break;
@@ -139,6 +146,7 @@ app.addEventListener('click', e => {
 app.addEventListener('keydown', e => {
   const t = e.target, a = t.dataset && t.dataset.act;
   if (e.key === 'Enter' && /^(yt|mp4)$/.test(a || '')) t.click();
+  if ((e.key === 'Enter' || e.key === ' ') && (a === 'nb-r' || a === 'kr-ck')) { e.preventDefault(); t.dispatchEvent(new MouseEvent('click', { bubbles: true })); return; }
   if ((e.key === 'Enter' || e.key === ' ') && a === 'mc-mdel' && !(t instanceof HTMLButtonElement)) { e.preventDefault(); MC.act(t, e); } // SVG žymė
 });
 
@@ -148,6 +156,7 @@ function toolInput(t) {
   if (d.nl) { NL.onInput(t); return true; }
   if (d.mc || d.mcf || d.mcm != null) { MC.onInput(t); return true; }
   if (d.vz) { VZ.onInput(t); return true; }
+  if (d.kr) { KR.onInput(t); return true; }
   return false;
 }
 app.addEventListener('change', e => { if (e.target.type === 'time') toolInput(e.target); });
@@ -166,7 +175,7 @@ app.addEventListener('input', e => {
   } else history.replaceState(history.state, '', '#/paieska' + (empty ? '' : '?q=' + encodeURIComponent(v)));
 });
 
-setInterval(() => { if (!tmEdit) updTimers(); VZ.tick(); }, 30000);
+setInterval(() => { if (!tmEdit) updTimers(); VZ.tick(); KR.tick(); }, 30000);
 addEventListener('keydown', e => { if (e.key === 'Escape' && VZ.isOpen()) { VZ.close(); render(); } });
 document.addEventListener('visibilitychange', () => { if (!document.hidden && !tmEdit) updTimers(); });
 addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEv = e; if (['nustatymai', 'idiegimas', undefined].indexOf(route().p[0]) >= 0) render(); });
@@ -219,3 +228,12 @@ const UPD = (() => {
   }
   return { check, mark, available: () => avail };
 })();
+
+// ───────── Naktinis raudonas režimas (mėnulio mygtukas antraštėje; prisimenamas) ─────────
+function applyNight() {
+  const b = document.getElementById('night');
+  if (b) { b.setAttribute('aria-pressed', night); b.title = night ? 'Išjungti naktinį režimą' : 'Naktinis raudonas režimas'; }
+  const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = night ? '#000000' : '#1C1C1B';
+}
+document.getElementById('night').onclick = () => { night = !night; LS.set('etc-naktis', night); applyNight(); render(); };
+applyNight();

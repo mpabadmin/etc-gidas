@@ -39,7 +39,8 @@ const installRow = () => installed() ? '' : row('#/idiegimas', 'Įdiekite progra
 // Įrankiai (tools.js): būsena rodoma po pavadinimu
 const toolRows = () => typeof MC === 'undefined' ? '' :
   row('#/mist', 'MIST kortelė', MC.status()) + row('#/9line', '9-Line MEDEVAC', NL.status()) +
-  row('#/gks', 'GKS skaičiuoklė', GK.status()) + row('#/tst', 'TST rūšiavimas', TS.status()) + row('#/zymejimas', 'Vaistų žymėjimas', VZ.status());
+  row('#/gks', 'GKS skaičiuoklė', GK.status()) + row('#/tst', 'TST rūšiavimas', TS.status()) + row('#/zymejimas', 'Vaistų žymėjimas', VZ.status()) +
+  row('#/nudegimai', 'Nudegimų plotas', NB.status()) + row('#/pilnas-kraujas', 'Šviežias pilnas kraujas', KR.status()) + row('#/scenarijai', 'Treniruočių scenarijai', SC.status());
 
 const GRUPES = [['K', 'Komanda, apžiūra ir pervežimas'], ['A', 'A – kvėpavimo takai ir neurologija'], ['B', 'B – kvėpavimas, krūtinė, dubuo'], ['C', 'C – kraujavimas ir kraujotaka'], ['S', 'D/E – galva, antrinė apžiūra, žaizdos'], ['V', 'Vaistai ir skausmas']];
 const grupesPav = g => (GRUPES.find(x => x[0] === g) || ['', ''])[1];
@@ -64,7 +65,8 @@ const V = {
       t('#/mist', 'M', 'MIST', mc, 'MIST kortelė') + t('#/9line', '9', '9-Line', nl, '9-Line MEDEVAC prašymas') +
       t('#/gks', 'G', 'GKS', gk, 'GKS skaičiuoklė') + t('#/tst', 'T', 'TST', ts, 'TST rūšiavimas') +
       (P.kraujas ? t('#/p/kraujas', 'K', 'Kraujas', 'ABO ir RhD lentelė', 'Kraujo suderinamumas') : '') +
-      (P.skiedimas ? t('#/p/skiedimas', 'S', 'Skiedimas', 'Vaistų skiedimo lentelės', 'Vaistų skiedimas') : '') + '</div>';
+      (P.skiedimas ? t('#/p/skiedimas', 'S', 'Skiedimas', 'Vaistų skiedimo lentelės', 'Vaistų skiedimas') : '') +
+      t('#/nudegimai', 'N', 'Nudegimai', st(() => NB), 'Nudegimų ploto skaičiuoklė') + t('#/pilnas-kraujas', 'Š', 'Šviežias kraujas', st(() => KR), 'Šviežias pilnas kraujas') + '</div>';
   },
 
   escRows() {
@@ -242,6 +244,7 @@ const V = {
     const S = all.filter(s => !f || (f === 'N' ? !R[s.id] : f === 'P' ? (s.video || []).length : s.grupe === f));
     const rated = all.filter(s => R[s.id]).length;
     let h = `<h1>Įgūdžiai</h1><p class="muted">${all.length} įgūdžiai · įsivertinta ${rated}</p>` + progBar(rated, all.length);
+    h += row('#/scenarijai', 'Treniruočių scenarijai', SC.status());
     h += '<div class="tabs">' + F.map(([k, l]) => tabBtn(l, '#/igudziai' + (k ? '?f=' + k : ''), k === f)).join('') + '</div>';
     GRUPES.forEach(([g, gp]) => {
       const a = S.filter(s => s.grupe === g);

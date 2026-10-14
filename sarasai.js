@@ -11,7 +11,7 @@ const E = window.ETC;
 const KOMP = 'Pagal kompetenciją', MED = 'Medicinos personalui', GYD = 'Gydytojui', INT = 'Intubuojantiems gydytojams';
 const link = (href, t, s) => `<a class="row" href="${href}"><div>${t}${s ? '<small>' + s + '</small>' : ''}</div><span class="ar">›</span></a>`;
 
-E.versija = '2026-10-14 v18 (vaistai: skiltis „Lietuvoje“ – registruoti preparatai ir pakuotės pagal VVKT registrą, alternatyva tam pačiam tikslui; antibiotikai pagal suvartojimą Lietuvoje)';
+E.versija = '2026-10-14 v19 (naktinis raudonas režimas; nudegimų ploto skaičiuoklė; šviežias pilnas kraujas – eiga žingsniais; treniruočių scenarijai; vaistai – skiltis „Lietuvoje“)';
 // Pranešimų priėmimo adresas: Google Apps Script žiniatinklio programos /exec URL (žr. tools/atsiliepimai.gs)
 E.atsiliepimai = { url: 'https://script.google.com/macros/s/AKfycbyUpzDmAClJ40FMltkHi21Ozc4PpItRr3u6yy4rU0DKNGe7JkRBnOr0y42wLwpJcBau/exec' };
 
@@ -529,3 +529,104 @@ E.temos = [
     puslapiai: ['skausmas', 'skiedimas'], sarasai: [], igudziai: [43, 47, 24, 25, 27], vaistai: ['ketaminas', 'paracetamolis', 'meloksikamas', 'txa', 'ceftriaksonas', 'ondansetronas'] }
 ];
 })();
+
+// Šviežias pilnas kraujas („vaikščiojantis kraujo bankas“) – eiga žingsniais (tools.js KR). JTS Whole Blood Transfusion CPG, TCCC CMC 11 modulis, įgūdis #23; kuopos protokolas – viršesnis.
+window.ETC.wbb = {
+ "steps": [
+  {
+   "id": "ind",
+   "pav": "Indikacija",
+   "sub": "Hemoraginis šokas, sandėliuojamo kraujo nėra arba jo neužtenka – sprendžia gydytojas",
+   "items": [
+    "Hemoraginis šokas ar masyvus kraujavimas: silpnas / nečiuopiamas radialinis pulsas, sutrikusi sąmonė be galvos traumos",
+    "Sandėliuojamo LTOWB ar kraujo komponentų nėra arba jų nepakanka",
+    "Sprendimą priima ir šviežio kraujo paėmimą aktyvuoja gydytojas; neištirtas šviežias kraujas – tik mediko nurodymu",
+    "Donoro pirmenybė: iš anksto ištirtas mažo titro O donoras; tos pačios ABO grupės – tik patikimai nustačius abiejų grupę, gydytojo sprendimu",
+    "Išorinis kraujavimas sustabdytas, PVK (≥ 18 G) ar IO veikia, TXA skirta",
+    "Recipiento grupė nustatyta EldonCard (#23); grupės nustatymas neturi vėlinti O kraujo"
+   ],
+   "warn": "Žetone nurodyta grupė – tik palyginimui, ne perpylimo pagrindas."
+  },
+  {
+   "id": "don",
+   "pav": "Donoro atranka",
+   "sub": "Iš anksto ištirtų donorų sąrašas, tapatybė, grupė, sveikata",
+   "items": [
+    "Donoras iš kuopos iš anksto ištirtų donorų sąrašo; pirmenybė – mažo titro O, po to – tos pačios grupės",
+    "Tapatybė – pagal du identifikatorius (vardas pavardė + asmens kodas / žetonas)",
+    "Donoro ir recipiento ABO/Rh nustatomi vietoje EldonCard; neatitikus sąrašo – donoro nenaudoti",
+    "Donoro klausimynas: sveikata, vaistai, ligos, nesena infekcija – pagal kuopos protokolą",
+    "Donoras nesužeistas, ne kritinis užduočiai; vadas patvirtina, kad jį galima atitraukti",
+    "Paskutinės donacijos intervalas – pagal kuopos protokolą (įprastai ne dažniau kaip kas 8 sav.)",
+    "Greitieji infekcijų testai prieš perpylimą – jei yra ir leidžia laikas"
+   ],
+   "warn": "Grupė neaiški ar nesutampa – nepilti; informuokite gydytoją."
+  },
+  {
+   "id": "pae",
+   "pav": "Paėmimas",
+   "sub": "Maišelis su antikoaguliantu, ~450 ml, nuolat maišyti",
+   "items": [
+    "Tik patvirtinta šviežio kraujo paėmimo įranga: maišelis su antikoaguliantu (CPD / CPDA-1) ir jo adata (16 G)",
+    "Ant maišelio prieš pradedant: donoro ID, ABO/Rh, data ir paėmimo laikas",
+    "Venos punkcija aseptiškai; maišelis žemiau donoro lygio",
+    "Paėmimo metu maišelį nuolat švelniai vartykite – kraujas maišosi su antikoaguliantu",
+    "Imkite ~450 ml ±10 % (iki žymos): per daug – antikoagulianto nepakanka (krešuliai), per mažai – citrato perteklius",
+    "Paėmimo trukmė – pagal kuopos protokolą (paprastai ≤ 15 min); užspauskite vamzdelį, ištraukite adatą",
+    "Donoras: spaudimas punkcijos vietai, gulėti, gerti skysčių, stebėti dėl alpimo – pagal protokolą"
+   ],
+   "warn": "Vienas donoras – vienas vienetas (~450 ml)."
+  },
+  {
+   "id": "per",
+   "pav": "Perpylimas",
+   "sub": "Patikrinti prie paciento, filtras, šildymas, laikas",
+   "items": [
+    "Prie paciento du nariai sutikrina maišelio etiketę (ID, ABO/Rh) su recipientu",
+    "Perpilkite kuo greičiau po paėmimo; nepanaudoto vieneto laikymas – pagal kuopos protokolą",
+    "Kraujo perpylimo sistema su filtru per šildytuvą (38 °C); sterilumas",
+    "Hemoraginiame šoke perpilkite greitai, pagal atsaką; pirmąsias 15 min atidžiai stebėkite dėl reakcijos",
+    "Užrašykite perpylimo pradžios laiką",
+    "Po pirmojo vieneto – kalcis (dozė – skiltyje Vaistai)",
+    "TXA – jei dar neskirta ir nuo traumos praėjo ≤ 3 val. (skiltis Vaistai)"
+   ],
+   "warn": "Kraujas be filtro ir šildytuvo – ne; pamirštas kalcis – dažna klaida."
+  },
+  {
+   "id": "ste",
+   "pav": "Stebėjimas",
+   "sub": "Gyvybės požymiai ir reakcijos požymiai",
+   "items": [
+    "Gyvybės požymiai (sąmonė, pulsas, AKS, KD, SpO2, temp.): prieš pradedant",
+    "Kartoti ~15 min po pradžios ir pabaigoje; dažniau – pagal būklę ir kuopos protokolą",
+    "Po kiekvieno vieneto – pervertinti; pasiekus AKS tikslą (#40) – stabdyti",
+    "Stebėkite reakcijos požymius (žr. Reakcija)",
+    "Įtarus reakciją: perpylimą stabdyti, sistemą palikti atvirą (NaCl), pranešti A / gydytojui",
+    "Šokas kartojasi – patikrinkite kraujavimo kontrolę, tęskite pagal gydytojo nurodymą"
+   ],
+   "warn": "Reakcija – nedelsiant stabdyti; maišelį ir sistemą pasilikti."
+  },
+  {
+   "id": "ira",
+   "pav": "Įrašai",
+   "sub": "Donoras, vienetas, laikai, reakcijos",
+   "items": [
+    "Donoro ID, ABO/Rh, ar iš anksto ištirtas; recipiento ID ir ABO/Rh",
+    "Maišelio numeris, paėmimo laikas ir tūris",
+    "Perpylimo pradžia, pabaiga, perpiltas tūris; skirtas kalcis ir TXA",
+    "Gyvybės požymiai ir reakcijos (jei buvo) bei veiksmai",
+    "Neištirto kraujo naudojimo sprendimas ir Rh+ perpylimas Rh− vaisingo amžiaus moteriai – įrašyti",
+    "Donoro ir recipiento mėginiai vėlesniam tyrimui – pagal kuopos protokolą"
+   ],
+   "warn": ""
+  }
+ ],
+ "reakcija": "Požymiai: karščiavimas, šaltkrėtis, dilgėlinė, niežulys; dusulys, stridoras, švokštimas; hipotenzija, tachikardija; skausmas nugaroje, krūtinėje, rankoje ties infuzija; pykinimas; raudonas ar rudas šlapimas (hemoglobinurija); naujas kraujavimas iš žaizdų. Veiksmai: perpylimą nedelsiant stabdyti, sistemą palikti atvirą ir tęsti NaCl, pranešti A / gydytojui; anafilaksija – kvėpavimo takai ir adrenalinas į raumenis pagal kuopos anafilaksijos protokolą (gide dozės nėra), kitus vaistus skiria gydytojas; maišelį ir sistemą pasilikti, patikrinti etiketę ir tapatybę, viską dokumentuoti; nusistovėjus būklei – gydytojo sprendimu perpilti kitą suderinamą vienetą.",
+ "saltiniai": [
+  "Joint Trauma System CPG „Whole Blood Transfusion“ (CPG ID 21, 2018-05-15) – https://tccc.org.ua/files/downloads/whole-blood-transfusion-cpg-en.pdf",
+  "Joint Trauma System CPG „Prehospital Blood Transfusion“ (2020-10-30), JSOM 21(4) – https://jsomonline.org/?p=12616",
+  "JTS Damage Control Resuscitation Quick Reference Guide (Medics/Corpsmen, 2023) – https://jts.health.mil/assets/docs/damage_control/Damage_Control_Resus_Quick_Reference_Guide_Medics_Corpsmen_2023.pdf",
+  "TCCC TFC CMC Module 11 „Hemorrhagic Shock Fluid Resuscitation“ – https://tccc.org.ua/en/guide/module-11-hemorrhagic-shock-fluid-resuscitation-in-tactical-field-care-tfc-cmc",
+  "ETC kišeninis gidas, įgūdis #23 „Kraujo grupės nustatymas ir kraujo transfuzija“ (kuopos medžiaga)"
+ ]
+};

@@ -1003,3 +1003,264 @@ const VZ = (() => {
   const isOpen = () => !!sel;
   return { view, act, onInput, status, tick, close, isOpen, text, QD, get };
 })();
+
+// ───────── Nudegimų plotas (NB) – devyneto taisyklė, skysčiai (tik ETC gide) ─────────
+const NB = (() => {
+  const KEY = TCFG.pre + 'nb';
+  // [raktas, pavadinimas, suaugusiojo % {f priekis, b nugara}, vaiko %]
+  const REG = [
+    ['galva', 'Galva ir kaklas', { f: 4.5, b: 4.5 }, { f: 9, b: 9 }],
+    ['liemuo', 'Liemuo', { f: 18, b: 18 }, { f: 18, b: 18 }],
+    ['drank', 'Dešinė ranka', { f: 4.5, b: 4.5 }, { f: 4.5, b: 4.5 }],
+    ['krank', 'Kairė ranka', { f: 4.5, b: 4.5 }, { f: 4.5, b: 4.5 }],
+    ['dkoja', 'Dešinė koja', { f: 9, b: 9 }, { f: 7, b: 7 }],
+    ['kkoja', 'Kairė koja', { f: 9, b: 9 }, { f: 7, b: 7 }],
+    ['tarp', 'Tarpvietė', { f: 1, b: 0 }, { f: 0, b: 0 }]
+  ];
+  // SVG figūros sritys (viewBox 0 0 120 250); priekis – paciento dešinė ekrano kairėje, nugara – atvirkščiai
+  const SHAPE = {
+    galva: s => '<ellipse cx="60" cy="22" rx="13" ry="16"/>',
+    liemuo: s => '<rect x="40" y="42" width="40" height="76" rx="8"/>',
+    drank: s => s === 'f' ? '<rect x="22" y="44" width="15" height="72" rx="7"/>' : '<rect x="83" y="44" width="15" height="72" rx="7"/>',
+    krank: s => s === 'f' ? '<rect x="83" y="44" width="15" height="72" rx="7"/>' : '<rect x="22" y="44" width="15" height="72" rx="7"/>',
+    dkoja: s => s === 'f' ? '<rect x="41" y="122" width="17" height="112" rx="8"/>' : '<rect x="62" y="122" width="17" height="112" rx="8"/>',
+    kkoja: s => s === 'f' ? '<rect x="62" y="122" width="17" height="112" rx="8"/>' : '<rect x="41" y="122" width="17" height="112" rx="8"/>',
+    tarp: s => '<rect x="54" y="112" width="12" height="10" rx="3"/>'
+  };
+  const LBL = { galva: [60, 26], liemuo: [60, 84], drank: { f: [29.5, 84], b: [90.5, 84] }, krank: { f: [90.5, 84], b: [29.5, 84] }, dkoja: { f: [49.5, 182], b: [70.5, 182] }, kkoja: { f: [70.5, 182], b: [49.5, 182] }, tarp: [60, 120] };
+  const def = () => ({ age: 'a', r: {}, x: 0, f: 'etc' });
+  function get() {
+    const raw = LS.get(KEY, {}), s = Object.assign(def(), raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {});
+    s.age = s.age === 'c' ? 'c' : 'a'; s.f = s.f === 'tccc' ? 'tccc' : 'etc';
+    const r = s.r && typeof s.r === 'object' ? s.r : {}; s.r = {};
+    Object.keys(r).forEach(k => { if (/^[fb]:\w+$/.test(k) && (r[k] === 1 || r[k] === 0.5)) s.r[k] = r[k]; });
+    s.x = Math.max(0, Math.min(50, parseInt(s.x, 10) || 0));
+    return s;
+  }
+  const save = s => LS.set(KEY, s);
+  const pct = (s, k, side) => { const R = REG.find(x => x[0] === k); return R ? (s.age === 'c' ? R[3] : R[2])[side] : 0; };
+  const fmt1 = x => String(Math.round(x * 10) / 10).replace('.', ',');
+  function total(s) { let t = s.x; Object.keys(s.r).forEach(key => { const [side, k] = key.split(':'); t += pct(s, k, side) * s.r[key]; }); return Math.min(100, t); }
+  function status() { const t = total(get()); return t ? fmt1(t) + ' % KPP' : 'Ploto skaičiuoklė'; }
+  function fig(s, side) {
+    const parts = REG.filter(([k]) => pct(s, k, side) > 0).map(([k, nm]) => {
+      const fr = s.r[side + ':' + k] || 0, p = pct(s, k, side), L = Array.isArray(LBL[k]) ? LBL[k] : LBL[k][side];
+      const lab = fr ? fmt1(p * fr) : '';
+      return `<g class="nbr${fr === 1 ? ' on' : fr ? ' half' : ''}" data-act="nb-r" data-k="${side}:${k}" role="button" tabindex="0" aria-label="${esc(nm)} (${side === 'f' ? 'priekis' : 'nugara'}), ${fmt1(p)} %${fr ? ', pažymėta ' + (fr === 1 ? 'visa' : 'pusė') : ''}">${SHAPE[k](side)}${lab ? `<text x="${L[0]}" y="${L[1]}">${lab}</text>` : ''}</g>`;
+    }).join('');
+    return `<figure class="nbf"><svg viewBox="0 0 120 250">${parts}</svg><figcaption>${side === 'f' ? 'Priekis' : 'Nugara'}</figcaption></figure>`;
+  }
+  function view() {
+    const s = get(), t = total(s), w = LS.get(TCFG.pre + 'svoris', 80), learn = mode === 'learn';
+    let h = '<h1>Nudegimų plotas</h1>';
+    h += '<p class="muted">Bakstelėkite sritį: 1 kartą – visa, 2 kartus – pusė, 3 – nuimti. Skaičiuokite tik II–III laipsnio (ne paraudimą); delnas su pirštais ≈ 1 %.</p>';
+    h += '<div class="seg2" role="group" aria-label="Amžius">' + chip('nb-age', 'a', s.age === 'a', 'Suaugęs (devyneto taisyklė)') + chip('nb-age', 'c', s.age === 'c', 'Vaikas') + '</div>';
+    h += '<div class="nbfigs">' + fig(s, 'f') + fig(s, 'b') + '</div>';
+    h += stepper('nb-x', 'x', s.x + ' %', 'Pavienės vietos (delnais)', 'po 1 % – delnas su pirštais');
+    const sel = Object.keys(s.r).map(key => { const [side, k] = key.split(':'), R = REG.find(x => x[0] === k); return R ? (R[1] + (side === 'b' ? ' (nugara)' : k === 'tarp' ? '' : ' (priekis)')) + ' ' + fmt1(pct(s, k, side) * s.r[key]) : ''; }).filter(Boolean);
+    if (sel.length || s.x) h += `<div class="nbsel"><span>${esc(sel.concat(s.x ? ['pavienės ' + s.x] : []).join(' · '))}</span><button class="btn sm" data-act="nb-clr">Išvalyti</button></div>`;
+    h += `<div class="nbres${t >= 20 ? ' hi' : ''}"><div class="nbt">${fmt1(t)} % <small>KPP</small></div><div>${t >= 20 ? '≥ 20 % – reikalingas skysčių gaivinimas; saugokite nuo hipotermijos' : t ? 'Mažiau nei 20 % – skysčiai pagal būklę' : 'Pažymėkite nudegusias sritis'}</div></div>`;
+    if (t >= 20) {
+      h += '<div class="lbl0">Svoris, kg</div>' + wChips(w);
+      h += '<div class="seg2" role="group" aria-label="Formulė">' + chip('nb-f', 'etc', s.f === 'etc', 'Pagal SOP (#48)') + chip('nb-f', 'tccc', s.f === 'tccc', 'TCCC „10 taisyklė“') + '</div>';
+      if (s.f === 'etc') {
+        const d24 = 2 * w * t, h8 = d24 / 2 / 8;
+        h += `<section class="nbfl"><small>Ringerio laktatas – pirmos 8 val.</small><b>${Math.round(h8 / 10) * 10} ml/val.</b><small>2 ml × ${w} kg × ${fmt1(t)} % = ${Math.round(d24)} ml per 24 val.; pusė (${Math.round(d24 / 2)} ml) per pirmas 8 val. Formulė – pavyzdys iš įgūdžio #48, taikykite kuopos SOP.</small></section>`;
+      } else {
+        const r10 = Math.round(t / 10) * 10, rate = r10 * 10 + (w > 80 ? Math.floor((w - 80) / 10) * 100 : 0);
+        h += `<section class="nbfl"><small>Pradinis greitis (40–80 kg)</small><b>${rate} ml/val.</b><small>${fmt1(t)} % → apvalinta ${r10} % × 10 ml/val.${w > 80 ? '; virš 80 kg + 100 ml/val. kas 10 kg' : ''}.</small></section>`;
+      }
+      h += '<p class="muted">Titruokite pagal diurezę 0,5–1 ml/kg/val. Per daug skysčių – tiek pat blogai, kaip per mažai. Hemoraginis šokas – kraujas pirmiausia.</p>';
+    }
+    if (s.age === 'c' && learn) h += '<p class="muted">Vaikui galva didesnė, kojos mažesnės (galva 18 %, kiekviena koja 14 %); tiksliau – Lund–Browder lentelė.</p>';
+    h += row('#/igudis/48', 'Nudegimai: ploto vertinimas, skysčiai ir tvarstymas', 'Įgūdis #48') + row('#/mist', 'MIST kortelė', MC.status());
+    return h;
+  }
+  function act(el) {
+    const s = get(), d = el.dataset, y = scrollY;
+    switch (d.act) {
+      case 'nb-r': { const k = d.k; if (!/^[fb]:\w+$/.test(k)) return; const v = s.r[k] || 0; if (v === 0) s.r[k] = 1; else if (v === 1) s.r[k] = 0.5; else delete s.r[k]; break; }
+      case 'nb-age': s.age = d.k === 'c' ? 'c' : 'a'; Object.keys(s.r).forEach(k => { const [side, kk] = k.split(':'); if (!pct(s, kk, side)) delete s.r[k]; }); break;
+      case 'nb-x': s.x = Math.max(0, Math.min(50, s.x + (+d.d))); break;
+      case 'nb-f': s.f = d.k === 'tccc' ? 'tccc' : 'etc'; break;
+      case 'nb-clr': s.r = {}; s.x = 0; break;
+      default: return;
+    }
+    save(s); render(); scrollTo(0, y);
+    if (d.act === 'nb-r') { const g = app.querySelector(`[data-k="${d.k}"]`); if (g && g.focus) g.focus({ preventScroll: true }); }
+  }
+  return { view, act, status, total: () => total(get()) };
+})();
+
+// ───────── Šviežias pilnas kraujas (KR) – eiga žingsniais; duomenys – sarasai.js E.wbb (tik ETC gide) ─────────
+const KR = (() => {
+  const KEY = TCFG.pre + 'wbb';
+  const D = () => E.wbb || { steps: [] };
+  const def = () => ({ s: 0, ck: {}, don: '', donG: '', gav: '', gavG: '', t1: 0, t2: 0 });
+  const GR = ['O−', 'O+', 'A−', 'A+', 'B−', 'B+', 'AB−', 'AB+'];
+  function get() {
+    const raw = LS.get(KEY, {}), s = Object.assign(def(), raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {});
+    const n = D().steps.length; s.s = Math.max(0, Math.min(n - 1, parseInt(s.s, 10) || 0));
+    ['don', 'gav'].forEach(k => { s[k] = typeof s[k] === 'string' ? s[k].slice(0, 40) : ''; });
+    ['donG', 'gavG'].forEach(k => { s[k] = GR.indexOf(s[k]) >= 0 ? s[k] : ''; });
+    ['t1', 't2'].forEach(k => { s[k] = +s[k] > 0 ? +s[k] : 0; });
+    const ck = s.ck && typeof s.ck === 'object' ? s.ck : {}; s.ck = {};
+    D().steps.forEach(st => { if (Array.isArray(ck[st.id])) s.ck[st.id] = ck[st.id].filter(i => Number.isInteger(i) && i >= 0 && i < st.items.length); });
+    return s;
+  }
+  const save = s => LS.set(KEY, s);
+  const mins = t => Math.max(0, Math.floor((Date.now() - t) / 60000));
+  function status() {
+    const s = get(), st = D().steps[s.s], any = Object.keys(s.ck).some(k => s.ck[k].length) || s.t1 || s.t2;
+    return any && st ? (s.s + 1) + ' žingsnis – ' + st.pav : 'Vaikščiojantis kraujo bankas';
+  }
+  function view() {
+    const s = get(), S = D().steps, st = S[s.s], learn = mode === 'learn';
+    if (!st) return '<h1>Šviežias pilnas kraujas</h1><p class="muted">Duomenų nėra.</p>';
+    let h = '<h1>Šviežias pilnas kraujas</h1>';
+    h += '<p class="muted">„Vaikščiojantis kraujo bankas“ – eiga žingsniais. Sprendžia ir vadovauja gydytojas; kuopos protokolas – viršesnis.</p>';
+    h += '<div class="krst" role="tablist">' + S.map((x, i) => { const c = (s.ck[x.id] || []).length, done = c === x.items.length; return `<button role="tab" aria-selected="${i === s.s}" class="${i === s.s ? 'on' : ''}${done ? ' done' : ''}" data-act="kr-s" data-k="${i}"><b>${i + 1}</b><small>${esc(x.pav)}</small></button>`; }).join('') + '</div>';
+    const ck = s.ck[st.id] || [];
+    h += `<section class="krc"><div class="nlh"><span class="nn">${s.s + 1}</span><b>${esc(st.pav)}</b><small class="krn">${ck.length} / ${st.items.length}</small></div>${st.sub ? '<p class="muted">' + esc(st.sub) + '</p>' : ''}`;
+    h += '<div class="cl">' + st.items.map((it, i) => `<div class="ck${ck.indexOf(i) >= 0 ? ' on' : ''}" data-act="kr-ck" data-k="${i}" role="checkbox" tabindex="0" aria-checked="${ck.indexOf(i) >= 0}"><span class="bx">✓</span><span class="t">${skRefsKR(it)}</span></div>`).join('') + '</div>';
+    if (st.id === 'don') {
+      const gsel = (k, v) => '<div class="krg" role="group">' + GR.map(g => `<button class="${v === g ? 'on' : ''}" data-act="kr-g" data-f="${k}" data-k="${g}" aria-pressed="${v === g}">${g}</button>`).join('') + '</div>';
+      h += `<div class="lbl">Donoras</div><input class="inp" data-kr="don" maxlength="40" autocomplete="off" placeholder="Šaukinys / ID" value="${esc(s.don)}" aria-label="Donoras">${gsel('donG', s.donG)}`;
+      h += `<div class="lbl">Recipientas</div><input class="inp" data-kr="gav" maxlength="40" autocomplete="off" placeholder="Šaukinys / ID" value="${esc(s.gav)}" aria-label="Recipientas">${gsel('gavG', s.gavG)}`;
+    }
+    const tline = (k, lb) => `<div class="krt"><span>${lb}</span>${s[k] ? `<b>${hm(s[k])}</b><small data-ago-min="${s[k]}">prieš ${mins(s[k])} min</small><button class="btn sm" data-act="kr-t0" data-k="${k}">Iš naujo</button>` : `<button class="btn sm pri" data-act="kr-t" data-k="${k}">Žymėti dabar</button>`}</div>`;
+    if (st.id === 'pae') h += tline('t1', 'Paėmimo pradžia');
+    if (st.id === 'per') h += tline('t2', 'Perpylimo pradžia');
+    if (st.warn) h += `<p class="ltpa">${esc(st.warn)}</p>`;
+    h += '</section>';
+    h += '<div class="pn">' + (s.s > 0 ? `<button class="btn" data-act="kr-s" data-k="${s.s - 1}">‹ ${esc(S[s.s - 1].pav)}</button>` : '<span></span>') + (s.s < S.length - 1 ? `<button class="btn pri0" data-act="kr-s" data-k="${s.s + 1}">${esc(S[s.s + 1].pav)} ›</button>` : '<span></span>') + '</div>';
+    if (D().reakcija) h += `<div class="warn wl"><b>Reakcija</b><div>${esc(D().reakcija)}</div></div>`;
+    h += '<div class="acts"><button class="btn" data-act="kr-mist">Į MIST kortelę</button><button class="btn" data-act="kr-clr">Naujas perpylimas</button></div>';
+    h += row('#/igudis/23', 'Kraujo grupės nustatymas ir kraujo transfuzija', 'Įgūdis #23') + row('#/p/kraujas', 'Kraujo suderinamumas', 'ABO ir RhD lentelė') + row('#/vaistas/kalcis', 'Kalcio gliukonatas', 'Po pirmojo vieneto');
+    if (learn && (D().saltiniai || []).length) h += '<p class="muted">Šaltiniai: ' + esc(D().saltiniai.join('; ')) + '</p>';
+    return h;
+  }
+  // „#23“ tekste – nuoroda į įgūdį
+  const skRefsKR = t => esc(t).replace(/#(\d{1,2})(?![\d])/g, (m, n) => (E.igudziai || []).some(k => String(k.id) === n) ? `<a href="#/igudis/${n}">#${n}</a>` : m);
+  function toMist(s) {
+    try { MC.status(); } catch (e) {}
+    let st = LS.get(TCFG.pre + 'mist', null);
+    if (!st || st.v !== 2 || !Array.isArray(st.pts) || !st.pts.length) st = { v: 2, cur: 0, pts: [{}] };
+    const cur = Math.min(Math.max(0, parseInt(st.cur, 10) || 0), st.pts.length - 1), p = st.pts[cur] = Object.assign({}, st.pts[cur]);
+    p.tx = Array.isArray(p.tx) ? p.tx.slice() : []; if (p.tx.indexOf('blood') < 0) p.tx.push('blood');
+    const txt = 'Šviežias pilnas kraujas' + (s.don || s.donG ? ' – donoras ' + [s.don, s.donG].filter(Boolean).join(' ') : '') + (s.t2 ? ', perpylimas nuo ' + hm(s.t2) : '');
+    if (String(p.txTxt || '').indexOf(txt) < 0) p.txTxt = [String(p.txTxt || '').trim(), txt].filter(Boolean).join('; ');
+    LS.set(TCFG.pre + 'mist', Object.assign({}, st, { cur }));
+    toast('Perkelta į MIST' + (st.pts.length > 1 ? ' – sužeistasis ' + (cur + 1) : ''));
+  }
+  function act(el, e) {
+    const s = get(), d = el.dataset, y = scrollY, S = D().steps, st = S[s.s];
+    if (d.act === 'kr-ck' && e && e.target.closest && e.target.closest('a')) return; // nuoroda „#23“ – ne žymėjimas
+    switch (d.act) {
+      case 'kr-s': s.s = Math.max(0, Math.min(S.length - 1, +d.k)); save(s); render(); { const c = app.querySelector('.krst'); if (c && c.getBoundingClientRect().top < 0) c.scrollIntoView({ block: 'start' }); else scrollTo(0, y); } return;
+      case 'kr-ck': { const i = +d.k, a = s.ck[st.id] = s.ck[st.id] || [], j = a.indexOf(i); if (j >= 0) a.splice(j, 1); else a.push(i); if (navigator.vibrate) navigator.vibrate(15); break; }
+      case 'kr-g': if (!['donG', 'gavG'].includes(d.f)) return; s[d.f] = s[d.f] === d.k ? '' : d.k; break;
+      case 'kr-t': if (!['t1', 't2'].includes(d.k)) return; s[d.k] = Date.now(); break;
+      case 'kr-t0': if (!['t1', 't2'].includes(d.k) || !confirm('Žymėti laiką iš naujo?')) return; s[d.k] = Date.now(); break;
+      case 'kr-mist': toMist(s); return;
+      case 'kr-clr': if (!confirm('Naujas perpylimas: išvalyti žymėjimus, donorą ir laikus?')) return; save(def()); render(); scrollTo(0, 0); return;
+      default: return;
+    }
+    save(s); render(); scrollTo(0, y);
+  }
+  function onInput(t) { const k = t.dataset.kr; if (k !== 'don' && k !== 'gav') return; const s = get(); s[k] = t.value.slice(0, 40); save(s); }
+  function tick() { app.querySelectorAll('[data-ago-min]').forEach(x => { x.textContent = 'prieš ' + mins(+x.dataset.agoMin) + ' min'; }); }
+  return { view, act, onInput, status, tick };
+})();
+
+// ───────── Treniruočių scenarijai (SC) – kodas vienodas ETC ir March giduose; duomenys – scenarijai.js ─────────
+const SC = (() => {
+  const KEY = TCFG.pre + 'scen';
+  let cur = null; // { id, qi, pick: [], done }
+  const all = () => (E.scenarijai || []).filter(s => s && Array.isArray(s.q) && s.q.length && (!s.lygis || typeof ok !== 'function' || ok(s.lygis)));
+  const best = () => { const b = LS.get(KEY, {}); return b && typeof b === 'object' && !Array.isArray(b) ? b : {}; };
+  const byId = id => all().find(s => s.id === id);
+  const LET = ['A', 'B', 'C', 'D'];
+  const TOOLS = { '#/tst': 'TST rūšiavimas', '#/9line': '9-Line MEDEVAC', '#/mist': 'MIST kortelė', '#/sitrep': 'SITREP', '#/gks': 'GKS skaičiuoklė', '#/zymejimas': 'Vaistų žymėjimas', '#/nudegimai': 'Nudegimų plotas' };
+  function refLabel(r) {
+    let m;
+    if ((m = r.match(/^#\/igudis\/(\d+)$/))) { const s = (E.igudziai || []).find(x => String(x.id) === m[1]); return s ? ['Įgūdis #' + m[1], s.pav] : null; }
+    if ((m = r.match(/^#\/vaistas\/([\w-]+)$/))) { const v = (E.vaistai || []).find(x => x.id === m[1]); return v ? ['Vaistas', v.name] : null; }
+    if ((m = r.match(/^#\/s\/([\w-]+)$/))) { const L = (E.sarasai || {})[m[1]]; return L ? ['Kontrolinis sąrašas', L.title] : null; }
+    if ((m = r.match(/^#\/p\/([\w-]+)$/))) { const P = (E.puslapiai || {})[m[1]]; return P ? ['Mokymosi medžiaga', P.title] : null; }
+    if ((m = r.match(/^#\/f\/(\w+)/))) {
+      const t = (r.match(/[?&]t=(\d+)/) || [])[1], F = (E.fazes || []).find(x => x.id === m[1]);
+      const lid = F && Array.isArray(F.lists) ? F.lists[t != null ? +t : 0] : null, L = lid ? (E.sarasai || {})[lid] : null;
+      return [m[1] + ' – kontrolinis sąrašas', L ? L.title : (F ? F.pav : m[1])];
+    }
+    if (TOOLS[r]) return ['Įrankis', TOOLS[r]];
+    return null;
+  }
+  function status() {
+    const S = all(), B = best(), n = S.filter(s => B[s.id] != null).length;
+    return n ? `Išspręsta ${n} iš ${S.length}` : plural(S.length, ['scenarijus', 'scenarijai', 'scenarijų']) + ' – pasitikrinkite žinias';
+  }
+  function list(q) {
+    const S = all(), B = best(), temos = [...new Set(S.map(s => s.tema).filter(Boolean))], f = q.t || '';
+    let h = '<h1>Treniruočių scenarijai</h1><p class="muted">Klinikinis atvejis keliais žingsniais: pasirinkite veiksmą – pamatysite paaiškinimą ir nuorodas į gidą. Rezultatai lieka tik šiame telefone.</p>';
+    h += '<button class="btn pri" data-act="sc-rand">Atsitiktinis scenarijus</button>';
+    if (temos.length > 1) h += '<div class="tabs">' + tabBtn('Visi', '#/scenarijai', !f, 1) + temos.map(t => tabBtn(t, '#/scenarijai?t=' + encodeURIComponent(t), f === t, 1)).join('') + '</div>';
+    h += S.filter(s => !f || s.tema === f).map(s => {
+      const b = B[s.id], n = s.q.length;
+      return row('#/scenarijai/' + s.id, s.pav, [s.tema, s.lygis, plural(n, ['klausimas', 'klausimai', 'klausimų'])].filter(Boolean).join(' · '),
+        b != null ? `<span class="tag ${b === n ? 'grn' : 'amb'}">${b} / ${n}</span>` : '');
+    }).join('');
+    return h;
+  }
+  function play(id) {
+    const s = byId(id); if (!s) return notFound();
+    if (!cur || cur.id !== id) cur = { id, qi: 0, pick: [], done: false };
+    const n = s.q.length;
+    let h = `<div class="scmeta">${esc([s.tema, s.lygis].filter(Boolean).join(' · '))}</div><h1>${esc(s.pav)}</h1>`;
+    if (cur.done) {
+      const good = s.q.filter((q, i) => q.opt[cur.pick[i]] && q.opt[cur.pick[i]].ok).length;
+      h += `<section class="scres ${good === n ? 'ok' : ''}"><div class="scsc">${good} / ${n}</div><div>${good === n ? 'Puiku – visi atsakymai teisingi.' : 'Peržiūrėkite paaiškinimus ir nuorodas į gidą.'}</div></section>`;
+      h += s.q.map((q, i) => { const o = q.opt[cur.pick[i]], okk = o && o.ok; return `<div class="scsum"><span class="scm ${okk ? 'ok' : 'bad'}">${okk ? '✓' : '✗'}</span><div><b>${esc(q.klaus)}</b><small>${esc((q.opt.find(x => x.ok) || {}).t || '')}</small></div></div>`; }).join('');
+      h += '<div class="acts"><button class="btn pri" data-act="sc-rand">Kitas scenarijus</button><button class="btn" data-act="sc-again">Kartoti</button></div>' + row('#/scenarijai', 'Visi scenarijai', status());
+      return h;
+    }
+    const q = s.q[cur.qi], pk = cur.pick[cur.qi], ans = pk != null;
+    h += `<div class="scprog">${s.q.map((x, i) => `<i class="${i < cur.qi ? 'd' : i === cur.qi ? 'c' : ''}"></i>`).join('')}</div>`;
+    h += `<section class="scq"><div class="scn">${cur.qi + 1} klausimas iš ${n}</div><p class="scsit">${esc(q.sit)}</p>`;
+    const gp = Object.entries(q.gp || {});
+    if (gp.length) h += '<div class="scgp">' + gp.map(([k, v]) => `<div><small>${esc(k)}</small><b>${esc(v)}</b></div>`).join('') + '</div>';
+    h += `<b class="sck">${esc(q.klaus)}</b>`;
+    h += q.opt.map((o, i) => `<button class="sco${ans ? (o.ok ? ' ok' : i === pk ? ' bad' : ' dim') : ''}" data-act="sc-pick" data-k="${i}"${ans ? ' disabled' : ''}><span class="scl">${ans && o.ok ? '✓' : ans && i === pk ? '✗' : LET[i]}</span><span>${esc(o.t)}</span></button>`).join('');
+    if (ans) {
+      const okk = q.opt[pk] && q.opt[pk].ok;
+      h += `<div class="scfb ${okk ? 'ok' : 'bad'}" id="scfb"><b>${okk ? 'Teisingai.' : 'Neteisingai.'}</b> ${esc(q.why)}</div>`;
+      h += (q.ref || []).map(r => { const l = refLabel(r); return l ? row(r, l[1], l[0]) : ''; }).join('');
+    }
+    h += '</section>';
+    if (ans) h += cur.qi < n - 1 ? '<button class="btn pri" data-act="sc-next">Kitas klausimas ›</button>' : '<button class="btn pri" data-act="sc-fin">Baigti ir pamatyti rezultatą</button>';
+    return h;
+  }
+  const view = (id, q) => id ? play(id) : list(q || {});
+  function act(el) {
+    const d = el.dataset, s = cur && byId(cur.id);
+    switch (d.act) {
+      case 'sc-pick': { if (!s || cur.pick[cur.qi] != null) return; cur.pick[cur.qi] = +d.k; render(); const f = document.getElementById('scfb'); if (f) f.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); if (navigator.vibrate) navigator.vibrate(s.q[cur.qi].opt[+d.k] && s.q[cur.qi].opt[+d.k].ok ? 15 : [30, 40, 30]); return; }
+      case 'sc-next': if (!s) return; cur.qi = Math.min(cur.qi + 1, s.q.length - 1); render(); scrollTo(0, 0); return;
+      case 'sc-fin': {
+        if (!s) return; cur.done = true;
+        const good = s.q.filter((q, i) => q.opt[cur.pick[i]] && q.opt[cur.pick[i]].ok).length, B = best();
+        B[s.id] = Math.max(good, B[s.id] || 0); LS.set(KEY, B); render(); scrollTo(0, 0); return;
+      }
+      case 'sc-again': if (!s) return; cur = { id: s.id, qi: 0, pick: [], done: false }; render(); scrollTo(0, 0); return;
+      case 'sc-rand': {
+        const S = all(), B = best(); if (!S.length) return;
+        const pool = S.filter(x => B[x.id] == null && (!cur || x.id !== cur.id)), P = pool.length ? pool : S.filter(x => !cur || x.id !== cur.id);
+        const pickS = (P.length ? P : S)[Math.floor(Math.random() * (P.length ? P : S).length)];
+        cur = { id: pickS.id, qi: 0, pick: [], done: false };
+        if (location.hash === '#/scenarijai/' + pickS.id) { render(); scrollTo(0, 0); } else location.hash = '#/scenarijai/' + pickS.id;
+        return;
+      }
+    }
+  }
+  return { view, act, status };
+})();
