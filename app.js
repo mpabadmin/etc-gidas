@@ -5,7 +5,8 @@ let depth = 0;
 let night = !!LS.get('etc-naktis', false); // naktinis raudonas režimas
 const dec = s => { try { return decodeURIComponent(s); } catch (e) { return s; } };
 const newPt = () => '<button class="btn" data-act="new-pt" style="width:100%;margin-top:16px">Naujas pacientas – išvalyti žymėjimus</button>';
-const FB_PAGES = ['v', 's', 'vaistai', 'vaistas', 'igudis', 'tema', 'p', '9line', 'mist', 'gks', 'tst', 'zymejimas', 'nudegimai', 'pilnas-kraujas', 'scenarijai', 'mascal'];
+const PT_BAR = ['zymejimas', 'nudegimai', 'pilnas-kraujas']; // įrankiai, virš kurių rodoma pacientų juosta
+const FB_PAGES = ['v', 's', 'vaistai', 'vaistas', 'igudis', 'tema', 'p', '9line', 'mist', 'gks', 'tst', 'zymejimas', 'nudegimai', 'pilnas-kraujas', 'scenarijai', 'mascal', 'pacientas', 'qr', 'qr-priimti'];
 const fbLink = () => '<button class="btn fbrow" data-act="fb">Pastebėjote klaidą ar turite pasiūlymą? Praneškite</button>';
 
 function route() {
@@ -40,6 +41,8 @@ function view(p, q) {
     case 'mascal': return MS.view(q);
     case 'pilnas-kraujas': return KR.view();
     case 'scenarijai': return SC.view(p[1], q);
+    case 'pacientas': return PT.view();
+    case 'qr': case 'qr-priimti': return QR.view(p[0]);
     default: return notFound();
   }
 }
@@ -51,12 +54,15 @@ function render() {
   document.getElementById('mL').classList.toggle('on', mode === 'learn');
   backBtn.style.display = p.length ? '' : 'none'; // pradžios ekrane vietoje „Atgal“ – atnaujinimo mygtukas dešinėje
   const ub = document.getElementById('upd'); if (ub) ub.style.display = p.length ? 'none' : '';
-  const sec = { vaistai: 'vaistai', vaistas: 'vaistai', igudziai: 'igudziai', igudis: 'igudziai', temos: 'temos', tema: 'temos', p: 'temos', sarasai: 'sarasai', s: 'sarasai', v: 'sarasai', '9line': 'home', mist: 'home', gks: 'home', tst: 'home', zymejimas: 'home', nudegimai: 'home', mascal: 'home', 'pilnas-kraujas': 'home', scenarijai: 'igudziai' }[p[0]] || (p.length ? '' : 'home');
+  const sec = { vaistai: 'vaistai', vaistas: 'vaistai', igudziai: 'igudziai', igudis: 'igudziai', temos: 'temos', tema: 'temos', p: 'temos', sarasai: 'sarasai', s: 'sarasai', v: 'sarasai', '9line': 'home', mist: 'home', gks: 'home', tst: 'home', zymejimas: 'home', nudegimai: 'home', mascal: 'home', 'pilnas-kraujas': 'home', scenarijai: 'igudziai', pacientas: 'home', qr: 'home', 'qr-priimti': 'home' }[p[0]] || (p.length ? '' : 'home');
   document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('on', a.dataset.s === sec));
-  try { app.innerHTML = view(p, q) + (FB_PAGES.indexOf(p[0]) >= 0 ? fbLink() : ''); }
+  try { PT.sync(); } catch (e) { console.error(e); }
+  if (typeof DICT !== 'undefined') DICT.stop();
+  try { app.innerHTML = (PT_BAR.indexOf(p[0]) >= 0 ? PT.bar() : '') + view(p, q) + (FB_PAGES.indexOf(p[0]) >= 0 ? fbLink() : ''); }
   catch (err) { console.error(err); app.innerHTML = '<h1>Klaida</h1><p class="muted">Nepavyko atidaryti puslapio. Patikrinkite turinio failus.</p>'; }
   // MIST sužeistųjų skirtukai: pasirinktas – matomas
   app.querySelectorAll('.ptabs').forEach(sc => { const b = sc.querySelector('button.on'), add = sc.querySelector('.add'); if (b && sc.scrollWidth > sc.clientWidth) { const av = sc.clientWidth - (add ? add.offsetWidth + 12 : 0); sc.scrollLeft = Math.max(0, b.offsetLeft - (av - b.offsetWidth) / 2); } });
+  try { QR.after(p[0]); DICT.enhance(app); } catch (e) { console.error(e); }
   if (p[0] === 'paieska') { const i = document.getElementById('qs'); if (i) { i.focus(); try { i.setSelectionRange(i.value.length, i.value.length); } catch (e) {} } }
 }
 
@@ -93,6 +99,9 @@ app.addEventListener('click', e => {
   if (/^ms-/.test(d.act)) { MS.act(el); return; }
   if (/^kr-/.test(d.act)) { KR.act(el, e); return; }
   if (/^sc-/.test(d.act)) { SC.act(el); return; }
+  if (/^pt-/.test(d.act)) { PT.act(el); return; }
+  if (/^rem-/.test(d.act)) { REM.act(el); return; }
+  if (/^qr-/.test(d.act)) { QR.act(el); return; }
   switch (d.act) {
     case 'ck': ckToggle(d.l, +d.i); el.classList.toggle('on'); updCount(el.closest('.cl')); if (navigator.vibrate) navigator.vibrate(15); break;
     case 'go': location.hash = d.r; break;
@@ -129,7 +138,7 @@ app.addEventListener('click', e => {
       if (R[d.id] === v) delete R[d.id]; else R[d.id] = v;
       LS.set('etc-ivert', R); render(); break;
     }
-    case 'new-pt': if (confirm('Naujas pacientas: išvalyti visus pažymėjimus ir laikus?')) { LS.set('etc-ck', {}); LS.set('etc-laikai', {}); render(); } break;
+    case 'new-pt': if (confirm('Pradėti naują pacientą? Dabartinis lieka pacientų sąraše (Paciento failas).')) { PT.add(); render(); toast('Naujas pacientas'); } break;
     case 'hide': LS.set('etc-slepti', !hide()); IDX = null; render(); break;
     case 'reset-ivert': if (confirm('Ištrinti visus įsivertinimus?')) { LS.set('etc-ivert', {}); render(); } break;
     case 'fb': FB.open(); break;
@@ -178,7 +187,8 @@ app.addEventListener('input', e => {
   } else history.replaceState(history.state, '', '#/paieska' + (empty ? '' : '?q=' + encodeURIComponent(v)));
 });
 
-setInterval(() => { if (!tmEdit) updTimers(); VZ.tick(); KR.tick(); }, 30000);
+setInterval(() => { if (!tmEdit) updTimers(); VZ.tick(); KR.tick(); REM.tick(); }, 30000);
+setTimeout(() => REM.tick(), 3000);
 addEventListener('keydown', e => { if (e.key === 'Escape' && VZ.isOpen()) { VZ.close(); render(); } });
 document.addEventListener('visibilitychange', () => { if (!document.hidden && !tmEdit) updTimers(); });
 addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEv = e; if (['nustatymai', 'idiegimas', undefined].indexOf(route().p[0]) >= 0) render(); });

@@ -80,11 +80,11 @@ const V = {
   homeField() {
     const w = LS.get('etc-svoris', 80);
     const quick = ['ketaminas', 'fentanilis', 'txa', 'kalcis', 'paracetamolis', 'ceftriaksonas', 'ondansetronas'].map(drugById).filter(v => v && ok(v.kam));
-    return brand() + disclaimer() +
+    return brand() + disclaimer() + REM.banners() +
       '<h2>Escape planas</h2>' + V.escRows() +
       '<h2>Mano vaidmuo – pirminė apžiūra</h2>' + V.roles(true) +
       '<h2>Greitai</h2>' + V.toolTiles() +
-      '<h2>Laikai</h2><div id="tm">' + timersHtml() + '</div>' +
+      '<h2>Laikai</h2><div id="tm">' + timersHtml() + '</div>' + PT.homeRow() +
       '<h2>Paciento svoris, kg</h2>' + wChips(w) +
       '<h2>Dažniausi vaistai</h2>' + quick.map(v => row('#/vaistas/' + v.id, v.name, doseShort(v, w), v.tccc26 ? '<span class="tag grn">TCCC</span>' : '')).join('') +
       row('#/vaistai', 'Visi vaistai', (E.vaistai || []).length + ' vaistai pagal paskirtį') +
@@ -97,7 +97,7 @@ const V = {
 
   homeLearn() {
     const S = E.igudziai || [], R = ratings(), n = S.length, rated = S.filter(s => R[s.id]).length, good = S.filter(s => R[s.id] >= 3).length;
-    return brand() + disclaimer() +
+    return brand() + disclaimer() + REM.banners() +
       '<input type="search" id="q" placeholder="Paieška: vaistas, įgūdis, veiksmas" autocomplete="off">' +
       `<a class="card prog-card" href="#/igudziai"><b>Mano pažanga</b><div class="muted">Įsivertinta ${rated} / ${n} įgūdžių · atlieku (3–4) – ${good}</div>${progBar(rated, n)}</a>` +
       '<h2>Temos</h2>' + V.topicCards() +
@@ -319,7 +319,7 @@ const V = {
     const inst = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
     let h = '<h1>Nustatymai</h1>';
     h += `<div class="ck${hide() ? ' on' : ''}" data-act="hide"><span class="bx">✓</span><div style="flex:1">Slėpti tik gydytojui skirtus veiksmus ir vaistus<div class="muted">Lieka tai, ką atlieka komandos nariai.</div></div></div>`;
-    h += '<h2>Pacientas</h2>' + b('new-pt', 'Naujas pacientas', 'Išvalo visus pažymėjimus ir laikus');
+    h += '<h2>Pacientas</h2>' + row('#/pacientas', 'Paciento failas', 'Pacientų sąrašas, įvykių eiga, perdavimas QR') + b('new-pt', 'Naujas pacientas', 'Ankstesnis lieka sąraše; laikai, žymėjimai ir įrankiai – naujam') + REM.settings();
     h += '<h2>Mokymasis</h2>' + b('reset-ivert', 'Ištrinti įsivertinimus', 'Visi 1–4 balai bus pašalinti');
     h += '<h2>Atsiliepimai</h2>' + b('fb', 'Pranešti apie klaidą ar pasiūlyti', 'Komentaras ir ekrano vaizdas – keliauja gido rengėjams');
     const nOut = FB.pending();
