@@ -5,7 +5,7 @@ let depth = 0;
 let night = !!LS.get('etc-naktis', false); // naktinis raudonas režimas
 const dec = s => { try { return decodeURIComponent(s); } catch (e) { return s; } };
 const newPt = () => '<button class="btn" data-act="new-pt" style="width:100%;margin-top:16px">Naujas pacientas – išvalyti žymėjimus</button>';
-const FB_PAGES = ['v', 's', 'vaistai', 'vaistas', 'igudis', 'tema', 'p', '9line', 'mist', 'gks', 'tst', 'zymejimas', 'nudegimai', 'pilnas-kraujas', 'scenarijai'];
+const FB_PAGES = ['v', 's', 'vaistai', 'vaistas', 'igudis', 'tema', 'p', '9line', 'mist', 'gks', 'tst', 'zymejimas', 'nudegimai', 'pilnas-kraujas', 'scenarijai', 'mascal'];
 const fbLink = () => '<button class="btn fbrow" data-act="fb">Pastebėjote klaidą ar turite pasiūlymą? Praneškite</button>';
 
 function route() {
@@ -37,6 +37,7 @@ function view(p, q) {
     case 'tst': return TS.view();
     case 'zymejimas': return VZ.view();
     case 'nudegimai': return NB.view();
+    case 'mascal': return MS.view(q);
     case 'pilnas-kraujas': return KR.view();
     case 'scenarijai': return SC.view(p[1], q);
     default: return notFound();
@@ -50,7 +51,7 @@ function render() {
   document.getElementById('mL').classList.toggle('on', mode === 'learn');
   backBtn.style.display = p.length ? '' : 'none'; // pradžios ekrane vietoje „Atgal“ – atnaujinimo mygtukas dešinėje
   const ub = document.getElementById('upd'); if (ub) ub.style.display = p.length ? 'none' : '';
-  const sec = { vaistai: 'vaistai', vaistas: 'vaistai', igudziai: 'igudziai', igudis: 'igudziai', temos: 'temos', tema: 'temos', p: 'temos', sarasai: 'sarasai', s: 'sarasai', v: 'sarasai', '9line': 'home', mist: 'home', gks: 'home', tst: 'home', zymejimas: 'home', nudegimai: 'home', 'pilnas-kraujas': 'home', scenarijai: 'igudziai' }[p[0]] || (p.length ? '' : 'home');
+  const sec = { vaistai: 'vaistai', vaistas: 'vaistai', igudziai: 'igudziai', igudis: 'igudziai', temos: 'temos', tema: 'temos', p: 'temos', sarasai: 'sarasai', s: 'sarasai', v: 'sarasai', '9line': 'home', mist: 'home', gks: 'home', tst: 'home', zymejimas: 'home', nudegimai: 'home', mascal: 'home', 'pilnas-kraujas': 'home', scenarijai: 'igudziai' }[p[0]] || (p.length ? '' : 'home');
   document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('on', a.dataset.s === sec));
   try { app.innerHTML = view(p, q) + (FB_PAGES.indexOf(p[0]) >= 0 ? fbLink() : ''); }
   catch (err) { console.error(err); app.innerHTML = '<h1>Klaida</h1><p class="muted">Nepavyko atidaryti puslapio. Patikrinkite turinio failus.</p>'; }
@@ -89,6 +90,7 @@ app.addEventListener('click', e => {
   if (/^ts-/.test(d.act)) { TS.act(el); return; }
   if (/^vz-/.test(d.act)) { VZ.act(el); return; }
   if (/^nb-/.test(d.act)) { NB.act(el); return; }
+  if (/^ms-/.test(d.act)) { MS.act(el); return; }
   if (/^kr-/.test(d.act)) { KR.act(el, e); return; }
   if (/^sc-/.test(d.act)) { SC.act(el); return; }
   switch (d.act) {
@@ -157,6 +159,7 @@ function toolInput(t) {
   if (d.mc || d.mcf || d.mcm != null) { MC.onInput(t); return true; }
   if (d.vz) { VZ.onInput(t); return true; }
   if (d.kr) { KR.onInput(t); return true; }
+  if (d.ms) { MS.onInput(t); return true; }
   return false;
 }
 app.addEventListener('change', e => { if (e.target.type === 'time') toolInput(e.target); });

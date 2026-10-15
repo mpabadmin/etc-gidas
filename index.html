@@ -377,6 +377,28 @@ details.alt .tw table{font-size:13px}
 .scres{border-radius:14px;padding:14px;margin:0 0 10px;background:var(--ambbg);color:var(--amb)}.scres.ok{background:var(--grnbg);color:var(--grn)}.scsc{font-size:34px;font-weight:800;line-height:1.1}
 .scsum{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line)}.scsum b{display:block;font-size:15px}.scsum small{display:block;font-size:13px;color:var(--tx2);margin-top:2px}
 .scm{flex:none;width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;background:#1D9E75}.scm.bad{background:var(--abn,#B42318)}
+/* ── Greitai: didesnės plytelės (TST, Mascal) ── */
+.tool.big{padding:16px 12px;min-height:84px}.tool.big .ti{width:48px;height:48px;font-size:24px}.tool.big b{font-size:19px}
+.tool .ti{letter-spacing:-.5px}
+@media(max-width:350px){.tool.big{padding:12px 8px}.tool.big .ti{width:40px;height:40px;font-size:20px}.tool.big b{font-size:16px}}
+/* ── Mascal triažas ── */
+.msT1{--c:#B42318;--f:#fff}.msT2{--c:#D9A200;--f:#1A1400}.msT3{--c:#18794E;--f:#fff}.msT4{--c:#1D5FB4;--f:#fff}.msX{--c:#3D3D3A;--f:#fff}
+.msum{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:0 0 6px}
+.msum a{display:flex;flex-direction:column;align-items:center;padding:8px 2px;border-radius:12px;background:var(--c);color:var(--f);text-decoration:none;border:2px solid var(--c)}
+.msum a b{font-size:24px;line-height:1.1}.msum a small{font-size:12px;font-weight:700}.msum a.on{outline:3px solid var(--tx);outline-offset:2px}
+.madd{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:0 0 10px}
+.madd button{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:58px;padding:6px 2px;border:2px solid var(--c);border-radius:12px;background:var(--bg);color:var(--tx);font:inherit;touch-action:manipulation}
+.madd button b{font-size:19px}.madd button small{font-size:11px;line-height:1.1}
+.madd:not(.sm) button{background:var(--c);color:var(--f)}
+.madd.sm button{min-height:50px}.madd.sm button.on{background:var(--c);color:var(--f)}
+.msr{border:1px solid var(--line);border-left:6px solid var(--c);border-radius:12px;background:var(--card);margin:0 0 6px;overflow:hidden}
+.msr.ev{opacity:.65}
+.msh{display:flex;align-items:center;gap:10px;width:100%;min-height:56px;padding:8px 10px;border:0;background:none;color:var(--tx);font:inherit;text-align:left}
+.msk{flex:none;display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:30px;padding:0 4px;border-radius:8px;background:var(--c);color:var(--f);font-weight:800;font-size:14px}
+.msi{flex:1;min-width:0}.msi b{display:block;font-size:16px}.msi small{display:block;font-size:13px;color:var(--tx2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mss{flex:none;font-size:12px;font-weight:700;color:var(--tx2);text-align:right}
+.msd{padding:0 10px 10px;border-top:1px solid var(--line)}.msd .inp{margin:8px 0 0}.msd .muted{margin:8px 0}
+.kv .msk{min-width:28px;height:24px;font-size:12px;margin-right:4px;vertical-align:1px}
 /* skaitymo režimas, pranešimai */
 #rd{position:fixed;inset:0;z-index:30;background:var(--bg);overflow:auto;overscroll-behavior:contain}
 #rd[hidden]{display:none}

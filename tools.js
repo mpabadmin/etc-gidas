@@ -1264,3 +1264,92 @@ const SC = (() => {
   }
   return { view, act, status };
 })();
+
+// ───────── Mascal triažas (MS) – sužeistųjų lenta masinio sužalojimo atveju, NATO kategorijos T1–T4 (tik ETC gide) ─────────
+const MS = (() => {
+  const KEY = TCFG.pre + 'mascal';
+  // [kodas, pavadinimas, angliškai, aprašas]
+  const CAT = [
+    ['T1', 'Skubus', 'Immediate', 'Gyvybei pavojinga, bet išgelbstima greitais veiksmais: kraujavimas, kvėpavimo takai, šokas.'],
+    ['T2', 'Atidėtas', 'Delayed', 'Reikia gydymo ar operacijos, bet būklė stabili – gali palaukti.'],
+    ['T3', 'Lengvas', 'Minimal', 'Vaikšto, nedideli sužalojimai, gali padėti sau ar kitiems.'],
+    ['T4', 'Laukiantis', 'Expectant', 'Turimais ištekliais neišgelbstimas – komfortas, nuskausminimas; peržiūrėti, kai atsiras išteklių.'],
+    ['X', 'Miręs', 'Dead', 'Nekvėpuoja atvėrus kvėpavimo takus, gyvybės ženklų nėra.']
+  ];
+  const ST = [['l', 'Laukia'], ['g', 'Gydomas'], ['e', 'Evakuotas']];
+  const ORD = { T1: 0, T2: 1, T3: 2, T4: 3, X: 4 };
+  const def = () => ({ n: 1, c: [] });
+  function get() {
+    const raw = LS.get(KEY, {}), s = def();
+    if (raw && Array.isArray(raw.c)) s.c = raw.c.filter(x => x && ORD[x.k] != null && +x.no > 0).map(x => ({
+      no: +x.no, k: x.k, id: String(x.id || '').slice(0, 40), nt: String(x.nt || '').slice(0, 120), st: ST.some(z => z[0] === x.st) ? x.st : 'l', t: +x.t || 0, te: +x.te || 0 }));
+    s.n = Math.max(+raw.n || 1, ...s.c.map(x => x.no + 1), 1);
+    return s;
+  }
+  const save = s => LS.set(KEY, s);
+  const cnt = (s, k) => s.c.filter(x => x.k === k).length;
+  function status() {
+    const s = get(); if (!s.c.length) return 'Sužeistųjų lenta, T1–T4';
+    return CAT.filter(([k]) => cnt(s, k)).map(([k]) => k + ' ' + cnt(s, k)).join(' · ');
+  }
+  function text(s) {
+    const ev = s.c.filter(x => x.st === 'e').length;
+    return 'MASCAL ' + hm(Date.now()) + ': ' + CAT.map(([k, nm]) => (k === 'X' ? 'mirę' : k) + ' ' + cnt(s, k)).join(', ') + '; iš viso ' + s.c.length + (ev ? '; evakuota ' + ev : '') + '\n' +
+      s.c.slice().sort((a, b) => ORD[a.k] - ORD[b.k] || a.no - b.no).map(x => '#' + x.no + ' ' + x.k + (x.id ? ' ' + x.id : '') + (x.nt ? ' – ' + x.nt : '') + ' – ' + (ST.find(z => z[0] === x.st) || ['', ''])[1].toLowerCase() + (x.st === 'e' && x.te ? ' ' + hm(x.te) : '')).join('\n');
+  }
+  let open = null; // atskleista eilutė (nr.)
+  function view(q) {
+    const s = get(), learn = mode === 'learn', f = q && q.k && ORD[q.k] != null ? q.k : '';
+    let h = '<h1>Mascal triažas</h1>';
+    if (learn) h += '<p class="muted">Masinio sužalojimo atvejis: kiekvienam sužeistajam – kategorija, numeris ir būsena. Pirminiam rūšiavimui lauke – TST; čia – Role 1 lenta, kurią galima užpildyti iš TST. Kategorijos – NATO T1–T4; kuopos SOP viršesnis.</p>';
+    h += '<div class="msum">' + CAT.map(([k, nm]) => `<a class="ms${k}${f === k ? ' on' : ''}" href="#/mascal${f === k ? '' : '?k=' + k}" aria-label="${nm}: ${cnt(s, k)}"><b>${cnt(s, k)}</b><small>${k === 'X' ? 'Mirę' : k}</small></a>`).join('') + '</div>';
+    h += '<div class="lbl">Pridėti sužeistąjį</div><div class="madd">' + CAT.map(([k, nm, en]) => `<button class="ms${k}" data-act="ms-add" data-k="${k}"><b>${k === 'X' ? '✝' : k}</b><small>${nm}</small></button>`).join('') + '</div>';
+    const tst = LS.get(TCFG.pre + 'tst', null), tn = tst && tst.n && typeof tst.n === 'object' ? tst.n : null, tTot = tn ? ['p1', 'p2', 'p3', 'nb'].reduce((a, k) => a + (parseInt(tn[k], 10) || 0), 0) : 0;
+    if (tTot) h += `<button class="btn" data-act="ms-tst" style="width:100%">Perkelti iš TST: P1 ${tn.p1 || 0} · P2 ${tn.p2 || 0} · P3 ${tn.p3 || 0} · nekvėpuoja ${tn.nb || 0}</button>`;
+    const L = s.c.filter(x => !f || x.k === f).sort((a, b) => ORD[a.k] - ORD[b.k] || a.no - b.no);
+    h += `<h2>Sužeistieji${s.c.length ? ' · ' + s.c.length : ''}${f ? ' · ' + f : ''}</h2>`;
+    if (!L.length) h += '<p class="muted">' + (s.c.length ? 'Šios kategorijos nėra.' : 'Sąrašas tuščias. Pridėkite sužeistąjį kategorijos mygtuku.') + '</p>';
+    h += L.map(x => {
+      const c = CAT.find(z => z[0] === x.k), st = ST.find(z => z[0] === x.st);
+      let r = `<div class="msr ms${x.k}${x.st === 'e' ? ' ev' : ''}"><button class="msh" data-act="ms-op" data-k="${x.no}" aria-expanded="${open === x.no}"><span class="msk">${x.k === 'X' ? '✝' : x.k}</span><span class="msi"><b>#${x.no}${x.id ? ' · ' + esc(x.id) : ''}</b><small>${esc(x.nt || c[1])}</small></span><span class="mss">${esc(st[1])}${x.st === 'e' && x.te ? ' ' + hm(x.te) : ''}</span></button>`;
+      if (open === x.no) {
+        r += '<div class="msd">' +
+          `<input class="inp" data-ms="id" data-k="${x.no}" maxlength="40" autocomplete="off" placeholder="Šaukinys / žetonas" value="${esc(x.id)}" aria-label="Šaukinys">` +
+          `<input class="inp" data-ms="nt" data-k="${x.no}" maxlength="120" autocomplete="off" placeholder="Sužalojimai, kas atlikta" value="${esc(x.nt)}" aria-label="Pastaba">` +
+          '<div class="lbl">Kategorija</div><div class="madd sm">' + CAT.map(([k, nm]) => `<button class="ms${k}${x.k === k ? ' on' : ''}" data-act="ms-k" data-k="${x.no}" data-c="${k}" aria-pressed="${x.k === k}"><b>${k === 'X' ? '✝' : k}</b><small>${nm}</small></button>`).join('') + '</div>' +
+          '<div class="lbl">Būsena</div><div class="seg2">' + ST.map(([k, nm]) => `<button class="${x.st === k ? 'on' : ''}" data-act="ms-st" data-k="${x.no}" data-c="${k}" aria-pressed="${x.st === k}">${nm}</button>`).join('') + '</div>' +
+          `<p class="muted">Pridėtas ${hm(x.t)}. ${esc(c[3])}</p><button class="btn sm" data-act="ms-del" data-k="${x.no}">Pašalinti iš sąrašo</button></div>`;
+      }
+      return r + '</div>';
+    }).join('');
+    h += '<div class="acts"><button class="btn" data-act="ms-copy"' + (s.c.length ? '' : ' disabled') + '>Kopijuoti suvestinę</button><button class="btn" data-act="ms-clr"' + (s.c.length ? '' : ' disabled') + '>Naujas įvykis</button></div>';
+    h += '<details class="alt"' + (learn ? ' open' : '') + '><summary>Kategorijos</summary>' + CAT.map(([k, nm, en, d]) => `<div class="kv"><b><span class="msk ms${k}">${k === 'X' ? '✝' : k}</span> ${nm}</b><span>${esc(d)} <small class="muted">(${en})</small></span></div>`).join('') + '</details>';
+    h += row('#/tst', 'TST rūšiavimas', TS.status()) + row('#/9line', '9-Line MEDEVAC', NL.status());
+    return h;
+  }
+  function act(el) {
+    const s = get(), d = el.dataset, y = scrollY, no = +d.k, x = s.c.find(z => z.no === no);
+    switch (d.act) {
+      case 'ms-add': if (ORD[d.k] == null) return; s.c.push({ no: s.n, k: d.k, id: '', nt: '', st: 'l', t: Date.now(), te: 0 }); toast('Pridėtas #' + s.n + ' – ' + d.k); open = null; s.n++; if (navigator.vibrate) navigator.vibrate(15); break;
+      case 'ms-op': open = open === no ? null : no; render(); scrollTo(0, y); return;
+      case 'ms-k': if (!x || ORD[d.c] == null) return; x.k = d.c; break;
+      case 'ms-st': if (!x || !ST.some(z => z[0] === d.c)) return; x.st = d.c; x.te = d.c === 'e' ? Date.now() : 0; break;
+      case 'ms-del': if (!x || !confirm('Pašalinti #' + no + ' iš sąrašo?')) return; s.c = s.c.filter(z => z.no !== no); open = null; break;
+      case 'ms-tst': {
+        const t = (LS.get(TCFG.pre + 'tst', null) || {}).n || {}, map = [['p1', 'T1'], ['p2', 'T2'], ['p3', 'T3'], ['nb', 'X']];
+        let add = 0; map.forEach(([a, k]) => { for (let i = 0; i < Math.min(99, parseInt(t[a], 10) || 0); i++) { s.c.push({ no: s.n++, k, id: '', nt: 'iš TST', st: 'l', t: Date.now(), te: 0 }); add++; } });
+        if (!add || !confirm('Pridėti ' + add + ' sužeist. iš TST skaičiavimo?')) return; toast('Pridėta: ' + add); break;
+      }
+      case 'ms-copy': return copyText(text(s));
+      case 'ms-clr': if (!confirm('Naujas įvykis: ištrinti visą sužeistųjų sąrašą?')) return; open = null; save(def()); render(); return;
+      default: return;
+    }
+    save(s); render(); scrollTo(0, y);
+  }
+  function onInput(t) {
+    const s = get(), x = s.c.find(z => z.no === +t.dataset.k), k = t.dataset.ms; if (!x || (k !== 'id' && k !== 'nt')) return;
+    x[k] = t.value.slice(0, k === 'id' ? 40 : 120); save(s);
+    const row = t.closest('.msr'); if (row) { const b = row.querySelector('.msi b'), sm = row.querySelector('.msi small'); if (b) b.textContent = '#' + x.no + (x.id ? ' · ' + x.id : ''); if (sm) sm.textContent = x.nt || CAT.find(z => z[0] === x.k)[1]; }
+  }
+  return { view, act, onInput, status, text };
+})();
