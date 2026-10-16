@@ -221,6 +221,11 @@ window.ETC.vaistai = [
         "k": "Į nosį",
         "d": "100 mcg",
         "p": "Kartoti kas 30 min pagal poreikį (ankstesnės TCCC gairės)."
+      },
+      {
+        "k": "Kartoti",
+        "d": "kas 30 min pagal poreikį",
+        "p": "Ankstesnės TCCC gairės; stebėkite kvėpavimą."
       }
     ],
     "ispejimai": [
@@ -650,7 +655,7 @@ window.ETC.vaistai = [
     ],
     "pakuote": "10 % tirpalas (100 mg/ml kalcio gliukonato)",
     "pastabos": [
-      "TCCC „1 g kalcio“ – tai 30 ml 10 % kalcio gliukonato arba 10 ml 10 % kalcio chlorido (apie 6,3–6,8 mmol kalcio).",
+      "TCCC „1 g kalcio“ – tai 30 ml 10 % kalcio gliukonato arba 10 ml 10 % kalcio chlorido (apie 6,7–6,8 mmol kalcio).",
       "Gydymo kokybės kriterijus: užtikrinamas kalcio kiekis esant kraujo transfuzijai."
     ],
     "susije": [
@@ -1231,7 +1236,7 @@ window.ETC.vaistai = [
     "ind": "Intubacija, greitosios sekos indukcija.",
     "dozes": [
       {
-        "k": "Greitosios sekos indukcija (PCS)",
+        "k": "IV / IO – greitosios sekos indukcija (PCS)",
         "d": "1 mg/kg · ml 10 mg/ml tirpalo",
         "c": {
           "per": 1,
@@ -1239,7 +1244,7 @@ window.ETC.vaistai = [
         }
       },
       {
-        "k": "Palaikomoji (PCS)",
+        "k": "IV / IO – palaikomoji dozė (PCS)",
         "d": "0,15 mg/kg · ml 10 mg/ml tirpalo",
         "c": {
           "per": 0.15,
@@ -1483,7 +1488,7 @@ window.ETC.vaistai = [
     "dozes": [
       {
         "k": "IV (PCS)",
-        "d": "0,1–0,2 mg, toliau po 0,1 mg kas 2 min",
+        "d": "0,1–0,2 mg, kartoti kas 2–3 min pagal poreikį",
         "p": "Titruoti iki kvėpavimo dažnio > 10 k./min, neprarandant nuskausminimo. Skiedimas: 0,4 mg (1 ml) + 9 ml NaCl = 0,04 mg/ml; 0,1 mg = 2,5 ml."
       },
       {

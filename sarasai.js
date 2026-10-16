@@ -11,7 +11,7 @@ const E = window.ETC;
 const KOMP = 'Pagal kompetenciją', MED = 'Medicinos personalui', GYD = 'Gydytojui', INT = 'Intubuojantiems gydytojams';
 const link = (href, t, s) => `<a class="row" href="${href}"><div>${t}${s ? '<small>' + s + '</small>' : ''}</div><span class="ar">›</span></a>`;
 
-E.versija = '2026-10-15 v21 (paciento failas: pacientų juosta ir įvykių eiga; priminimai; perdavimas QR kodu; balso diktavimas)';
+E.versija = '2026-10-17 v22 (turinio patikra: hipotermijos laipsniai, IO vieta, TCA išgyvenamumas, kalcio greitis hiperkalemijai, naloksono titravimas, benzodiazepinai, noradrenalino greitis, 9-Line skubumo pavyzdžiai; paciento failas, priminimai, QR, diktavimas)';
 // Pranešimų priėmimo adresas: Google Apps Script žiniatinklio programos /exec URL (žr. tools/atsiliepimai.gs)
 E.atsiliepimai = { url: 'https://script.google.com/macros/s/AKfycbyUpzDmAClJ40FMltkHi21Ozc4PpItRr3u6yy4rU0DKNGe7JkRBnOr0y42wLwpJcBau/exec' };
 
@@ -202,14 +202,14 @@ E.sarasai = {
   },
   'b-pir': {
     title: 'B – pirminė apžiūra', short: 'Pirminė',
-    intro: 'Visa apžiūra stetoskopu ir rankomis – ne ilgiau nei 2 min. Radinius A nariui praneškite baigę visą apžiūrą. Išimtis – gyvybei pavojinga būklė (pvz., įtampinis pneumotoraksas, masyvus kraujavimas): apie ją pranešama iškart. Nugara apžiūrima prieš e-FAST.',
+    intro: 'Visa apžiūra stetoskopu ir rankomis – ne ilgiau nei 2 min. Radinius A nariui praneškite baigę visą apžiūrą. Išimtis – gyvybei pavojinga būklė (pvz., įtampos pneumotoraksas, masyvus kraujavimas): apie ją pranešama iškart. Nugara apžiūrima prieš e-FAST.',
     items: [
       { t: 'Krūtinė ir pilvas visiškai atidengti (įtariant traumą – drabužiai nukirpti)' },
       { t: 'Uždėtas monitoringas: EKG, SpO₂', i: 'Įgūdis #15. AKS manžetę uždeda C.' },
       { t: 'Patikrintas kaklas, jei neuždėtas kaklo įtvaras', s: ['Trachėjos pasislinkimas', 'Žaizdos, hematomos', 'Kraujas ir skausmingumas po kaklu', 'Esant poreikiui – kaklo imobilizacija'] },
       { t: 'Įvertinta krūtinės ląsta', k: true, s: ['Kraujosruvos ir žaizdos', 'Simetriškas krūtinės ląstos kilnojimasis', 'Poodinė emfizema', 'Kvėpavimo dažnis', 'Respiracinis distresas', 'Auskultacija 3 taškuose kairėje ir dešinėje'],
-        i: 'B atmeta 6 gyvybei pavojingas būkles: kvėpavimo takų obstrukciją, įtampinį pneumotoraksą, atvirą pneumotoraksą, masyvų hemotoraksą, nestabilią krūtinės ląstą, širdies tamponadą. Įgūdis #13.' },
-      { t: 'Įvertinta, ar nėra įtampinio (hemo)pneumotorakso', k: true, s: ['Mažai tikėtinas – drenuoti nereikia', 'Labai tikėtinas – iškart pranešta A; drenuota, įvertinta, kiek išbėgo kraujo'], i: 'Įgūdis #14 – pleuros drenavimas (pagal kompetenciją).' },
+        i: 'B atmeta 6 gyvybei pavojingas būkles: kvėpavimo takų obstrukciją, įtampos pneumotoraksą, atvirą pneumotoraksą, masyvų hemotoraksą, nestabilią krūtinės ląstą, širdies tamponadą. Įgūdis #13.' },
+      { t: 'Įvertinta, ar nėra įtampos (hemo)pneumotorakso', k: true, s: ['Mažai tikėtinas – drenuoti nereikia', 'Labai tikėtinas – iškart pranešta A; drenuota, įvertinta, kiek išbėgo kraujo'], i: 'Įgūdis #14 – pleuros drenavimas (pagal kompetenciją).' },
       { t: 'Ant krūtinės ląstos žaizdos uždėtas okliuzinis tvarstis' },
       { t: 'Apžiūrėtas ir palpuotas pilvas: žaizdos, evisceracija, skausmingumas, įtempimas' },
       { t: 'Patikrintas dubens stabilumas', k: true, s: ['Stabilus', 'Nestabilus – dubens diržą uždeda B kartu su C'], i: 'Įgūdis #20.' },
@@ -430,7 +430,7 @@ E.puslapiai = {
       '<h3>6 gyvybei pavojingos krūtinės būklės</h3><p>Jas B narys turi atmesti pirminės apžiūros metu:</p><ol><li>Kvėpavimo takų obstrukcija / pažeidimas</li><li>Įtampinis pneumotoraksas</li><li>Atvira krūtinės žaizda (atviras pneumotoraksas)</li><li>Masyvus hemotoraksas</li><li>Nestabili krūtinės ląsta (flail chest)</li><li>Širdies tamponada</li></ol>' +
       '<p class="muted">Pneumotoraksą, hemotoraksą ir tamponadą ultragarsu nustatyti tiksliau nei rentgenu.</p>' +
       '<h3>Įtampinis pneumotoraksas</h3><p>Oras patenka į pleuros ertmę, bet neišeina: plautis subliūkšta, tarpuplautis pasislenka, mažėja veninis grįžimas į širdį. Iš pradžių – dažnas kvėpavimas, tachikardija, vėliau hipotenzija ir sustojimas. Ventiliuojamam pacientui būklė blogėja labai greitai. Požymiai panašūs į širdies tamponados.</p><p>Gydymas – nedelsiant dekompresija: šoninė torakostomija, po to drenas. Adatos dekompresija – tik jei nėra kompetentingo gydytojo ar įrangos.</p>' +
-      '<h3>Atvira krūtinės žaizda</h3><p>Sandariai uždengus žaizdą, gali susidaryti įtampinis pneumotoraksas. Uždedamas vienkryptis (vožtuvinis) okliuzinis tvarstis, vėliau įvedamas drenas.</p>' +
+      '<h3>Atvira krūtinės žaizda</h3><p>Sandariai uždengus žaizdą, gali susidaryti įtampos pneumotoraksas. Uždedamas vienkryptis (vožtuvinis) okliuzinis tvarstis, vėliau įvedamas drenas.</p>' +
       '<h3>Masyvus hemotoraksas</h3><p>Daugiau nei 1500 ml kraujo pleuros ertmėje. Požymiai: hipovoleminis šokas, duslus perkusijos garsas ir susilpnėjęs kvėpavimas pažeistoje pusėje. Gydymas: deguonis, torakostomija ir drenas, kraujagyslių prieiga, kraujo komponentai pagal masinio kraujavimo protokolą. Jei per drenažą nuolat bėga daugiau nei 200 ml/val. – skubiai chirurgas.</p>' +
       '<h3>Nestabili krūtinės ląsta</h3><p>Jauniems pacientams paradoksalus krūtinės judesys iš pradžių gali būti nematomas – lūžusius šonkaulius prilaiko raumenys. Išryškėja pacientui pavargus.</p>' +
       link('#/v/B?f=1', 'B – pirminė apžiūra') + link('#/igudis/14', 'Įgūdis #14 – pleuros drenavimas') + link('#/igudis/18', 'Įgūdis #18 – krikotiroidotomija'),
@@ -480,12 +480,12 @@ E.puslapiai = {
       sk('Metoklopramidas', '10 ml švirkštas: 10 mg + 8 ml NaCl = 1 mg/ml', 'Suleisti lėtai IV – ne trumpiau kaip per 3 min (PCS).') +
       sk('Rokuroniumas', '10 ml švirkštas: 100 mg, neskiestas = 10 mg/ml', '0,5–1,5 mg/kg. PCS: intubacijai 0,6 mg/kg, greitosios sekos indukcijai 1,0 mg/kg.') +
       sk('Atropinas', '10 ml švirkštas: 1 mg (ampulė 1 mg / 1 ml) + 9 ml NaCl = 0,1 mg/ml', 'Po 0,5 mg kas 1–2 min, iki 3 mg') +
-      sk('Naloksonas', '10 ml švirkštas: 0,4 mg + 9 ml NaCl = 0,04 mg/ml', 'Po 0,2 mg (5 ml) kas 2–3 min iki efekto. Maks. 2 mg (PCS – jei po 10 mg nėra atsako, peržiūrėti diagnozę).') +
+      sk('Naloksonas', '10 ml švirkštas: 0,4 mg + 9 ml NaCl = 0,04 mg/ml', 'Po 0,1–0,2 mg (2,5–5 ml) kas 2–3 min iki efekto (KD > 10 k./min), išsaugant nuskausminimą. ETC – maks. 2 mg (PCS – jei po 10 mg nėra atsako, peržiūrėti diagnozę).') +
       '<h3>IV per infuzomatą</h3>' +
       sk('Ketaminas', '50 ml švirkštas: 500 mg + 40 ml NaCl = 10 mg/ml', 'Nuo 0,5 mg/kg/val. (~100 kg pacientui – maždaug nuo 5 ml/val.)') +
       sk('Fentanilis', '50 ml švirkštas: 1000 mcg + 30 ml NaCl = 20 mcg/ml', '1–3 mcg/kg/val. (~100 kg pacientui – maždaug nuo 5 ml/val.)') +
       sk('Morfinas', '10 ml švirkštas: 10 mg + 9 ml NaCl = 1 mg/ml', 'Pradinis 1–2 mg/val. (1–2 ml/val.)') +
-      sk('Noradrenalinas', '50 ml švirkštas: 4 mg + 46 ml 5 % gliukozės = 80 mcg/ml', '0,1–1 mcg/kg/min. Maždaug nuo 6 ml/val., maks. 50 ml/val. (apskaičiuota ~80 kg pacientui). PCS: 2 mg + 48 ml 5 % gliukozės = 40 mcg/ml, pradinis greitis 10–20 ml/val. – tikrinkite, kurį tirpalą ruošiate. Per centrinę veną.') +
+      sk('Noradrenalinas', '50 ml švirkštas: 4 mg + 46 ml 5 % gliukozės = 80 mcg/ml', '0,1–1 mcg/kg/min. 80 kg pacientui ≈ 6–60 ml/val. (ETC lentelėje – maks. 50 ml/val.); skaičiuokite pagal svorį: ml/val. = mcg/kg/min × kg × 60 ÷ 80. PCS: 2 mg + 48 ml 5 % gliukozės = 40 mcg/ml, pradinis greitis 10–20 ml/val. – tikrinkite, kurį tirpalą ruošiate. Per centrinę veną.') +
       '<p class="muted">Pagrindinės dozės – vaisto puslapyje (TCCC 2026 / PCS). Šių ETC lentelių dozės kai kur skiriasi – jei skiriasi, vadovaukitės vaisto puslapiu.</p>' +
       link('#/vaistai', 'Visi vaistai') + link('#/igudis/24', 'Įgūdis #24 – IV vaistų paruošimas') + link('#/igudis/25', 'Įgūdis #25 – infuzomatas'),
     saltinis: 'ETC įgūdžių lapas (Vaistai IV boliusu, Vaistai IV per infuzomatą); gamintojų PCS (JK eMC); TCCC gairės 2026-05-01'
@@ -495,10 +495,10 @@ E.puslapiai = {
     html: '<h3>Įvertinkite</h3><p>Paprašykite pacientą įvertinti skausmą nuo 0 (nėra) iki 10 (stipriausias įsivaizduojamas). Prieš analgeziją užrašykite sąmonę (AVPU). Kartokite po kiekvienos dozės.</p>' +
       '<h3>Parinkite pagal skausmą ir būklę</h3><p><b>Lengvas–vidutinis skausmas, gali gerti</b> – paracetamolis 1000 mg per burną kas 8 val. ir meloksikamas 15 mg per burną kartą per parą (negalinčiam gerti – paracetamolis IV).</p>' +
       '<p><b>Vidutinis–stiprus skausmas</b> – ketaminas 25 mg (0,2–0,3 mg/kg) IV / IO lėtai per 1 min, arba 100 mg IM, arba 50 mg į nosį (100 mg/ml); kartoti kas 30 min, tikslas – sumažėjęs skausmas arba atsiradęs nistagmas. Ir (ar) titruojami IV opioidai – morfinas, fentanilis (dozės – vaisto puslapyje). ETC: analgetikai paprastai skiriami kartu su antiemetiku; skirtingų grupių derinys mažina bendrą dozę.</p>' +
-      '<ul><li>Šokas ar kvėpavimo sutrikimas – saugesnis ketaminas; opioidų dozes mažinkite, poveikis šoke vėluoja.</li><li>Stebėkite kvėpavimo takus, kvėpavimą ir kraujotaką; po ketamino – seilėtekis, turėkite atsiurbimą.</li><li>Benzodiazepinų nederinkite nei su ketaminu, nei su opioidais. Iš dalies disocijavusiam – saugiau papildyti ketamino.</li><li>Pykinimui – ondansetronas 4 mg ODT / IV / IO / IM kas 8 val.</li><li>Tikslas – toleruojamas skausmas, ne visiškas jo pašalinimas.</li></ul>' +
+      '<ul><li>Šokas ar kvėpavimo sutrikimas – saugesnis ketaminas; opioidų dozes mažinkite, poveikis šoke vėluoja.</li><li>Stebėkite kvėpavimo takus, kvėpavimą ir kraujotaką; po ketamino – seilėtekis, turėkite atsiurbimą.</li><li>Benzodiazepinų rutiniškai nederinkite nei su ketaminu, nei su opioidais (kvėpavimo slopinimas); iš dalies disocijavusiam – saugiau papildyti ketamino. Išimtis – ryški ažitacija: gydytojo sprendimu, maža dozė, stebint kvėpavimą.</li><li>Pykinimui – ondansetronas 4 mg ODT / IV / IO / IM kas 8 val.</li><li>Tikslas – toleruojamas skausmas, ne visiškas jo pašalinimas.</li></ul>' +
       '<p class="muted">Morfino, fentanilio ir naloksono dozės – pagal gamintojo PCS (žr. vaisto puslapį); skiria medikas. Pakankama analgezija tik slopinant sąmonę, kvėpavimą ar AKS – reikia bendrosios nejautros (patyręs anesteziologas, ETC).</p>' +
       '<h3>Titruokite</h3><p>Geriau kelios mažesnės dozės nedideliais intervalais nei viena didelė. Norimas efektas – skausmas sumažėja bent 3 balais (pvz., buvo 8/10, tapo 5/10); siekiant 3/10 ar mažiau reikės didelių dozių ir atsiras komplikacijų. Registruokite visas skirtas dozes (vaistas, dozė, būdas, laikas).</p>' +
-      '<h3>Kur sustoti</h3><ul><li><b>Ketaminas:</b> sumažėjęs skausmas arba atsiradęs nistagmas.</li><li><b>Opioidai:</b> skyrimas nutraukiamas, kai kvėpavimo dažnis &lt; 10 k./min (kuopos kortelė).</li><li><b>Naloksonas:</b> po 0,1 mg kas 2 min iki kvėpavimo dažnio &gt; 10 k./min, neprarandant nuskausminimo (PCS).</li></ul>' +
+      '<h3>Kur sustoti</h3><ul><li><b>Ketaminas:</b> sumažėjęs skausmas arba atsiradęs nistagmas.</li><li><b>Opioidai:</b> skyrimas nutraukiamas, kai kvėpavimo dažnis &lt; 10 k./min (kuopos kortelė).</li><li><b>Naloksonas:</b> po 0,1–0,2 mg (2,5–5 ml 0,04 mg/ml tirpalo) kas 2–3 min iki kvėpavimo dažnio &gt; 10 k./min, neprarandant nuskausminimo; ETC – iki 2 mg (PCS).</li></ul>' +
       '<h3>Ypač atsargiai, kai yra</h3><ul><li>sumažėjęs sąmonės lygis</li><li>kvėpavimo sutrikimas</li><li>šokas – vaisto poveikis gali gerokai vėluoti; opioidų dozes mažinti</li><li>hipotermija</li><li>apsinuodijimas (alkoholis, narkotikai)</li><li>senyvas amžius</li></ul>' +
       '<h3>Be vaistų</h3><ul><li>Palaikykite akių ir fizinį kontaktą, paaiškinkite, kas vyksta, įspėkite prieš skausmingą procedūrą, saugokite orumą.</li><li>Kuo anksčiau imobilizuokite lūžius.</li><li>Uždenkite nudegimus.</li><li>Kuo anksčiau nukelkite nuo kietų neštuvų / lentų.</li><li>Šildykite – drebulys stiprina skausmą.</li><li>Procedūroms (drenas, lūžių manipuliacijos) – vietinė ar regioninė nejautra pagal kompetenciją.</li></ul>' +
       link('#/vaistas/ketaminas', 'Ketaminas') + link('#/vaistas/fentanilis', 'Fentanilis') + link('#/vaistas/morfinas', 'Morfinas') + link('#/vaistas/paracetamolis', 'Paracetamolis') + link('#/vaistas/meloksikamas', 'Meloksikamas') + link('#/vaistas/ondansetronas', 'Ondansetronas') + link('#/vaistas/naloksonas', 'Naloksonas') + link('#/igudis/43', 'Įgūdis #43: skausmo vertinimas ir malšinimas'),
@@ -597,7 +597,7 @@ window.ETC.wbb = {
    "pav": "Stebėjimas",
    "sub": "Gyvybės požymiai ir reakcijos požymiai",
    "items": [
-    "Gyvybės požymiai (sąmonė, pulsas, AKS, KD, SpO2, temp.): prieš pradedant",
+    "Gyvybės požymiai (sąmonė, pulsas, AKS, KD, SpO₂, temp.): prieš pradedant",
     "Kartoti ~15 min po pradžios ir pabaigoje; dažniau – pagal būklę ir kuopos protokolą",
     "Po kiekvieno vieneto – pervertinti; pasiekus AKS tikslą (#40) – stabdyti",
     "Stebėkite reakcijos požymius (žr. Reakcija)",
