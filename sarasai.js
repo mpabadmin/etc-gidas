@@ -11,7 +11,7 @@ const E = window.ETC;
 const KOMP = 'Pagal kompetenciją', MED = 'Medicinos personalui', GYD = 'Gydytojui', INT = 'Intubuojantiems gydytojams';
 const link = (href, t, s) => `<a class="row" href="${href}"><div>${t}${s ? '<small>' + s + '</small>' : ''}</div><span class="ar">›</span></a>`;
 
-E.versija = '2026-10-17 v31 (nudegimai ir nušalimai: skysčių ir lašų skaičiuoklė nuo traumos laiko, diurezė su titravimu, nušalimų pagalba ir įrašas į MIST; svoris „Kitas…“)';
+E.versija = '2026-10-17 v32 (nudegimai: skysčiai pagal Parkland – 4 ml × kg × % KPP, patvirtino gydytojas; pavadinimai „10s triažas“ ir „Mascal“; svoris „Kitas…“)';
 // Pranešimų priėmimo adresas: Google Apps Script žiniatinklio programos /exec URL (žr. tools/atsiliepimai.gs)
 E.atsiliepimai = { url: 'https://script.google.com/macros/s/AKfycbyUpzDmAClJ40FMltkHi21Ozc4PpItRr3u6yy4rU0DKNGe7JkRBnOr0y42wLwpJcBau/exec' };
 
