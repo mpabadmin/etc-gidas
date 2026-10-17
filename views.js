@@ -319,7 +319,7 @@ const V = {
     const inst = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
     let h = '<h1>Nustatymai</h1>' + GL.settingRow();
     h += `<div class="ck${hide() ? ' on' : ''}" data-act="hide"><span class="bx">✓</span><div style="flex:1">Slėpti tik gydytojui skirtus veiksmus ir vaistus<div class="muted">Lieka tai, ką atlieka komandos nariai.</div></div></div>`;
-    h += '<h2>Pacientas</h2>' + row('#/pacientas', 'Paciento failas', 'Pacientų sąrašas, įvykių eiga, perdavimas QR') + b('new-pt', 'Naujas pacientas', 'Ankstesnis lieka sąraše; laikai, žymėjimai ir įrankiai – naujam') + REM.settings() + OP.settings();
+    h += '<h2>Pacientas</h2>' + (typeof MC !== 'undefined' && MC.profileView ? MC.profileView() : '') + row('#/pacientas', 'Paciento failas', 'Pacientų sąrašas, įvykių eiga, perdavimas QR') + b('new-pt', 'Naujas pacientas', 'Ankstesnis lieka sąraše; laikai, žymėjimai ir įrankiai – naujam') + REM.settings() + OP.settings();
     h += '<h2>Mokymasis</h2>' + row('#/korteles', 'Dozių kortelės', FC.status()) + row('#/egzaminas', 'Egzaminuotojo režimas', EX.status()) + b('reset-ivert', 'Ištrinti įsivertinimus', 'Visi 1–4 balai bus pašalinti');
     h += '<h2>Atsiliepimai</h2>' + b('fb', 'Pranešti apie klaidą ar pasiūlyti', 'Komentaras ir ekrano vaizdas – keliauja gido rengėjams');
     const nOut = FB.pending();
