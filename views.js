@@ -27,7 +27,7 @@ const listRow = id => {
 };
 function doseShort(v, w) {
   const d = (v.dozes || [])[0] || ((v.stulpeliai || [])[0] || { dozes: [] }).dozes[0]; if (!d) return v.klase || '';
-  return d.k + ': ' + (d.c ? calc(d.c, w) + ' (' + w + ' kg)' : d.d);
+  return d.k + ': ' + (d.c ? calc(d.c, w) + ' (' + w + ' kg)' + (d.c.alt ? ' · ' + d.c.alt : '') : d.d);
 }
 function tocHtml(html) {
   const hs = []; let i = 0;
@@ -147,7 +147,7 @@ const V = {
     });
     const rest = Object.keys(S).filter(x => !used.has(x));
     if (rest.length) h += '<h2>Visai komandai</h2>' + rest.map(listRow).join('');
-    return h + '<p class="muted">Žymėjimai išlieka, kol paspausite „Naujas pacientas“.</p>';
+    return h + '<p class="muted">Žymėjimai priklauso dabartiniam sužeistajam; išvalyti – mygtukas „Išvalyti žymėjimus“ sąrašo apačioje.</p>';
   },
 
   role(id, f) {
@@ -319,7 +319,7 @@ const V = {
     const inst = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
     let h = '<h1>Nustatymai</h1>' + GL.settingRow();
     h += `<div class="ck${hide() ? ' on' : ''}" data-act="hide"><span class="bx">✓</span><div style="flex:1">Slėpti tik gydytojui skirtus veiksmus ir vaistus<div class="muted">Lieka tai, ką atlieka komandos nariai.</div></div></div>`;
-    h += '<h2>Pacientas</h2>' + (typeof MC !== 'undefined' && MC.profileView ? MC.profileView() : '') + row('#/pacientas', 'Paciento failas', 'Pacientų sąrašas, įvykių eiga, perdavimas QR') + b('new-pt', 'Naujas pacientas', 'Ankstesnis lieka sąraše; laikai, žymėjimai ir įrankiai – naujam') + REM.settings() + OP.settings();
+    h += '<h2>Pacientas</h2>' + (typeof MC !== 'undefined' && MC.profileView ? MC.profileView() : '') + row('#/pacientas', 'Paciento failas', 'Pacientų sąrašas, įvykių eiga, perdavimas QR') + b('new-pt', '+ Kitas sužeistasis', 'Ankstesni lieka sąraše; naujam – švarūs laikai, žymėjimai ir įrankiai') + REM.settings() + OP.settings();
     h += '<h2>Mokymasis</h2>' + row('#/korteles', 'Dozių kortelės', FC.status()) + row('#/egzaminas', 'Egzaminuotojo režimas', EX.status()) + b('reset-ivert', 'Ištrinti įsivertinimus', 'Visi 1–4 balai bus pašalinti');
     h += '<h2>Atsiliepimai</h2>' + b('fb', 'Pranešti apie klaidą ar pasiūlyti', 'Komentaras ir ekrano vaizdas – keliauja gido rengėjams');
     const nOut = FB.pending();

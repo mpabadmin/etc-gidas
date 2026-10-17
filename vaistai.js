@@ -111,7 +111,8 @@ window.ETC.vaistai = [
             "c": {
               "min": 0.2,
               "max": 0.3,
-              "conc": 5
+              "conc": 5,
+              "alt": "arba 25 mg"
             },
             "p": "Lėtai per 1 min. Skiedimas: 1 ml (50 mg) iki 10 ml = 5 mg/ml."
           },
@@ -567,7 +568,7 @@ window.ETC.vaistai = [
       }
     ],
     "ispejimai": [
-      "Po 3 val. nuo sužalojimo neskirti. Pažymėkite traumos laiką pradžios ekrane – „TXA iki“ parodys terminą.",
+      "Po 3 val. nuo sužalojimo neskirti. Pažymėkite traumos laiką paciento faile – „TXA iki“ parodys terminą.",
       "Per greitai leidžiant – hipotenzija (PCS).",
       "Tik IV / IO; nemaišyti su krauju ir penicilino tirpalais (PCS)."
     ],
