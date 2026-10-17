@@ -1,6 +1,6 @@
 'use strict';
 // ETC kišeninis gidas – įrankiai: 9 eilučių MEDEVAC prašymas (NL, perkelta iš March gido), vizuali MIST kortelė su keliais sužeistaisiais (MC),
-// GKS skaičiuoklė (GK), 10S triažas – Ten Second Triage (TS). NL, MC ir GK kodas toks pat kaip March gide – skiriasi tik TCFG.
+// GKS skaičiuoklė (GK), 10s triažas – Ten Second Triage (TS). NL, MC ir GK kodas toks pat kaip March gide – skiriasi tik TCFG.
 
 // ───────── Programėlės nustatymai (vienintelis NL / MC / GK kodo skirtumas tarp ETC ir March gido) ─────────
 const TCFG = {
@@ -1705,7 +1705,7 @@ const TS = (() => {
   function flow(s) {
     const cur = s.res ? '' : s.st, fr = (id, q, sub, out) => `<div class="fr${cur === id || (id === 'q3' && cur === 'q3a') ? ' cur' : ''}"><div class="fq">${q}${sub ? '<small>' + sub + '</small>' : ''}</div><div class="fy">TAIP →</div>${out}</div>`;
     const no = '<div class="fn">NE ↓</div>';
-    return '<section class="tfc" aria-label="10S triažo schema"><div class="nlh"><b>Schema</b></div>' +
+    return '<section class="tfc" aria-label="10s triažo schema"><div class="nlh"><b>Schema</b></div>' +
       fr('q1', '1. Vaikšto?', '', '<div class="fo tp3">P3<small>gali palaukti</small></div>') + no +
       fr('q2', '2. Masyvus kraujavimas?', '', '<div class="fo tp1">P1<small>spaudimas, turniketas, tamponavimas</small></div>') + no +
       fr('q3', '3. Kalba?', 'dejuoja, murma – NE', '<div class="fo fsub">Penetruojantis sužalojimas (kaklas–sėdmenys)?<span><b class="tp1"><small>TAIP</small>P1</b><b class="tp2"><small>NE</small>P2</b></span></div>') + no +
@@ -1715,11 +1715,11 @@ const TS = (() => {
   }
   function view() {
     const s = get(), learn = mode === 'learn';
-    let h = '<h1>10S triažas</h1><p class="muted mt0">Ten Second Triage – rūšiavimas per 10 sekundžių</p>';
+    let h = '<h1>10s triažas</h1><p class="muted mt0">Ten Second Triage – rūšiavimas per 10 sekundžių</p>';
     shownAt = Date.now();
     h += card(s) + tally(s) + flow(s);
-    if (learn) h += '<div class="card">10S triažas (Ten Second Triage, TST) – Jungtinės Karalystės civilinė masinių nelaimių rūšiavimo priemonė (NHS England, 2023), pakeitusi ankstesnį „triage sieve“. Ją taiko visų tarnybų apmokyti pirmieji reaguotojai: keli paprasti klausimai, apie 10 sekundžių vienam sužeistajam, be fiziologinių matavimų. Mūsų darbe galioja vietinės SOP ir TCCC rūšiavimo kategorijos – TST yra pagalbinė atmintinė.</div>';
-    h += '<div class="card"><b>Svarbu</b><ul class="tnotes"><li>Vaikas iki 2 metų – visada P1.</li><li>Akivaizdžiai kritinės būklės vaikštantis – pasodinkite ir laikykite nevaikštančiu.</li><li>10S triažas nenaudoja fiziologinių matavimų (pulso, KD, kapiliarų prisipildymo).</li><li>Skirta vienam vertintojui.</li><li>TST – ne vienkartinis vertinimas: kartokite, būklė keičiasi.</li></ul></div>';
+    if (learn) h += '<div class="card">10s triažas (Ten Second Triage, TST) – Jungtinės Karalystės civilinė masinių nelaimių rūšiavimo priemonė (NHS England, 2023), pakeitusi ankstesnį „triage sieve“. Ją taiko visų tarnybų apmokyti pirmieji reaguotojai: keli paprasti klausimai, apie 10 sekundžių vienam sužeistajam, be fiziologinių matavimų. Mūsų darbe galioja vietinės SOP ir TCCC rūšiavimo kategorijos – TST yra pagalbinė atmintinė.</div>';
+    h += '<div class="card"><b>Svarbu</b><ul class="tnotes"><li>Vaikas iki 2 metų – visada P1.</li><li>Akivaizdžiai kritinės būklės vaikštantis – pasodinkite ir laikykite nevaikštančiu.</li><li>10s triažas nenaudoja fiziologinių matavimų (pulso, KD, kapiliarų prisipildymo).</li><li>Skirta vienam vertintojui.</li><li>TST – ne vienkartinis vertinimas: kartokite, būklė keičiasi.</li></ul></div>';
     if (learn) h += '<p class="muted">Šaltiniai: NHS England, Ten Second Triage tool (2023 m. balandis); Vassallo J. et al. Ten second triage: a novel and pragmatic approach to major incident triage. Trauma 2024;26(1); NARU, TST – Non Clinical Responders Supplementary Information, v1.0 (2023).</p>' +
       '<a class="row" href="https://www.england.nhs.uk/long-read/ten-second-triage-tool/" target="_blank" rel="noopener"><div>Ten Second Triage tool<small>NHS England</small></div><span class="ar">↗</span></a>' +
       '<a class="row" href="https://doi.org/10.1177/14604086231156219" target="_blank" rel="noopener"><div>Vassallo et al., Trauma 2024<small>doi 10.1177/14604086231156219</small></div><span class="ar">↗</span></a>';
@@ -2268,7 +2268,7 @@ const SC = (() => {
   const best = () => { const b = LS.get(KEY, {}); return b && typeof b === 'object' && !Array.isArray(b) ? b : {}; };
   const byId = id => all().find(s => s.id === id);
   const LET = ['A', 'B', 'C', 'D'];
-  const TOOLS = { '#/tst': '10S triažas', '#/9line': '9-Line MEDEVAC', '#/mist': 'MIST kortelė', '#/sitrep': 'SITREP', '#/gks': 'GKS skaičiuoklė', '#/zymejimas': 'Vaistų žymėjimas', '#/nudegimai': 'Nudegimai ir nušalimai' };
+  const TOOLS = { '#/tst': '10s triažas', '#/9line': '9-Line MEDEVAC', '#/mist': 'MIST kortelė', '#/sitrep': 'SITREP', '#/gks': 'GKS skaičiuoklė', '#/zymejimas': 'Vaistų žymėjimas', '#/nudegimai': 'Nudegimai ir nušalimai' };
   function refLabel(r) {
     let m;
     if ((m = r.match(/^#\/igudis\/(\d+)$/))) { const s = (E.igudziai || []).find(x => String(x.id) === m[1]); return s ? ['Įgūdis #' + m[1], s.pav] : null; }
@@ -2352,7 +2352,7 @@ const SC = (() => {
   return { view, act, status };
 })();
 
-// ───────── Mascal triažas (MS) – sužeistųjų lenta masinio sužalojimo atveju, NATO kategorijos T1–T4 (tik ETC gide) ─────────
+// ───────── Mascal (MS) – sužeistųjų lenta masinio sužalojimo atveju, NATO kategorijos T1–T4 (tik ETC gide) ─────────
 const MS = (() => {
   const KEY = TCFG.pre + 'mascal';
   // [kodas, pavadinimas, angliškai, aprašas]
@@ -2387,12 +2387,12 @@ const MS = (() => {
   let open = null; // atskleista eilutė (nr.)
   function view(q) {
     const s = get(), learn = mode === 'learn', f = q && q.k && ORD[q.k] != null ? q.k : '';
-    let h = '<h1>Mascal triažas</h1>';
-    if (learn) h += '<p class="muted">Masinio sužalojimo atvejis: kiekvienam sužeistajam – kategorija, numeris ir būsena. Pirminiam rūšiavimui lauke – 10S triažas; čia – Role 1 lenta, kurią galima užpildyti iš 10S triažo. Kategorijos – NATO T1–T4; kuopos SOP viršesnis.</p>';
+    let h = '<h1>Mascal</h1>';
+    if (learn) h += '<p class="muted">Masinio sužalojimo atvejis: kiekvienam sužeistajam – kategorija, numeris ir būsena. Pirminiam rūšiavimui lauke – 10s triažas; čia – Role 1 lenta, kurią galima užpildyti iš 10s triažo. Kategorijos – NATO T1–T4; kuopos SOP viršesnis.</p>';
     h += '<div class="msum">' + CAT.map(([k, nm]) => `<a class="ms${k}${f === k ? ' on' : ''}" href="#/mascal${f === k ? '' : '?k=' + k}" aria-label="${nm}: ${cnt(s, k)}"><b>${cnt(s, k)}</b><small>${k === 'X' ? 'Mirę' : k}</small></a>`).join('') + '</div>';
     h += '<div class="lbl">Pridėti sužeistąjį</div><div class="madd">' + CAT.map(([k, nm, en]) => `<button class="ms${k}" data-act="ms-add" data-k="${k}"><b>${k === 'X' ? '✝' : k}</b><small>${nm}</small></button>`).join('') + '</div>';
     const tst = LS.get(TCFG.pre + 'tst', null), tn = tst && tst.n && typeof tst.n === 'object' ? tst.n : null, tTot = tn ? ['p1', 'p2', 'p3', 'nb'].reduce((a, k) => a + (parseInt(tn[k], 10) || 0), 0) : 0;
-    if (tTot) h += `<button class="btn" data-act="ms-tst" style="width:100%">Perkelti iš 10S triažo: P1 ${tn.p1 || 0} · P2 ${tn.p2 || 0} · P3 ${tn.p3 || 0} · nekvėpuoja ${tn.nb || 0}</button>`;
+    if (tTot) h += `<button class="btn" data-act="ms-tst" style="width:100%">Perkelti iš 10s triažo: P1 ${tn.p1 || 0} · P2 ${tn.p2 || 0} · P3 ${tn.p3 || 0} · nekvėpuoja ${tn.nb || 0}</button>`;
     const L = s.c.filter(x => !f || x.k === f).sort((a, b) => ORD[a.k] - ORD[b.k] || a.no - b.no);
     h += `<h2>Sužeistieji${s.c.length ? ' · ' + s.c.length : ''}${f ? ' · ' + f : ''}</h2>`;
     if (!L.length) h += '<p class="muted">' + (s.c.length ? 'Šios kategorijos nėra.' : 'Sąrašas tuščias. Pridėkite sužeistąjį kategorijos mygtuku.') + '</p>';
@@ -2411,7 +2411,7 @@ const MS = (() => {
     }).join('');
     h += '<div class="acts"><button class="btn" data-act="ms-copy"' + (s.c.length ? '' : ' disabled') + '>Kopijuoti suvestinę</button><button class="btn" data-act="ms-clr"' + (s.c.length ? '' : ' disabled') + '>Naujas įvykis</button></div>';
     h += '<details class="alt"' + (learn ? ' open' : '') + '><summary>Kategorijos</summary>' + CAT.map(([k, nm, en, d]) => `<div class="kv"><b><span class="msk ms${k}">${k === 'X' ? '✝' : k}</span> ${nm}</b><span>${esc(d)} <small class="muted">(${en})</small></span></div>`).join('') + '</details>';
-    h += row('#/tst', '10S triažas', TS.status()) + row('#/9line', '9-Line MEDEVAC', NL.status());
+    h += row('#/tst', '10s triažas', TS.status()) + row('#/9line', '9-Line MEDEVAC', NL.status());
     return h;
   }
   function act(el) {
@@ -2424,8 +2424,8 @@ const MS = (() => {
       case 'ms-del': if (!x || !confirm('Pašalinti #' + no + ' iš sąrašo?')) return; s.c = s.c.filter(z => z.no !== no); open = null; break;
       case 'ms-tst': {
         const t = (LS.get(TCFG.pre + 'tst', null) || {}).n || {}, map = [['p1', 'T1'], ['p2', 'T2'], ['p3', 'T3'], ['nb', 'X']];
-        let add = 0; map.forEach(([a, k]) => { for (let i = 0; i < Math.min(99, parseInt(t[a], 10) || 0); i++) { s.c.push({ no: s.n++, k, id: '', nt: 'iš 10S triažo', st: 'l', t: Date.now(), te: 0 }); add++; } });
-        if (!add || !confirm('Pridėti ' + add + ' sužeist. iš 10S triažo?')) return; toast('Pridėta: ' + add); break;
+        let add = 0; map.forEach(([a, k]) => { for (let i = 0; i < Math.min(99, parseInt(t[a], 10) || 0); i++) { s.c.push({ no: s.n++, k, id: '', nt: 'iš 10s triažo', st: 'l', t: Date.now(), te: 0 }); add++; } });
+        if (!add || !confirm('Pridėti ' + add + ' sužeist. iš 10s triažo?')) return; toast('Pridėta: ' + add); break;
       }
       case 'ms-pt': {
         if (!x) return;

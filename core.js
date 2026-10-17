@@ -154,7 +154,7 @@ function buildIdx() {
   add('Įrankiai', 'MIST kortelė', 'Vizuali sužeistojo kortelė: mechanizmas, sužalojimai kūno schemoje, požymiai, gydymas', 'mist handover perdavimas sužeistasis keli sužeistieji kortelė atmist kūno schema žaizda turniketas', '#/mist');
   add('Įrankiai', '9-Line MEDEVAC', '9 eilučių evakuacijos prašymas su kodais', '9 line nine line 9line medevac evakuacija koordinatės mgrs gps skubumas urgent priority routine radijas', '#/9line');
   add('Įrankiai', 'GKS skaičiuoklė', 'Glasgow komos skalė (GCS at 40), GKS-P', 'gks glasgow gcs koma sąmonė akys kalba motorika vyzdžiai', '#/gks');
-  add('Įrankiai', 'Mascal triažas', 'Sužeistųjų lenta masinio sužalojimo atveju: T1–T4, būsenos, suvestinė', 'mascal masinis sužalojimas triažas rūšiavimas t1 t2 t3 t4 immediate delayed minimal expectant sužeistųjų lenta', '#/mascal');
+  add('Įrankiai', 'Mascal', 'Sužeistųjų lenta masinio sužalojimo atveju: T1–T4, būsenos, suvestinė', 'mascal masinis sužalojimas triažas rūšiavimas t1 t2 t3 t4 immediate delayed minimal expectant sužeistųjų lenta', '#/mascal');
   add('Įrankiai', 'Nudegimai ir nušalimai', 'Devyneto taisyklė, % KPP, skysčiai, lašai, diurezė, nušalimai', 'nudegimai nudegimas kpp devyneto taisyklė plotas skysčiai lašai lašinė diurezė šlapimas parkland lund browder nušalimas nušalimai apkasų pėda šaltis frostbite', '#/nudegimai');
   add('Įrankiai', 'Kraujo transfuzija', 'Šviežias pilnas kraujas (vaikščiojantis kraujo bankas): donoras, paėmimas, perpylimas', 'kraujo transfuzija šviežias kraujas šviežias pilnas kraujas pilnas kraujas kraujo bankas wbb walking blood bank donoras perpylimas transfuzija ltowb', '#/pilnas-kraujas');
   add('Įrankiai', 'Treniruočių scenarijai', 'Klinikiniai atvejai su klausimais ir paaiškinimais', 'scenarijai scenarijus treniruotė viktorina testas klausimai', '#/scenarijai');
@@ -162,7 +162,7 @@ function buildIdx() {
   add('Įrankiai', 'Nuskaityti popierinę kortelę', 'DD 1380 nuotrauka → MIST: langeliai, žymės, iškarpos', 'skenuoti nuskaityti nuotrauka fotografuoti popierinė kortelė dd1380 tccc card ocr atpažinimas', '#/skenuoti');
   add('Įrankiai', 'Dozių kortelės', 'Kasdien 5 kortelės: vaistas ir kelias – prisiminkite dozę', 'dozių kortelės korteles flashcards kartojimas dozės atmintis testas', '#/korteles');
   add('Įrankiai', 'Egzaminuotojo režimas', 'Kontrolinio sąrašo vertinimas su laiku ir kritiniais punktais', 'egzaminas egzaminuotojas vertinimas instruktorius laikmatis kritiniai punktai', '#/egzaminas');
-  add('Įrankiai', '10S triažas', 'Ten Second Triage (TST) – rūšiavimas per 10 sekundžių', 'tst 10s 10 s 10 sekundžių ten second triage triažas rūšiavimas masinė nelaimė p1 p2 p3', '#/tst');
+  add('Įrankiai', '10s triažas', 'Ten Second Triage (TST) – rūšiavimas per 10 sekundžių', 'tst 10s 10 s 10 sekundžių ten second triage triažas rūšiavimas masinė nelaimė p1 p2 p3', '#/tst');
   add('Įrankiai', 'SITREP – padėties pranešimas', 'Padėties pranešimas vadui: 10 eilučių, DTG, MGRS, nuostoliai, logistika', 'sitrep padėties pranešimas situacijos ataskaita vadas dtg mgrs nuostoliai wia kia logistika ryšys prašymai', '#/sitrep');
   return I;
 }
