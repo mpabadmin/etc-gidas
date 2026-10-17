@@ -11,7 +11,7 @@ const E = window.ETC;
 const KOMP = 'Pagal kompetenciją', MED = 'Medicinos personalui', GYD = 'Gydytojui', INT = 'Intubuojantiems gydytojams';
 const link = (href, t, s) => `<a class="row" href="${href}"><div>${t}${s ? '<small>' + s + '</small>' : ''}</div><span class="ar">›</span></a>`;
 
-E.versija = '2026-10-17 v27 (paciento ekranas ir sužeistojo juosta, asmeniniai dažni sąrašai; v26 – MIST kortelė pagal LK „Nukentėjusiojo kortelę“)';
+E.versija = '2026-10-17 v28 (paciento ekrano ir juostos pataisos: fokusas, dažnų sąrašų skaičiavimas, langas – modalinis, svoris QR kode; v27 – paciento ekranas ir sužeistojo juosta)';
 // Pranešimų priėmimo adresas: Google Apps Script žiniatinklio programos /exec URL (žr. tools/atsiliepimai.gs)
 E.atsiliepimai = { url: 'https://script.google.com/macros/s/AKfycbyUpzDmAClJ40FMltkHi21Ozc4PpItRr3u6yy4rU0DKNGe7JkRBnOr0y42wLwpJcBau/exec' };
 

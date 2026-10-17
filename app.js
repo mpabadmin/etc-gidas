@@ -76,7 +76,7 @@ function render() {
 
 function onNav(first) {
   const { p, q } = route(), s = history.state;
-  try { LU.onRoute(p, q); } catch (e) { console.error(e); } // dažniausi sąrašai pradžioje
+  if (!(s && s.d != null)) { try { LU.onRoute(p, q); } catch (e) { console.error(e); } } // dažniausi sąrašai: tik naujas perėjimas (ne atgal / pirmyn / perkrovimas)
   HUB.close();
   depth = !p.length ? 0 : (s && s.d != null ? s.d : (first ? 0 : depth + 1));
   history.replaceState({ d: depth }, '');
@@ -209,7 +209,7 @@ app.addEventListener('input', e => {
 
 setInterval(() => { if (!tmEdit) updTimers(); VZ.tick(); KR.tick(); REM.tick(); HUB.tick(); }, 30000);
 setTimeout(() => REM.tick(), 3000);
-addEventListener('keydown', e => { if (e.key === 'Escape' && VZ.isOpen()) { VZ.close(); render(); } else if (e.key === 'Escape' && HUB.isOpen()) { HUB.close(); const y = scrollY; render(); scrollTo(0, y); } });
+addEventListener('keydown', e => { if (e.key === 'Escape' && VZ.isOpen()) { VZ.close(); render(); } else if (e.key === 'Escape' && HUB.isOpen()) HUB.esc(); });
 document.addEventListener('visibilitychange', () => { if (!document.hidden && !tmEdit) updTimers(); });
 addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEv = e; if (['nustatymai', 'idiegimas', undefined].indexOf(route().p[0]) >= 0) render(); });
 if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));

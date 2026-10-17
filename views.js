@@ -8,7 +8,11 @@ const skillById = id => (E.igudziai || []).find(x => String(x.id) === String(id)
 const pirmIdx = r => Math.max(0, (r.lists || []).findIndex(l => /-pir$/.test(l)));
 const ratings = () => LS.get('etc-ivert', {});
 const progBar = (n, tot) => `<div class="prog"><i style="width:${tot ? Math.round(n / tot * 100) : 0}%"></i></div>`;
-const wChips = w => '<div class="chips">' + W_LIST.map(x => `<button class="${x === w ? 'on' : ''}" data-act="w" data-w="${x}">${x}</button>`).join('') + '</div>';
+// Paciento svoris: wNow() – nurodytas (0 – nenurodytas), wCalc() – skaičiavimui (nenurodžius – 80 kg)
+const wNow = () => { const w = +LS.get('etc-svoris', 0); return w > 0 ? w : 0; };
+const wCalc = () => wNow() || 80;
+const wChips = w => '<div class="chips">' + W_LIST.map(x => `<button class="${x === w ? 'on' : ''}" data-act="w" data-w="${x}" aria-pressed="${x === w}">${x}</button>`).join('') + '</div>' +
+  (w ? '' : '<p class="muted mt0">Svoris nenurodytas – dozės skaičiuojamos 80 kg (numatytas).</p>');
 const rateBadge = (R, id) => R[id] ? `<span class="tag ${R[id] >= 3 ? 'grn' : 'amb'}">${R[id]} / 4</span>` : '';
 const listDone = id => {
   const L = (E.sarasai || {})[id]; if (!L) return [0, 0];
@@ -176,7 +180,7 @@ const V = {
   },
 
   drugs() {
-    const D = (E.vaistai || []).filter(v => ok(v.kam)), w = LS.get('etc-svoris', 80), field = mode === 'field';
+    const D = (E.vaistai || []).filter(v => ok(v.kam)), w = wCalc(), field = mode === 'field';
     const G = E.vaistuGrupes || [{ id: undefined, pav: 'Vaistai' }];
     let h = '<h1>Vaistai</h1><p class="muted">Viena dozavimo schema – pagal TCCC 2026 gaires, gamintojo PCS ir ERC.</p>';
     if (!field) h += row('#/korteles', 'Dozių kortelės', FC.status());
@@ -192,14 +196,14 @@ const V = {
   drug(id) {
     const v = drugById(id);
     if (!v) return notFound();
-    const w = LS.get('etc-svoris', 80), learn = mode === 'learn';
+    const w = wCalc(), learn = mode === 'learn';
     const allD = (v.dozes || []).concat(...(v.stulpeliai || []).map(c => c.dozes));
     const doseHtml = d => `<div class="dose"><div class="lb">${esc(d.k)}${d.c ? ' · ' + esc(d.d) : ''}</div><div class="big">${esc(d.c ? calc(d.c, w) : d.d)}</div>${d.p ? '<div class="lb">' + br(d.p) + '</div>' : ''}</div>`;
     let h = `<h1>${esc(v.name)}</h1><p class="muted">${esc(v.klase || '')}</p>`;
     h += (v.tccc26 ? '<span class="tag grn">TCCC 2026</span>' : '') + (v.tipas === 'pagr' ? '<span class="tag">Kuopos kortelėje</span>' : '') + tag(v.kam);
     h += v.patvirtinta ? `<span class="tag grn">Patvirtino: ${esc(v.patvirtinta)}</span>` : '<span class="tag amb">Laukia mediko patvirtinimo</span>';
     if (v.ind) h += `<p class="ind">${esc(v.ind)}</p>`;
-    if (allD.some(d => d.c)) h += '<h2>Paciento svoris, kg</h2>' + wChips(w);
+    if (allD.some(d => d.c)) h += '<h2>Paciento svoris, kg</h2>' + wChips(wNow());
     if ((v.dozes || []).length) h += '<h2>Dozė</h2>' + v.dozes.map(doseHtml).join('');
     if ((v.stulpeliai || []).length) h += '<div class="cols">' + v.stulpeliai.map(c => `<div class="col"><div class="colh"><b>${esc(c.pav)}</b>${c.sub ? '<small>' + esc(c.sub) + '</small>' : ''}</div>${c.dozes.map(doseHtml).join('')}</div>`).join('') + '</div>';
     const iw = v.ispejimai || [];

@@ -104,7 +104,7 @@ function updCount(box) {
 
 // Laikai (paciento ekrane): trauma, turniketas – bakstelėjus nustatomi; TXA – riba 3 val. arba „Suleista“ (iš C lentelės ar vaistų žymėjimo)
 function timersHtml() {
-  const T = LS.get('etc-laikai', {}), now = Date.now(), min = ts => Math.max(0, Math.floor((now - ts) / 60000));
+  const T = LS.get('etc-laikai', {}) || {}, now = Date.now(), min = ts => Math.max(0, Math.floor((now - ts) / 60000));
   let tqC = 0, txa = 0;
   try { const st = MC.state(), c = st.pts[st.cur], z = LS.get('etc-vz', null), te = z && Array.isArray(z.e) ? z.e.filter(e => e && e.v === 'txa').pop() : null;
     tqC = T.turn ? 0 : PT.hmTs(c.tqT); txa = te ? +te.t : ((c.tx || []).indexOf('txa') >= 0 || c.txaT ? PT.hmTs(c.txaT) || -1 : 0); } catch (e) {}
@@ -121,7 +121,7 @@ function timersHtml() {
 }
 function updTimers() { const el = document.getElementById('tm'); if (el) el.innerHTML = timersHtml(); }
 function setTm(ts) {
-  const T = LS.get('etc-laikai', {});
+  const T = LS.get('etc-laikai', {}) || {};
   if (ts) T[tmEdit] = ts; else delete T[tmEdit];
   LS.set('etc-laikai', T); tmEdit = null; updTimers();
 }
