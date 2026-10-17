@@ -4,6 +4,29 @@
 // Juosta virš apatinės navigacijos rodo dabartinį sužeistąjį visuose ekranuose; bakstelėjus – apatinis langas su santrauka ir greitais veiksmais.
 // Duomenys – tie patys MC / VZ / PT / REM (tools.js); svoris – paciento raktas (TCFG.pt 'svoris').
 // Programėlės skirtumai – TCFG.hub (tools.js pradžioje): sąrašų maršrutai ir numatytieji, vaistai, greiti veiksmai, perdavimo nuorodos, laikmačiai.
+//
+// ── API (stabili; March prievadas naudoja tą pačią) ──
+// Reikia globalių: E, LS, mode, app, render, route (app.js), esc, hm, row, notFound, listRow, listRoute, drugById, doseShort, W_LIST, timersHtml (core.js / views.js),
+//   TCFG, MC, PT, REM, toast, plural, tcfgRows (tools.js); nebūtini: VZ, OP.
+// TCFG.hub = {                                  visi laukai nebūtini (numatytieji – HCFG žemiau)
+//   listDefaults: ['id', …]                     dažnų sąrašų užpildas, kai mažai naudojimo (top 3)
+//   listOf(p, q) → 'id' | ''                    kurį sąrašą atidaro maršrutas (p – kelio dalys, q – parametrai)
+//   listSkip(id) → bool                         sąrašai, kurie jau matomi pradžioje (nekartojami)
+//   drugs: ['vaisto id', …], drugOk(v), drugTag(v) → html   skiltis „Vaistai“: dažniausi vaistai su dozėmis pagal paciento svorį
+//   noBar: ['maršrutas', …]                     kur juosta nerodoma
+//   quick: [[k, užrašas, pagrindinis?], …]      greiti veiksmai paciento apžvalgoje; sheetQuick – apatiniame lange
+//                                               k: vit | vz | tq | mk | apz | kortele | vaistai | eiga | perduoti | (savas raktas iš go)
+//   go: { k: '#/maršrutas' }                    papildomi / pakeisti greitų veiksmų adresai
+//   handoff() → [[href, pavadinimas, paantraštė], …]   skiltis „Perduoti“: papildomos nuorodos
+//   timers() → html                             laikų blokas paciento ekrane (#tm; numatyta – timersHtml())
+//   nav: 'CSS selektorius'                      apatinės navigacijos „Pacientas“ nuoroda (ženkliukui)
+//   tabs: [[k, užrašas], …]                     paciento ekrano skiltys (numatyta: apz, kortele, vaistai, eiga, perduoti)
+//   sections: { k(x, H) → html }                pakeisti / pridėti skilčių turinį; overview(x, H) → html – pakeičia „Apžvalgos“ turinį
+// }  x – dabartinis sužeistasis { p, c (MIST kortelė), la (laikai), vz, tqT, txa, txaT, has, n, tot, id };
+//    H – pagalbininkai { quick(sheet), sTable(c), iBox(c), tBox(x), head(x, big), rem(x) }.
+// HUB: view(q), bar(maršrutas) → html, act(el) („hb-*“), after(), nav(), tick(), isOpen(), close(), tab().
+// LU: onRoute(p, q), hit(id), top() → ['id', …] (≤ 3), used().
+// Saugykla: TCFG.pre + 'sarasu-naud' (naudojimas), 'svoris' (paciento raktas TCFG.pt), sessionStorage TCFG.pre + 'hub-tab'.
 
 const HCFG = () => Object.assign({
   listDefaults: [], listOf: p => p[0] === 's' ? p[1] : '', listSkip: () => false, // kuris sąrašas atidarytas; kurie jau rodomi pradžioje
@@ -11,7 +34,8 @@ const HCFG = () => Object.assign({
   noBar: ['pacientas', 'mist', 'skenuoti', 'qr-priimti'], // kur juosta nerodoma
   quick: [['vit', '+ Požymiai', 1], ['vz', '+ Vaistas', 1], ['tq', '+ Turniketas', 1], ['mk', '+ Žymė schemoje']],
   sheetQuick: [['vit', '+ Požymiai', 1], ['vz', '+ Vaistas', 1], ['tq', '+ Turniketas', 1], ['kortele', 'Kortelė'], ['eiga', 'Eiga'], ['perduoti', 'Perduoti']],
-  go: {}, handoff: () => [], timers: () => typeof timersHtml === 'function' ? timersHtml() : '', nav: '#nav a[data-s="pacientas"]'
+  go: {}, handoff: () => [], timers: () => typeof timersHtml === 'function' ? timersHtml() : '', nav: '#nav a[data-s="pacientas"]',
+  tabs: null, sections: {}, overview: null
 }, (typeof TCFG !== 'undefined' && TCFG.hub) || {});
 
 const LU = (() => {
@@ -38,7 +62,9 @@ const LU = (() => {
 })();
 
 const HUB = (() => {
-  const TABS = [['apz', 'Apžvalga'], ['kortele', 'Kortelė'], ['vaistai', 'Vaistai'], ['eiga', 'Eiga'], ['perduoti', 'Perduoti']];
+  const TABS0 = [['apz', 'Apžvalga'], ['kortele', 'Kortelė'], ['vaistai', 'Vaistai'], ['eiga', 'Eiga'], ['perduoti', 'Perduoti']];
+  const TABS = { some: f => tabsNow().some(f), map: f => tabsNow().map(f) };
+  const tabsNow = () => HCFG().tabs || TABS0;
   const TK = TCFG.pre + 'hub-tab', WK = TCFG.pre + 'svoris';
   const GO = () => Object.assign({ vit: '#/pacientas?t=kortele&f=s', vz: typeof VZ !== 'undefined' ? '#/pacientas?t=vaistai' : '#/vaistai', tq: '#/pacientas?t=kortele&f=tq', mk: '#/pacientas?t=kortele&f=i',
     apz: '#/pacientas?t=apz', kortele: '#/pacientas?t=kortele', vaistai: '#/pacientas?t=vaistai', eiga: '#/pacientas?t=eiga', perduoti: '#/pacientas?t=perduoti' }, HCFG().go);
@@ -166,7 +192,8 @@ const HUB = (() => {
       let h = '';
       try { h += REM.banners(x.p.pid); } catch (e) {}
       if (!x.has) h += '<p class="muted">Kortelė dar tuščia: pažymėkite laikus, požymius, žymes schemoje ar suleistus vaistus.</p>';
-      return h + quick(false) + sTable(x.c) + iBox(x.c) + tBox(x);
+      const ov = HCFG().overview;
+      return h + (typeof ov === 'function' ? ov(x, H) : quick(false) + sTable(x.c) + iBox(x.c) + tBox(x));
     },
     kortele() { return MC.view({ embed: true }).replace(/<a class="row" href="#\/pacientas">[\s\S]*?<\/a>/, ''); },
     vaistai() {
@@ -188,6 +215,7 @@ const HUB = (() => {
         (typeof OP !== 'undefined' ? '<button class="btn dng" data-act="op-wipe" style="width:100%;margin-top:14px">Ištrinti visų sužeistųjų duomenis</button>' : '');
     }
   };
+  const H = { quick, sTable, iBox, tBox, head, rem: x => { try { return REM.banners(x.p.pid); } catch (e) { return ''; } } };
   function view(q) {
     q = q || {};
     if (q.t && TABS.some(t => t[0] === q.t)) ss.set(q.t);
@@ -199,7 +227,8 @@ const HUB = (() => {
     if (mode === 'learn') h += '<p class="muted">Viskas apie pasirinktą sužeistąjį vienoje vietoje. Juosta ekrano apačioje rodo jį ir kituose puslapiuose.</p>';
     h += '<div id="tm">' + HCFG().timers() + '</div>';
     h += '<div class="seg2 hbt" role="tablist" aria-label="Paciento skiltys">' + TABS.map(([k, l]) => `<button role="tab" aria-selected="${k === t}" class="${k === t ? 'on' : ''}" data-act="hb-tab" data-k="${k}">${l}</button>`).join('') + '</div>';
-    return h + '<div class="hbpane" role="tabpanel">' + SEC[t](x) + '</div>';
+    const own = HCFG().sections || {}, fn = typeof own[t] === 'function' ? own[t] : SEC[t];
+    return h + '<div class="hbpane" role="tabpanel">' + (fn ? fn(x, H) : '') + '</div>';
   }
   function after() {
     if (sheet) { const s = app.querySelector('.hbs'); if (s && !s.contains(document.activeElement)) s.focus({ preventScroll: true }); }
