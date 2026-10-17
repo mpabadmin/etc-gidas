@@ -155,7 +155,7 @@ function buildIdx() {
   add('Įrankiai', '9-Line MEDEVAC', '9 eilučių evakuacijos prašymas su kodais', '9 line nine line 9line medevac evakuacija koordinatės mgrs gps skubumas urgent priority routine radijas', '#/9line');
   add('Įrankiai', 'GKS skaičiuoklė', 'Glasgow komos skalė (GCS at 40), GKS-P', 'gks glasgow gcs koma sąmonė akys kalba motorika vyzdžiai', '#/gks');
   add('Įrankiai', 'Mascal triažas', 'Sužeistųjų lenta masinio sužalojimo atveju: T1–T4, būsenos, suvestinė', 'mascal masinis sužalojimas triažas rūšiavimas t1 t2 t3 t4 immediate delayed minimal expectant sužeistųjų lenta', '#/mascal');
-  add('Įrankiai', 'Nudegimų plotas', 'Devyneto taisyklė, % KPP, skysčiai', 'nudegimai nudegimas kpp devyneto taisyklė plotas skysčiai parkland lund browder', '#/nudegimai');
+  add('Įrankiai', 'Nudegimai ir nušalimai', 'Devyneto taisyklė, % KPP, skysčiai, lašai, diurezė, nušalimai', 'nudegimai nudegimas kpp devyneto taisyklė plotas skysčiai lašai lašinė diurezė šlapimas parkland lund browder nušalimas nušalimai apkasų pėda šaltis frostbite', '#/nudegimai');
   add('Įrankiai', 'Kraujo transfuzija', 'Šviežias pilnas kraujas (vaikščiojantis kraujo bankas): donoras, paėmimas, perpylimas', 'kraujo transfuzija šviežias kraujas šviežias pilnas kraujas pilnas kraujas kraujo bankas wbb walking blood bank donoras perpylimas transfuzija ltowb', '#/pilnas-kraujas');
   add('Įrankiai', 'Treniruočių scenarijai', 'Klinikiniai atvejai su klausimais ir paaiškinimais', 'scenarijai scenarijus treniruotė viktorina testas klausimai', '#/scenarijai');
   add('Įrankiai', 'Vaistų žymėjimas', 'Suleisti vaistai: dozė, kelias, laikas; perkėlimas į MIST', 'vaistų žymėjimas suleista suleisti vaistai dozė laikas įrašas žurnalas ketaminas fentanilis txa', '#/zymejimas');
