@@ -56,19 +56,18 @@ const V = {
       `<a class="role ${r.cls || ''}" href="#/v/${r.id}?f=${field ? pirmIdx(r) : 0}"><b>${esc(r.id)}</b><small>${esc(r.sub || '')}</small>${field ? '<small class="rs">Pirminė apžiūra</small>' : ''}</a>`).join('') + '</div>';
   },
 
-  // Greitai: įrankių plytelės (kaip March gide) – vaistų žymėjimas (per visą plotį), MIST, 9-Line, GKS, TST, kraujo suderinamumas, vaistų skiedimas
+  // Įrankiai: plytelės – TST + Mascal (didesnės) · 9-Line + GKS · Nudegimai + Kraujas · Šviežias kraujas + Skiedimas.
+  // MIST kortelė ir vaistų žymėjimas – paciento ekrane (apatinė navigacija „Pacientas“).
   toolTiles() {
     const st = m => { try { return m().status(); } catch (e) { return ''; } }; // tools.js gali būti neįkeltas
-    const P = E.puslapiai || {}, mc = st(() => MC), nl = st(() => NL), gk = st(() => GK).replace(/^Paskutinė: /, ''), ts = st(() => TS), vz = st(() => VZ);
+    const P = E.puslapiai || {}, nl = st(() => NL), gk = st(() => GK).replace(/^Paskutinė: /, ''), ts = st(() => TS);
     const t = (href, ti, b, sm, lb) => `<a class="tool" href="${href}" aria-label="${esc(lb)}: ${esc(sm)}"><span class="ti">${ti}</span><b>${b}</b><small>${esc(sm)}</small></a>`;
     const big = s => s.replace('class="tool"', 'class="tool big"');
-    // eilės: TST + Mascal (didesnės) · MIST + 9-Line · GKS + Nudegimai · Kraujas + Šviežias kraujas · Vaistų žymėjimas + Skiedimas
     return '<div class="tools">' +
       big(t('#/tst', 'T', 'TST', ts, 'TST rūšiavimas')) + big(t('#/mascal', 'MC', 'Mascal triažas', st(() => MS), 'Mascal triažas')) +
-      t('#/mist', 'M', 'MIST', mc, 'MIST kortelė') + t('#/9line', '9', '9-Line', nl, '9-Line MEDEVAC prašymas') +
-      t('#/gks', 'G', 'GKS', gk, 'GKS skaičiuoklė') + t('#/nudegimai', 'N', 'Nudegimai', st(() => NB), 'Nudegimų ploto skaičiuoklė') +
-      (P.kraujas ? t('#/p/kraujas', 'K', 'Kraujas', 'ABO ir RhD lentelė', 'Kraujo suderinamumas') : '') + t('#/pilnas-kraujas', 'Š', 'Šviežias kraujas', st(() => KR), 'Šviežias pilnas kraujas') +
-      t('#/zymejimas', 'V', 'Vaistų žymėjimas', vz, 'Vaistų žymėjimas') + (P.skiedimas ? t('#/p/skiedimas', 'S', 'Skiedimas', 'Vaistų skiedimo lentelės', 'Vaistų skiedimas') : '') + '</div>';
+      t('#/9line', '9', '9-Line', nl, '9-Line MEDEVAC prašymas') + t('#/gks', 'G', 'GKS', gk, 'GKS skaičiuoklė') +
+      t('#/nudegimai', 'N', 'Nudegimai', st(() => NB), 'Nudegimų ploto skaičiuoklė') + (P.kraujas ? t('#/p/kraujas', 'K', 'Kraujas', 'ABO ir RhD lentelė', 'Kraujo suderinamumas') : '') +
+      t('#/pilnas-kraujas', 'Š', 'Šviežias kraujas', st(() => KR), 'Šviežias pilnas kraujas') + (P.skiedimas ? t('#/p/skiedimas', 'S', 'Skiedimas', 'Vaistų skiedimo lentelės', 'Vaistų skiedimas') : '') + '</div>';
   },
 
   escRows() {
@@ -78,21 +77,14 @@ const V = {
     }).join('');
   },
 
+  // Taikymo pradžia: bendri dalykai (Escape, vaidmenys, įrankiai, dažniausi sąrašai). Pacientas – apatinėje navigacijoje ir juostoje virš jos.
   homeField() {
-    const w = LS.get('etc-svoris', 80);
-    const quick = ['ketaminas', 'fentanilis', 'txa', 'kalcis', 'paracetamolis', 'ceftriaksonas', 'ondansetronas'].map(drugById).filter(v => v && ok(v.kam));
+    const L = typeof LU !== 'undefined' ? LU.top() : ['stop', 'antrine', 'kokybe'];
     return brand() + disclaimer() + REM.banners() +
       '<h2>Escape planas</h2>' + V.escRows() +
       '<h2>Mano vaidmuo – pirminė apžiūra</h2>' + V.roles(true) +
-      '<h2>Greitai</h2>' + V.toolTiles() +
-      '<h2>Laikai</h2><div id="tm">' + timersHtml() + '</div>' + PT.homeRow() +
-      '<h2>Paciento svoris, kg</h2>' + wChips(w) +
-      '<h2>Dažniausi vaistai</h2>' + quick.map(v => row('#/vaistas/' + v.id, v.name, doseShort(v, w), v.tccc26 ? '<span class="tag grn">TCCC</span>' : '')).join('') +
-      row('#/vaistai', 'Visi vaistai', (E.vaistai || []).length + ' vaistai pagal paskirtį') +
-      '<h2>Dažni sąrašai</h2>' +
-      row('#/s/stop', 'STOP · 10 už 10') +
-      row('#/s/antrine', 'Antrinė apžiūra nuo galvos iki kojų') +
-      row('#/s/kokybe', 'Gydymo tikslai ir kokybė') +
+      '<h2>Įrankiai</h2>' + V.toolTiles() +
+      `<h2>Dažni sąrašai${typeof LU !== 'undefined' && LU.used() ? ' · pagal naudojimą' : ''}</h2>` + L.map(listRow).join('') +
       installRow() + row('#/nustatymai', 'Nustatymai');
   },
 

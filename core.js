@@ -102,16 +102,21 @@ function updCount(box) {
   box.querySelector('.prog i').style.width = (all ? Math.round(n / all * 100) : 0) + '%';
 }
 
+// Laikai (paciento ekrane): trauma, turniketas – bakstelėjus nustatomi; TXA – riba 3 val. arba „Suleista“ (iš C lentelės ar vaistų žymėjimo)
 function timersHtml() {
   const T = LS.get('etc-laikai', {}), now = Date.now(), min = ts => Math.max(0, Math.floor((now - ts) / 60000));
-  const card = (k, lb, val, st) => `<button class="card" style="flex:1;min-width:0;overflow-wrap:anywhere;text-align:left;font:inherit;color:inherit;${st}" data-act="tm" data-k="${k}"><div class="muted">${lb}</div><div style="font-weight:700">${val}</div></button>`;
-  const dl = T.trauma ? T.trauma + 3 * 3600e3 : 0;
-  let h = '<div style="display:flex;gap:8px">';
-  h += card('trauma', 'Trauma', T.trauma ? hm(T.trauma) + ' · ' + min(T.trauma) + ' min' : 'Nenurodyta', '');
-  h += card('turn', 'Turniketas', T.turn ? hm(T.turn) + ' · ' + min(T.turn) + ' min' : 'Neuždėtas', T.turn ? 'background:var(--ambbg);color:var(--amb);border-color:var(--ambbg)' : '');
-  h += `<div class="card" style="flex:1;min-width:0;overflow-wrap:anywhere;${dl && now > dl ? 'background:var(--redbg);color:var(--red);border-color:var(--redbg)' : ''}"><div class="muted">TXA iki</div><div style="font-weight:700">${dl ? (now > dl ? 'Praėjo 3 val.' : hm(dl)) : '—'}</div></div>`;
-  h += '</div>';
-  if (tmEdit) h += `<div class="card"><div style="font-weight:600;margin-bottom:8px">${tmEdit === 'trauma' ? 'Traumos laikas' : 'Turniketo uždėjimo laikas'}</div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="tm-now">Dabar</button><input type="time" id="tm-in"><button class="btn" data-act="tm-set">Nustatyti</button><button class="btn" data-act="tm-clr">Išvalyti</button><button class="btn" data-act="tm-x">Uždaryti</button></div></div>`;
+  let tqC = 0, txa = 0;
+  try { const st = MC.state(), c = st.pts[st.cur], z = LS.get('etc-vz', null), te = z && Array.isArray(z.e) ? z.e.filter(e => e && e.v === 'txa').pop() : null;
+    tqC = T.turn ? 0 : PT.hmTs(c.tqT); txa = te ? +te.t : ((c.tx || []).indexOf('txa') >= 0 || c.txaT ? PT.hmTs(c.txaT) || -1 : 0); } catch (e) {}
+  const tq = T.turn || tqC, dl = T.trauma ? T.trauma + 3 * 3600e3 : 0;
+  const card = (k, cls, lb, val, sub) => k
+    ? `<button class="hbtm ${cls}" data-act="tm" data-k="${k}" aria-label="${lb}: ${val}${sub ? ', ' + sub : ''} – keisti"><small>${lb}</small><b>${val}</b><small>${sub}</small></button>`
+    : `<div class="hbtm ${cls}"><small>${lb}</small><b>${val}</b>${sub ? '<small>' + sub + '</small>' : ''}</div>`;
+  let h = '<div class="hbtms">' +
+    card('trauma', '', 'Trauma', T.trauma ? hm(T.trauma) : '—', T.trauma ? 'prieš ' + min(T.trauma) + ' min' : 'nustatyti') +
+    card('turn', tq ? 'amb' : '', 'Turniketas', tq ? hm(tq) : '—', tq ? min(tq) + ' min' : 'neuždėtas') +
+    (txa ? card('', 'grn', 'TXA', 'Suleista', txa > 0 ? hm(txa) : '') : card('', dl && now > dl ? 'red' : '', 'TXA iki', dl ? (now > dl ? 'Praėjo' : hm(dl)) : '—', dl ? (now > dl ? '3 val. riba' : 'per 3 val.') : '')) + '</div>';
+  if (tmEdit) h += `<div class="card" style="margin-top:8px"><div style="font-weight:600;margin-bottom:8px">${tmEdit === 'trauma' ? 'Traumos laikas' : 'Turniketo uždėjimo laikas'}</div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="tm-now">Dabar</button><input type="time" id="tm-in"><button class="btn" data-act="tm-set">Nustatyti</button><button class="btn" data-act="tm-clr">Išvalyti</button><button class="btn" data-act="tm-x">Uždaryti</button></div></div>`;
   return h;
 }
 function updTimers() { const el = document.getElementById('tm'); if (el) el.innerHTML = timersHtml(); }

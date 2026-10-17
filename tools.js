@@ -8,10 +8,22 @@ const TCFG = {
   laikai: 'etc-laikai', // pradžios ekrano laikmačiai { trauma, turn }
   // nuorodos puslapių apačioje: [adresas, pavadinimas, paantraštė]
   nl: () => [['#/mist', 'MIST kortelė', MC.status()], ['#/igudis/46', 'Pasiruošimas pervežimui ir perdavimas', 'Įgūdis #46']],
-  mc: () => [['#/skenuoti', 'Nuskaityti popierinę kortelę', 'DD 1380 nuotrauka → MIST, be interneto'], ['#/pacientas', 'Paciento failas', 'Įvykių eiga, perdavimas QR'], ['#/qr-priimti', 'Priimti pacientą QR kodu', 'Nuskaityti kito telefono kodą'], ['#/gks', 'GKS skaičiuoklė', GK.status()], ['#/9line', '9-Line MEDEVAC', NL.status()], ['#/s/atmist', 'ATMIST perdavimas', 'Kontrolinis sąrašas'], ['#/igudis/46', 'Pasiruošimas pervežimui ir perdavimas', 'Įgūdis #46']],
+  mc: () => [['#/skenuoti', 'Nuskaityti popierinę kortelę', 'DD 1380 nuotrauka → MIST, be interneto'], ['#/pacientas', 'Pacientas', 'Apžvalga, vaistai, eiga, perdavimas'], ['#/qr-priimti', 'Priimti pacientą QR kodu', 'Nuskaityti kito telefono kodą'], ['#/gks', 'GKS skaičiuoklė', GK.status()], ['#/9line', '9-Line MEDEVAC', NL.status()], ['#/s/atmist', 'ATMIST perdavimas', 'Kontrolinis sąrašas'], ['#/igudis/46', 'Pasiruošimas pervežimui ir perdavimas', 'Įgūdis #46']],
   gk: () => [['#/mist', 'MIST kortelė', MC.status()], ['#/igudis/12', 'Vyzdžiai, AVPU, galūnių simetrija ir GKS', 'Įgūdis #12']],
-  pt: ['laikai', 'ck', 'vz', 'nb', 'wbb'], // paciento failas: šie raktai priklauso dabartiniam pacientui (perjungiami kartu su MIST kortele)
-  migrate: null // ankstesnių formatų perkėlimas (ETC – nereikia; vienos kortelės formatą perkelia MC)
+  pt: ['laikai', 'ck', 'vz', 'nb', 'wbb', 'svoris'], // paciento failas: šie raktai priklauso dabartiniam pacientui (perjungiami kartu su MIST kortele); svoris – kiekvienam pacientui savas
+  migrate: null, // ankstesnių formatų perkėlimas (ETC – nereikia; vienos kortelės formatą perkelia MC)
+  // paciento ekranas, juosta ir dažniausi sąrašai (pacientas.js – bendras kodas)
+  hub: {
+    listDefaults: ['stop', 'antrine', 'kokybe'],
+    listOf: (p, q) => { if (p[0] === 's') return p[1]; if (p[0] !== 'v') return ''; const r = (E.vaidmenys || []).find(x => x.id === p[1]); return r ? (r.lists || [])[+q.f || 0] || '' : ''; },
+    listSkip: id => (E.escape || []).indexOf(id) >= 0 || (/-pir$/.test(id) && (E.vaidmenys || []).some(r => (r.lists || []).indexOf(id) >= 0)), // Escape ir vaidmenų plytelės – jau pradžioje
+    drugs: ['ketaminas', 'fentanilis', 'txa', 'kalcis', 'paracetamolis', 'ceftriaksonas', 'ondansetronas'],
+    drugOk: v => ok(v.kam), drugTag: v => v.tccc26 ? '<span class="tag grn">TCCC</span>' : '',
+    noBar: ['pacientas', 'mist', 'zymejimas', 'nudegimai', 'pilnas-kraujas', 'skenuoti', 'qr-priimti'],
+    quick: [['vit', '+ Požymiai', 1], ['vz', '+ Vaistas', 1], ['tq', '+ Turniketas', 1], ['mk', '+ Žymė schemoje'], ['gks', 'GKS'], ['nb', 'Nudegimai']],
+    go: { gks: '#/gks', nb: '#/nudegimai' },
+    handoff: () => [['#/9line', '9-Line MEDEVAC', NL.status()], ['#/s/atmist', 'ATMIST perdavimas', 'Kontrolinis sąrašas'], ['#/qr-priimti', 'Priimti pacientą QR kodu', 'Nuskaityti kito telefono kodą'], ['#/skenuoti', 'Nuskaityti popierinę kortelę', 'DD 1380 nuotrauka → MIST']]
+  }
 };
 
 // ───────── WGS84 → MGRS (8 skaitmenų = 10 m tikslumas) ─────────
@@ -524,11 +536,13 @@ const MC = (() => {
     }).join('') + '<button class="add" data-act="mc-add" aria-label="Pridėti sužeistąjį" title="Pridėti sužeistąjį">+</button></div>';
   }
   const DRUGS = () => (E.vaistai || []).map(v => v.name.replace(/ \(.*\)$/, ''));
-  function view() {
+  // o.embed – be antraštės, skirtukų ir perdavimo dalies (paciento ekrano skiltis „Kortelė“)
+  function view(o) {
+    const emb = !!(o && o.embed);
     const st = load(), s = curOf(st), n = st.cur + 1, tot = st.pts.length, learn = mode === 'learn', T = timers(), F = s.f;
-    let h = '<h1>MIST kortelė</h1>';
-    if (learn) h += '<p class="muted">Nukentėjusiojo kortelė kaip LK patvirtintoje formoje (DD 1380 lietuviškas variantas): A – asmens duomenys, T – traumos laikas ir pobūdis, M – mechanizmas, I – sužalojimai ir turniketai, S – būklė, T – teikta pagalba, evakuacija. Pildoma eigoje; perduodant perskaitomas MIST tekstas. Keli sužeistieji – skirtukai 1, 2, … ir „+“.</p>';
-    h += tabs(st);
+    let h = emb ? '' : '<h1>MIST kortelė</h1>';
+    if (learn && !emb) h += '<p class="muted">Nukentėjusiojo kortelė kaip LK patvirtintoje formoje (DD 1380 lietuviškas variantas): A – asmens duomenys, T – traumos laikas ir pobūdis, M – mechanizmas, I – sužalojimai ir turniketai, S – būklė, T – teikta pagalba, evakuacija. Pildoma eigoje; perduodant perskaitomas MIST tekstas. Keli sužeistieji – skirtukai 1, 2, … ir „+“.</p>';
+    if (!emb) h += tabs(st);
     h += `<article class="lk" aria-label="Nukentėjusiojo kortelė – sužeistasis ${n}">`;
     h += `<div class="lkh"><b>NUKENTĖJUSIOJO KORTELĖ</b><span>FIELD MEDICAL CARD${tot > 1 ? ' · ' + n + ' / ' + tot : ''}</span></div>`;
     // A
@@ -589,15 +603,23 @@ const MC = (() => {
       `<div class="lkrow lkpos">${lbl('TRANSPORTAVIMO PADĖTIS:', 'Transportation position')}<div class="lkposb">${POS.map(([k, lt]) => `<button class="${s.pos === k ? 'on' : ''}" data-act="mc-pos" data-k="${k}" aria-pressed="${s.pos === k}" aria-label="${lt}" title="${lt}"><svg viewBox="0 0 34 24" aria-hidden="true">${POS_SVG[k]}</svg></button>`).join('')}</div></div>` +
       `<div class="lkresp">${lbl('PAGALBOS TEIKĖJO PAVARDĖ, VARDAS, ID', 'Responder last name, first name, ID')}${[0, 1].map(i => `<label class="lkrn"><b>${i + 1}</b><input class="lkv" data-mcp="${i}" value="${esc(s.resp[i])}" autocomplete="off" aria-label="Pagalbos teikėjas ${i + 1}"></label>`).join('')}</div>`);
     h += '</article>';
-    h += `<section class="outp"><div class="nlh"><b>Perduoti (MIST)</b>${tot > 1 ? `<small class="muted">sužeistasis ${n} iš ${tot}</small>` : ''}</div>${langSeg('mc-lang')}<pre id="mc-out">${esc(text(s, n, tot, outEn()))}</pre>` +
+    if (emb) return h + mgmtInner(st) + tcfgRows(TCFG.mc());
+    return h + '<section class="outp">' + outInner(st) + mgmtInner(st) + '</section>' + tcfgRows(TCFG.mc());
+  }
+  // Perdavimo dalis (MIST tekstas, skaityti, kopijuoti, kortelės paveikslėlis) ir sužeistųjų tvarkymas – atskirai, kad paciento ekranas galėtų rodyti skirtingose skiltyse
+  function outInner(st) {
+    const s = curOf(st), n = st.cur + 1, tot = st.pts.length;
+    return `<div class="nlh"><b>Perduoti (MIST)</b>${tot > 1 ? `<small class="muted">sužeistasis ${n} iš ${tot}</small>` : ''}</div>${langSeg('mc-lang')}<pre id="mc-out">${esc(text(s, n, tot, outEn()))}</pre>` +
       '<div class="acts"><button class="btn pri" data-act="mc-read">Skaityti</button><button class="btn" data-act="mc-copy">Kopijuoti</button><button class="btn" data-act="mc-share">Bendrinti</button></div>' +
       '<div class="acts"><button class="btn" data-act="mc-card">Kortelė (paveikslėlis, spausdinti)</button></div>' +
-      (tot > 1 ? `<div class="acts"><button class="btn" data-act="mc-copyall">Kopijuoti visus (${tot})</button><button class="btn" data-act="mc-shareall">Bendrinti visus</button></div>` : '') +
-      `<div class="acts"><button class="btn" data-act="mc-add">+ Kitas sužeistasis</button><button class="btn dng" data-act="mc-new">${tot > 1 ? 'Išvalyti šią kortelę' : 'Naujas sužeistasis – išvalyti kortelę'}</button></div>` +
-      (tot > 1 ? `<div class="acts"><button class="btn dng" data-act="mc-pdel">Ištrinti sužeistąjį ${n}</button><button class="btn dng" data-act="mc-allclr">Išvalyti visus</button></div>` : '') + '</section>';
-    h += tcfgRows(TCFG.mc());
-    return h;
+      (tot > 1 ? `<div class="acts"><button class="btn" data-act="mc-copyall">Kopijuoti visus (${tot})</button><button class="btn" data-act="mc-shareall">Bendrinti visus</button></div>` : '');
   }
+  function mgmtInner(st) {
+    const n = st.cur + 1, tot = st.pts.length;
+    return `<div class="acts"><button class="btn" data-act="mc-add">+ Kitas sužeistasis</button><button class="btn dng" data-act="mc-new">${tot > 1 ? 'Išvalyti šią kortelę' : 'Naujas sužeistasis – išvalyti kortelę'}</button></div>` +
+      (tot > 1 ? `<div class="acts"><button class="btn dng" data-act="mc-pdel">Ištrinti sužeistąjį ${n}</button><button class="btn dng" data-act="mc-allclr">Išvalyti visus</button></div>` : '');
+  }
+  const outView = () => '<section class="outp">' + outInner(load()) + '</section>';
 
   // Bakstelėjimas ant schemos → viewBox koordinatės; tik ant silueto (arba šalia – pritraukiama)
   function bodyPoint(svg, e) {
@@ -890,7 +912,7 @@ const MC = (() => {
     readMode('Nukentėjusiojo kortelė', ['<img class="cardimg" alt="Nukentėjusiojo kortelė" src="' + url + '">'], [['Bendrinti', share], ['Išsaugoti', save], ['Spausdinti', print]]);
   }
   // Paciento failui: visa būsena ir dabartinės kortelės tekstas
-  return { view, act, onInput, status, text, addGcs, addRows, current, region, state: load, curText: () => curText(load()), cardCanvas, loadLogo, vitLine, tqName, MECH, TX, TQ, MK, ROWG, EVAC, POS };
+  return { view, act, onInput, status, text, addGcs, addRows, current, region, state: load, curText: () => curText(load()), cardCanvas, loadLogo, vitLine, tqName, outView, parts: (s, n, tot, en) => parts(s, n || 1, tot || 1, en), injText, abn, MECH, TX, TQ, MK, ROWG, EVAC, POS };
 })();
 
 // ───────── GKS (Glasgow) skaičiuoklė – GCS at 40 ─────────
@@ -1214,11 +1236,13 @@ const VZ = (() => {
     if (edit) h += '<button class="btn vzdel" data-act="vz-del">Ištrinti įrašą</button>';
     return h + '</section>';
   }
-  function view() {
+  // o.embed – paciento ekrano skiltis „Vaistai“: be antraštės, svorio (jis paciento antraštėje) ir nuorodos į MIST
+  function view(o) {
+    const emb = !!(o && o.embed);
     const s = get(), learn = mode === 'learn', G = E.vaistuGrupes || [], D = drugs();
-    let h = '<h1>Vaistų žymėjimas</h1>';
-    if (learn) h += '<p class="muted">Bakstelėkite vaistą, pasirinkite dozę ir „Žymėti“ – įrašomas laikas. Įrašus galima taisyti, perkelti į MIST kortelę, nukopijuoti ar perskaityti perduodant pacientą. Greitosios dozės – iš skilties Vaistai; vaistą ir dozę skiria tas, kas turi kompetenciją.</p>';
-    h += '<div class="lbl0">Svoris skaičiavimui, kg</div>' + wChips(LS.get('etc-svoris', 80));
+    let h = emb ? '' : '<h1>Vaistų žymėjimas</h1>';
+    if (learn && !emb) h += '<p class="muted">Bakstelėkite vaistą, pasirinkite dozę ir „Žymėti“ – įrašomas laikas. Įrašus galima taisyti, perkelti į MIST kortelę, nukopijuoti ar perskaityti perduodant pacientą. Greitosios dozės – iš skilties Vaistai; vaistą ir dozę skiria tas, kas turi kompetenciją.</p>';
+    if (!emb) h += '<div class="lbl0">Svoris skaičiavimui, kg</div>' + wChips(LS.get('etc-svoris', 80));
     const by = {}; s.e.forEach(e => { (by[e.v] = by[e.v] || []).push(e); });
     G.forEach(g => {
       const ds = D.filter(v => v.grupe === g.id); if (!ds.length) return;
@@ -1235,7 +1259,7 @@ const VZ = (() => {
     else h += '<div class="vzl">' + s.e.slice().reverse().map(e => `<button class="vze${e.x ? ' x' : ''}" data-act="vz-ed" data-k="${esc(e.id)}"><span class="vzet">${hm(e.t)}</span><span class="vzen"><b>${esc(name(e.v))}</b> ${esc([e.a, e.u].filter(Boolean).join(' '))} ${esc(RT[e.r] || e.r)}${e.n ? '<small>' + esc(e.n) + '</small>' : ''}</span><small class="vzea" data-ago="${e.t}">${ago(e.t)}</small></button>`).join('') + '</div>' +
       '<p class="muted">Bakstelėkite įrašą, kad pataisytumėte ar ištrintumėte.' + (s.e.some(e => e.x) ? ' Pilki – jau perkelti į MIST.' : '') + '</p>';
     h += '<div class="acts"><button class="btn pri" data-act="vz-read"' + (s.e.length ? '' : ' disabled') + '>Skaityti perduodant</button><button class="btn" data-act="vz-mist"' + (s.e.some(e => !e.x) ? '' : ' disabled') + '>Į MIST kortelę</button><button class="btn" data-act="vz-copy"' + (s.e.length ? '' : ' disabled') + '>Kopijuoti</button><button class="btn" data-act="vz-clr"' + (s.e.length ? '' : ' disabled') + '>Naujas pacientas</button></div>';
-    h += row('#/mist', 'MIST kortelė', MC.status()) + row('#/vaistai', 'Vaistai', 'Dozės, įspėjimai, skaičiuoklė');
+    if (!emb) h += row('#/mist', 'MIST kortelė', MC.status()) + row('#/vaistai', 'Vaistai', 'Dozės, įspėjimai, skaičiuoklė');
     if (sel) h += panel();
     return h;
   }
