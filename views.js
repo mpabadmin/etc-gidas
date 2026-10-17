@@ -40,7 +40,8 @@ const installRow = () => installed() ? '' : row('#/idiegimas', 'Įdiekite progra
 const toolRows = () => typeof MC === 'undefined' ? '' :
   row('#/mist', 'MIST kortelė', MC.status()) + row('#/9line', '9-Line MEDEVAC', NL.status()) +
   row('#/gks', 'GKS skaičiuoklė', GK.status()) + row('#/tst', 'TST rūšiavimas', TS.status()) + row('#/mascal', 'Mascal triažas', MS.status()) + row('#/zymejimas', 'Vaistų žymėjimas', VZ.status()) +
-  row('#/nudegimai', 'Nudegimų plotas', NB.status()) + row('#/pilnas-kraujas', 'Šviežias pilnas kraujas', KR.status()) + row('#/scenarijai', 'Treniruočių scenarijai', SC.status());
+  row('#/nudegimai', 'Nudegimų plotas', NB.status()) + row('#/pilnas-kraujas', 'Šviežias pilnas kraujas', KR.status()) + row('#/scenarijai', 'Treniruočių scenarijai', SC.status()) +
+  row('#/korteles', 'Dozių kortelės', FC.status()) + row('#/egzaminas', 'Egzaminuotojo režimas', EX.status());
 
 const GRUPES = [['K', 'Komanda, apžiūra ir pervežimas'], ['A', 'A – kvėpavimo takai ir neurologija'], ['B', 'B – kvėpavimas, krūtinė, dubuo'], ['C', 'C – kraujavimas ir kraujotaka'], ['S', 'D/E – galva, antrinė apžiūra, žaizdos'], ['V', 'Vaistai ir skausmas']];
 const grupesPav = g => (GRUPES.find(x => x[0] === g) || ['', ''])[1];
@@ -143,7 +144,7 @@ const V = {
 
   lists() {
     const S = E.sarasai || {}, used = new Set();
-    let h = '<h1>Kontroliniai sąrašai</h1><h2>Escape planai</h2>' + V.escRows();
+    let h = '<h1>Kontroliniai sąrašai</h1>' + row('#/egzaminas', 'Egzaminuotojo režimas', EX.status()) + '<h2>Escape planai</h2>' + V.escRows();
     (E.escape || []).forEach(x => used.add(x));
     (E.vaidmenys || []).forEach(r => {
       h += `<h2>${esc(r.id)} – ${esc(r.sub || '')}</h2>` + (r.lists || []).map(l => { used.add(l); return listRow(l); }).join('');
@@ -163,6 +164,7 @@ const V = {
     h += '<div class="tabs">' + r.lists.map((l, i) => tabBtn((S[l] || {}).short || (S[l] || {}).title || l, `#/v/${id}?f=${i}`, i === f)).join('') + '</div>';
     if (S[lid] && S[lid].intro) h += '<p class="muted">' + br(S[lid].intro) + '</p>';
     h += renderList(lid);
+    if (mode === 'learn') h += EX.entry(lid);
     if (f < r.lists.length - 1) h += `<button class="row" data-act="go" data-r="#/v/${id}?f=${f + 1}" style="margin-top:12px">Toliau: ${esc((S[r.lists[f + 1]] || {}).title || '')}<span class="ar">›</span></button>`;
     if (r.vadovas) h += '<h2>Komandos vado įrankiai</h2>' + V.escRows() + row('#/s/stop', 'STOP · 10 už 10') + row('#/s/komanda', 'Komandos darbas') + row('#/s/kokybe', 'Gydymo tikslai ir kokybė') + row('#/s/antrine', 'Antrinė apžiūra nuo galvos iki kojų');
     const tm = (E.temos || []).find(t => t.id === id.toLowerCase());
@@ -176,6 +178,7 @@ const V = {
     let h = `<h1>${esc(L.title)}</h1>`;
     if (L.intro) h += '<p class="muted">' + br(L.intro) + '</p>';
     h += renderList(id);
+    if (mode === 'learn') h += EX.entry(id);
     if ((E.escape || []).indexOf(id) >= 0) h += '<h2>Kiti Escape planai</h2>' + (E.escape || []).filter(x => x !== id).map(x => `<a class="row esc" href="#/s/${x}">${esc(E.sarasai[x].title)}<span class="ar">›</span></a>`).join('');
     return h;
   },
@@ -184,6 +187,7 @@ const V = {
     const D = (E.vaistai || []).filter(v => ok(v.kam)), w = LS.get('etc-svoris', 80), field = mode === 'field';
     const G = E.vaistuGrupes || [{ id: undefined, pav: 'Vaistai' }];
     let h = '<h1>Vaistai</h1><p class="muted">Viena dozavimo schema – pagal TCCC 2026 gaires, gamintojo PCS ir ERC.</p>';
+    if (!field) h += row('#/korteles', 'Dozių kortelės', FC.status());
     G.forEach(g => {
       const a = D.filter(v => v.grupe === g.id);
       if (!a.length) return;
@@ -317,10 +321,10 @@ const V = {
   settings() {
     const b = (act, t, s) => `<button class="row" data-act="${act}"><div>${t}<small>${s}</small></div></button>`;
     const inst = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
-    let h = '<h1>Nustatymai</h1>';
+    let h = '<h1>Nustatymai</h1>' + GL.settingRow();
     h += `<div class="ck${hide() ? ' on' : ''}" data-act="hide"><span class="bx">✓</span><div style="flex:1">Slėpti tik gydytojui skirtus veiksmus ir vaistus<div class="muted">Lieka tai, ką atlieka komandos nariai.</div></div></div>`;
-    h += '<h2>Pacientas</h2>' + row('#/pacientas', 'Paciento failas', 'Pacientų sąrašas, įvykių eiga, perdavimas QR') + b('new-pt', 'Naujas pacientas', 'Ankstesnis lieka sąraše; laikai, žymėjimai ir įrankiai – naujam') + REM.settings();
-    h += '<h2>Mokymasis</h2>' + b('reset-ivert', 'Ištrinti įsivertinimus', 'Visi 1–4 balai bus pašalinti');
+    h += '<h2>Pacientas</h2>' + row('#/pacientas', 'Paciento failas', 'Pacientų sąrašas, įvykių eiga, perdavimas QR') + b('new-pt', 'Naujas pacientas', 'Ankstesnis lieka sąraše; laikai, žymėjimai ir įrankiai – naujam') + REM.settings() + OP.settings();
+    h += '<h2>Mokymasis</h2>' + row('#/korteles', 'Dozių kortelės', FC.status()) + row('#/egzaminas', 'Egzaminuotojo režimas', EX.status()) + b('reset-ivert', 'Ištrinti įsivertinimus', 'Visi 1–4 balai bus pašalinti');
     h += '<h2>Atsiliepimai</h2>' + b('fb', 'Pranešti apie klaidą ar pasiūlyti', 'Komentaras ir ekrano vaizdas – keliauja gido rengėjams');
     const nOut = FB.pending();
     if (nOut) h += b('fb-flush', 'Neišsiųsti pranešimai: ' + nOut, FB.configured() ? 'Siųsti dabar (reikia interneto)' : 'Bus išsiųsti, kai bus įjungtas priėmimas');

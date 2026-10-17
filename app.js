@@ -6,7 +6,7 @@ let night = !!LS.get('etc-naktis', false); // naktinis raudonas režimas
 const dec = s => { try { return decodeURIComponent(s); } catch (e) { return s; } };
 const newPt = () => '<button class="btn" data-act="new-pt" style="width:100%;margin-top:16px">Naujas pacientas – išvalyti žymėjimus</button>';
 const PT_BAR = ['zymejimas', 'nudegimai', 'pilnas-kraujas']; // įrankiai, virš kurių rodoma pacientų juosta
-const FB_PAGES = ['v', 's', 'vaistai', 'vaistas', 'igudis', 'tema', 'p', '9line', 'mist', 'gks', 'tst', 'zymejimas', 'nudegimai', 'pilnas-kraujas', 'scenarijai', 'mascal', 'pacientas', 'qr', 'qr-priimti'];
+const FB_PAGES = ['v', 's', 'vaistai', 'vaistas', 'igudis', 'tema', 'p', '9line', 'mist', 'gks', 'tst', 'zymejimas', 'nudegimai', 'pilnas-kraujas', 'scenarijai', 'mascal', 'pacientas', 'qr', 'qr-priimti', 'egzaminas', 'korteles'];
 const fbLink = () => '<button class="btn fbrow" data-act="fb">Pastebėjote klaidą ar turite pasiūlymą? Praneškite</button>';
 
 function route() {
@@ -43,6 +43,8 @@ function view(p, q) {
     case 'scenarijai': return SC.view(p[1], q);
     case 'pacientas': return PT.view();
     case 'qr': case 'qr-priimti': return QR.view(p[0]);
+    case 'egzaminas': return EX.view(p[1]);
+    case 'korteles': return FC.view();
     default: return notFound();
   }
 }
@@ -54,7 +56,7 @@ function render() {
   document.getElementById('mL').classList.toggle('on', mode === 'learn');
   backBtn.style.display = p.length ? '' : 'none'; // pradžios ekrane vietoje „Atgal“ – atnaujinimo mygtukas dešinėje
   const ub = document.getElementById('upd'); if (ub) ub.style.display = p.length ? 'none' : '';
-  const sec = { vaistai: 'vaistai', vaistas: 'vaistai', igudziai: 'igudziai', igudis: 'igudziai', temos: 'temos', tema: 'temos', p: 'temos', sarasai: 'sarasai', s: 'sarasai', v: 'sarasai', '9line': 'home', mist: 'home', gks: 'home', tst: 'home', zymejimas: 'home', nudegimai: 'home', mascal: 'home', 'pilnas-kraujas': 'home', scenarijai: 'igudziai', pacientas: 'home', qr: 'home', 'qr-priimti': 'home' }[p[0]] || (p.length ? '' : 'home');
+  const sec = { vaistai: 'vaistai', vaistas: 'vaistai', igudziai: 'igudziai', igudis: 'igudziai', temos: 'temos', tema: 'temos', p: 'temos', sarasai: 'sarasai', s: 'sarasai', v: 'sarasai', '9line': 'home', mist: 'home', gks: 'home', tst: 'home', zymejimas: 'home', nudegimai: 'home', mascal: 'home', 'pilnas-kraujas': 'home', scenarijai: 'igudziai', pacientas: 'home', qr: 'home', 'qr-priimti': 'home', egzaminas: 'sarasai', korteles: 'vaistai' }[p[0]] || (p.length ? '' : 'home');
   document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('on', a.dataset.s === sec));
   try { PT.sync(); } catch (e) { console.error(e); }
   if (typeof DICT !== 'undefined') DICT.stop();
@@ -102,6 +104,10 @@ app.addEventListener('click', e => {
   if (/^pt-/.test(d.act)) { PT.act(el); return; }
   if (/^rem-/.test(d.act)) { REM.act(el); return; }
   if (/^qr-/.test(d.act)) { QR.act(el); return; }
+  if (/^ex-/.test(d.act)) { EX.act(el); return; }
+  if (/^fc-/.test(d.act)) { FC.act(el); return; }
+  if (/^op-/.test(d.act)) { OP.act(el); return; }
+  if (/^gl-/.test(d.act)) { GL.act(el); return; }
   switch (d.act) {
     case 'ck': ckToggle(d.l, +d.i); el.classList.toggle('on'); updCount(el.closest('.cl')); if (navigator.vibrate) navigator.vibrate(15); break;
     case 'go': location.hash = d.r; break;
@@ -157,7 +163,7 @@ app.addEventListener('click', e => {
 app.addEventListener('keydown', e => {
   const t = e.target, a = t.dataset && t.dataset.act;
   if (e.key === 'Enter' && /^(yt|mp4)$/.test(a || '')) t.click();
-  if ((e.key === 'Enter' || e.key === ' ') && (a === 'nb-r' || a === 'kr-ck')) { e.preventDefault(); t.dispatchEvent(new MouseEvent('click', { bubbles: true })); return; }
+  if ((e.key === 'Enter' || e.key === ' ') && (a === 'nb-r' || a === 'kr-ck' || a === 'ex-ck' || a === 'gl-tg')) { e.preventDefault(); t.dispatchEvent(new MouseEvent('click', { bubbles: true })); return; }
   if ((e.key === 'Enter' || e.key === ' ') && a === 'mc-mdel' && !(t instanceof HTMLButtonElement)) { e.preventDefault(); MC.act(t, e); } // SVG žymė
 });
 
@@ -194,6 +200,7 @@ document.addEventListener('visibilitychange', () => { if (!document.hidden && !t
 addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEv = e; if (['nustatymai', 'idiegimas', undefined].indexOf(route().p[0]) >= 0) render(); });
 if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 
+OP.init(); GL.apply();
 onNav(true);
 
 // ───────── Atnaujinimas: mygtukas antraštėje (pradžios ekrane, šalia paieškos) ─────────

@@ -11,7 +11,7 @@ const E = window.ETC;
 const KOMP = 'Pagal kompetenciją', MED = 'Medicinos personalui', GYD = 'Gydytojui', INT = 'Intubuojantiems gydytojams';
 const link = (href, t, s) => `<a class="row" href="${href}"><div>${t}${s ? '<small>' + s + '</small>' : ''}</div><span class="ar">›</span></a>`;
 
-E.versija = '2026-10-17 v23 (turinio patikra: sprendimai dėl abejotinų klausimų – vertimas ant šono, transfuzijos laikas, NDC kanulė, IO per nudegusią odą ir 48 val., AKS ir SpO₂ tikslai, TST „Masyvus kraujavimas“, 9-Line CBRN; v22 – hipotermijos laipsniai, IO vieta, kalcis, naloksonas, 9-Line skubumas)';
+E.versija = '2026-10-17 v24 (9-Line ir MIST anglų kalba, TCCC kortelė paveikslėliu, egzaminuotojo režimas, dozių kortelės, pirštinių režimas, duomenų apsauga)';
 // Pranešimų priėmimo adresas: Google Apps Script žiniatinklio programos /exec URL (žr. tools/atsiliepimai.gs)
 E.atsiliepimai = { url: 'https://script.google.com/macros/s/AKfycbyUpzDmAClJ40FMltkHi21Ozc4PpItRr3u6yy4rU0DKNGe7JkRBnOr0y42wLwpJcBau/exec' };
 
