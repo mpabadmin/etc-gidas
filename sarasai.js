@@ -11,7 +11,7 @@ const E = window.ETC;
 const KOMP = 'Pagal kompetenciją', MED = 'Medicinos personalui', GYD = 'Gydytojui', INT = 'Intubuojantiems gydytojams';
 const link = (href, t, s) => `<a class="row" href="${href}"><div>${t}${s ? '<small>' + s + '</small>' : ''}</div><span class="ar">›</span></a>`;
 
-E.versija = '2026-10-17 v22 (turinio patikra: hipotermijos laipsniai, IO vieta, TCA išgyvenamumas, kalcio greitis hiperkalemijai, naloksono titravimas, benzodiazepinai, noradrenalino greitis, 9-Line skubumo pavyzdžiai; paciento failas, priminimai, QR, diktavimas)';
+E.versija = '2026-10-17 v23 (turinio patikra: sprendimai dėl abejotinų klausimų – vertimas ant šono, transfuzijos laikas, NDC kanulė, IO per nudegusią odą ir 48 val., AKS ir SpO₂ tikslai, TST „Masyvus kraujavimas“, 9-Line CBRN; v22 – hipotermijos laipsniai, IO vieta, kalcis, naloksonas, 9-Line skubumas)';
 // Pranešimų priėmimo adresas: Google Apps Script žiniatinklio programos /exec URL (žr. tools/atsiliepimai.gs)
 E.atsiliepimai = { url: 'https://script.google.com/macros/s/AKfycbyUpzDmAClJ40FMltkHi21Ozc4PpItRr3u6yy4rU0DKNGe7JkRBnOr0y42wLwpJcBau/exec' };
 
@@ -37,7 +37,7 @@ E.sarasai = {
       { t: 'B ir C nariams nurodyta stabdyti kraujavimą', k: true },
       { t: 'Taikytas tiesioginis spaudimas' },
       { t: 'Uždėtas turniketas, pažymėtas laikas', k: true, i: 'Pradžios ekrane spauskite kortelę „Turniketas“ → „Dabar“.' },
-      { t: 'Žaizda tamponuota hemostatine marle / TXA suvilgytu tvarsčiu' },
+      { t: 'Žaizda tamponuota hemostatine marle' },
       { t: 'Įtariant kraujavimą iš dubens – uždėtas dubens diržas' },
       { t: 'Skirta traneksamo rūgštis (per 3 val. nuo traumos)', g: MED },
       { t: 'Skirti kraujo komponentai / aktyvuotas masinio kraujavimo protokolas', g: MED },
@@ -217,7 +217,7 @@ E.sarasai = {
       { t: 'Patikrinta tarpvietė ir lytiniai organai dėl kraujavimo', s: ['Kraujo nėra', 'Kraujas yra – dubens diržą uždeda B kartu su C'] },
       { t: 'Apžiūrėtos galūnės ir jungiamosios sritys (kirkšnys, pažastys, kaklas) dėl kraujavimo', k: true, s: ['Kraujavimo nėra', 'Kraujavimas yra – stabdomas; masyvus – iškart pranešta A'] },
       { t: 'Radiniai pranešti A – po visos apžiūros (iki 2 min)', k: true },
-      { t: 'Kartu su C pacientas paverstas ant šono, apžiūrėta nugara – prieš e-FAST', k: true, s: ['Sužalojimai ir kraujavimas', 'Okliuzinis tvarstis, jei krūtinėje yra žaizda', 'Stuburo vidurio linijos palpacija dėl skausmingumo (jei sąmoningas)'], i: 'Įgūdis #17.' },
+      { t: 'Kartu su C pacientas paverstas ant šono, apžiūrėta nugara – prieš e-FAST', k: true, s: ['Sužalojimai ir kraujavimas', 'Okliuzinis tvarstis, jei krūtinėje yra žaizda', 'Stuburo vidurio linijos palpacija dėl skausmingumo (jei sąmoningas)'], i: 'Įgūdis #17. Išimtis – hemodinamiškai nestabilus pacientas ar įtariamas dubens lūžis: vertimą atideda A.' },
       { t: 'Atliktas e-FAST', g: KOMP, s: ['Morisono kišenė', 'Splenorenalinė kišenė', 'Šlapimo pūslė', 'Perikardas', 'Pleura abipus (pneumotoraksas)'], i: 'Įgūdis #16.' },
       { t: 'Nugaros ir e-FAST radiniai pranešti A' }
     ]
@@ -257,7 +257,7 @@ E.sarasai = {
       { t: 'Įvertinti šoko požymiai', s: ['Monitoriaus rodmenys', 'Galūnių šaltumas (spazmuota periferija)', 'Oda – marmuruotumas / prakaitas', 'A. radialis ir a. femoralis pulsai'] },
       { t: 'Aiškiai pasakyta, ar pacientas yra hemoraginiame šoke', k: true },
       { t: 'Kartu su B uždėtas dubens diržas, jei B rado nestabilų dubenį ar kraujo tarpvietėje' },
-      { t: 'Kartu su B pacientas paverstas ant šono – prieš e-FAST (nugarą apžiūri B)' },
+      { t: 'Kartu su B pacientas paverstas ant šono – prieš e-FAST (nugarą apžiūri B)', i: 'Įgūdis #17. Išimtis – hemodinamiškai nestabilus pacientas ar įtariamas dubens lūžis: vertimą atideda A.' },
       { t: 'Paruošti ir suleisti paskirti vaistai', g: MED, s: ['Traneksamo rūgštis – per 3 val. nuo traumos', 'Kalcis – esant kraujo transfuzijai', 'Analgezija – titruojant'], i: 'Įgūdis #24.' },
       { t: 'Paruošti kraujo komponentai transfuzijai', g: MED },
       { t: 'Atlikta hipotermijos prevencija', i: 'Įgūdis #19.' }
@@ -330,7 +330,7 @@ E.sarasai = {
       { t: 'Sustabdytas kraujo netekimas (netaikoma kraujavimui į pilvo ertmę)', k: true },
       { t: 'Atkuriamas cirkuliuojančio kraujo tūris' },
       { t: 'Pacientas pakankamai nuskausmintas opioidais' },
-      { t: 'Laikomasi AKS tikslų', k: true, s: ['Hemoraginis šokas be galvos traumos požymių – VAKS (MAP) 65 mm Hg', 'Galvos smegenų trauma – sAKS 110–120 mm Hg'], i: 'Tikslai galioja iki chirurginės kraujavimo kontrolės. Per didelis AKS gali suardyti krešulį (įgūdis #40).' },
+      { t: 'Laikomasi AKS tikslų', k: true, s: ['Hemoraginis šokas be galvos traumos požymių – VAKS (MAP) 65 mm Hg', 'Galvos smegenų trauma – sAKS 110–120 mm Hg'], i: 'Tikslai galioja iki chirurginės kraujavimo kontrolės. Per didelis AKS gali suardyti krešulį. Tai ETC vertinimo lapo tikslai – kitose gairėse skiriasi (įgūdis #40).' },
       { t: 'Taikoma hipotermijos prevencija' },
       { t: 'Skirta traneksamo rūgštis', i: 'Kuo greičiau, ne vėliau nei per 3 val. nuo traumos. Dozė – Vaistai: TXA.' },
       { t: 'Esant kraujo transfuzijai užtikrinamas kalcio kiekis', i: 'Po pirmojo perpilto kraujo vieneto. Dozė – Vaistai: Kalcis.' },
@@ -463,7 +463,7 @@ E.puslapiai = {
       '<p class="muted">Eritrocitų universalus donoras – O−, plazmos – AB. Lentelę slinkite į šoną, jei netelpa ekrane.</p>' +
       '<h3>Trombocitai ir RhD</h3><p>RhD neigiamoms vaisingo amžiaus moterims – RhD neigiami trombocitai; jei skirta RhD teigiamų – rekomenduojama skirti anti-D imunoglobuliną (250 TV pakanka 5 suaugusiųjų dozėms per 6 sav.). O grupės trombocitai ne O grupės recipientui – tik kraštutiniu atveju ir tik mažo anti-A / anti-B titro.</p>' +
       '<h3>Ką perpilti hemoraginio šoko atveju (pirmenybės tvarka)</h3><ol><li>Šaltai laikytas mažo titro O grupės pilnas kraujas</li><li>Iš anksto ištirtų donorų mažo titro O grupės šviežias pilnas kraujas</li><li>Plazma, eritrocitai ir trombocitai santykiu 1:1:1</li><li>Plazma ir eritrocitai santykiu 1:1</li><li>Tik plazma arba tik eritrocitai</li></ol>' +
-      '<p>AKS tikslai iki chirurginės kraujavimo kontrolės: VAKS (MAP) 65 mm Hg; esant galvos smegenų traumai – sAKS 110–120 mm Hg (ETC vertinimo lapas). Po pirmojo perpilto kraujo vieneto – kalcis (dozė – Vaistai: Kalcis).</p>' +
+      '<p>AKS tikslai iki chirurginės kraujavimo kontrolės: VAKS (MAP) 65 mm Hg; esant galvos smegenų traumai – sAKS 110–120 mm Hg (ETC vertinimo lapas; kitose gairėse tikslai skiriasi – įgūdis #40). Po pirmojo perpilto kraujo vieneto – kalcis (dozė – Vaistai: Kalcis).</p>' +
       link('#/vaistas/kalcis', 'Kalcio gliukonatas') + link('#/igudis/23', 'Įgūdis #23 – kraujo grupė ir transfuzija'),
     saltinis: 'ETC įgūdžių lapas (Combined Blood Compatibility Table), išversta; TCCC gairės 2026-05-01; NHS Scotland trombocitų parinkimo tvarka'
   },

@@ -790,6 +790,7 @@ window.ETC.vaistai = [
     "pakuote": "Kapsulės 500 mg",
     "pastabos": [
       "PCS: odos ir minkštųjų audinių infekcijų gydymui – 1 g 2 kartus per parą (1 g kartą per parą – tik streptokokiniam tonzilitui), maks. 4 g per parą; TCCC 2026 atviroms kovinėms žaizdoms – 1 g kartą per parą.",
+      "Alternatyva (TCCC 2026) – cefaleksinas 500 mg per burną kas 6 val.",
       "Negalinčiam gerti – ceftriaksonas 2 g IV / IO / IM kartą per parą (TCCC 2026).",
       "Nudegimams vien dėl nudegimo antibiotikų neskirti – skiriama pagal žaizdas (TCCC 2026)."
     ],
