@@ -1968,7 +1968,7 @@ const VZ = (() => {
 })();
 
 // ───────── Nudegimai ir nušalimai (NB) – devyneto taisyklė, skysčių ir diurezės skaičiuoklės, nušalimai (tik ETC gide) ─────────
-// Skysčiai – įgūdis #48 (kuopos SOP): 2 ml × kg × % KPP per 24 val., pusė per pirmas 8 val. NUO TRAUMOS; > 20 % KPP (TCCC 2026, #48).
+// Skysčiai – Parkland pagal paskaitą „Nudegimo trauma“ (V. Vaitkus, 2025-12-03): 4 ml × kg × % KPP per 24 val., pusė per pirmas 8 val. NUO TRAUMOS; > 20 % KPP.
 // TCCC 2026 „10 taisyklė“ – alternatyva (40–80 kg; virš 80 kg + 100 ml/val. kas 10 kg). Diurezė – 0,5–1 ml/kg/val. (#48);
 // titravimas ±20 %, įvertinti po 2 val. (JTS Burn Care CPG 2025). Nušalimai – WMS 2024, JTS CPG 2017 (kuopos medžiagoje nėra).
 const NB = (() => {
@@ -2020,7 +2020,7 @@ const NB = (() => {
   // ── grynos skaičiuoklės (testuojamos) ──
   // o: { kg, tbsa, tInj (ms), now (ms) } → SOP #48 kiekiai ir greičiai (iki 10 ml/val.), fazė nuo traumos, TCCC „10 taisyklė“
   function calc(o) {
-    const kg = +o.kg || 0, t = +o.tbsa || 0, v24 = 2 * kg * t, v8 = v24 / 2;
+    const kg = +o.kg || 0, t = +o.tbsa || 0, v24 = 4 * kg * t, v8 = v24 / 2;
     const el = +o.tInj > 0 ? Math.max(0, ((+o.now || Date.now()) - o.tInj) / 3.6e6) : null;
     const phase = el == null ? '' : el < 8 ? '8' : el < 24 ? '16' : 'end';
     const t10 = Math.round(t / 10) * 10, rule10 = kg >= 40 ? t10 * 10 + (kg > 80 ? Math.floor((kg - 80) / 10) * 100 : 0) : 0;
@@ -2066,10 +2066,10 @@ const NB = (() => {
       rate = C.phase === '8' || C.phase === '16' ? C.now : C.r8;
       const big = C.phase === 'end' ? '' : `<small>Ringerio laktatas – ${C.phase === '16' ? 'kitos 16 val.' : C.phase === '8' ? 'dabar (pirmos 8 val.)' : 'pirmos 8 val.'}</small><b>${rate} ml/val.</b>`;
       h += `<section class="nbfl${C.phase === 'end' ? ' off' : ''}">${big}` +
-        `<small>Per 24 val.: ${C.v24} ml (2 ml × ${w} kg × ${fmt1(t)} %)</small>` +
+        `<small>Per 24 val.: ${C.v24} ml (4 ml × ${w} kg × ${fmt1(t)} %)</small>` +
         `<small>Pirmos 8 val. nuo traumos: ${C.v8} ml → ${C.r8} ml/val.</small><small>Kitos 16 val.: ${C.v8} ml → ${C.r16} ml/val.</small>` +
         (C.phase === 'end' ? '<small><b>Praėjo 24 val. – formulės laikotarpis baigėsi; tęskite pagal diurezę.</b></small>' : '') +
-        '<small>Formulė – iš įgūdžio #48; taikykite kuopos SOP.</small></section>';
+        '<small>Formulė – Parkland pagal paskaitą „Nudegimo trauma“ (2025-12-03); taikykite kuopos SOP.</small></section>';
       if (C.phase === 'end') rate = 0;
     } else {
       rate = C.rule10;
