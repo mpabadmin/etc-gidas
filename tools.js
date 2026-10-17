@@ -1245,7 +1245,7 @@ const VZ = (() => {
   function toMist(s) {
     s = s || get();
     const nw = s.e.filter(e => !e.x); if (!nw.length) return;
-    const nm = id => name(id).replace(/ \(.*\)$/, '');
+    const nm = id => id === 'txa' ? 'TXA' : name(id).replace(/ \(.*\)$/, '');
     const rows = nw.map(e => { const v = drug(e.v); return { g: e.v === 'nacl-hipert' ? 'fl' : (v && MIST_G[v.grupe]) || 'ot', name: nm(e.v), dose: [e.a, e.u].filter(Boolean).join(' '), route: e.r, time: hm(e.t), src: 'vz:' + e.id }; });
     const who = MC.addRows(rows, nw.filter(e => e.n).map(e => nm(e.v) + ': ' + e.n).join('; '));
     nw.forEach(e => { e.x = true; }); save(s);
