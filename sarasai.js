@@ -104,7 +104,7 @@ E.sarasai = {
     intro: 'Vienoda perdavimo struktūra padeda neprarasti informacijos. Prieš perdavimą A narys (komandos vadas) atlieka 5 s apžiūrą. C narys tuo metu jau įveda PVK / IO.',
     items: [
       { t: 'A – amžius, lytis, svarbi anamnezė', s: ['Pvz., nėštumas, antikoaguliantai (varfarinas)'] },
-      { t: 'T – traumos laikas', k: true, i: 'Pažymėkite pradžios ekrane (kortelė „Trauma“) – kortelė „TXA iki“ parodys terminą.' },
+      { t: 'T – traumos laikas', k: true, i: 'Pažymėkite paciento faile (kortelė „Trauma“) – kortelė „TXA iki“ parodys terminą.' },
       { t: 'M – mechanizmas', s: ['Bendras mechanizmas: eismo įvykis, dūris ir kt.', 'Rizikos veiksniai: įstrigimas, apvirtimas, išmetimas iš transporto priemonės, kritimas iš aukščio'] },
       { t: 'I – įtariami sužalojimai' },
       { t: 'S – požymiai ir simptomai', s: ['Kvėpavimo dažnis, SpO₂', 'Širdies susitraukimų dažnis, kraujospūdis', 'GKS, židininis neurologinis deficitas', 'Skausmas', 'Gyvybinių funkcijų tendencijos'] },
