@@ -11,7 +11,7 @@ const E = window.ETC;
 const KOMP = 'Pagal kompetenciją', MED = 'Medicinos personalui', GYD = 'Gydytojui', INT = 'Intubuojantiems gydytojams';
 const link = (href, t, s) => `<a class="row" href="${href}"><div>${t}${s ? '<small>' + s + '</small>' : ''}</div><span class="ar">›</span></a>`;
 
-E.versija = '2026-10-17 v29 (MIST kortelė pasirinkimais: požymiai, vaistai, skysčiai, turniketai ir žymės – apatiniuose languose; retai pildomi laukai – „+“; „Aš“ profilis; eksportas ir diktavimas sugrąžinti; v28 – paciento ekrano pataisos)';
+E.versija = '2026-10-17 v30 (vienas traumos laikas kortelėje ir laikmatyje, priminimai atveria reikiamą langą, „Atšaukti“, perdavimas „šį / visus“, ranka įvedamas vaistas, GKS nebūtinas, 9-Line pagal LK formą, SITREP, 10S triažas, kraujo transfuzija)';
 // Pranešimų priėmimo adresas: Google Apps Script žiniatinklio programos /exec URL (žr. tools/atsiliepimai.gs)
 E.atsiliepimai = { url: 'https://script.google.com/macros/s/AKfycbyUpzDmAClJ40FMltkHi21Ozc4PpItRr3u6yy4rU0DKNGe7JkRBnOr0y42wLwpJcBau/exec' };
 
@@ -104,7 +104,7 @@ E.sarasai = {
     intro: 'Vienoda perdavimo struktūra padeda neprarasti informacijos. Prieš perdavimą A narys (komandos vadas) atlieka 5 s apžiūrą. C narys tuo metu jau įveda PVK / IO.',
     items: [
       { t: 'A – amžius, lytis, svarbi anamnezė', s: ['Pvz., nėštumas, antikoaguliantai (varfarinas)'] },
-      { t: 'T – traumos laikas', k: true, i: 'Pažymėkite pradžios ekrane (kortelė „Trauma“) – kortelė „TXA iki“ parodys terminą.' },
+      { t: 'T – traumos laikas', k: true, i: 'Pažymėkite paciento faile (kortelė „Trauma“) – kortelė „TXA iki“ parodys terminą.' },
       { t: 'M – mechanizmas', s: ['Bendras mechanizmas: eismo įvykis, dūris ir kt.', 'Rizikos veiksniai: įstrigimas, apvirtimas, išmetimas iš transporto priemonės, kritimas iš aukščio'] },
       { t: 'I – įtariami sužalojimai' },
       { t: 'S – požymiai ir simptomai', s: ['Kvėpavimo dažnis, SpO₂', 'Širdies susitraukimų dažnis, kraujospūdis', 'GKS, židininis neurologinis deficitas', 'Skausmas', 'Gyvybinių funkcijų tendencijos'] },

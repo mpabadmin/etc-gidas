@@ -27,7 +27,7 @@ const listRow = id => {
 };
 function doseShort(v, w) {
   const d = (v.dozes || [])[0] || ((v.stulpeliai || [])[0] || { dozes: [] }).dozes[0]; if (!d) return v.klase || '';
-  return d.k + ': ' + (d.c ? calc(d.c, w) + ' (' + w + ' kg)' : d.d);
+  return d.k + ': ' + (d.c ? calc(d.c, w) + ' (' + w + ' kg)' + (d.c.alt ? ' · ' + d.c.alt : '') : d.d);
 }
 function tocHtml(html) {
   const hs = []; let i = 0;
@@ -42,9 +42,9 @@ const installed = () => matchMedia('(display-mode: standalone)').matches || navi
 const installRow = () => installed() ? '' : row('#/idiegimas', 'Įdiekite programėlę telefone', 'Android ir iPhone – 1 minutė, veikia be interneto');
 // Įrankiai (tools.js): būsena rodoma po pavadinimu
 const toolRows = () => typeof MC === 'undefined' ? '' :
-  row('#/mist', 'MIST kortelė', MC.status()) + row('#/9line', '9-Line MEDEVAC', NL.status()) +
-  row('#/gks', 'GKS skaičiuoklė', GK.status()) + row('#/tst', 'TST rūšiavimas', TS.status()) + row('#/mascal', 'Mascal triažas', MS.status()) + row('#/zymejimas', 'Vaistų žymėjimas', VZ.status()) +
-  row('#/nudegimai', 'Nudegimų plotas', NB.status()) + row('#/pilnas-kraujas', 'Šviežias pilnas kraujas', KR.status()) + row('#/scenarijai', 'Treniruočių scenarijai', SC.status()) +
+  row('#/mist', 'MIST kortelė', MC.status()) + row('#/9line', '9-Line MEDEVAC', NL.status()) + (typeof SR !== 'undefined' ? row('#/sitrep', 'SITREP – padėties pranešimas', SR.status()) : '') +
+  row('#/gks', 'GKS skaičiuoklė', GK.status()) + row('#/tst', '10S triažas', TS.status()) + row('#/mascal', 'Mascal triažas', MS.status()) + row('#/zymejimas', 'Vaistų žymėjimas', VZ.status()) +
+  row('#/nudegimai', 'Nudegimų plotas', NB.status()) + row('#/pilnas-kraujas', 'Kraujo transfuzija', KR.status()) + row('#/scenarijai', 'Treniruočių scenarijai', SC.status()) +
   row('#/korteles', 'Dozių kortelės', FC.status()) + row('#/egzaminas', 'Egzaminuotojo režimas', EX.status());
 
 const GRUPES = [['K', 'Komanda, apžiūra ir pervežimas'], ['A', 'A – kvėpavimo takai ir neurologija'], ['B', 'B – kvėpavimas, krūtinė, dubuo'], ['C', 'C – kraujavimas ir kraujotaka'], ['S', 'D/E – galva, antrinė apžiūra, žaizdos'], ['V', 'Vaistai ir skausmas']];
@@ -60,7 +60,7 @@ const V = {
       `<a class="role ${r.cls || ''}" href="#/v/${r.id}?f=${field ? pirmIdx(r) : 0}"><b>${esc(r.id)}</b><small>${esc(r.sub || '')}</small>${field ? '<small class="rs">Pirminė apžiūra</small>' : ''}</a>`).join('') + '</div>';
   },
 
-  // Įrankiai: plytelės – TST + Mascal (didesnės) · 9-Line + GKS · Nudegimai + Kraujas · Šviežias kraujas + Skiedimas.
+  // Įrankiai: plytelės – 10S triažas + Mascal (didesnės) · 9-Line + SITREP · GKS + Nudegimai · Kraujas + Kraujo transfuzija · Skiedimas.
   // MIST kortelė ir vaistų žymėjimas – paciento ekrane (apatinė navigacija „Pacientas“).
   toolTiles() {
     const st = m => { try { return m().status(); } catch (e) { return ''; } }; // tools.js gali būti neįkeltas
@@ -68,10 +68,10 @@ const V = {
     const t = (href, ti, b, sm, lb) => `<a class="tool" href="${href}" aria-label="${esc(lb)}: ${esc(sm)}"><span class="ti">${ti}</span><b>${b}</b><small>${esc(sm)}</small></a>`;
     const big = s => s.replace('class="tool"', 'class="tool big"');
     return '<div class="tools">' +
-      big(t('#/tst', 'T', 'TST', ts, 'TST rūšiavimas')) + big(t('#/mascal', 'MC', 'Mascal triažas', st(() => MS), 'Mascal triažas')) +
-      t('#/9line', '9', '9-Line', nl, '9-Line MEDEVAC prašymas') + t('#/gks', 'G', 'GKS', gk, 'GKS skaičiuoklė') +
-      t('#/nudegimai', 'N', 'Nudegimai', st(() => NB), 'Nudegimų ploto skaičiuoklė') + (P.kraujas ? t('#/p/kraujas', 'K', 'Kraujas', 'ABO ir RhD lentelė', 'Kraujo suderinamumas') : '') +
-      t('#/pilnas-kraujas', 'Š', 'Šviežias kraujas', st(() => KR), 'Šviežias pilnas kraujas') + (P.skiedimas ? t('#/p/skiedimas', 'S', 'Skiedimas', 'Vaistų skiedimo lentelės', 'Vaistų skiedimas') : '') + '</div>';
+      big(t('#/tst', '10S', '10S triažas', ts, '10S triažas')) + big(t('#/mascal', 'MC', 'Mascal triažas', st(() => MS), 'Mascal triažas')) +
+      t('#/9line', '9', '9-Line', nl, '9-Line MEDEVAC prašymas') + t('#/sitrep', 'SR', 'SITREP', st(() => SR), 'SITREP – padėties pranešimas') +
+      t('#/gks', 'G', 'GKS', gk, 'GKS skaičiuoklė') + t('#/nudegimai', 'N', 'Nudegimai', st(() => NB), 'Nudegimų ploto skaičiuoklė') + (P.kraujas ? t('#/p/kraujas', 'K', 'Kraujas', 'ABO ir RhD lentelė', 'Kraujo suderinamumas') : '') +
+      t('#/pilnas-kraujas', 'KT', 'Kraujo transfuzija', st(() => KR), 'Kraujo transfuzija') + (P.skiedimas ? t('#/p/skiedimas', 'S', 'Skiedimas', 'Vaistų skiedimo lentelės', 'Vaistų skiedimas') : '') + '</div>';
   },
 
   escRows() {
@@ -147,7 +147,7 @@ const V = {
     });
     const rest = Object.keys(S).filter(x => !used.has(x));
     if (rest.length) h += '<h2>Visai komandai</h2>' + rest.map(listRow).join('');
-    return h + '<p class="muted">Žymėjimai išlieka, kol paspausite „Naujas pacientas“.</p>';
+    return h + '<p class="muted">Žymėjimai priklauso dabartiniam sužeistajam; išvalyti – mygtukas „Išvalyti žymėjimus“ sąrašo apačioje.</p>';
   },
 
   role(id, f) {
@@ -157,7 +157,7 @@ const V = {
     const S = E.sarasai || {}, lid = r.lists[f];
     let h = `<h1>${esc(r.pav)}</h1>`;
     if (mode === 'learn' && r.aprasymas) h += `<details class="card"${f === 0 ? ' open' : ''}><summary><b>Vaidmuo</b></summary>${r.aprasymas}</details>`;
-    h += '<div class="tabs">' + r.lists.map((l, i) => tabBtn((S[l] || {}).short || (S[l] || {}).title || l, `#/v/${id}?f=${i}`, i === f)).join('') + '</div>';
+    h += '<div class="tabs ph">' + r.lists.map((l, i) => tabBtn((S[l] || {}).short || (S[l] || {}).title || l, `#/v/${id}?f=${i}`, i === f)).join('') + '</div>';
     if (S[lid] && S[lid].intro) h += '<p class="muted">' + br(S[lid].intro) + '</p>';
     h += renderList(lid);
     if (mode === 'learn') h += EX.entry(lid);
@@ -319,7 +319,7 @@ const V = {
     const inst = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
     let h = '<h1>Nustatymai</h1>' + GL.settingRow();
     h += `<div class="ck${hide() ? ' on' : ''}" data-act="hide"><span class="bx">✓</span><div style="flex:1">Slėpti tik gydytojui skirtus veiksmus ir vaistus<div class="muted">Lieka tai, ką atlieka komandos nariai.</div></div></div>`;
-    h += '<h2>Pacientas</h2>' + (typeof MC !== 'undefined' && MC.profileView ? MC.profileView() : '') + row('#/pacientas', 'Paciento failas', 'Pacientų sąrašas, įvykių eiga, perdavimas QR') + b('new-pt', 'Naujas pacientas', 'Ankstesnis lieka sąraše; laikai, žymėjimai ir įrankiai – naujam') + REM.settings() + OP.settings();
+    h += '<h2>Pacientas</h2>' + (typeof MC !== 'undefined' && MC.profileView ? MC.profileView() : '') + row('#/pacientas', 'Paciento failas', 'Pacientų sąrašas, įvykių eiga, perdavimas QR') + b('new-pt', '+ Kitas sužeistasis', 'Ankstesni lieka sąraše; naujam – švarūs laikai, žymėjimai ir įrankiai') + REM.settings() + OP.settings();
     h += '<h2>Mokymasis</h2>' + row('#/korteles', 'Dozių kortelės', FC.status()) + row('#/egzaminas', 'Egzaminuotojo režimas', EX.status()) + b('reset-ivert', 'Ištrinti įsivertinimus', 'Visi 1–4 balai bus pašalinti');
     h += '<h2>Atsiliepimai</h2>' + b('fb', 'Pranešti apie klaidą ar pasiūlyti', 'Komentaras ir ekrano vaizdas – keliauja gido rengėjams');
     const nOut = FB.pending();

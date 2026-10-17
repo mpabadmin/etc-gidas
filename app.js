@@ -4,9 +4,15 @@ const backBtn = document.getElementById('back');
 let depth = 0;
 let night = !!LS.get('etc-naktis', false); // naktinis raudonas režimas
 const dec = s => { try { return decodeURIComponent(s); } catch (e) { return s; } };
-const newPt = () => '<button class="btn" data-act="new-pt" style="width:100%;margin-top:16px">Naujas pacientas – išvalyti žymėjimus</button>';
+// Sąrašo apačioje: išvalyti šio sąrašo žymėjimus (dabartinio sužeistojo; su „Atšaukti“). Naujas sužeistasis – juostos „+“.
+const clrCk = (p, q) => { let id = ''; try { id = HCFG().listOf(p, q || {}); } catch (e) {} if (!id) return ''; const n = (ckAll()[id] || []).length;
+  return `<button class="btn" data-act="ck-clr" data-l="${esc(id)}" style="width:100%;margin-top:16px"${n ? '' : ' disabled'}>Išvalyti žymėjimus${n ? ' (' + n + ')' : ''}</button>`; };
+// „Išvalyti žymėjimus“ mygtuko būsena po žymėjimo (be perpiešimo)
+const ckBtn = l => { const cb = app.querySelector('[data-act=ck-clr]'); if (!cb || cb.dataset.l !== l) return; const n = (ckAll()[l] || []).length; cb.disabled = !n; cb.textContent = 'Išvalyti žymėjimus' + (n ? ' (' + n + ')' : ''); };
+// Seni maršrutai: MIST kortelė ir vaistų žymėjimas – paciento ekrane (MIST mokymosi režime lieka atskiras puslapis su paaiškinimais)
+const REDIR = p => p[0] === 'zymejimas' ? '#/pacientas?t=vaistai' : p[0] === 'mist' && mode !== 'learn' ? '#/pacientas?t=kortele' : '';
 const PT_BAR = ['zymejimas', 'nudegimai', 'pilnas-kraujas']; // įrankiai, virš kurių rodoma pacientų juosta
-const FB_PAGES = ['v', 's', 'vaistai', 'vaistas', 'igudis', 'tema', 'p', '9line', 'mist', 'gks', 'tst', 'zymejimas', 'nudegimai', 'pilnas-kraujas', 'scenarijai', 'mascal', 'pacientas', 'qr', 'qr-priimti', 'egzaminas', 'korteles', 'skenuoti', 'vertinimas'];
+const FB_PAGES = ['v', 's', 'vaistai', 'vaistas', 'igudis', 'tema', 'p', '9line', 'mist', 'gks', 'tst', 'sitrep', 'zymejimas', 'nudegimai', 'pilnas-kraujas', 'scenarijai', 'mascal', 'pacientas', 'qr', 'qr-priimti', 'egzaminas', 'korteles', 'skenuoti', 'vertinimas'];
 const fbLink = () => '<button class="btn fbrow" data-act="fb">Pastebėjote klaidą ar turite pasiūlymą? Praneškite</button>';
 
 function route() {
@@ -19,8 +25,8 @@ function route() {
 function view(p, q) {
   switch (p[0]) {
     case undefined: return V.home();
-    case 'v': return V.role(p[1], +q.f || 0) + newPt();
-    case 's': return V.list(p[1]) + newPt();
+    case 'v': return V.role(p[1], +q.f || 0) + clrCk(p, q);
+    case 's': return V.list(p[1]) + clrCk(p, q);
     case 'vaistai': return V.drugs();
     case 'vaistas': return V.drug(p[1]);
     case 'igudziai': return V.skills(q);
@@ -36,6 +42,7 @@ function view(p, q) {
     case 'mist': return MC.view();
     case 'gks': return GK.view();
     case 'tst': return TS.view();
+    case 'sitrep': return SR.view();
     case 'zymejimas': return VZ.view();
     case 'nudegimai': return NB.view();
     case 'mascal': return MS.view(q);
@@ -58,7 +65,7 @@ function render() {
   document.getElementById('mL').classList.toggle('on', mode === 'learn');
   backBtn.style.display = p.length ? '' : 'none'; // pradžios ekrane vietoje „Atgal“ – atnaujinimo mygtukas dešinėje
   const ub = document.getElementById('upd'); if (ub) ub.style.display = p.length ? 'none' : '';
-  const sec = { vaistai: 'vaistai', vaistas: 'vaistai', igudziai: 'igudziai', igudis: 'igudziai', temos: 'home', tema: 'home', p: 'home', sarasai: 'sarasai', s: 'sarasai', v: 'sarasai', '9line': 'home', mist: 'pacientas', gks: 'home', tst: 'home', zymejimas: 'pacientas', nudegimai: 'home', mascal: 'home', 'pilnas-kraujas': 'home', scenarijai: 'igudziai', pacientas: 'pacientas', qr: 'pacientas', 'qr-priimti': 'pacientas', egzaminas: 'sarasai', korteles: 'vaistai', skenuoti: 'home', vertinimas: 'sarasai' }[p[0]] || (p.length ? '' : 'home');
+  const sec = { vaistai: 'vaistai', vaistas: 'vaistai', igudziai: 'igudziai', igudis: 'igudziai', temos: 'home', tema: 'home', p: 'home', sarasai: 'sarasai', s: 'sarasai', v: 'sarasai', '9line': 'home', mist: 'pacientas', gks: 'home', tst: 'home', sitrep: 'home', zymejimas: 'pacientas', nudegimai: 'home', mascal: 'home', 'pilnas-kraujas': 'home', scenarijai: 'igudziai', pacientas: 'pacientas', qr: 'pacientas', 'qr-priimti': 'pacientas', egzaminas: 'sarasai', korteles: 'vaistai', skenuoti: 'home', vertinimas: 'sarasai' }[p[0]] || (p.length ? '' : 'home');
   document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('on', a.dataset.s === sec));
   try { PT.sync(); } catch (e) { console.error(e); }
   if (typeof DICT !== 'undefined') DICT.stop();
@@ -75,6 +82,7 @@ function render() {
 }
 
 function onNav(first) {
+  { const r = REDIR(route().p); if (r) { try { history.replaceState(history.state, '', r); } catch (e) { location.replace(r); return; } } }
   const { p, q } = route(), s = history.state;
   if (!(s && s.d != null)) { try { LU.onRoute(p, q); } catch (e) { console.error(e); } } // dažniausi sąrašai: tik naujas perėjimas (ne atgal / pirmyn / perkrovimas)
   HUB.close();
@@ -105,6 +113,7 @@ app.addEventListener('click', e => {
   if (/^mc-/.test(d.act)) { MC.act(el, e); return; }
   if (/^gk-/.test(d.act)) { GK.act(el); return; }
   if (/^ts-/.test(d.act)) { TS.act(el); return; }
+  if (/^sr-/.test(d.act)) { SR.act(el); return; }
   if (/^vz-/.test(d.act)) { VZ.act(el); return; }
   if (/^nb-/.test(d.act)) { NB.act(el); return; }
   if (/^ms-/.test(d.act)) { MS.act(el); return; }
@@ -121,7 +130,7 @@ app.addEventListener('click', e => {
   if (/^op-/.test(d.act)) { OP.act(el); return; }
   if (/^gl-/.test(d.act)) { GL.act(el); return; }
   switch (d.act) {
-    case 'ck': ckToggle(d.l, +d.i); el.classList.toggle('on'); updCount(el.closest('.cl')); if (navigator.vibrate) navigator.vibrate(15); break;
+    case 'ck': ckToggle(d.l, +d.i); el.classList.toggle('on'); updCount(el.closest('.cl')); ckBtn(d.l); if (navigator.vibrate) navigator.vibrate(15); break;
     case 'go': location.hash = d.r; break;
     case 'toc': { const t = document.getElementById(d.t); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); break; }
     case 'mp4': {
@@ -137,18 +146,13 @@ app.addEventListener('click', e => {
       el.classList.remove('vthumb'); el.removeAttribute('style'); el.removeAttribute('data-act'); el.innerHTML = ''; el.appendChild(f);
       break;
     }
-    case 'tm': tmEdit = d.k; updTimers(); break;
-    case 'tm-now': setTm(Date.now()); break;
-    case 'tm-set': {
-      const v = (document.getElementById('tm-in') || {}).value;
-      if (!v) break;
-      const [hh, mm] = v.split(':').map(Number), t = new Date();
-      t.setHours(hh, mm, 0, 0);
-      if (t.getTime() > Date.now() + 5 * 60000) t.setDate(t.getDate() - 1);
-      setTm(t.getTime()); break;
+    case 'tm': MC.sheet('time', { field: d.k }); break; // laiko langas – tas pats visur (kartu su MIST kortele)
+    case 'ck-clr': {
+      const all = ckAll(), prev = all[d.l]; if (!prev || !prev.length) break;
+      delete all[d.l]; LS.set('etc-ck', all); { const y = scrollY; render(); scrollTo(0, y); }
+      toastAct('Žymėjimai išvalyti', 'Atšaukti', () => { const a = ckAll(); a[d.l] = prev; LS.set('etc-ck', a); const y = scrollY; render(); scrollTo(0, y); });
+      break;
     }
-    case 'tm-clr': setTm(null); break;
-    case 'tm-x': tmEdit = null; updTimers(); break;
     case 'ok': LS.set('etc-ok', true); el.closest('.warn').remove(); break;
     case 'w': LS.set('etc-svoris', +d.w); render(); break;
     case 'rate': {
@@ -156,7 +160,7 @@ app.addEventListener('click', e => {
       if (R[d.id] === v) delete R[d.id]; else R[d.id] = v;
       LS.set('etc-ivert', R); render(); break;
     }
-    case 'new-pt': if (confirm('Pradėti naują pacientą? Dabartinis lieka pacientų sąraše (Paciento failas).')) { PT.add(); render(); toast('Naujas pacientas'); } break;
+    case 'new-pt': { const prev = PT.list().cur; PT.add(); render(); PT.added(prev); break; } // kitas sužeistasis; ankstesni lieka sąraše
     case 'hide': LS.set('etc-slepti', !hide()); IDX = null; render(); break;
     case 'reset-ivert': if (confirm('Ištrinti visus įsivertinimus?')) { LS.set('etc-ivert', {}); render(); } break;
     case 'fb': FB.open(); break;
@@ -183,6 +187,7 @@ app.addEventListener('keydown', e => {
 function toolInput(t) {
   const d = t.dataset || {};
   if (d.nl) { NL.onInput(t); return true; }
+  if (d.sr) { SR.onInput(t); return true; }
   if (d.mc || d.mcf || d.mcm != null || d.mctq || d.mcp != null || d.mcr || d.mcas) { MC.onInput(t); return true; }
   if (d.vz) { VZ.onInput(t); return true; }
   if (d.kr) { KR.onInput(t); return true; }
