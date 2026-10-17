@@ -6,7 +6,7 @@ let night = !!LS.get('etc-naktis', false); // naktinis raudonas režimas
 const dec = s => { try { return decodeURIComponent(s); } catch (e) { return s; } };
 const newPt = () => '<button class="btn" data-act="new-pt" style="width:100%;margin-top:16px">Naujas pacientas – išvalyti žymėjimus</button>';
 const PT_BAR = ['zymejimas', 'nudegimai', 'pilnas-kraujas']; // įrankiai, virš kurių rodoma pacientų juosta
-const FB_PAGES = ['v', 's', 'vaistai', 'vaistas', 'igudis', 'tema', 'p', '9line', 'mist', 'gks', 'tst', 'zymejimas', 'nudegimai', 'pilnas-kraujas', 'scenarijai', 'mascal', 'pacientas', 'qr', 'qr-priimti', 'egzaminas', 'korteles'];
+const FB_PAGES = ['v', 's', 'vaistai', 'vaistas', 'igudis', 'tema', 'p', '9line', 'mist', 'gks', 'tst', 'zymejimas', 'nudegimai', 'pilnas-kraujas', 'scenarijai', 'mascal', 'pacientas', 'qr', 'qr-priimti', 'egzaminas', 'korteles', 'skenuoti', 'vertinimas'];
 const fbLink = () => '<button class="btn fbrow" data-act="fb">Pastebėjote klaidą ar turite pasiūlymą? Praneškite</button>';
 
 function route() {
@@ -45,6 +45,8 @@ function view(p, q) {
     case 'qr': case 'qr-priimti': return QR.view(p[0]);
     case 'egzaminas': return EX.view(p[1]);
     case 'korteles': return FC.view();
+    case 'vertinimas': return VL.view(p[1]);
+    case 'skenuoti': return SK.view();
     default: return notFound();
   }
 }
@@ -56,7 +58,7 @@ function render() {
   document.getElementById('mL').classList.toggle('on', mode === 'learn');
   backBtn.style.display = p.length ? '' : 'none'; // pradžios ekrane vietoje „Atgal“ – atnaujinimo mygtukas dešinėje
   const ub = document.getElementById('upd'); if (ub) ub.style.display = p.length ? 'none' : '';
-  const sec = { vaistai: 'vaistai', vaistas: 'vaistai', igudziai: 'igudziai', igudis: 'igudziai', temos: 'temos', tema: 'temos', p: 'temos', sarasai: 'sarasai', s: 'sarasai', v: 'sarasai', '9line': 'home', mist: 'home', gks: 'home', tst: 'home', zymejimas: 'home', nudegimai: 'home', mascal: 'home', 'pilnas-kraujas': 'home', scenarijai: 'igudziai', pacientas: 'home', qr: 'home', 'qr-priimti': 'home', egzaminas: 'sarasai', korteles: 'vaistai' }[p[0]] || (p.length ? '' : 'home');
+  const sec = { vaistai: 'vaistai', vaistas: 'vaistai', igudziai: 'igudziai', igudis: 'igudziai', temos: 'temos', tema: 'temos', p: 'temos', sarasai: 'sarasai', s: 'sarasai', v: 'sarasai', '9line': 'home', mist: 'home', gks: 'home', tst: 'home', zymejimas: 'home', nudegimai: 'home', mascal: 'home', 'pilnas-kraujas': 'home', scenarijai: 'igudziai', pacientas: 'home', qr: 'home', 'qr-priimti': 'home', egzaminas: 'sarasai', korteles: 'vaistai', skenuoti: 'home', vertinimas: 'sarasai' }[p[0]] || (p.length ? '' : 'home');
   document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('on', a.dataset.s === sec));
   try { PT.sync(); } catch (e) { console.error(e); }
   if (typeof DICT !== 'undefined') DICT.stop();
@@ -64,7 +66,7 @@ function render() {
   catch (err) { console.error(err); app.innerHTML = '<h1>Klaida</h1><p class="muted">Nepavyko atidaryti puslapio. Patikrinkite turinio failus.</p>'; }
   // MIST sužeistųjų skirtukai: pasirinktas – matomas
   app.querySelectorAll('.ptabs').forEach(sc => { const b = sc.querySelector('button.on'), add = sc.querySelector('.add'); if (b && sc.scrollWidth > sc.clientWidth) { const av = sc.clientWidth - (add ? add.offsetWidth + 12 : 0); sc.scrollLeft = Math.max(0, b.offsetLeft - (av - b.offsetWidth) / 2); } });
-  try { QR.after(p[0]); DICT.enhance(app); } catch (e) { console.error(e); }
+  try { QR.after(p[0]); DICT.enhance(app); SK.after(p[0]); } catch (e) { console.error(e); }
   if (p[0] === 'paieska') { const i = document.getElementById('qs'); if (i) { i.focus(); try { i.setSelectionRange(i.value.length, i.value.length); } catch (e) {} } }
 }
 
@@ -105,6 +107,8 @@ app.addEventListener('click', e => {
   if (/^rem-/.test(d.act)) { REM.act(el); return; }
   if (/^qr-/.test(d.act)) { QR.act(el); return; }
   if (/^ex-/.test(d.act)) { EX.act(el); return; }
+  if (/^vl-/.test(d.act)) { VL.act(el); return; }
+  if (/^sk-/.test(d.act)) { SK.act(el); return; }
   if (/^fc-/.test(d.act)) { FC.act(el); return; }
   if (/^op-/.test(d.act)) { OP.act(el); return; }
   if (/^gl-/.test(d.act)) { GL.act(el); return; }
@@ -175,6 +179,8 @@ function toolInput(t) {
   if (d.vz) { VZ.onInput(t); return true; }
   if (d.kr) { KR.onInput(t); return true; }
   if (d.ms) { MS.onInput(t); return true; }
+  if (d.sk != null) { SK.onInput(t); return true; }
+  if (d.vl) { VL.onInput(t); return true; }
   return false;
 }
 app.addEventListener('change', e => { if (e.target.type === 'time') toolInput(e.target); });

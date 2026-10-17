@@ -158,6 +158,7 @@ function buildIdx() {
   add('Įrankiai', 'Šviežias pilnas kraujas', 'Vaikščiojantis kraujo bankas: donoras, paėmimas, perpylimas', 'šviežias pilnas kraujas wbb walking blood bank donoras perpylimas transfuzija ltowb', '#/pilnas-kraujas');
   add('Įrankiai', 'Treniruočių scenarijai', 'Klinikiniai atvejai su klausimais ir paaiškinimais', 'scenarijai scenarijus treniruotė viktorina testas klausimai', '#/scenarijai');
   add('Įrankiai', 'Vaistų žymėjimas', 'Suleisti vaistai: dozė, kelias, laikas; perkėlimas į MIST', 'vaistų žymėjimas suleista suleisti vaistai dozė laikas įrašas žurnalas ketaminas fentanilis txa', '#/zymejimas');
+  add('Įrankiai', 'Nuskaityti popierinę kortelę', 'DD 1380 nuotrauka → MIST: langeliai, žymės, iškarpos', 'skenuoti nuskaityti nuotrauka fotografuoti popierinė kortelė dd1380 tccc card ocr atpažinimas', '#/skenuoti');
   add('Įrankiai', 'Dozių kortelės', 'Kasdien 5 kortelės: vaistas ir kelias – prisiminkite dozę', 'dozių kortelės korteles flashcards kartojimas dozės atmintis testas', '#/korteles');
   add('Įrankiai', 'Egzaminuotojo režimas', 'Kontrolinio sąrašo vertinimas su laiku ir kritiniais punktais', 'egzaminas egzaminuotojas vertinimas instruktorius laikmatis kritiniai punktai', '#/egzaminas');
   add('Įrankiai', 'TST rūšiavimas', 'Ten Second Triage – rūšiavimas per 10 sekundžių', 'tst ten second triage triažas rūšiavimas masinė nelaimė p1 p2 p3', '#/tst');

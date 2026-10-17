@@ -8,7 +8,7 @@ const TCFG = {
   laikai: 'etc-laikai', // pradžios ekrano laikmačiai { trauma, turn }
   // nuorodos puslapių apačioje: [adresas, pavadinimas, paantraštė]
   nl: () => [['#/mist', 'MIST kortelė', MC.status()], ['#/igudis/46', 'Pasiruošimas pervežimui ir perdavimas', 'Įgūdis #46']],
-  mc: () => [['#/pacientas', 'Paciento failas', 'Įvykių eiga, perdavimas QR'], ['#/qr-priimti', 'Priimti pacientą QR kodu', 'Nuskaityti kito telefono kodą'], ['#/gks', 'GKS skaičiuoklė', GK.status()], ['#/9line', '9-Line MEDEVAC', NL.status()], ['#/s/atmist', 'ATMIST perdavimas', 'Kontrolinis sąrašas'], ['#/igudis/46', 'Pasiruošimas pervežimui ir perdavimas', 'Įgūdis #46']],
+  mc: () => [['#/skenuoti', 'Nuskaityti popierinę kortelę', 'DD 1380 nuotrauka → MIST, be interneto'], ['#/pacientas', 'Paciento failas', 'Įvykių eiga, perdavimas QR'], ['#/qr-priimti', 'Priimti pacientą QR kodu', 'Nuskaityti kito telefono kodą'], ['#/gks', 'GKS skaičiuoklė', GK.status()], ['#/9line', '9-Line MEDEVAC', NL.status()], ['#/s/atmist', 'ATMIST perdavimas', 'Kontrolinis sąrašas'], ['#/igudis/46', 'Pasiruošimas pervežimui ir perdavimas', 'Įgūdis #46']],
   gk: () => [['#/mist', 'MIST kortelė', MC.status()], ['#/igudis/12', 'Vyzdžiai, AVPU, galūnių simetrija ir GKS', 'Įgūdis #12']],
   pt: ['laikai', 'ck', 'vz', 'nb', 'wbb'], // paciento failas: šie raktai priklauso dabartiniam pacientui (perjungiami kartu su MIST kortele)
   migrate: null // ankstesnių formatų perkėlimas (ETC – nereikia; vienos kortelės formatą perkelia MC)
