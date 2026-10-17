@@ -154,7 +154,9 @@ app.addEventListener('click', e => {
       break;
     }
     case 'ok': LS.set('etc-ok', true); el.closest('.warn').remove(); break;
-    case 'w': LS.set('etc-svoris', +d.w); render(); break;
+    case 'w': LS.set('etc-svoris', +d.w); wOther = false; render(); break;
+    case 'w-other': { wOther = !wOther; const y = scrollY; render(); scrollTo(0, y); if (wOther) { const i = document.getElementById('w-in'); if (i) i.focus(); } break; }
+    case 'w-ok': { const i = document.getElementById('w-in'), v = i ? parseFloat(String(i.value).replace(',', '.')) : NaN; if (!(v >= 3 && v <= 250)) { toast('Svoris: 3–250 kg'); if (i) i.focus(); break; } LS.set('etc-svoris', Math.round(v)); wOther = false; toast('Svoris ' + Math.round(v) + ' kg – šiam pacientui'); const y = scrollY; render(); scrollTo(0, y); break; }
     case 'rate': {
       const R = LS.get('etc-ivert', {}), v = +d.v;
       if (R[d.id] === v) delete R[d.id]; else R[d.id] = v;
@@ -177,6 +179,7 @@ app.addEventListener('click', e => {
 });
 
 app.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target && (e.target.id === 'w-in' || e.target.id === 'nb-ml' || e.target.id === 'hb-win')) { e.preventDefault(); const b = app.querySelector(e.target.id === 'w-in' ? '[data-act="w-ok"]' : e.target.id === 'hb-win' ? '[data-act="hb-wok"]' : '[data-act="nb-uo"]'); if (b) b.click(); return; }
   const t = e.target, a = t.dataset && t.dataset.act;
   if (e.key === 'Enter' && /^(yt|mp4)$/.test(a || '')) t.click();
   if ((e.key === 'Enter' || e.key === ' ') && (a === 'nb-r' || a === 'kr-ck' || a === 'ex-ck' || a === 'gl-tg')) { e.preventDefault(); t.dispatchEvent(new MouseEvent('click', { bubbles: true })); return; }

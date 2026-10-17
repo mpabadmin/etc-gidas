@@ -11,8 +11,12 @@ const progBar = (n, tot) => `<div class="prog"><i style="width:${tot ? Math.roun
 // Paciento svoris: wNow() – nurodytas (0 – nenurodytas), wCalc() – skaičiavimui (nenurodžius – 80 kg)
 const wNow = () => { const w = +LS.get('etc-svoris', 0); return w > 0 ? w : 0; };
 const wCalc = () => wNow() || 80;
-const wChips = w => '<div class="chips">' + W_LIST.map(x => `<button class="${x === w ? 'on' : ''}" data-act="w" data-w="${x}" aria-pressed="${x === w}">${x}</button>`).join('') + '</div>' +
-  (w ? '' : '<p class="muted mt0">Svoris nenurodytas – dozės skaičiuojamos 80 kg (numatytas).</p>');
+// Svoris – greiti lustai ir „Kitas…“ (bet koks 3–250 kg, skaičių klaviatūra); noNote – be „80 kg numatytas“ pastabos (skysčiai be svorio neskaičiuojami)
+let wOther = false;
+const wChips = (w, noNote) => '<div class="chips wch">' + W_LIST.map(x => `<button class="${x === w ? 'on' : ''}" data-act="w" data-w="${x}" aria-pressed="${x === w}">${x}</button>`).join('') +
+  (w && W_LIST.indexOf(w) < 0 ? `<button class="on" data-act="w-other" aria-pressed="true" aria-label="Svoris ${w} kg – keisti">${w}</button>` : `<button data-act="w-other" aria-expanded="${wOther}">Kitas…</button>`) + '</div>' +
+  (wOther ? '<div class="wother"><input class="inp" id="w-in" inputmode="decimal" placeholder="kg" aria-label="Svoris, kg" autocomplete="off"><button class="btn pri" data-act="w-ok">Gerai</button></div>' : '') +
+  (w || noNote ? '' : '<p class="muted mt0">Svoris nenurodytas – dozės skaičiuojamos 80 kg (numatytas).</p>');
 const rateBadge = (R, id) => R[id] ? `<span class="tag ${R[id] >= 3 ? 'grn' : 'amb'}">${R[id]} / 4</span>` : '';
 const listDone = id => {
   const L = (E.sarasai || {})[id]; if (!L) return [0, 0];
@@ -44,7 +48,7 @@ const installRow = () => installed() ? '' : row('#/idiegimas', 'Įdiekite progra
 const toolRows = () => typeof MC === 'undefined' ? '' :
   row('#/mist', 'MIST kortelė', MC.status()) + row('#/9line', '9-Line MEDEVAC', NL.status()) + (typeof SR !== 'undefined' ? row('#/sitrep', 'SITREP – padėties pranešimas', SR.status()) : '') +
   row('#/gks', 'GKS skaičiuoklė', GK.status()) + row('#/tst', '10S triažas', TS.status()) + row('#/mascal', 'Mascal triažas', MS.status()) + row('#/zymejimas', 'Vaistų žymėjimas', VZ.status()) +
-  row('#/nudegimai', 'Nudegimų plotas', NB.status()) + row('#/pilnas-kraujas', 'Kraujo transfuzija', KR.status()) + row('#/scenarijai', 'Treniruočių scenarijai', SC.status()) +
+  row('#/nudegimai', 'Nudegimai ir nušalimai', NB.status()) + row('#/pilnas-kraujas', 'Kraujo transfuzija', KR.status()) + row('#/scenarijai', 'Treniruočių scenarijai', SC.status()) +
   row('#/korteles', 'Dozių kortelės', FC.status()) + row('#/egzaminas', 'Egzaminuotojo režimas', EX.status());
 
 const GRUPES = [['K', 'Komanda, apžiūra ir pervežimas'], ['A', 'A – kvėpavimo takai ir neurologija'], ['B', 'B – kvėpavimas, krūtinė, dubuo'], ['C', 'C – kraujavimas ir kraujotaka'], ['S', 'D/E – galva, antrinė apžiūra, žaizdos'], ['V', 'Vaistai ir skausmas']];
@@ -70,7 +74,7 @@ const V = {
     return '<div class="tools">' +
       big(t('#/tst', '10S', '10S triažas', ts, '10S triažas')) + big(t('#/mascal', 'MC', 'Mascal triažas', st(() => MS), 'Mascal triažas')) +
       t('#/9line', '9', '9-Line', nl, '9-Line MEDEVAC prašymas') + t('#/sitrep', 'SR', 'SITREP', st(() => SR), 'SITREP – padėties pranešimas') +
-      t('#/gks', 'G', 'GKS', gk, 'GKS skaičiuoklė') + t('#/nudegimai', 'N', 'Nudegimai', st(() => NB), 'Nudegimų ploto skaičiuoklė') + (P.kraujas ? t('#/p/kraujas', 'K', 'Kraujas', 'ABO ir RhD lentelė', 'Kraujo suderinamumas') : '') +
+      t('#/gks', 'G', 'GKS', gk, 'GKS skaičiuoklė') + t('#/nudegimai', 'N', 'Nudegimai ir nušalimai', st(() => NB), 'Nudegimai ir nušalimai') + (P.kraujas ? t('#/p/kraujas', 'K', 'Kraujas', 'ABO ir RhD lentelė', 'Kraujo suderinamumas') : '') +
       t('#/pilnas-kraujas', 'KT', 'Kraujo transfuzija', st(() => KR), 'Kraujo transfuzija') + (P.skiedimas ? t('#/p/skiedimas', 'S', 'Skiedimas', 'Vaistų skiedimo lentelės', 'Vaistų skiedimas') : '') + '</div>';
   },
 
