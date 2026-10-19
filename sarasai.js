@@ -11,7 +11,7 @@ const E = window.ETC;
 const KOMP = 'Pagal kompetenciją', MED = 'Medicinos personalui', GYD = 'Gydytojui', INT = 'Intubuojantiems gydytojams';
 const link = (href, t, s) => `<a class="row" href="${href}"><div>${t}${s ? '<small>' + s + '</small>' : ''}</div><span class="ar">›</span></a>`;
 
-E.versija = '2026-10-19 v35 (+40 karinių treniruočių scenarijų, visi scenarijai kariniai; nudegimų įgūdis – Parkland 4 ml; kraujo produktams – gavėjo ir donoro grupė ABO/Rh; mokymosi įrankiai – piktogramų plytelės; laiko ir matavimų ritiniai – bakstelėkite arba paslinkite pirštu; nudegimai: skysčiai pagal Parkland – 4 ml × kg × % KPP, patvirtino gydytojas; pavadinimai „10s triažas“ ir „Mascal“; svoris „Kitas…“)';
+E.versija = '2026-10-19 v36 (+būklės juosta – visi parametrai paskutiniuose 9 matavimuose, blogesnė nei ankstesnio matavimo reikšmė nuspalvinama; +40 karinių treniruočių scenarijų, visi scenarijai kariniai; nudegimų įgūdis – Parkland 4 ml; kraujo produktams – gavėjo ir donoro grupė ABO/Rh; mokymosi įrankiai – piktogramų plytelės; laiko ir matavimų ritiniai – bakstelėkite arba paslinkite pirštu; nudegimai: skysčiai pagal Parkland – 4 ml × kg × % KPP, patvirtino gydytojas; pavadinimai „10s triažas“ ir „Mascal“; svoris „Kitas…“)';
 // Pranešimų priėmimo adresas: Google Apps Script žiniatinklio programos /exec URL (žr. tools/atsiliepimai.gs)
 E.atsiliepimai = { url: 'https://script.google.com/macros/s/AKfycbyUpzDmAClJ40FMltkHi21Ozc4PpItRr3u6yy4rU0DKNGe7JkRBnOr0y42wLwpJcBau/exec' };
 
