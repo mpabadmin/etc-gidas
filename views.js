@@ -45,12 +45,6 @@ const brand = () => '<div class="brand"><img class="lg-d" src="img/logo-balt.png
 const installed = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone;
 const installRow = () => installed() ? '' : row('#/idiegimas', 'Įdiekite programėlę telefone', 'Android ir iPhone – 1 minutė, veikia be interneto');
 // Įrankiai (tools.js): būsena rodoma po pavadinimu
-const toolRows = () => typeof MC === 'undefined' ? '' :
-  row('#/mist', 'MIST kortelė', MC.status()) + row('#/9line', '9-Line MEDEVAC', NL.status()) + (typeof SR !== 'undefined' ? row('#/sitrep', 'SITREP – padėties pranešimas', SR.status()) : '') +
-  row('#/gks', 'GKS skaičiuoklė', GK.status()) + row('#/tst', '10s triažas', TS.status()) + row('#/mascal', 'Mascal', MS.status()) + row('#/zymejimas', 'Vaistų žymėjimas', VZ.status()) +
-  row('#/nudegimai', 'Nudegimai ir nušalimai', NB.status()) + row('#/pilnas-kraujas', 'Kraujo transfuzija', KR.status()) + row('#/scenarijai', 'Treniruočių scenarijai', SC.status()) +
-  row('#/korteles', 'Dozių kortelės', FC.status()) + row('#/egzaminas', 'Egzaminuotojo režimas', EX.status());
-
 const GRUPES = [['K', 'Komanda, apžiūra ir pervežimas'], ['A', 'A – kvėpavimo takai ir neurologija'], ['B', 'B – kvėpavimas, krūtinė, dubuo'], ['C', 'C – kraujavimas ir kraujotaka'], ['S', 'D/E – galva, antrinė apžiūra, žaizdos'], ['V', 'Vaistai ir skausmas']];
 const grupesPav = g => (GRUPES.find(x => x[0] === g) || ['', ''])[1];
 const skillOrder = () => GRUPES.reduce((a, [g]) => a.concat((E.igudziai || []).filter(s => s.grupe === g)), []).concat((E.igudziai || []).filter(s => !GRUPES.some(([g]) => g === s.grupe)));
@@ -85,6 +79,29 @@ const V = {
     }).join('');
   },
 
+  // Mokymosi pradžia: įrankiai plytelėmis su piktogramomis (kaip March gide) – trys grupės
+  learnTools() {
+    const st = m => { try { return m().status(); } catch (e) { return ''; } };
+    const ic = d => `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+    const t = (href, ti, b, sm, lb) => `<a class="tool" href="${href}" aria-label="${esc(lb)}: ${esc(sm)}"><span class="ti">${ti}</span><b>${b}</b><small>${esc(sm)}</small></a>`;
+    const med = (href, ti, b, s, lb) => t(href, ti, b, s, lb);
+    return '<h2>MEDEVAC įrankiai</h2><div class="tools">' +
+      med('#/9line', '9', '9-Line', st(() => NL), '9-Line MEDEVAC prašymas') +
+      med('#/mist', 'M', 'MIST', st(() => MC), 'MIST kortelė') +
+      med('#/tst', '10s', '10s triažas', st(() => TS), '10s triažas') +
+      med('#/sitrep', 'S', 'SITREP', st(() => SR), 'SITREP padėties pranešimas') + '</div>' +
+      '<h2>Kiti įrankiai</h2><div class="tools">' +
+      t('#/gks', ic('<circle cx="12" cy="12" r="9"/><path d="M8.5 14.5c1 1.2 2.2 1.8 3.5 1.8s2.5-.6 3.5-1.8M9 9.5h.01M15 9.5h.01"/>'), 'GKS', st(() => GK), 'GKS skaičiuoklė') +
+      t('#/mascal', ic('<path d="M4 6h16M4 12h16M4 18h10"/>'), 'Mascal', st(() => MS), 'Mascal') +
+      t('#/zymejimas', ic('<path d="M10.5 4.5a5 5 0 0 1 7 7l-6 6a5 5 0 0 1-7-7z"/><path d="M8 8l8 8"/>'), 'Vaistų žymėjimas', st(() => VZ), 'Vaistų žymėjimas') +
+      t('#/nudegimai', ic('<path d="M12 3c2 3 5 5 5 9a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-8z"/>'), 'Nudegimai ir nušalimai', st(() => NB), 'Nudegimai ir nušalimai') +
+      t('#/pilnas-kraujas', ic('<path d="M12 3c3 4 6 7 6 11a6 6 0 0 1-12 0c0-4 3-7 6-11z"/>'), 'Kraujo transfuzija', st(() => KR), 'Kraujo transfuzija') + '</div>' +
+      '<h2>Treniruotė ir vertinimas</h2><div class="tools">' +
+      t('#/scenarijai', ic('<path d="M8 5v14l11-7z"/>'), 'Scenarijai', st(() => SC), 'Treniruočių scenarijai') +
+      t('#/korteles', ic('<rect x="3" y="7" width="13" height="13" rx="2"/><path d="M8 4h11a2 2 0 0 1 2 2v11"/>'), 'Dozių kortelės', st(() => FC), 'Dozių kortelės') +
+      t('#/egzaminas', ic('<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/>'), 'Egzaminas', st(() => EX), 'Egzaminuotojo režimas') + '</div>';
+  },
+
   // Taikymo pradžia: bendri dalykai (Escape, vaidmenys, įrankiai, dažniausi sąrašai). Pacientas – apatinėje navigacijoje ir juostoje virš jos.
   homeField() {
     const L = typeof LU !== 'undefined' ? LU.top() : ['stop', 'antrine', 'kokybe'];
@@ -103,7 +120,7 @@ const V = {
       `<a class="card prog-card" href="#/igudziai"><b>Mano pažanga</b><div class="muted">Įsivertinta ${rated} / ${n} įgūdžių · atlieku (3–4) – ${good}</div>${progBar(rated, n)}</a>` +
       '<h2>Temos</h2>' + V.topicCards() +
       '<h2>Komandos vaidmenys</h2>' + V.roles(false) +
-      '<h2>Įrankiai</h2>' + toolRows() +
+      V.learnTools() +
       '<h2>Viskas vienoje vietoje</h2>' +
       row('#/sarasai', 'Kontroliniai sąrašai', 'Escape planai, A, B, C, antrinė apžiūra, STOP') +
       row('#/igudziai', 'Įgūdžiai', n + ' įgūdžiai: žingsniai, svarbiausi priminimai, praktiniai video') +
