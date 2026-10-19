@@ -1,4 +1,4 @@
-const VERSION = 'etc-gidas-v34';
+const VERSION = 'etc-gidas-v35';
 const IMG = 'etc-gidas-img-1';
 const FILES = ['./', './index.html', './core.js', './views.js', './tools.js', './sitrep.js','./priedai.js', './skenas.js', './pacientas.js', './img/skenas/dd1380-f.png', './img/skenas/dd1380-b.png', './fb.js', './vendor/html2canvas.min.js', './vendor/qrcode.min.js', './vendor/jsqr.min.js', './app.js', './sarasai.js', './vaistai.js', './igudziai.js', './scenarijai.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './favicon-32.png', './favicon-64.png', './apple-touch-icon.png', './img/logo-balt.png', './img/logo-juod.png', './img/qr.svg', './img/tccc/tccc-cmc10__skill-card-ez-io-humerus-intraosseous-io-device-en.webp', './img/tccc/tccc-cmc11__skill-card-tactical-field-care-determining-blood-type-en.webp', './img/tccc/tccc-cmc13__skill-card-penetrating-eye-injury-en.webp', './img/tccc/tccc-cmc17__skill-card-impaled-object-en.webp', './img/tccc/tccc-cmc18__module-18-burns-12.webp', './img/tccc/tccc-cmc7__module-7-airway-management-in-tfc-13.webp', './img/tccc/tccc-cmc8__module-08-respiration-assessment-management-in-tfc-12.webp'];
 
