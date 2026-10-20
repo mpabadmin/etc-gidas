@@ -10,7 +10,7 @@ window.ETC.scenarijai = [
   "tema": "Kraujavimas",
   "q": [
    {
-    "sit": "Iš pozicijų atvežamas karys po minos sprogimo: kairės šlaunies amputacija, iš kelmo pulsuojamai bėga kraujas. Turniketo nėra. A atlieka 5 s apžiūrą.",
+    "sit": "Iš pozicijų atvežamas karys po minos sprogimo: kairės šlaunies amputacija, iš kelmo pulsuojamai bėga kraujas. Pakeliui uždėtas turniketas atsilaisvino ir nusmuko. A atlieka 5 s apžiūrą.",
     "gp": {
      "AVPU": "V",
      "KD": "28"
@@ -157,7 +157,7 @@ window.ETC.scenarijai = [
     ]
    },
    {
-    "sit": "Ventiliacija kauke, laringine kauke ir intubacija nepavyksta – po 3 bandymus kiekvienu būdu. Krūtinė nekyla, SpO₂ krenta. Ekspertinė pagalba pakviesta.",
+    "sit": "Ventiliacija kauke, laringine kauke ir intubacija nepavyksta – po 3 bandymų kiekvienu būdu. Krūtinė nekyla, SpO₂ krenta. Ekspertinė pagalba pakviesta.",
     "gp": {
      "SpO₂": "74 %",
      "ŠSD": "48"
@@ -216,7 +216,8 @@ window.ETC.scenarijai = [
     "why": "Atvira krūtinės žaizda iškart dengiama ventiliuojamu okliuziniu tvarsčiu, kraštai ≥ 5 cm. Į krūtinės žaizdą marlės nekimšti (#37, #36).",
     "ref": [
      "#/igudis/37",
-     "#/igudis/13"
+     "#/igudis/13",
+     "#/igudis/36"
     ]
    },
    {
@@ -258,7 +259,7 @@ window.ETC.scenarijai = [
     "klaus": "Kaip vertinti šią situaciją?",
     "opt": [
      {
-      "t": "Įtampos nėra – ieškoti kitos šoko priežasties",
+      "t": "Įtampos nėra – oro neišėjo, todėl ieškoti kitos šoko priežasties (hemotoraksas, tamponada)",
       "ok": false
      },
      {
@@ -266,7 +267,7 @@ window.ETC.scenarijai = [
       "ok": true
      },
      {
-      "t": "Kanulę ištraukti ir dekompresuoti tik po rentgeno",
+      "t": "Kanulę ištraukti, nes nepadėjo, ir kartoti dekompresiją tik gavus krūtinės rentgenogramą",
       "ok": false
      }
     ],
@@ -432,16 +433,16 @@ window.ETC.scenarijai = [
     ]
    },
    {
-    "sit": "Po 10 min kairysis vyzdys išsiplėtęs ir nereaguoja į šviesą, GKS sumažėjo iki 6. AKS ir SpO₂ tiksluose.",
+    "sit": "Po 10 min, dar prieš sedaciją, kairysis vyzdys išsiplėtęs ir nereaguoja į šviesą, GKS sumažėjo iki 6. AKS ir SpO₂ tiksluose.",
     "gp": {
      "GKS": "6",
-     "AKS": "124/70",
+     "AKS": "118/70",
      "SpO₂": "97 %"
     },
     "klaus": "Kaip reaguoja A?",
     "opt": [
      {
-      "t": "Toliau stebėti, GKS pakartoti po 30 min",
+      "t": "Toliau stebėti, GKS pakartoti po 30 min, kol paaiškės dinamika",
       "ok": false
      },
      {
@@ -449,7 +450,7 @@ window.ETC.scenarijai = [
       "ok": true
      },
      {
-      "t": "Paskirti skysčių bolusą ir nuleisti galvūgalį",
+      "t": "Paskirti skysčių bolusą ir nuleisti galvūgalį, kad pagerėtų perfuzija",
       "ok": false
      }
     ],
@@ -496,7 +497,7 @@ window.ETC.scenarijai = [
     ]
    },
    {
-    "sit": "Kvėpavimo takai užtikrinti. Veidas paraudęs, be pūslių; krūtinėje ir dešinėje rankoje pūslės ir balti plotai.",
+    "sit": "Kvėpavimo takai užtikrinti. Veidas paraudęs, be pūslių; visame liemens priekyje (krūtinė ir pilvas) ir visoje dešinėje rankoje pūslės ir balti plotai.",
     "gp": {},
     "klaus": "Kaip apskaičiuojamas nudegimo plotas?",
     "opt": [
@@ -505,11 +506,11 @@ window.ETC.scenarijai = [
       "ok": true
      },
      {
-      "t": "Visi plotai, įskaitant paraudusį veidą",
+      "t": "Visi matomi plotai, įskaitant paraudusį veidą be pūslių",
       "ok": false
      },
      {
-      "t": "Delnas be pirštų ≈ 5 % KPP",
+      "t": "Delnas be pirštų ≈ 5 % KPP, plotai sumuojami akimis",
       "ok": false
      }
     ],
@@ -519,7 +520,7 @@ window.ETC.scenarijai = [
     ]
    },
    {
-    "sit": "Nudegimai ~30 % KPP, vėsinti vandeniu 20 min. Pacientas dreba, centrinė temperatūra krenta.",
+    "sit": "Nudegimai ~27 % KPP, vėsinti vandeniu 20 min. Pacientas dreba, centrinė temperatūra krenta.",
     "gp": {
      "T": "35,1 °C",
      "AKS": "110/70",
@@ -528,7 +529,7 @@ window.ETC.scenarijai = [
     "klaus": "Kas toliau?",
     "opt": [
      {
-      "t": "Tęsti vėsinimą ledu, kad mažėtų nudegimo gylis",
+      "t": "Tęsti vėsinimą ledu, kad mažėtų nudegimo gylis ir skausmas",
       "ok": false
      },
      {
@@ -536,7 +537,7 @@ window.ETC.scenarijai = [
       "ok": true
      },
      {
-      "t": "Pilti skysčius kuo greičiau – per daug skysčių nepakenks",
+      "t": "Pilti skysčius kuo greičiau – per daug skysčių nepakenks, diurezės nesekti",
       "ok": false
      }
     ],
@@ -704,11 +705,11 @@ window.ETC.scenarijai = [
     "klaus": "Ką daro komanda?",
     "opt": [
      {
-      "t": "Pradeda noradrenaliną, kad pasiektų AKS tikslą",
+      "t": "Pradeda noradrenaliną, kad pasiektų AKS tikslą ir sutaupytų kraujo",
       "ok": false
      },
      {
-      "t": "Atlaisvina diržą, kad patikrintų dubenį iš naujo",
+      "t": "Atlaisvina diržą, kad iš naujo patikrintų dubens stabilumą",
       "ok": false
      },
      {
@@ -748,7 +749,7 @@ window.ETC.scenarijai = [
       "ok": false
      },
      {
-      "t": "Ketaminas kartu su midazolamu, kad pacientas nurimtų",
+      "t": "Ketaminas 0,2–0,3 mg/kg IV kartu su midazolamu, kad pacientas nurimtų",
       "ok": false
      }
     ],
@@ -789,7 +790,7 @@ window.ETC.scenarijai = [
     ]
    },
    {
-    "sit": "Pacientas pradeda pykinti, atsiranda seilėtekis. Sąmonė ta pati.",
+    "sit": "Pacientą pradeda pykinti, atsiranda seilėtekis. Sąmonė ta pati.",
     "gp": {
      "AVPU": "A",
      "SpO₂": "96 %"
@@ -824,7 +825,7 @@ window.ETC.scenarijai = [
   "tema": "Kita",
   "q": [
    {
-    "sit": "Pirminė apžiūra baigta, gyvybei pavojingos būklės sutvarkytos. Karys po apšaudymo ištrauktas iš vandens griovio, drabužiai šlapi, dreba.",
+    "sit": "Vyksta pirminė apžiūra: masyvaus kraujavimo nėra, kvėpavimo takai laisvi. Karys po apšaudymo ištrauktas iš vandens griovio, drabužiai šlapi, dreba.",
     "gp": {
      "T": "34,6 °C",
      "AKS": "112/70",
@@ -833,7 +834,7 @@ window.ETC.scenarijai = [
     "klaus": "Kaip valdoma hipotermija?",
     "opt": [
      {
-      "t": "Užkloti keliomis antklodėmis ant šlapių drabužių",
+      "t": "Užkloti keliomis antklodėmis ant šlapių drabužių ir stebėti",
       "ok": false
      },
      {
@@ -841,7 +842,7 @@ window.ETC.scenarijai = [
       "ok": true
      },
      {
-      "t": "Temperatūrą matuoti vėliau, po KT",
+      "t": "Temperatūrą matuoti vėliau, po evakuacijos; kol kas tik užkloti",
       "ok": false
      }
     ],
@@ -977,7 +978,7 @@ window.ETC.scenarijai = [
     "klaus": "Kaip uždedamas jungčių turniketas?",
     "opt": [
      {
-      "t": "Tamponas išimamas ir JT dedamas tiesiai ant atviros žaizdos",
+      "t": "Tamponas išimamas, kad netrukdytų, ir JT pagalvėlė dedama tiesiai ant atviros kirkšnies žaizdos",
       "ok": false
      },
      {
@@ -1003,7 +1004,7 @@ window.ETC.scenarijai = [
   "tema": "Kraujavimas",
   "q": [
    {
-    "sit": "Kolonos priekinė mašina užvažiavo ant SSU. Karys atvežamas su skeveldros žaizda kairėje kaklo pusėje – kraujas srūva pro pridėtą tvarstį. Karys sumišęs, kalba.",
+    "sit": "Kolonos priekinė mašina užvažiavo ant SSU. Karys atvežamas su skeveldros žaizda kairėje kaklo pusėje – kraujas srūva pro pridėtą tvarstį. Karys sumišęs, akis atmerkia tik kalbinamas.",
     "gp": {
      "AVPU": "V",
      "KD": "24",
@@ -1102,7 +1103,7 @@ window.ETC.scenarijai = [
     "klaus": "Kaip komanda elgiasi su turniketais?",
     "opt": [
      {
-      "t": "Abu iškart nuima, kad B galėtų apžiūrėti žaizdas",
+      "t": "Abu iškart nuima ir uždeda spaudžiamuosius tvarsčius, kad B galėtų apžiūrėti žaizdas",
       "ok": false
      },
      {
@@ -1110,7 +1111,7 @@ window.ETC.scenarijai = [
       "ok": true
      },
      {
-      "t": "Palieka ant kelnių ir uždengia antklode, kad karys nešaltų",
+      "t": "Palieka ant kelnių, kaip uždėjo kovos medikas, ir uždengia antklode, kad karys nešaltų",
       "ok": false
      }
     ],
@@ -1415,7 +1416,7 @@ window.ETC.scenarijai = [
     ]
    },
    {
-    "sit": "Kraujavimas sustabdytas, perpilti šildyti kraujo vienetai, A ventiliuoja 100 % O₂ per laringinę kaukę, B atliko abipusę dekompresiją. Monitoriuje išlieka asistolija.",
+    "sit": "Kraujavimas sustabdytas, perpilti šildyti kraujo vienetai, A ventiliuoja 100 % O₂ per laringinę kaukę, B atliko abipusę dekompresiją, e-FAST tamponados nerodo. Monitoriuje išlieka asistolija.",
     "gp": {
      "AVPU": "U"
     },
@@ -1426,7 +1427,7 @@ window.ETC.scenarijai = [
       "ok": false
      },
      {
-      "t": "Tęsti krūtinės paspaudimus, kol bus pervežtas į chirurgijos skyrių",
+      "t": "Tęsti krūtinės paspaudimus, kol bus pervežtas į Role 2 chirurgijai",
       "ok": false
      },
      {
@@ -1787,11 +1788,11 @@ window.ETC.scenarijai = [
     "klaus": "Kas teisinga?",
     "opt": [
      {
-      "t": "Imti kraują iš bet kurio savanorio, kurio žetone ta pati grupė",
+      "t": "Imti šviežią pilną kraują iš bet kurio savanorio, kurio žetone nurodyta ta pati grupė kaip sužeistojo",
       "ok": false
      },
      {
-      "t": "Šviežias pilnas kraujas netinka – toliau tik kristaloidai",
+      "t": "Šviežias pilnas kraujas lauko sąlygomis netinka – toliau tik kristaloidai iki chirurgijos",
       "ok": false
      },
      {
@@ -1982,6 +1983,7 @@ window.ETC.scenarijai = [
     "ref": [
      "#/igudis/7",
      "#/igudis/4",
+     "#/igudis/5",
      "#/igudis/6"
     ]
    }
@@ -2148,7 +2150,7 @@ window.ETC.scenarijai = [
     "klaus": "Koks tolesnis veiksmas?",
     "opt": [
      {
-      "t": "Skubiai chirurgas; kraujo komponentai pagal masinio kraujavimo protokolą",
+      "t": "Skubiai į operacinę; kraujo komponentai pagal masinio kraujavimo protokolą",
       "ok": true
      },
      {
@@ -2200,6 +2202,7 @@ window.ETC.scenarijai = [
     "why": "Jauniems lūžusius šonkaulius iš pradžių prilaiko raumenys – paradoksinis judesys išryškėja pavargus, radinius reikia kartoti. Abipusė dekompresija – trauminio širdies sustojimo atveju (#13, #38).",
     "ref": [
      "#/igudis/13",
+     "#/igudis/38",
      "#/p/kvepavimas"
     ]
    },
@@ -2322,7 +2325,8 @@ window.ETC.scenarijai = [
     "why": "Nėra pleuros slydimo ir B linijų – pneumotoraksas; skystis rodytų hemotoraksą. Iškart po traumos radiniai gali būti normalūs – vertinkite iš naujo; radinius B praneša A (#16, #13, #14).",
     "ref": [
      "#/igudis/16",
-     "#/igudis/13"
+     "#/igudis/13",
+     "#/igudis/14"
     ]
    },
    {
@@ -2799,7 +2803,7 @@ window.ETC.scenarijai = [
       "ok": true
      }
     ],
-    "why": "Asimetriški vyzdžiai ir patologinė laikysena – išvaržos požymiai: A garsiai praneša, manitolis arba 3 % NaCl (TCCC 2026 – 250 ml per ≥ 10 min), skubiai neurochirurgas. Ventiliuojamam – normokapnija, hiperventiliacija be EtCO₂ kontrolės – klaida (#44).",
+    "why": "Asimetriški vyzdžiai ir patologinė laikysena – išvaržos požymiai: A garsiai praneša, manitolis arba 3 % NaCl (TCCC 2026 – 250 ml per ≥ 10 min), skubiai neurochirurgas. Ventiliuojamam – normokapnija (EtCO₂ 35–45 mm Hg): EtCO₂ 26 rodo hiperventiliaciją – ventiliacijos dažnį mažinti (#44).",
     "ref": [
      "#/igudis/44",
      "#/vaistas/nacl-hipert"
@@ -2840,7 +2844,7 @@ window.ETC.scenarijai = [
     ]
    },
    {
-    "sit": "Antrinėje apžiūroje A apžiūri akis. Kairė akis atrodo sveika, dešinės patinusių vokų karys pats neatmerkia.",
+    "sit": "Antrinėje apžiūroje A apžiūri akis. Kairė akis atrodo sveika, dešinės akies patinusių vokų karys pats neatmerkia.",
     "gp": {
      "AVPU": "A",
      "SpO₂": "98 %"
@@ -2903,7 +2907,7 @@ window.ETC.scenarijai = [
   "tema": "Galva",
   "q": [
    {
-    "sit": "Valant pastatą per operaciją karį į veidą smogė priešininkas šautuvo buože. Atvežtas į Role 1: iš nosies ir į burną gausiai teka kraujas, girdisi gurgimas, vidurinė veido dalis judri.",
+    "sit": "Valant pastatą per operaciją kariui į veidą smogė priešininkas šautuvo buože. Atvežtas į Role 1: iš nosies ir į burną gausiai teka kraujas, girdisi gurgimas, vidurinė veido dalis judri.",
     "gp": {
      "AVPU": "V",
      "SpO₂": "90 %",
@@ -3088,7 +3092,7 @@ window.ETC.scenarijai = [
   "tema": "Kita",
   "q": [
    {
-    "sit": "Patrulio metu karys užlipo ant priešpėstinės minos. Šlaunyje atviras lūžis, išorinis kraujavimas sustabdytas tvarsčiu, kitų žaizdų nerasta. Šlaunis tinsta, karys blyškus.",
+    "sit": "Patrulio metu šalia kario sprogo minosvaidžio mina, skeveldra kliudė šlaunį. Šlaunyje atviras lūžis, išorinis kraujavimas sustabdytas tvarsčiu, kitų žaizdų nerasta. Šlaunis tinsta, karys blyškus.",
     "gp": {
      "AKS": "94/60",
      "ŠSD": "124",
@@ -3405,7 +3409,7 @@ window.ETC.scenarijai = [
       "ok": false
      },
      {
-      "t": "Patikrinti, ar perkirpta apatinė kojytė ir vokas laisvas",
+      "t": "Kantolizė: perkirpti apatinę kojytę, kol vokas laisvas",
       "ok": true
      },
      {
@@ -3413,7 +3417,7 @@ window.ETC.scenarijai = [
       "ok": false
      }
     ],
-    "why": "Kantolizė – perkerpama įtempta apatinė kanto sausgyslės kojytė, vokas tampa laisvas. Akiduobė neatsipalaidavo – tikrinama, ar kojytė perkirpta, svarstoma viršutinė; neperkirpta apatinė kojytė – dažna klaida (#28).",
+    "why": "Po kantotomijos būtina kantolizė – perkerpama įtempta apatinė kanto sausgyslės kojytė, vokas tampa laisvas. Akiduobė neatsipalaidavo – tikrinama, ar kojytė perkirpta, svarstoma viršutinė; neperkirpta apatinė kojytė – dažna klaida (#28).",
     "ref": [
      "#/igudis/28"
     ]
@@ -3925,7 +3929,7 @@ window.ETC.scenarijai = [
     ]
    },
    {
-    "sit": "A ventiliuoja Ambu maišu, SpO₂ kyla. A skiria naloksono IV; C turi 0,4 mg / 1 ml ampulę ir 10 ml švirkštą.",
+    "sit": "A laiko kaukę, B ventiliuoja Ambu maišu, SpO₂ kyla. A skiria naloksono IV; C turi 0,4 mg / 1 ml ampulę ir 10 ml švirkštą.",
     "gp": {
      "KD": "8",
      "SpO₂": "93 %"
@@ -3988,7 +3992,7 @@ window.ETC.scenarijai = [
   "tema": "Vaistai",
   "q": [
    {
-    "sit": "Karys sužeistas drono numesta granata: skeveldros pilve ir šlaunyje, pilvas įtemptas. Skirtas ketaminas, ruošiamasi sraigtasparnio evakuacijai. Sužeistąjį pykina, jis žiaukčioja.",
+    "sit": "Karys sužeistas drono numesta granata: skeveldros pilve, dešinėje krūtinės pusėje ir šlaunyje, pilvas įtemptas. Skirtas ketaminas, ruošiamasi sraigtasparnio evakuacijai. Sužeistąjį pykina, jis žiaukčioja.",
     "gp": {
      "AVPU": "A",
      "AKS": "102/64",
@@ -4136,7 +4140,7 @@ window.ETC.scenarijai = [
     "klaus": "Kiek skysčių reikia per pirmas 8 valandas?",
     "opt": [
      {
-      "t": "4320 ml per pirmas 8 val. nuo traumos (≈ 540 ml/val.)",
+      "t": "4320 ml per pirmas 8 val. nuo traumos",
       "ok": true
      },
      {
