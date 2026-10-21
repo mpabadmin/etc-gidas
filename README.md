@@ -1,4 +1,4 @@
-# ETC kišeninis gidas
+# ETC gidas
 
 1040 medkuopos atminties priemonė pagal European Trauma Course (ETC). Veikia telefone kaip programėlė (PWA), be interneto.
 Adresas: https://etc.1040medkuopa.lt

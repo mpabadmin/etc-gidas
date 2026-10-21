@@ -1,7 +1,7 @@
 {
-  "name": "ETC kišeninis gidas – 1040 medkuopa",
+  "name": "ETC gidas – 1040 medkuopa",
   "short_name": "ETC gidas",
-  "description": "ETC traumos komandos (A, B, C) kišeninis gidas",
+  "description": "ETC traumos komandos (A, B, C) gidas",
   "lang": "lt",
   "start_url": "./",
   "scope": "./",

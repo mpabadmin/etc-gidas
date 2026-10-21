@@ -1,5 +1,5 @@
 'use strict';
-// ETC kišeninis gidas – įrankiai: 9 eilučių MEDEVAC prašymas (NL, perkelta iš March gido), vizuali MIST kortelė su keliais sužeistaisiais (MC),
+// ETC gidas – įrankiai: 9 eilučių MEDEVAC prašymas (NL, perkelta iš March gido), vizuali MIST kortelė su keliais sužeistaisiais (MC),
 // GKS skaičiuoklė (GK), 10s triažas – Ten Second Triage (TS). NL, MC ir GK kodas toks pat kaip March gide – skiriasi tik TCFG.
 
 // ───────── Programėlės nustatymai (vienintelis NL / MC / GK kodo skirtumas tarp ETC ir March gido) ─────────

@@ -1,4 +1,4 @@
-// ETC kišeninis gidas – VAISTAI
+// ETC gidas – VAISTAI
 // Viena schema kiekvienam vaistui. Šaltinių prioritetas: TCCC gairės 2026-05-01 → gamintojo PCS → ERC / RCUK.
 // Jei šaltiniai skiriasi – naudojamas vienas patikimiausias. Ketamino sedacijos dozės – ETC įgūdžių lentelės (sutampa su TCCC 2026).
 // Tvarka – nuo dažniausiai iki rečiausiai naudojamų (Ukrainos karo traumos patirtis): nuskausminamieji pirmiausia, naloksonas – paskutinis.

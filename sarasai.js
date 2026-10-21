@@ -1,4 +1,4 @@
-// ETC kišeninis gidas – VAIDMENYS, KONTROLINIAI SĄRAŠAI, ESCAPE PLANAI, MOKYMOSI TEMOS
+// ETC gidas – VAIDMENYS, KONTROLINIAI SĄRAŠAI, ESCAPE PLANAI, MOKYMOSI TEMOS
 // Šaltiniai: ETC vertinimo lapas (A, B, C, Escape, komandos darbas, gydymo kokybė), ETC įgūdžių lapas
 // (darbo vietos schema, vaistų lentelės, kraujo suderinamumas), ETC vadovas 4.1 (1–4 sk.), TCCC vaistų vadovas,
 // kuopos pirminio ištyrimo tvarka: A – komandos vadas; B – visa apžiūra iki 2 min; C – iškart PVK/IO, kraujo grupė, gliukozė.
@@ -11,7 +11,7 @@ const E = window.ETC;
 const KOMP = 'Pagal kompetenciją', MED = 'Medicinos personalui', GYD = 'Gydytojui', INT = 'Intubuojantiems gydytojams';
 const link = (href, t, s) => `<a class="row" href="${href}"><div>${t}${s ? '<small>' + s + '</small>' : ''}</div><span class="ar">›</span></a>`;
 
-E.versija = '2026-10-20 v36 (scenarijų peržiūra – logika, karinis realizmas, atsakymai; +būklės juosta – visi parametrai paskutiniuose 9 matavimuose, blogesnė nei ankstesnio matavimo reikšmė nuspalvinama; +40 karinių treniruočių scenarijų, visi scenarijai kariniai; nudegimų įgūdis – Parkland 4 ml; kraujo produktams – gavėjo ir donoro grupė ABO/Rh; mokymosi įrankiai – piktogramų plytelės; laiko ir matavimų ritiniai – bakstelėkite arba paslinkite pirštu; nudegimai: skysčiai pagal Parkland – 4 ml × kg × % KPP, patvirtino gydytojas; pavadinimai „10s triažas“ ir „Mascal“; svoris „Kitas…“)';
+E.versija = '2026-10-21 v37 (pavadinimas – „ETC gidas“; scenarijų peržiūra – logika, karinis realizmas, atsakymai; +būklės juosta – visi parametrai paskutiniuose 9 matavimuose, blogesnė nei ankstesnio matavimo reikšmė nuspalvinama; +40 karinių treniruočių scenarijų, visi scenarijai kariniai; nudegimų įgūdis – Parkland 4 ml; kraujo produktams – gavėjo ir donoro grupė ABO/Rh; mokymosi įrankiai – piktogramų plytelės; laiko ir matavimų ritiniai – bakstelėkite arba paslinkite pirštu; nudegimai: skysčiai pagal Parkland – 4 ml × kg × % KPP, patvirtino gydytojas; pavadinimai „10s triažas“ ir „Mascal“; svoris „Kitas…“)';
 // Pranešimų priėmimo adresas: Google Apps Script žiniatinklio programos /exec URL (žr. tools/atsiliepimai.gs)
 E.atsiliepimai = { url: 'https://script.google.com/macros/s/AKfycbyUpzDmAClJ40FMltkHi21Ozc4PpItRr3u6yy4rU0DKNGe7JkRBnOr0y42wLwpJcBau/exec' };
 
@@ -627,6 +627,6 @@ window.ETC.wbb = {
   "Joint Trauma System CPG „Prehospital Blood Transfusion“ (2020-10-30), JSOM 21(4) – https://jsomonline.org/?p=12616",
   "JTS Damage Control Resuscitation Quick Reference Guide (Medics/Corpsmen, 2023) – https://jts.health.mil/assets/docs/damage_control/Damage_Control_Resus_Quick_Reference_Guide_Medics_Corpsmen_2023.pdf",
   "TCCC TFC CMC Module 11 „Hemorrhagic Shock Fluid Resuscitation“ – https://tccc.org.ua/en/guide/module-11-hemorrhagic-shock-fluid-resuscitation-in-tactical-field-care-tfc-cmc",
-  "ETC kišeninis gidas, įgūdis #23 „Kraujo grupės nustatymas ir kraujo transfuzija“ (kuopos medžiaga)"
+  "ETC gidas, įgūdis #23 „Kraujo grupės nustatymas ir kraujo transfuzija“ (kuopos medžiaga)"
  ]
 };

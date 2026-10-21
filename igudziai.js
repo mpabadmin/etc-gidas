@@ -1,4 +1,4 @@
-// ETC kišeninis gidas – ĮGŪDŽIAI (v12, 2026-10)
+// ETC gidas – ĮGŪDŽIAI (v12, 2026-10)
 // Turinys – glaustas priminimas pagal ETC vadovą (4.1, LT), kuopos ETC vertinimo lapus, įgūdžių įsivertinimą ir kuopos paskaitas.
 // #1–34 – Mokymų bazė (Mokymu_baze.xlsx) + ETC įgūdžių įsivertinimas; #35–48 – papildomi įgūdžiai.
 // Laukai: grupe (K komanda, A, B, C, S antrinė, V vaistai); aprasas; zingsniai (ETC eiliškumas); esme („Svarbu“ – esminiai priminimai);
