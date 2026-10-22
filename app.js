@@ -12,8 +12,6 @@ const ckBtn = l => { const cb = app.querySelector('[data-act=ck-clr]'); if (!cb 
 // Seni maršrutai: MIST kortelė ir vaistų žymėjimas – paciento ekrane (MIST mokymosi režime lieka atskiras puslapis su paaiškinimais)
 const REDIR = p => p[0] === 'zymejimas' ? '#/pacientas?t=vaistai' : p[0] === 'mist' && mode !== 'learn' ? '#/pacientas?t=kortele' : '';
 const PT_BAR = ['zymejimas', 'nudegimai', 'pilnas-kraujas']; // įrankiai, virš kurių rodoma pacientų juosta
-const FB_PAGES = ['v', 's', 'vaistai', 'vaistas', 'igudis', 'tema', 'p', '9line', 'mist', 'gks', 'tst', 'sitrep', 'zymejimas', 'nudegimai', 'pilnas-kraujas', 'scenarijai', 'mascal', 'pacientas', 'qr', 'qr-priimti', 'egzaminas', 'korteles', 'skenuoti', 'vertinimas'];
-const fbLink = () => '<button class="btn fbrow" data-act="fb">Pastebėjote klaidą ar turite pasiūlymą? Praneškite</button>';
 
 function route() {
   const raw = (location.hash || '#/').slice(1), qi = raw.indexOf('?'), q = {};
@@ -72,7 +70,7 @@ function render() {
   let pb = ''; try { pb = HUB.bar(p[0]); } catch (e) { console.error(e); } // sužeistojo juosta virš apatinės navigacijos (ir atvertas langas)
   if (pb) document.body.classList.add('hasbar');
   if (pb && HUB.isOpen()) document.body.classList.add('hbopen');
-  try { app.innerHTML = (PT_BAR.indexOf(p[0]) >= 0 ? PT.bar() : '') + view(p, q) + (FB_PAGES.indexOf(p[0]) >= 0 ? fbLink() : '') + pb; }
+  try { app.innerHTML = (PT_BAR.indexOf(p[0]) >= 0 ? PT.bar() : '') + view(p, q) + pb; }
   catch (err) { console.error(err); app.innerHTML = '<h1>Klaida</h1><p class="muted">Nepavyko atidaryti puslapio. Patikrinkite turinio failus.</p>'; }
   try { HUB.nav(); } catch (e) { console.error(e); }
   // MIST sužeistųjų skirtukai: pasirinktas – matomas
