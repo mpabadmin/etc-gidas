@@ -1,5 +1,5 @@
 // ETC gidas – VAISTAI
-// Viena schema kiekvienam vaistui. Šaltinių prioritetas: TCCC gairės 2026-05-01 → gamintojo PCS → ERC / RCUK.
+// Viena schema kiekvienam vaistui. Šaltinių prioritetas: TCCC gairės 2026-05-01 → JTS CPG / JK gynybos CGO → gamintojo PCS → ERC / RCUK.
 // Jei šaltiniai skiriasi – naudojamas vienas patikimiausias. Ketamino sedacijos dozės – ETC įgūdžių lentelės (sutampa su TCCC 2026).
 // Tvarka – nuo dažniausiai iki rečiausiai naudojamų (Ukrainos karo traumos patirtis): nuskausminamieji pirmiausia, naloksonas – paskutinis.
 // Laukai: grupe – paskirtis; tipas 'pagr' – yra kuopos vaistų kortelėje; tccc26 – yra TCCC 2026 gairėse; kam – kas skiria;
@@ -10,7 +10,7 @@
 // lt – Lietuvoje registruoti preparatai (VVKT VAPRIS registras, tikrinta 2026-10-14): p – [{n pavadinimas, d stiprumas ir pakuotė, r registruotojas,
 //   s: T registruotas ir tiekiamas, L lygiagretus importas, U be registracijos numerio (tiekiamas), N netiekiamas}], ne – netiekiami, pa – pastaba.
 // alt – alternatyva tam pačiam tikslui: [{id – vaistas gide, t – kam}] (sprendžia skiriantysis). Antibiotikai – pagal suvartojimą Lietuvoje (VVKT 2024).
-// Patikrinta: 2026-10-08 (dozės), 2026-10-14 (Lietuvos preparatai).
+// Patikrinta: 2026-10-08 (dozės), 2026-10-14 (Lietuvos preparatai), 2026-10-24 (manitolis, gliukozė, insulinas, kalcis hiperkalemijai – JTS, CGO, NHS / JBDS).
 window.ETC = window.ETC || {};
 
 window.ETC.vaistuGrupes = [
@@ -640,13 +640,18 @@ window.ETC.vaistai = [
     "tipas": "papild",
     "tccc26": true,
     "kam": "Medicinos personalui",
-    "ind": "Perpylus bet kokį kraujo produktą (įskaitant pilną kraują) – po pirmojo perpilto vieneto (TCCC 2026).",
+    "ind": "Perpylus bet kokį kraujo produktą (įskaitant pilną kraują) – po pirmojo perpilto vieneto (TCCC 2026). Hiperkalemija su EKG pokyčiais arba K > 6,5 mmol/l (JTS, CGO).",
     "kontra": "PCS: hiperkalcemija, hiperkalciurija, apsinuodijimas širdies glikozidais; vartojantiems širdies glikozidus (digoksiną) – kontraindikuotina, išskyrus gyvybei grėsmingą sunkią hipokalcemiją ar hiperkalemiją.",
     "dozes": [
       {
         "k": "IV / IO (TCCC 2026)",
         "d": "30 ml 10 % kalcio gliukonato (arba 10 ml 10 % kalcio chlorido)",
         "p": "Po pirmojo perpilto kraujo produkto vieneto. Leisti ne greičiau kaip per ~15 min (PCS: ≤ 0,45 mmol kalcio/min)."
+      },
+      {
+        "k": "Hiperkalemija (JTS, CGO)",
+        "d": "30 ml 10 % kalcio gliukonato (arba 10 ml 10 % kalcio chlorido) IV per 5–10 min, stebint EKG",
+        "p": "EKG pokyčiai išlieka – kartoti po 10 min. Kalio nemažina – kartu insulinas su gliukoze (Vaistai: Insulinas).\nTurniketo atleidimas 2–6 val. intervale: kalcį ir insuliną su gliukoze paruošti iš anksto, EKG stebėti."
       }
     ],
     "ispejimai": [
@@ -660,9 +665,10 @@ window.ETC.vaistai = [
       "Gydymo kokybės kriterijus: užtikrinamas kalcio kiekis esant kraujo transfuzijai."
     ],
     "susije": [
-      "txa"
+      "txa",
+      "insulinas"
     ],
-    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); PCS (kalcio gliukonatas 10 %); ETC vertinimo lapas",
+    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); PCS (kalcio gliukonatas 10 %); ETC vertinimo lapas; JTS CPG „Hyperkalemia and Dialysis in the Deployed Setting“ (2022); CGO „Hyperkalaemia“ (2026)",
     "nuorodos": [
       [
         "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
@@ -675,6 +681,14 @@ window.ETC.vaistai = [
       [
         "PCS – kalcio gliukonatas 10 % (JK eMC)",
         "https://www.medicines.org.uk/emc/product/6264/smpc"
+      ],
+      [
+        "JTS CPG „Hyperkalemia and Dialysis in the Deployed Setting“ (mokymo skaidrės, 2022)",
+        "https://jts.health.mil/assets/docs/cpgs/training/Hyperkalemia_Dialysis_Deployed_Setting_CPG_Training_25_Apr_2022.pdf"
+      ],
+      [
+        "JK gynybos ministerijos CGO „Hyperkalaemia“ (2026)",
+        "https://cms.cgo.mod.uk/clinical-guidelines-for-operations/treatment-guidelines/metabolic/hyperkalaemia"
       ]
     ],
     "lt": {
@@ -1224,7 +1238,65 @@ window.ETC.vaistai = [
     },
     "alt": [
       {
-        "t": "Manitolis – pagal SOP (gide nėra)"
+        "id": "manitolis",
+        "t": "jei NaCl nėra, šoko nėra ir sAKS > 110 mm Hg"
+      }
+    ],
+    "susije": [
+      "manitolis"
+    ]
+  },
+  {
+    "id": "manitolis",
+    "name": "Manitolis",
+    "klase": "Osmosinis diuretikas (15 % ar 20 % tirpalas)",
+    "grupe": "galva",
+    "tipas": "papild",
+    "kam": "Medicinos personalui",
+    "ind": "Galvos smegenų išvaržos požymiai – alternatyva hipertoniniam NaCl, kai šoko nėra ir sAKS > 110 mm Hg. Galvos traumai su politrauma pirmenybė – hipertoniniam NaCl (JTS).",
+    "kontra": "Hipotenzija, hipovolemija ar nesustabdytas kraujavimas (JTS). PCS: anurija, sunkus širdies nepakankamumas, plaučių edema.",
+    "dozes": [
+      {
+        "k": "IV / IO (JTS)",
+        "d": "1 g/kg per 20 min · ml 20 % tirpalo",
+        "c": {
+          "per": 1,
+          "u": "g",
+          "conc": 0.2
+        },
+        "p": "20 % – 5 ml/kg (80 kg – 400 ml); 15 % – 6,7 ml/kg (80 kg – 530 ml).\nPakartotinai – 0,5 g/kg kas 3 val., jei reikia (gydytojo sprendimu)."
+      }
+    ],
+    "ispejimai": [
+      "Tik esant išvaržos požymiams, ne profilaktiškai ir ne tūriui atkurti.",
+      "Stipri diurezė gali sumažinti AKS – šlapimo netekimą kompensuoti izotoniniu tirpalu, sekti AKS (JTS).",
+      "Tirpalas gali kristalizuotis šaltyje – prieš leidžiant apžiūrėti, leisti per sistemą su filtru (PCS)."
+    ],
+    "pradzia": "15–30 min",
+    "trukme": "apie 3 val.",
+    "salutinis": "Hipotenzija dėl diurezės, elektrolitų sutrikimai, ekstravazacijos vietos sudirginimas.",
+    "pastabos": [
+      "JTS lauko gairės: hipertoninis NaCl pirmenybinis; manitolis – kai NaCl nėra arba būklė blogėja. Galvūgalis 30°, SpO₂ ir AKS tikslai – kaip hipertoniniam NaCl.",
+      "Šlapimo kateteris – diurezei matuoti."
+    ],
+    "susije": [
+      "nacl-hipert"
+    ],
+    "saltinis": "JTS CPG „TBI Management in Prolonged Field Care“ (2023) ir „TBI Management and Basic Neurosurgery in the Deployed Environment“; ETC vertinimo lapas",
+    "nuorodos": [
+      [
+        "JTS CPG „Traumatic Brain Injury Management in Prolonged Field Care“ (tccc.org.ua, 2023)",
+        "https://tccc.org.ua/en/guide/traumatic-brain-injury-management-in-prolonged-field-care-pcc"
+      ],
+      [
+        "JTS CPG „Traumatic Brain Injury Management and Basic Neurosurgery in the Deployed Environment“ (tccc.org.ua)",
+        "https://tccc.org.ua/en/guide/neurosurgery-and-severe-head-Injury-cpg"
+      ]
+    ],
+    "alt": [
+      {
+        "id": "nacl-hipert",
+        "t": "pirmenybinis išvaržos požymiams"
       }
     ]
   },
@@ -1390,6 +1462,99 @@ window.ETC.vaistai = [
     "alt": [
       {
         "t": "Lygiaverčio vaisto nėra"
+      }
+    ]
+  },
+  {
+    "id": "gliukoze",
+    "name": "Gliukozė (hipoglikemija)",
+    "klase": "10 % infuzinis tirpalas",
+    "grupe": "retai",
+    "tipas": "papild",
+    "kam": "Medicinos personalui",
+    "ind": "Gliukozė < 4 mmol/l arba hipoglikemijos požymiai (silpnumas, prakaitavimas, sumišimas, traukuliai), kai sužeistasis negali saugiai nuryti. Galvos smegenų traumai – laikyti > 5,6 mmol/l (JTS).",
+    "kontra": "",
+    "dozes": [
+      {
+        "k": "IV / IO lašinti",
+        "d": "200 ml 10 % gliukozės (20 g) per 15 min",
+        "p": "Po 10 min pakartoti gliukozės matavimą; < 4 mmol/l – kartoti.\nPasiekus > 4 mmol/l ir negalint valgyti – 10 % gliukozė 100 ml/val."
+      },
+      {
+        "k": "Sąmoningas, ryja",
+        "d": "15–20 g greitų angliavandenių per burną",
+        "p": "Po 10–15 min pakartoti matavimą."
+      }
+    ],
+    "ispejimai": [
+      "Turint tik 40 % gliukozę: 50 ml (20 g) į didelę veną lėtai – stipriai dirgina veną, ekstravazacija sukelia nekrozę.",
+      "Nėra IV / IO prieigos – gliukagonas 1 mg IM (vieną kartą).",
+      "Sutrikusią sąmonę traumos atveju pirmiausia aiškinkite šoku ir hipoksija; gliukozę matuoja C visiems (ETC)."
+    ],
+    "pradzia": "1–5 min",
+    "trukme": "trumpai – kartoti matavimus",
+    "pastabos": [
+      "Kraujo gliukozę matuoti kas valandą, kol stabili; vienas matavimas po gydymo nepakankamas."
+    ],
+    "saltinis": "NHS / JBDS suaugusiųjų hipoglikemijos gydymo algoritmas; JTS CPG „TBI Management in Prolonged Field Care“ (2023); ETC vertinimo lapas",
+    "nuorodos": [
+      [
+        "NHS Scotland – suaugusiųjų hipoglikemijos gydymas (JBDS)",
+        "https://www.cem.scot.nhs.uk/adult/hypoglycaemia.pdf"
+      ],
+      [
+        "JTS CPG „Traumatic Brain Injury Management in Prolonged Field Care“ (tccc.org.ua, 2023)",
+        "https://tccc.org.ua/en/guide/traumatic-brain-injury-management-in-prolonged-field-care-pcc"
+      ]
+    ]
+  },
+  {
+    "id": "insulinas",
+    "name": "Insulinas ir gliukozė (hiperkalemija)",
+    "klase": "Trumpo veikimo (paprastas) žmogaus insulinas",
+    "grupe": "retai",
+    "tipas": "papild",
+    "kam": "Medicinos personalui",
+    "ind": "Hiperkalemija: kalis > 6,0 mmol/l arba EKG pokyčiai (smailūs T, platus QRS, išnykę P, aritmija), pvz. po turniketo konversijos ar atleidimo 2–6 val. intervale. Kartu – kalcis (stabilizuoja širdį, kalio nemažina).",
+    "kontra": "Hipoglikemija.",
+    "dozes": [
+      {
+        "k": "IV / IO (JTS)",
+        "d": "10 VV paprasto insulino IV + 25 g gliukozės",
+        "p": "25 g gliukozės: 50 ml 50 % arba ~60 ml 40 % arba 250 ml 10 %. Jei gliukozė > 14 mmol/l – papildomos gliukozės nereikia (JTS, CGO).\nInsulinas 100 VV/ml: 0,1 ml = 10 VV – insulino švirkštu; patogiau atskiesti 10 VV iki 10 ml 0,9 % NaCl (1 VV/ml)."
+      }
+    ],
+    "ispejimai": [
+      "Gliukozę matuoti po 15–30 min ir ne vėliau kaip po 1 val., toliau – kas valandą (veikia 4–6 val.).",
+      "Kalio poveikis laikinas – kalį (jei galima) ir EKG stebėti; profilaktiškai, be EKG pokyčių ar kalio matavimo, neskirti (CGO)."
+    ],
+    "pradzia": "10–20 min",
+    "trukme": "4–6 val.",
+    "pastabos": [
+      "Hiperkalemijos gydymo eilė: 1) kalcis (Vaistai: Kalcis) – jei EKG pokyčiai ar K > 6,5; 2) insulinas su gliukoze; 3) salbutamolis 10 mg per purkštuvą – papildomai; 4) skysčiai ir diurezė."
+    ],
+    "susije": [
+      "kalcis"
+    ],
+    "saltinis": "JTS CPG „Hyperkalemia and Dialysis in the Deployed Setting“ (2022); JK gynybos ministerijos CGO „Hyperkalaemia“ (2026), „Crush Injury“ (2026)",
+    "nuorodos": [
+      [
+        "JTS CPG „Hyperkalemia and Dialysis in the Deployed Setting“ (mokymo skaidrės, 2022)",
+        "https://jts.health.mil/assets/docs/cpgs/training/Hyperkalemia_Dialysis_Deployed_Setting_CPG_Training_25_Apr_2022.pdf"
+      ],
+      [
+        "JK gynybos ministerijos CGO „Hyperkalaemia“ (2026)",
+        "https://cms.cgo.mod.uk/clinical-guidelines-for-operations/treatment-guidelines/metabolic/hyperkalaemia"
+      ],
+      [
+        "JK gynybos ministerijos CGO „Crush Injury“ (2026)",
+        "https://cms.cgo.mod.uk/clinical-guidelines-for-operations/treatment-guidelines/urgent-and-emergency-care-guidelines/crush-injury/"
+      ]
+    ],
+    "alt": [
+      {
+        "id": "kalcis",
+        "t": "pirmiausia – esant EKG pokyčiams"
       }
     ]
   },
