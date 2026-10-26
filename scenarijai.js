@@ -2501,11 +2501,11 @@ window.ETC.scenarijai = [
       "ok": false
      },
      {
-      "t": "Esant aktyviam vėmimui krikoidinio spaudimo netaikyti, atsiurbėjas paruoštas",
+      "t": "Krikoidinio spaudimo netaikyti, atsiurbėjas paruoštas, intubuoti kuo greičiau",
       "ok": true
      }
     ],
-    "why": "Krikoidinis spaudimas esant aktyviam vėmimui – klaida; laringinė kaukė nuo aspiracijos neapsaugo. Laringoskopijos metu prireikus tvirtai atsiurbiama (#10, #6).",
+    "why": "Krikoidinis spaudimas ETC 5.0 RSI vaidmenyse neminimas, o vemiant jis pavojingas; laringinė kaukė nuo aspiracijos neapsaugo. Laringoskopijos metu prireikus tvirtai atsiurbiama (#10, #6).",
     "ref": [
      "#/igudis/10",
      "#/igudis/6",
