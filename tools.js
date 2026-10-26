@@ -2109,7 +2109,7 @@ const VZ = (() => {
 })();
 
 // ───────── Nudegimai ir nušalimai (NB) – devyneto taisyklė, skysčių ir diurezės skaičiuoklės, nušalimai (tik ETC gide) ─────────
-// Skysčiai – Parkland pagal paskaitą „Nudegimo trauma“ (V. Vaitkus, 2025-12-03): 4 ml × kg × % KPP per 24 val., pusė per pirmas 8 val. NUO TRAUMOS; > 20 % KPP.
+// Skysčiai – Parkland 2–4 ml × kg × % KPP per 24 val. (ETC 5.0, 2026; kuopos paskaita – 4 ml), pusė per pirmas 8 val. NUO TRAUMOS; nuo ≥ 15 % KPP (ETC 5.0; TCCC – > 20 %).
 // TCCC 2026 „10 taisyklė“ – alternatyva (40–80 kg; virš 80 kg + 100 ml/val. kas 10 kg). Diurezė – 0,5–1 ml/kg/val. (#48);
 // titravimas ±20 %, įvertinti po 2 val. (JTS Burn Care CPG 2025). Nušalimai – WMS 2024, JTS CPG 2017 (kuopos medžiagoje nėra).
 const NB = (() => {
@@ -2161,11 +2161,12 @@ const NB = (() => {
   // ── grynos skaičiuoklės (testuojamos) ──
   // o: { kg, tbsa, tInj (ms), now (ms) } → SOP #48 kiekiai ir greičiai (iki 10 ml/val.), fazė nuo traumos, TCCC „10 taisyklė“
   function calc(o) {
-    const kg = +o.kg || 0, t = +o.tbsa || 0, v24 = 4 * kg * t, v8 = v24 / 2;
+    const kg = +o.kg || 0, t = +o.tbsa || 0, v24 = 4 * kg * t, v8 = v24 / 2, v8lo = v8 / 2; // 4 ml – viršutinė, 2 ml – apatinė riba
     const el = +o.tInj > 0 ? Math.max(0, ((+o.now || Date.now()) - o.tInj) / 3.6e6) : null;
     const phase = el == null ? '' : el < 8 ? '8' : el < 24 ? '16' : 'end';
     const t10 = Math.round(t / 10) * 10, rule10 = kg >= 40 ? t10 * 10 + (kg > 80 ? Math.floor((kg - 80) / 10) * 100 : 0) : 0;
-    return { v24: Math.round(v24), v8: Math.round(v8), r8: r10(v8 / 8), r16: r10(v8 / 16), el, phase, now: phase === '8' ? r10(v8 / 8) : phase === '16' ? r10(v8 / 16) : 0, t10, rule10 };
+    return { v24: Math.round(v24), v8: Math.round(v8), r8: r10(v8 / 8), r16: r10(v8 / 16), el, phase, now: phase === '8' ? r10(v8 / 8) : phase === '16' ? r10(v8 / 16) : 0, t10, rule10,
+      v24lo: Math.round(v24 / 2), v8lo: Math.round(v8lo), r8lo: r10(v8lo / 8), r16lo: r10(v8lo / 16), nowlo: phase === '8' ? r10(v8lo / 8) : phase === '16' ? r10(v8lo / 16) : 0 };
   }
   const drops = (mlh, f) => Math.round(mlh * f / 60);
   // o: { ml, h, kg, el } → ml/val., ml/kg/val., tikslas (SOP 0,5–1 ml/kg/val.; elektros trauma – JTS 75–100 ml/val.), būsena lo / ok / hi
@@ -2201,16 +2202,17 @@ const NB = (() => {
     const tI = tInjury(), C = calc({ kg: w, tbsa: t, tInj: tI, now: Date.now() }), G = given();
     h += `<p class="muted mt0">Svoris ${w} kg · ${tI ? 'nuo traumos ' + dur(C.el) + ' (' + hm(tI) + ')' : 'traumos laikas nenustatytas – skaičiuojama nuo traumos, ne nuo atvykimo'}</p>` +
       (tI ? '' : '<div class="acts"><button class="btn" data-act="mc-time">Nustatyti traumos laiką</button></div>') + wChips(w, 1);
-    h += '<div class="seg2" role="group" aria-label="Formulė">' + chip('nb-f', 'etc', s.f === 'etc', 'Pagal SOP (#48)') + chip('nb-f', 'tccc', s.f === 'tccc', 'TCCC „10 taisyklė“') + '</div>';
+    h += '<div class="seg2" role="group" aria-label="Formulė">' + chip('nb-f', 'etc', s.f === 'etc', 'Parkland (#48)') + chip('nb-f', 'tccc', s.f === 'tccc', 'TCCC „10 taisyklė“') + '</div>';
     let rate = 0;
     if (s.f === 'etc') {
       rate = C.phase === '8' || C.phase === '16' ? C.now : C.r8;
-      const big = C.phase === 'end' ? '' : `<small>Ringerio laktatas – ${C.phase === '16' ? 'kitos 16 val.' : C.phase === '8' ? 'dabar (pirmos 8 val.)' : 'pirmos 8 val.'}</small><b>${rate} ml/val.</b>`;
+      const lo = C.phase === '8' || C.phase === '16' ? C.nowlo : C.r8lo;
+      const big = C.phase === 'end' ? '' : `<small>Ringerio laktatas – ${C.phase === '16' ? 'kitos 16 val.' : C.phase === '8' ? 'dabar (pirmos 8 val.)' : 'pirmos 8 val.'}</small><b>${lo}–${rate} ml/val.</b>`;
       h += `<section class="nbfl${C.phase === 'end' ? ' off' : ''}">${big}` +
-        `<small>Per 24 val.: ${C.v24} ml (4 ml × ${w} kg × ${fmt1(t)} %)</small>` +
-        `<small>Pirmos 8 val. nuo traumos: ${C.v8} ml → ${C.r8} ml/val.</small><small>Kitos 16 val.: ${C.v8} ml → ${C.r16} ml/val.</small>` +
+        `<small>Per 24 val.: ${C.v24lo}–${C.v24} ml (2–4 ml × ${w} kg × ${fmt1(t)} %)</small>` +
+        `<small>Pirmos 8 val. nuo traumos: ${C.v8lo}–${C.v8} ml → ${C.r8lo}–${C.r8} ml/val.</small><small>Kitos 16 val.: ${C.v8lo}–${C.v8} ml → ${C.r16lo}–${C.r16} ml/val.</small>` +
         (C.phase === 'end' ? '<small><b>Praėjo 24 val. – formulės laikotarpis baigėsi; tęskite pagal diurezę.</b></small>' : '') +
-        '<small>Formulė – Parkland pagal paskaitą „Nudegimo trauma“ (2025-12-03); taikykite kuopos SOP.</small></section>';
+        '<small>Parkland 2–4 ml – tik pradinis taškas, titruokite pagal diurezę (ETC 5.0); kuopos paskaitoje – 4 ml.</small></section>';
       if (C.phase === 'end') rate = 0;
     } else {
       rate = C.rule10;
@@ -2237,7 +2239,7 @@ const NB = (() => {
     if (last) {
       const U = uop({ ml: last.ml, h: last.h, kg: w, el: s.el }), lb = U.st === 'lo' ? 'Mažiau nei tikslas' : U.st === 'hi' ? 'Daugiau nei tikslas' : 'Tiksle';
       h += `<div class="nbu ${U.st}"><b>${U.mlh} ml/val. · ${fmt1(U.mlkg)} ml/kg/val.</b><span>${lb}</span><small>${hm(last.t)} · ${last.ml} ml per ${last.h} val.</small></div>`;
-      if (U.st !== 'ok') h += `<p class="nbhint">${U.st === 'lo' ? 'Didinkite' : 'Mažinkite'} skysčių greitį 20 %${rate ? ` (→ ${r10(rate * (U.st === 'lo' ? 1.2 : 0.8))} ml/val.)` : ''}, po 2 val. įvertinkite iš naujo (JTS).</p>`;
+      if (U.st !== 'ok') h += `<p class="nbhint">${U.st === 'lo' ? 'Didinkite' : 'Mažinkite'} dabartinį skysčių greitį 20 %, po 2 val. įvertinkite iš naujo (JTS).</p>`;
       if (U.st === 'lo') h += '<p class="muted mt0">Be hipotenzijos (VAKS &lt; 65 mm Hg) skysčių boliusų venkite (JTS).</p>';
       if (s.uo.length > 1) h += '<p class="muted">Ankstesni: ' + s.uo.slice(-6, -1).reverse().map(u => hm(u.t) + ' – ' + uop({ ml: u.ml, h: u.h, kg: w, el: s.el }).mlh + ' ml/val.').join(' · ') + '</p>';
     }
@@ -2290,8 +2292,8 @@ const NB = (() => {
     h += stepper('nb-x', 'x', s.x + ' %', 'Pavienės vietos (delnais)', 'po 1 % – delnas su pirštais');
     const sel = Object.keys(s.r).map(key => { const [side, k] = key.split(':'), R = REG.find(x => x[0] === k); return R ? (R[1] + (side === 'b' ? ' (nugara)' : k === 'tarp' ? '' : ' (priekis)')) + ' ' + fmt1(pct(s, k, side) * s.r[key]) : ''; }).filter(Boolean);
     if (sel.length || s.x) h += `<div class="nbsel"><span>${esc(sel.concat(s.x ? ['pavienės ' + s.x] : []).join(' · '))}</span><button class="btn sm" data-act="nb-clr">Išvalyti</button></div>`;
-    h += `<div class="nbres${t > 20 ? ' hi' : ''}"><div class="nbt">${fmt1(t)} % <small>KPP</small></div><div>${t > 20 ? '> 20 % – skysčių gaivinimas, kai tik yra IV / IO prieiga (TCCC 2026); saugokite nuo hipotermijos' : t ? '20 % ir mažiau – skysčiai pagal būklę' : 'Pažymėkite nudegusias sritis'}</div></div>`;
-    if (t > 20) h += fluids(s, t, learn);
+    h += `<div class="nbres${t >= 15 ? ' hi' : ''}"><div class="nbt">${fmt1(t)} % <small>KPP</small></div><div>${t >= 15 ? '≥ 15 % – skysčių gaivinimas, kai tik yra IV / IO prieiga (ETC 5.0; TCCC – > 20 %); saugokite nuo hipotermijos' : t ? 'Mažiau nei 15 % – skysčiai pagal būklę' : 'Pažymėkite nudegusias sritis'}</div></div>`;
+    if (t >= 15) h += fluids(s, t, learn);
     else if (s.el || s.uo.length) h += urine(s, wNow(), 0, learn);
     if (s.age === 'c' && learn) h += '<p class="muted">Vaikui galva didesnė, kojos mažesnės (galva 18 %, kiekviena koja 14 %); tiksliau – Lund–Browder lentelė.</p>';
     h += row('#/igudis/48', 'Nudegimai: ploto vertinimas, skysčiai ir tvarstymas', 'Įgūdis #48') + row('#/mist', 'MIST kortelė', MC.status());
