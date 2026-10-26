@@ -77,7 +77,7 @@ window.ETC.vaistai = [
       "ondansetronas",
       "midazolamas"
     ],
-    "saltinis": "TCCC gairės 2026-05-01; ETC įgūdžių lentelės (sedacija, infuzomatas); PCS (Ketalar)",
+    "saltinis": "TCCC gairės 2026-05-01; ETC įgūdžių lentelės (sedacija, infuzomatas); PCS (Ketalar); ETC vadovas 5.0 (2026), 1 sk. (7 lentelė – analgezija)",
     "nuorodos": [
       [
         "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
@@ -103,10 +103,10 @@ window.ETC.vaistai = [
     "stulpeliai": [
       {
         "pav": "Nuskausminimas",
-        "sub": "TCCC 2026",
+        "sub": "TCCC 2026 · ETC 5.0",
         "dozes": [
           {
-            "k": "IV / IO",
+            "k": "IV / IO (TCCC 2026)",
             "d": "0,2–0,3 mg/kg (arba 25 mg) · ml skiesto 5 mg/ml tirpalo",
             "c": {
               "min": 0.2,
@@ -115,6 +115,16 @@ window.ETC.vaistai = [
               "alt": "arba 25 mg"
             },
             "p": "Lėtai per 1 min. Skiedimas: 1 ml (50 mg) iki 10 ml = 5 mg/ml."
+          },
+          {
+            "k": "IV / IO (ETC 5.0)",
+            "d": "0,2–0,5 mg/kg, titruoti · ml skiesto 5 mg/ml tirpalo",
+            "c": {
+              "min": 0.2,
+              "max": 0.5,
+              "conc": 5
+            },
+            "p": "> 0,5 mg/kg – bendrosios anestezijos rizika. IM – iki 2 mg/kg (ETC 5.0)."
           },
           {
             "k": "IM",
@@ -208,7 +218,23 @@ window.ETC.vaistai = [
     "kontra": "PCS: alergija opioidams, kvėpavimo slopinimas, obstrukcinė kvėpavimo takų liga, MAO inhibitoriai (per 2 sav.).",
     "dozes": [
       {
-        "k": "IV / IO",
+        "k": "IV / IO (ETC 5.0)",
+        "d": "50–100 mcg (0,5–1 mcg/kg), titruoti kas 2–5 min · ml 50 mcg/ml",
+        "c": {
+          "min": 0.5,
+          "max": 1,
+          "conc": 50,
+          "u": "mcg"
+        },
+        "p": "Leisti lėtai; stebėkite kvėpavimą."
+      },
+      {
+        "k": "Į nosį (ETC 5.0)",
+        "d": "100 mcg (≥ 70 m. – 50 mcg), kartoti kas 5 min, iš viso ≤ 500 mcg",
+        "p": "Dalyti per abi šnerves, ≤ 1 ml į šnervę (50 mcg/ml: 100 mcg = 2 ml – po 1 ml į kiekvieną)."
+      },
+      {
+        "k": "IV / IO (ankstesnės TCCC gairės)",
         "d": "50 mcg (0,5–1 mcg/kg) lėtai · ml 50 mcg/ml",
         "c": {
           "min": 0.5,
@@ -219,12 +245,12 @@ window.ETC.vaistai = [
         "p": "Kartoti kas 30 min pagal poreikį (ankstesnės TCCC gairės)."
       },
       {
-        "k": "Į nosį",
+        "k": "Į nosį (ankstesnės TCCC gairės)",
         "d": "100 mcg",
         "p": "Kartoti kas 30 min pagal poreikį (ankstesnės TCCC gairės)."
       },
       {
-        "k": "Kartoti",
+        "k": "Kartoti (ankstesnės TCCC gairės)",
         "d": "kas 30 min pagal poreikį",
         "p": "Ankstesnės TCCC gairės; stebėkite kvėpavimą."
       }
@@ -246,7 +272,7 @@ window.ETC.vaistai = [
       "ketaminas",
       "naloksonas"
     ],
-    "saltinis": "ankstesnės TCCC gairės (ATP-P, JSOM); PCS (fentanilis); NextGen Combat Medic",
+    "saltinis": "ETC vadovas 5.0 (2026), 1 sk. (7 lentelė – analgezija); ankstesnės TCCC gairės (ATP-P, JSOM); PCS (fentanilis); NextGen Combat Medic",
     "nuorodos": [
       [
         "Ankstesnės TCCC gairės (ATP-P, JSOM) – analgezija",
@@ -304,6 +330,16 @@ window.ETC.vaistai = [
     "kontra": "Alergija. PCS: ūminis kvėpavimo slopinimas, obstrukcinė kvėpavimo takų liga, galvos trauma, padidėjęs intrakranijinis spaudimas, smegenų edema, koma, traukulių ligos, MAO inhibitoriai (per 2 sav.), paralyžinis žarnų nepraeinamumas, feochromocitoma.",
     "dozes": [
       {
+        "k": "IV / IO (ETC 5.0)",
+        "d": "2–3 mg (0,03–0,1 mg/kg), titruoti kas 5–10 min · ml 1 mg/ml tirpalo",
+        "c": {
+          "min": 0.03,
+          "max": 0.1,
+          "conc": 1
+        },
+        "p": "Pradėti nuo 2–3 mg; kartoti pagal skausmą ir kvėpavimą. Senyviems – mažesnė dozė. Skiedimas: 1 ml (10 mg) iki 10 ml = 1 mg/ml."
+      },
+      {
         "k": "IV (PCS)",
         "d": "2,5–15 mg lėtai, titruojant pagal atsaką",
         "p": "Pradėti nuo mažesnės dozės. Įprastai ne dažniau kaip kas 4 val., bet dozė ir intervalas titruojami, kol pasiekiamas nuskausminimas. Skiedimas: 1 ml (10 mg) iki 10 ml = 1 mg/ml."
@@ -332,7 +368,7 @@ window.ETC.vaistai = [
       "ondansetronas",
       "naloksonas"
     ],
-    "saltinis": "PCS (morfino sulfatas 10 mg/ml); TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine)",
+    "saltinis": "ETC vadovas 5.0 (2026), 1 sk. (7 lentelė – analgezija); PCS (morfino sulfatas 10 mg/ml); TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine)",
     "nuorodos": [
       [
         "PCS – morfino sulfatas 10 mg/ml (JK eMC)",
@@ -563,24 +599,25 @@ window.ETC.vaistai = [
     "dozes": [
       {
         "k": "IV / IO (TCCC 2026)",
-        "d": "2 g lėtai – kuo anksčiau, ne vėliau kaip per 3 val. nuo sužalojimo",
+        "d": "2 g lėtai – kuo anksčiau (geriausia per 90 min), ne vėliau kaip per 3 val. nuo sužalojimo",
         "p": "4 ampulės po 500 mg / 5 ml = 20 ml. Leisti ne greičiau kaip 1 ml/min – apie 20 min (PCS)."
       }
     ],
     "ispejimai": [
-      "Po 3 val. nuo sužalojimo neskirti. Pažymėkite traumos laiką paciento faile – „TXA iki“ parodys terminą.",
+      "Geriausia per 90 min nuo traumos (ETC 5.0); po 3 val. neskirti – gali didinti mirštamumą. Pažymėkite traumos laiką paciento faile – „TXA iki“ parodys terminą.",
       "Per greitai leidžiant – hipotenzija (PCS).",
       "Tik IV / IO; nemaišyti su krauju ir penicilino tirpalais (PCS)."
     ],
     "salutinis": "Pykinimas, vėmimas, viduriavimas, galvos skausmas, kraujospūdžio sumažėjimas (per greitai leidžiant), galimi traukuliai (ypač jei yra pasireiškę anksčiau).",
     "pakuote": "Ampulės 500 mg / 5 ml (100 mg/ml)",
     "pastabos": [
-      "Po pirmojo perpilto kraujo produkto – kalcis (TCCC 2026)."
+      "Po pirmojo perpilto kraujo produkto – kalcis (TCCC 2026).",
+      "ETC 5.0: galvos traumai TXA efektyviausia kuo anksčiau (≤ 90 min) ir esant GKS > 8; izoliuota sunki galvos trauma (GKS 3, abu vyzdžiai nereaguoja) – nauda neįrodyta."
     ],
     "susije": [
       "kalcis"
     ],
-    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); PCS (Cyklokapron); ETC vertinimo lapas",
+    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); PCS (Cyklokapron); ETC vertinimo lapas; ETC vadovas 5.0 (2026), 6 sk. „Šokas“ ir 7 sk. „Galvos trauma“",
     "nuorodos": [
       [
         "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
@@ -662,13 +699,14 @@ window.ETC.vaistai = [
     "pakuote": "10 % tirpalas (100 mg/ml kalcio gliukonato)",
     "pastabos": [
       "TCCC „1 g kalcio“ – tai 30 ml 10 % kalcio gliukonato arba 10 ml 10 % kalcio chlorido (apie 6,7–6,8 mmol kalcio).",
-      "Gydymo kokybės kriterijus: užtikrinamas kalcio kiekis esant kraujo transfuzijai."
+      "Gydymo kokybės kriterijus: užtikrinamas kalcio kiekis esant kraujo transfuzijai.",
+      "ETC 5.0: rutininio empirinio kalcio nerekomenduoja – jei galima, matuokite jonizuotą Ca; hiperkalcemija taip pat žalinga. Gide – TCCC 2026."
     ],
     "susije": [
       "txa",
       "insulinas"
     ],
-    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); PCS (kalcio gliukonatas 10 %); ETC vertinimo lapas; JTS CPG „Hyperkalemia and Dialysis in the Deployed Setting“ (2022); CGO „Hyperkalaemia“ (2026)",
+    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); PCS (kalcio gliukonatas 10 %); ETC vertinimo lapas; JTS CPG „Hyperkalemia and Dialysis in the Deployed Setting“ (2022); CGO „Hyperkalaemia“ (2026); ETC vadovas 5.0 (2026), 6 sk. „Šokas“",
     "nuorodos": [
       [
         "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
@@ -1205,9 +1243,10 @@ window.ETC.vaistai = [
     "pakuote": "Buteliukai 10 % 100 ml",
     "pastabos": [
       "TCCC 2026 galvos smegenų traumai: SpO₂ ≥ 92 %, sAKS > 100 mm Hg (nesant matavimo – normalus radialinis pulsas); ventiliuojamam su monitoringu EtCO₂ 35–45 mm Hg (be EtCO₂ – 10 įkvėpimų/min mažu kvėpavimo tūriu, 1 įkvėpimas kas 6 s). Galvą ir liemenį pakelti > 30°, jei nėra šoko ir leidžia taktinė situacija; neurologinę būklę vertinti kas 5–10 min.",
-      "ETC vertinimo lapas: manitolis arba 3 % NaCl, 30° galvūgalio padėtis; sAKS tikslas 110–120 mm Hg."
+      "ETC vertinimo lapas: manitolis arba 3 % NaCl, galvūgalis 30°. AKS tikslas (ETC 5.0): sAKS ≥ 110 mm Hg arba VAKS > 80 mm Hg; su nesustabdytu kraujavimu kitur – sAKS ~100–110 mm Hg.",
+      "ETC 5.0: 2–5 ml/kg per 10–20 min, pirmenybė esant hipovolemijai; Na⁺ ≤ 155 mmol/l."
     ],
-    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); ETC vertinimo lapas",
+    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); ETC vertinimo lapas; ETC vadovas 5.0 (2026), 7 sk. „Galvos trauma“",
     "nuorodos": [
       [
         "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
@@ -1257,14 +1296,14 @@ window.ETC.vaistai = [
     "kontra": "Hipotenzija, hipovolemija ar nesustabdytas kraujavimas (JTS). PCS: anurija, sunkus širdies nepakankamumas, plaučių edema.",
     "dozes": [
       {
-        "k": "IV / IO (JTS)",
-        "d": "1 g/kg per 20 min · ml 20 % tirpalo",
+        "k": "IV / IO (ETC 5.0)",
+        "d": "0,5 g/kg (0,25–1 g/kg) per 20 min · ml 20 % tirpalo",
         "c": {
-          "per": 1,
+          "per": 0.5,
           "u": "g",
           "conc": 0.2
         },
-        "p": "20 % – 5 ml/kg (80 kg – 400 ml); 15 % – 6,7 ml/kg (80 kg – 530 ml).\nPakartotinai – 0,5 g/kg kas 3 val., jei reikia (gydytojo sprendimu)."
+        "p": "20 % – 2,5 ml/kg (80 kg – 200 ml); 15 % – 3,3 ml/kg (80 kg – 270 ml).\nPakartotinai – 0,5 g/kg kas 3 val., jei reikia (JTS, gydytojo sprendimu)."
       }
     ],
     "ispejimai": [
@@ -1276,13 +1315,14 @@ window.ETC.vaistai = [
     "trukme": "apie 3 val.",
     "salutinis": "Hipotenzija dėl diurezės, elektrolitų sutrikimai, ekstravazacijos vietos sudirginimas.",
     "pastabos": [
+      "JTS lauko gairės – iki 1 g/kg (20 % – 5 ml/kg).",
       "JTS lauko gairės: hipertoninis NaCl pirmenybinis; manitolis – kai NaCl nėra arba būklė blogėja. Galvūgalis 30°, SpO₂ ir AKS tikslai – kaip hipertoniniam NaCl.",
       "Šlapimo kateteris – diurezei matuoti."
     ],
     "susije": [
       "nacl-hipert"
     ],
-    "saltinis": "JTS CPG „TBI Management in Prolonged Field Care“ (2023) ir „TBI Management and Basic Neurosurgery in the Deployed Environment“; ETC vertinimo lapas",
+    "saltinis": "JTS CPG „TBI Management in Prolonged Field Care“ (2023) ir „TBI Management and Basic Neurosurgery in the Deployed Environment“; ETC vertinimo lapas; ETC vadovas 5.0 (2026), 7 sk. „Galvos trauma“",
     "nuorodos": [
       [
         "JTS CPG „Traumatic Brain Injury Management in Prolonged Field Care“ (tccc.org.ua, 2023)",
@@ -1472,7 +1512,7 @@ window.ETC.vaistai = [
     "grupe": "retai",
     "tipas": "papild",
     "kam": "Medicinos personalui",
-    "ind": "Gliukozė < 4 mmol/l arba hipoglikemijos požymiai (silpnumas, prakaitavimas, sumišimas, traukuliai), kai sužeistasis negali saugiai nuryti. Galvos smegenų traumai – laikyti > 5,6 mmol/l (JTS).",
+    "ind": "Gliukozė < 4 mmol/l arba hipoglikemijos požymiai (silpnumas, prakaitavimas, sumišimas, traukuliai), kai sužeistasis negali saugiai nuryti. Galvos smegenų traumai – laikyti > 5,6 mmol/l (JTS); ETC 5.0 tikslas – 6–10 mmol/l.",
     "kontra": "",
     "dozes": [
       {

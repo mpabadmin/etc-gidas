@@ -1,6 +1,6 @@
 // ETC gidas – VAIDMENYS, KONTROLINIAI SĄRAŠAI, ESCAPE PLANAI, MOKYMOSI TEMOS
 // Šaltiniai: ETC vertinimo lapas (A, B, C, Escape, komandos darbas, gydymo kokybė), ETC įgūdžių lapas
-// (darbo vietos schema, vaistų lentelės, kraujo suderinamumas), ETC vadovas 4.1 (1–4 sk.), TCCC vaistų vadovas,
+// (darbo vietos schema, vaistų lentelės, kraujo suderinamumas), ETC vadovas 5.0 (2026), TCCC vaistų vadovas,
 // kuopos pirminio ištyrimo tvarka: A – komandos vadas; B – visa apžiūra iki 2 min; C – iškart PVK/IO, kraujo grupė, gliukozė.
 // Sąrašo punktas: { t: tekstas, s: [papunkčiai], g: kam skirta, k: true – svarbiausias, i: paaiškinimas mokymosi režimui }
 // { h: 'Antraštė' } – skyriaus antraštė sąraše (nežymima).
@@ -18,11 +18,11 @@ E.atsiliepimai = { url: 'https://script.google.com/macros/s/AKfycbyUpzDmAClJ40FM
 // ───────── VAIDMENYS ─────────
 E.vaidmenys = [
   { id: 'A', cls: 'rA', pav: 'A komandos narys – kvėpavimo takai, komandos vadas', sub: 'Airway · vadas', lists: ['a-pas', 'atmist', 'a-pir', 'a-plan', 'a-ant'], vadovas: true,
-    aprasymas: '<b>Vieta:</b> prie paciento galvūgalio. A narys yra ir komandos vadas: veda instruktažą, atlieka 5 s apžiūrą ir garsiai paskelbia Planą A arba Escape planą, perima ATMIST informaciją, užtikrina kvėpavimo takus ir deguonį, vertina neurologiją, renka B ir C radinius, perskirsto darbą, po pirminės apžiūros atlieka „10 už 10“ ir planuoja tolesnį kelią. Antrinėje apžiūroje – galva, veidas, anamnezė (AMPLE) ir radinių apibendrinimas.' },
+    aprasymas: '<b>Vieta:</b> prie paciento galvūgalio. A narys yra ir komandos vadas: veda instruktažą, atlieka 5 s apžiūrą ir garsiai paskelbia Planą A arba Escape planą, nusprendžia, kaip priimamas ATMISTER perdavimas (stabilus – klauso visa komanda, nestabilus – A garsiai perduoda svarbiausius faktus), užtikrina kvėpavimo takus ir deguonį, vertina neurologiją, renka B ir C radinius, perskirsto darbą, po pirminės apžiūros atlieka „10 už 10“ ir planuoja tolesnį kelią. Antrinėje apžiūroje – galva, veidas, anamnezė (AMPLE) ir radinių apibendrinimas.' },
   { id: 'B', cls: 'rB', pav: 'B komandos narys – kvėpavimas', sub: 'Breathing', lists: ['b-pas', 'b-pir', 'b-ant'],
     aprasymas: '<b>Vieta:</b> vienoje paciento pusėje, šalia echoskopo. Visiškai atidengia pacientą, uždeda EKG ir SpO₂, apžiūri kaklą ir krūtinės ląstą, taip pat pilvą, dubenį, tarpvietę ir galūnes dėl kraujavimo. Visą apžiūrą stetoskopu ir rankomis atlieka ne ilgiau nei per 2 min ir <b>tik tada</b> praneša radinius A nariui. <b>Išimtis</b> – gyvybei pavojinga būklė: apie ją praneša iškart. Radęs nestabilų dubenį ar kraujo tarpvietėje, dubens diržą uždeda kartu su C. Kartu su C apverčia pacientą ir apžiūri nugarą – <b>prieš e-FAST</b>. Drenavimas ir e-FAST – pagal kompetenciją. Antrinėje apžiūroje atlieka A nario nurodytas procedūras ir padeda C nariui.' },
   { id: 'C', cls: 'rC', pav: 'C komandos narys – kraujotaka', sub: 'Circulation', lists: ['c-pas', 'c-pir', 'c-ant'],
-    aprasymas: '<b>Vieta:</b> kitoje paciento pusėje, prie stovo skysčiams ir infuzomatams. <b>Iškart atvykus pacientui, nelaukdamas A nurodymo,</b> įveda PVK arba intrakaulinę (IO) adatą ir visiems pacientams nustato kraujo grupę ir gliukozę. Uždeda AKS manžetę, vertina šoko požymius ir aiškiai pasako, ar pacientas yra hemoraginiame šoke. Kartu su B uždeda dubens diržą ir verčia pacientą ant šono. Ruošia vaistus ir kraujo komponentus, rūpinasi hipotermijos prevencija.' }
+    aprasymas: '<b>Vieta:</b> kitoje paciento pusėje, prie stovo skysčiams ir infuzomatams. <b>Nelaukdamas A nurodymo</b> (nestabiliam – iškart atvykus, stabiliam – išklausęs ATMISTER) įveda PVK arba intrakaulinę (IO) adatą ir visiems pacientams nustato kraujo grupę ir gliukozę. Uždeda AKS manžetę, vertina šoko požymius ir aiškiai pasako, ar pacientas yra hemoraginiame šoke. Kartu su B uždeda dubens diržą ir verčia pacientą ant šono. Ruošia vaistus ir kraujo komponentus, rūpinasi hipotermijos prevencija.' }
 ];
 
 // ───────── ESCAPE PLANAI ─────────
@@ -39,7 +39,7 @@ E.sarasai = {
       { t: 'Uždėtas turniketas, pažymėtas laikas', k: true, i: 'Pradžios ekrane spauskite kortelę „Turniketas“ → „Dabar“.' },
       { t: 'Žaizda tamponuota hemostatine marle' },
       { t: 'Įtariant kraujavimą iš dubens – uždėtas dubens diržas' },
-      { t: 'Skirta traneksamo rūgštis (per 3 val. nuo traumos)', g: MED },
+      { t: 'Skirta traneksamo rūgštis (kuo anksčiau, geriausia per 90 min, ne vėliau kaip per 3 val.)', g: MED },
       { t: 'Skirti kraujo komponentai / aktyvuotas masinio kraujavimo protokolas', g: MED },
       { t: 'Esant kraujo transfuzijai – užtikrintas kalcio kiekis', g: MED },
       { t: 'Kraujavimą sustabdžius – grįžtama prie Plano A' }
@@ -62,7 +62,7 @@ E.sarasai = {
   },
   'esc-tss': {
     title: 'Trauminis širdies sustojimas', short: 'Širdies sustojimas',
-    intro: 'Sąrašas atitinka ETC vertinimo lapą. ETC vadove nurodoma iškart pradėti trauminio širdies sustojimo (TCA) algoritmą (5c skyrius). Šaltiniuose jo nėra – detalius veiksmus papildykite pagal kuopos protokolą.',
+    intro: 'Sąrašas atitinka ETC vertinimo lapą. TCA algoritmas – ETC vadovo 5.0 6a skyrius (pagal ERC 2025): grįžtamos priežastys šalinamos vienu metu, prieš krūtinės paspaudimus; adrenalinas – tik pašalinus priežastis ir pradėjus perpilti kraują (#39).',
     items: [
       { t: 'A (komandos vadas) aiškiai paskelbė: trauminis širdies sustojimas', k: true },
       { t: 'Pradėtas trauminio širdies sustojimo (TCA) algoritmas', k: true },
@@ -77,13 +77,14 @@ E.sarasai = {
     items: [
       { h: 'Komandos instruktažas' },
       { t: 'Komandos nariai prisistatė vieni kitiems' },
-      { t: 'Pasidalinta informacija prieš atvykimą (ATMIST)' },
+      { t: 'Pasidalinta informacija prieš atvykimą (ATMISTER)' },
       { t: 'Patikrintos narių kompetencijos, jaunesniems paskirta vyresniųjų parama' },
       { t: 'Paskirstyti vaidmenys: A, B, C, rašytojas', k: true },
       { t: 'Suformuluotas Planas A', k: true },
       { t: 'Aptartas Planas B ir Escape planai', s: ['Skubus perkėlimas į operacinę', 'Netikėtas širdies sustojimas', 'Masyvus kraujavimas, kvėpavimo takų obstrukcija'] },
       { t: 'Įvertintas papildomų išteklių poreikis', s: ['Personalas (pvz., vyresnis kolega)', 'Įranga: masinio kraujo perpylimo sistema, sudėtingų kvėpavimo takų rinkinys'] },
       { t: 'Informuoti: kraujo bankas, radiologija, operacinė, intensyvioji terapija' },
+      { t: 'Vartojant antikoaguliantų – iš anksto paruoštas jų poveikio panaikinimas', g: MED },
       { t: 'Laikomasi standartinių atsargumo priemonių' },
       { t: 'Kiekvienas narys patikrino savo įrangą, visi žino, kaip kviesti pagalbą' },
       { t: 'Patalpa ir skysčiai pašildyti' },
@@ -100,27 +101,29 @@ E.sarasai = {
     ]
   },
   'atmist': {
-    title: 'ATMIST perdavimas', short: 'ATMIST',
-    intro: 'Vienoda perdavimo struktūra padeda neprarasti informacijos. Prieš perdavimą A narys (komandos vadas) atlieka 5 s apžiūrą. C narys tuo metu jau įveda PVK / IO.',
+    title: 'ATMISTER perdavimas', short: 'ATMISTER',
+    intro: 'Vienoda perdavimo struktūra padeda neprarasti informacijos. Po 5 s apžiūros A nusprendžia: stabilus pacientas – visa komanda trumpai išklauso ATMISTER ir tik tada pradeda; nestabilus – perdavimą priima A, B ir C iškart pradeda pirminę apžiūrą (C – PVK / IO), A garsiai perduoda svarbiausius faktus. Esant Escape – perdavimas sutrumpinamas.',
     items: [
       { t: 'A – amžius, lytis, svarbi anamnezė', s: ['Pvz., nėštumas, antikoaguliantai (varfarinas)'] },
       { t: 'T – traumos laikas', k: true, i: 'Pažymėkite paciento faile (kortelė „Trauma“) – kortelė „TXA iki“ parodys terminą.' },
       { t: 'M – mechanizmas', s: ['Bendras mechanizmas: eismo įvykis, dūris ir kt.', 'Rizikos veiksniai: įstrigimas, apvirtimas, išmetimas iš transporto priemonės, kritimas iš aukščio'] },
       { t: 'I – įtariami sužalojimai' },
       { t: 'S – požymiai ir simptomai', s: ['Kvėpavimo dažnis, SpO₂', 'Širdies susitraukimų dažnis, kraujospūdis', 'GKS, židininis neurologinis deficitas', 'Skausmas', 'Gyvybinių funkcijų tendencijos'] },
-      { t: 'T – taikytas gydymas ir kas numatoma atvykus', k: true, s: ['Turniketai ir jų uždėjimo laikas', 'Kitos intervencijos', 'Skirti vaistai', 'Kas numatoma (pvz., masinė transfuzija)'] }
+      { t: 'T – taikytas gydymas ir kas numatoma atvykus', k: true, s: ['Turniketai ir jų uždėjimo laikas', 'Kitos intervencijos', 'Skirti vaistai', 'Kas numatoma (pvz., masinė transfuzija)'] },
+      { t: 'E – numatomas atvykimo laikas; perduodant – svarbūs radiniai (pvz., e-FAST, gliukozė)' },
+      { t: 'R – ko reikia iš anksto: kraujas, specialistai, operacinė, KT' }
     ]
   },
   'a-pir': {
     title: 'A – pirminė apžiūra', short: 'Pirminė',
-    intro: 'C narys iškart pats įveda PVK / IO ir nustato kraujo grupę bei gliukozę – nurodymo nereikia. B narys radinius praneša baigęs visą apžiūrą (iki 2 min), gyvybei pavojingą būklę – iškart.',
+    intro: 'Nestabilus pacientas – C narys iškart pats įveda PVK / IO ir nustato kraujo grupę bei gliukozę, nurodymo nereikia; stabilus – pirmiau visa komanda išklauso ATMISTER. B narys radinius praneša baigęs visą apžiūrą (iki 2 min), gyvybei pavojingą būklę – iškart.',
     items: [
       { h: '5 sekundžių apžiūra' },
       { t: 'Atlikta 5 s apžiūra – vertinimo trikampis', k: true, s: ['Socialinė sąveika: ramus / susijaudinęs / nėra', 'Kvėpavimo pastangos: normalios / padidėjusios / nėra', 'Odos perfuzija: rožinė / blyški, marmuruota / nėra'],
         i: 'Plačiau – tema „ETC eiga“.' },
       { t: 'Atmesta: masyvus kraujavimas, kvėpavimo takų obstrukcija, trauminis širdies sustojimas', k: true },
       { t: 'Garsiai paskelbta: tęsiamas Planas A arba aktyvuojamas Escape planas', k: true },
-      { t: 'Perimtas ATMIST perdavimas (skirtukas ATMIST)' },
+      { t: 'Perimtas ATMISTER perdavimas (skirtukas ATMISTER)', s: ['Stabilus – išklauso visa komanda, tada pradedama', 'Nestabilus – priima A, B ir C pradeda apžiūrą', 'Escape – perdavimas sutrumpinamas'] },
       { h: 'Kvėpavimo takai ir neurologija' },
       { t: 'Įvertintas kvėpavimo takų praeinamumas', k: true, s: ['Laisvi', 'Obstrukcija – užkritęs liežuvis / skystis / tinimas'], i: 'Įgūdžiai #2, #3.' },
       { t: 'Apžiūrėta burnos ertmė', s: ['Atsiurbti: nereikia / reikia'] },
@@ -130,10 +133,10 @@ E.sarasai = {
       { t: 'Įvertinta, ar pakankamai deguonies patenka į plaučius', s: ['Pakankamai / nepakankamai'] },
       { t: 'Įvertinta, ar nereikia eskaluoti kvėpavimo takų valdymo', k: true,
         s: ['Paskelbta didelės rizikos kriko situacija', 'Pakviesta ekspertinė pagalba dėl intubacijos', 'Pabandyta atsiurbti',
-            'Orofaringinis vamzdelis (nesąmoningam)', 'Dažnesnė ir didesnio tūrio ventiliacija ambu maišu', 'Orofaringinis vamzdelis pakeistas laringine kauke',
+            'Orofaringinis vamzdelis (nesąmoningam)', 'Ventiliacija dviese su OPA / NPA, ~500 ml, 10/min', 'Orofaringinis vamzdelis pakeistas laringine kauke',
             'Padidintas deguonies srautas'],
         i: 'Įgūdis #8. Kvėpavimo takų planai A–D ir Vortex principas – tema „Kvėpavimo takai ir krūtinė“.' },
-      { t: 'Įvertinta neurologija', s: ['AVPU', 'Vyzdžių dydis ir reakcija į šviesą', 'Galūnių motorika – simetriška / nesimetriška'], i: 'Įgūdis #12.' },
+      { t: 'Įvertinta neurologija', s: ['AVPU', 'Vyzdžių dydis ir reakcija į šviesą', 'Galūnių motorika – simetriška / nesimetriška', 'Sąmoningam – trumpa AMPLE (alergijos, antikoaguliantai)'], i: 'Įgūdis #12.' },
       { h: 'Komandos valdymas' },
       { t: 'Gauti B nario radiniai: po visos apžiūros ir po e-FAST', k: true, i: 'Uždaro ciklo (closed-loop) komunikacija: pakartokite, ką išgirdote.' },
       { t: 'Gauti C nario duomenys: prieiga, kraujo grupė, gliukozė, šoko požymiai' },
@@ -152,7 +155,7 @@ E.sarasai = {
       { t: 'Įvertintas skausmas (0–10), skirta titruojama analgezija', g: MED, i: 'Žr. temą „Skausmo malšinimas“.' },
       { t: 'Visi komandos nariai žino paciento problemas ir ištyrimo / gydymo etapą' },
       { t: 'Patikrinti gydymo tikslai (sąrašas „Gydymo tikslai ir kokybė“)' },
-      { t: 'Nuspręsta dėl tolesnio kelio: vaizdiniai tyrimai, operacinė, intensyvioji terapija, pervežimas' },
+      { t: 'Nuspręsta dėl tolesnio kelio: vaizdiniai tyrimai, operacinė, intensyvioji terapija, pervežimas', i: 'Nestabilus – tik e-FAST ir rentgenograma salėje, KT neatidėlioja gydymo; ribinis – anksti svarstyti viso kūno KT; stabilus – viso kūno KT su stebėsena (ETC 5.0).' },
       { t: 'Informuoti priimantys skyriai, dokumentai perduoti su pacientu' },
       { t: 'Atlikta arba suplanuota antrinė apžiūra, neatlikti elementai įrašyti' }
     ]
@@ -193,7 +196,7 @@ E.sarasai = {
     items: [
       { t: 'Monitorius veikia: EKG, SpO₂, AKS', k: true },
       { t: 'Paruoštos žirklės drabužiams nukirpti' },
-      { t: 'Paruošta pleuros drenavimo įranga', g: KOMP },
+      { t: 'Paruošta pleuros drenavimo įranga – abiem pusėms', g: KOMP },
       { t: 'Paruošti okliuziniai tvarsčiai' },
       { t: 'Paruoštas echoskopas e-FAST tyrimui', g: KOMP },
       { t: 'Paruoštas kriko rinkinys, jei paskirta atlikti', g: KOMP },
@@ -217,7 +220,7 @@ E.sarasai = {
       { t: 'Patikrinta tarpvietė ir lytiniai organai dėl kraujavimo', s: ['Kraujo nėra', 'Kraujas yra – dubens diržą uždeda B kartu su C'] },
       { t: 'Apžiūrėtos galūnės ir jungiamosios sritys (kirkšnys, pažastys, kaklas) dėl kraujavimo', k: true, s: ['Kraujavimo nėra', 'Kraujavimas yra – stabdomas; masyvus – iškart pranešta A'] },
       { t: 'Radiniai pranešti A – po visos apžiūros (iki 2 min)', k: true },
-      { t: 'Kartu su C pacientas paverstas ant šono, apžiūrėta nugara – prieš e-FAST', k: true, s: ['Sužalojimai ir kraujavimas', 'Okliuzinis tvarstis, jei krūtinėje yra žaizda', 'Stuburo vidurio linijos palpacija dėl skausmingumo (jei sąmoningas)'], i: 'Įgūdis #17. Išimtis – hemodinamiškai nestabilus pacientas ar įtariamas dubens lūžis: vertimą atideda A.' },
+      { t: 'Kartu su C pacientas paverstas ant šono, apžiūrėta nugara – prieš e-FAST', k: true, s: ['Sužalojimai ir kraujavimas', 'Okliuzinis tvarstis, jei krūtinėje yra žaizda', 'Stuburo vidurio linijos palpacija dėl skausmingumo (jei sąmoningas)'], i: 'Įgūdis #17. Išimtis – hemodinamiškai nestabilus pacientas, įtariamas dubens ar stuburo sužalojimas arba netrukus KT: vertimą atideda A.' },
       { t: 'Atliktas e-FAST', g: KOMP, s: ['Morisono kišenė', 'Splenorenalinė kišenė', 'Šlapimo pūslė', 'Perikardas', 'Pleura abipus (pneumotoraksas)'], i: 'Įgūdis #16.' },
       { t: 'Nugaros ir e-FAST radiniai pranešti A' }
     ]
@@ -249,16 +252,16 @@ E.sarasai = {
   },
   'c-pir': {
     title: 'C – pirminė apžiūra', short: 'Pirminė',
-    intro: 'Atvykus pacientui – iškart kraujagyslių prieiga, kraujo grupė ir gliukozė, nelaukiant A nario nurodymo.',
+    intro: 'Nestabilus pacientas – iškart kraujagyslių prieiga, kraujo grupė ir gliukozė, nelaukiant A nario nurodymo; stabilus – pirmiau visa komanda išklauso ATMISTER.',
     items: [
-      { t: 'Įvestas 16–18 G PVK – iškart, be A nurodymo', g: MED, k: true, s: ['Negalint įvesti PVK – IO adata', 'Tikslas – 2 didelio kalibro PVK arba IO adata'], i: 'Įgūdžiai #21, #22.' },
+      { t: 'Įvestas 16–18 G PVK – iškart, be A nurodymo', g: MED, k: true, s: ['Negalint įvesti PVK – IO adata', 'Tikslas – 2 didelio kalibro PVK arba IO adata', 'Pirmenybė prieigai virš diafragmos (rankos, žastikaulio IO)'], i: 'Įgūdžiai #21, #22.' },
       { t: 'Nustatyta kraujo grupė ir gliukozė – visiems, iškart, be A nurodymo', g: MED, k: true, i: 'Įgūdis #23. Žr. temą „Kraujo suderinamumas“.' },
       { t: 'Uždėta AKS manžetė, stebimi ŠSD, AKS ir kapiliarų prisipildymo laikas', i: 'Įgūdis #15. EKG ir SpO₂ uždeda B.' },
       { t: 'Įvertinti šoko požymiai', s: ['Monitoriaus rodmenys', 'Galūnių šaltumas (spazmuota periferija)', 'Oda – marmuruotumas / prakaitas', 'A. radialis ir a. femoralis pulsai'] },
       { t: 'Aiškiai pasakyta, ar pacientas yra hemoraginiame šoke', k: true },
       { t: 'Kartu su B uždėtas dubens diržas, jei B rado nestabilų dubenį ar kraujo tarpvietėje' },
-      { t: 'Kartu su B pacientas paverstas ant šono – prieš e-FAST (nugarą apžiūri B)', i: 'Įgūdis #17. Išimtis – hemodinamiškai nestabilus pacientas ar įtariamas dubens lūžis: vertimą atideda A.' },
-      { t: 'Paruošti ir suleisti paskirti vaistai', g: MED, s: ['Traneksamo rūgštis – per 3 val. nuo traumos', 'Kalcis – esant kraujo transfuzijai', 'Analgezija – titruojant'], i: 'Įgūdis #24.' },
+      { t: 'Kartu su B pacientas paverstas ant šono – prieš e-FAST (nugarą apžiūri B)', i: 'Įgūdis #17. Išimtis – hemodinamiškai nestabilus pacientas, įtariamas dubens ar stuburo sužalojimas arba netrukus KT: vertimą atideda A.' },
+      { t: 'Paruošti ir suleisti paskirti vaistai', g: MED, s: ['Traneksamo rūgštis – kuo anksčiau, geriausia per 90 min (ne vėliau kaip per 3 val.)', 'Kalcis – esant kraujo transfuzijai', 'Analgezija – titruojant'], i: 'Įgūdis #24.' },
       { t: 'Paruošti kraujo komponentai transfuzijai', g: MED },
       { t: 'Atlikta hipotermijos prevencija', i: 'Įgūdis #19.' }
     ]
@@ -300,10 +303,10 @@ E.sarasai = {
     items: [
       { t: 'Problema? – kokia pagrindinė problema dabar', k: true },
       { t: 'Komanda? – visi sustoja ir klauso' },
-      { t: 'Faktai? – radiniai peržiūrimi struktūriškai (cABCDE)' },
+      { t: 'Faktai? – vadas apibendrina radinius (cABCDE)' },
+      { t: 'Nuomonės? – kiekvienas narys sako pastebėjimus, abejones, pasiūlymus', k: true },
       { t: 'Planas! – darbinė diagnozė ir tolesni veiksmai', k: true },
       { t: 'Paskirstykite! – kas ką daro' },
-      { t: 'Klausimai? – ar visi supranta, ar yra pasiūlymų ir abejonių' },
       { t: 'Patikrinkite! – po veiksmų įvertinkite iš naujo' }
     ]
   },
@@ -311,7 +314,7 @@ E.sarasai = {
     title: 'Komandos darbas', short: 'Komanda',
     items: [
       { t: 'Naudojama uždaro ciklo (closed-loop) komunikacija', k: true },
-      { t: 'Horizontalūs santykiai komandoje', i: 'Žr. temą „Komunikacija komandoje“ – autoriteto gradientas.' },
+      { t: 'Plokščia hierarchija – kiekvienas drįsta išsakyti abejonę', i: 'Vertinimo lape – „Horizontalūs darbo santykiai“. Žr. temą „Komunikacija komandoje“ – autoriteto gradientas.' },
       { t: 'Komandos nariai aiškiai praneša komandos vadui apie radinius / problemas' },
       { t: 'Komandos vadas aiškiai perduoda komandai paciento ikihospitalinę būklę' },
       { t: 'Komandos vadas perskirsto darbą pagal klinikinę situaciją' },
@@ -320,7 +323,8 @@ E.sarasai = {
       { t: 'Po pirminės apžiūros įvertinamas atsakas į gydymą' },
       { t: 'Nėra nereikalingos komunikacijos ir pašalinių kalbų' },
       { t: 'Laikomasi kokybės ir aseptikos standartų' },
-      { t: 'Visi žino paciento problemas ir ištyrimo / gydymo etapą' }
+      { t: 'Visi žino paciento problemas ir ištyrimo / gydymo etapą' },
+      { t: 'Po perdavimo – aptarimas: „Kaip sekėsi?“ → kas pavyko, ką keisti → kalba visi → svarbiausios pamokos' }
     ]
   },
   'kokybe': {
@@ -330,9 +334,9 @@ E.sarasai = {
       { t: 'Sustabdytas kraujo netekimas (netaikoma kraujavimui į pilvo ertmę)', k: true },
       { t: 'Atkuriamas cirkuliuojančio kraujo tūris' },
       { t: 'Pacientas pakankamai nuskausmintas opioidais' },
-      { t: 'Laikomasi AKS tikslų', k: true, s: ['Hemoraginis šokas be galvos traumos požymių – VAKS (MAP) 65 mm Hg', 'Galvos smegenų trauma – sAKS 110–120 mm Hg'], i: 'Tikslai galioja iki chirurginės kraujavimo kontrolės. Per didelis AKS gali suardyti krešulį. Tai ETC vertinimo lapo tikslai – kitose gairėse skiriasi (įgūdis #40).' },
+      { t: 'Laikomasi AKS tikslų', k: true, s: ['Hemoraginis šokas be galvos ar nugaros smegenų traumos – sAKS 80–90 mm Hg (ETC 5.0); vertinimo lape – VAKS 65 mm Hg', 'Galvos smegenų trauma – sAKS ≥ 110 mm Hg arba VAKS > 80 mm Hg; su nesustabdytu kraujavimu kitur – sAKS ~100–110 mm Hg (ETC 5.0)'], i: 'Tikslai galioja iki chirurginės kraujavimo kontrolės. Per didelis AKS gali suardyti krešulį. Permisinė hipotenzija netaikoma galvos ar nugaros smegenų traumai, vaikams ir nėščiosioms (įgūdis #40).' },
       { t: 'Taikoma hipotermijos prevencija' },
-      { t: 'Skirta traneksamo rūgštis', i: 'Kuo greičiau, ne vėliau nei per 3 val. nuo traumos. Dozė – Vaistai: TXA.' },
+      { t: 'Skirta traneksamo rūgštis', i: 'Kuo greičiau – geriausia per 90 min, ne vėliau kaip per 3 val. nuo traumos. Dozė – Vaistai: TXA.' },
       { t: 'Esant kraujo transfuzijai užtikrinamas kalcio kiekis', i: 'Po pirmojo perpilto kraujo vieneto. Dozė – Vaistai: Kalcis.' },
       { t: 'Esant galvos smegenų traumai', s: ['Manitolis arba 3 % NaCl', 'Galvūgalis pakeltas 30°'] },
       { t: 'Bent 2 didelio kalibro PVK arba IO adata' },
@@ -402,39 +406,40 @@ E.puslapiai = {
     title: 'ETC eiga: nuo pranešimo iki antrinės apžiūros', sub: 'Planas A, 5 s apžiūra, Escape, cABCDE',
     html: '<h3>Prioritetai: cABC</h3><p>Seka nukreipia dėmesį į dažniausias išvengiamas mirties priežastis: <b>c</b> – masyvus kraujavimas, <b>A</b> – kvėpavimo takų obstrukcija, <b>B</b> – krūtinės ląstos sužalojimai, <b>C</b> – kraujotakos šokas. Toliau – D (neurologija) ir E (atidengimas, temperatūra).</p>' +
       '<p><b>Komandos vadas – A narys.</b> Atskiro lyderio nėra.</p>' +
-      '<h3>1. Prieš atvykstant</h3><p>Gavęs išankstinį pranešimą (geriausia ATMIST formatu), A narys surenka komandą: pristato narius, paskirsto vaidmenis A, B, C ir rašytoją, patikrina kompetencijas, suformuluoja <b>Planą A</b> (standartinė pirminė apžiūra) ir aptaria <b>Planą B</b> (pvz., skubiai į operacinę, netikėtas širdies sustojimas). Kiekvienas narys patikrina savo įrangą, patalpa ir skysčiai pašildomi.</p>' +
+      '<h3>1. Prieš atvykstant</h3><p>Gavęs išankstinį pranešimą (geriausia ATMISTER formatu), A narys surenka komandą: pristato narius, paskirsto vaidmenis A, B, C ir rašytoją, patikrina kompetencijas, suformuluoja <b>Planą A</b> (standartinė pirminė apžiūra) ir aptaria <b>Planą B</b> (pvz., skubiai į operacinę, netikėtas širdies sustojimas). Kiekvienas narys patikrina savo įrangą, patalpa ir skysčiai pašildomi.</p>' +
       link('#/v/A?f=0', 'A – instruktažas ir pasiruošimas') +
       '<h3>2. Atvykus – 5 sekundžių apžiūra</h3><p>Prieš perdavimą A narys per kelias sekundes įvertina pacientą pagal <b>vertinimo trikampį</b>. Tikslas – atmesti tris gyvybei pavojingas būkles: masyvų kraujavimą, kvėpavimo takų obstrukciją ir trauminį širdies sustojimą, ir patvirtinti, kad Planas A vis dar tinka.</p>' + tri +
       '<p class="muted">Ramus, normaliai kvėpuojantis, rožinės odos pacientas greičiausiai skubios intervencijos nereikalauja. Susijaudinusiam, sunkiai kvėpuojančiam, marmuruotos odos pacientui greičiausiai nedelsiant reikia gyvybę gelbstinčių veiksmų.</p>' +
       '<h3>3. Sprendimas garsiai</h3><p>A narys aiškiai paskelbia rezultatą. Dažniausiai tęsiamas Planas A. Radus gyvybei pavojingą būklę, komanda iškart nukreipiama ją spręsti – aktyvuojamas Escape planas.</p>' +
       link('#/s/esc-kraujas', 'Escape: masyvus kraujavimas') + link('#/s/esc-kt', 'Escape: kvėpavimo takų obstrukcija') + link('#/s/esc-tss', 'Escape: trauminis širdies sustojimas') +
-      '<h3>4. Perdavimas (ATMIST)</h3><p>A narys priima perdavimą. C narys tuo metu jau įveda PVK arba IO adatą – nurodymo jam nereikia.</p>' + link('#/v/A?f=1', 'ATMIST perdavimas') +
+      '<h3>4. Perdavimas (ATMISTER)</h3><p>Po 5 s apžiūros A nusprendžia: <b>stabilus</b> pacientas – visa komanda trumpai išklauso ATMISTER ir tik tada pradeda; <b>nestabilus</b> – perdavimą priima A, B ir C iškart pradeda pirminę apžiūrą (C – PVK / IO), A garsiai perduoda svarbiausius faktus. Esant Escape – perdavimas sutrumpinamas.</p>' + link('#/v/A?f=1', 'ATMISTER perdavimas') +
       '<h3>5. Horizontali pirminė apžiūra</h3><p>A, B ir C dirba <b>vienu metu</b> ir prireikus padeda vieni kitiems. Pacientas saugomas nuo hipotermijos.</p><ul>' +
-      '<li><b>C</b> – iškart atvykus pacientui, nelaukdamas A nurodymo, įveda PVK arba IO adatą ir visiems pacientams nustato kraujo grupę ir gliukozę. Toliau – AKS, šoko požymiai, vaistai, kraujo komponentai.</li>' +
+      '<li><b>C</b> – nelaukdamas A nurodymo (nestabiliam – iškart atvykus) įveda PVK arba IO adatą ir visiems pacientams nustato kraujo grupę ir gliukozę. Toliau – AKS, šoko požymiai, vaistai, kraujo komponentai.</li>' +
       '<li><b>B</b> – visiškai atidengia pacientą ir atlieka visą apžiūrą stetoskopu ir rankomis: kaklas, krūtinė, pilvas, dubuo, tarpvietė, galūnės (dėl kraujavimo) – ne ilgiau nei 2 min. Radinius A nariui praneša <b>baigęs</b> visą apžiūrą; gyvybei pavojingą būklę – <b>iškart</b>. Dubens diržą uždeda kartu su C. Nugara apžiūrima <b>prieš e-FAST</b>.</li>' +
       '<li><b>A</b> – kvėpavimo takai, deguonis, neurologija; renka B ir C radinius ir perskirsto darbą.</li></ul>' +
       link('#/v/A?f=2', 'A – pirminė apžiūra') + link('#/v/B?f=1', 'B – pirminė apžiūra') + link('#/v/C?f=1', 'C – pirminė apžiūra') +
-      '<h3>6. Planavimas – 10 už 10</h3><p>Po pirminės apžiūros A narys sustabdo komandą: radinių apžvalga, darbinė diagnozė, atsakas į gydymą, skausmas, tolesnis kelias (vaizdiniai tyrimai, operacinė, intensyvioji terapija, pervežimas). Šis etapas turėtų trukti ne ilgiau nei 5 min.</p>' +
+      '<h3>6. Planavimas – 10 už 10</h3><p>Po pirminės apžiūros A narys sustabdo komandą: radinių apžvalga, kiekvieno nario nuomonė, darbinė diagnozė, atsakas į gydymą, skausmas, tolesnis kelias (vaizdiniai tyrimai, operacinė, intensyvioji terapija, pervežimas). Šis etapas turėtų trukti ne ilgiau nei 5 min.</p>' +
       link('#/v/A?f=3', 'A – po pirminės apžiūros') + link('#/s/stop', 'STOP · 10 už 10') + link('#/s/kokybe', 'Gydymo tikslai ir kokybė') +
       '<h3>7. Antrinė apžiūra</h3><p>Sistemingai nuo galvos iki kojų, iš priekio ir nugaros, pakartotinai vertinant gyvybines funkcijas ir GKS, peržiūrint tyrimų rezultatus. Stabiliam pacientui – iškart po pirminės apžiūros, nestabiliam – etapais, kai leidžia gaivinimas. Surenkama anamnezė (AMPLE). Neatlikti elementai įrašomi į problemų sąrašą, kad nebūtų pamiršti.</p>' +
       link('#/s/antrine', 'Antrinė apžiūra nuo galvos iki kojų') + link('#/v/A?f=4', 'A – antrinė apžiūra ir AMPLE') +
       '<p class="muted">Būklei bet kada pablogėjus – vėl pirminė apžiūra.</p>',
-    saltinis: 'ETC vadovas 4.1, 2 sk.; ETC vertinimo lapas; kuopos pirminio ištyrimo tvarka (2026-10-07)',
+    saltinis: 'ETC vadovas 5.0 (2026), 1 sk. „Priėmimas ir gaivinimas“; ETC vertinimo lapas; kuopos pirminio ištyrimo tvarka (2026-10-07)',
     video: [V('P2-cSPTPBHU', 'Environment Control & Zero Point Survey', 'Komanda, aplinka ir savęs patikra prieš atvykstant pacientui')]
   },
   kvepavimas: {
     title: 'Kvėpavimo takai ir krūtinė', sub: 'Planai A–D, Vortex, 6 krūtinės grėsmės',
-    html: '<h3>Sunkios intubacijos planas</h3><ul><li><b>Planas A</b> – greitosios sekos indukcija ir intubacija (RSI)</li><li><b>Planas B</b> – ventiliacija kauke su ambu maišu</li><li><b>Planas C</b> – supraglotinė priemonė (laringinė kaukė)</li><li><b>Planas D</b> – priekinė kaklo prieiga (krikotiroidotomija)</li></ul>' +
+    html: '<h3>Sunkios intubacijos planas</h3><ul><li><b>Planas A</b> – greitosios sekos indukcija ir intubacija (RSI)</li><li><b>Planas B</b> – ventiliacija kauke su ambu maišu</li><li><b>Planas C</b> – supraglotinė priemonė (laringinė kaukė)</li><li><b>Planas D</b> – priekinė kaklo prieiga (krikotiroidotomija)</li></ul><p class="muted">ETC 5.0 remiasi DAS 2025: B – supraglotinė priemonė, C – ventiliacija kauke.</p>' +
       '<h3>Vortex principas</h3><p>Deguonį galima užtikrinti trimis būdais: kauke su ambu maišu, supraglotine priemone arba intubacija. Kiekvienam būdui – ne daugiau kaip trys bandymai ir „geriausios pastangos“. Jei geriausios pastangos nepavyko, to paties būdo nebekartokite – pereikite prie kito. Nepavykus visiems trims, situacija tampa „neįmanoma intubuoti, neįmanoma oksigenuoti“ (CICO) – reikia skubios krikotiroidotomijos.</p>' +
       link('#/s/esc-kt', 'Escape: kvėpavimo takų obstrukcija') + link('#/v/A?f=2', 'A – pirminė apžiūra (eskalavimas)') +
       '<h3>6 gyvybei pavojingos krūtinės būklės</h3><p>Jas B narys turi atmesti pirminės apžiūros metu:</p><ol><li>Kvėpavimo takų obstrukcija / pažeidimas</li><li>Įtampinis pneumotoraksas</li><li>Atvira krūtinės žaizda (atviras pneumotoraksas)</li><li>Masyvus hemotoraksas</li><li>Nestabili krūtinės ląsta (flail chest)</li><li>Širdies tamponada</li></ol>' +
       '<p class="muted">Pneumotoraksą, hemotoraksą ir tamponadą ultragarsu nustatyti tiksliau nei rentgenu.</p>' +
-      '<h3>Įtampinis pneumotoraksas</h3><p>Oras patenka į pleuros ertmę, bet neišeina: plautis subliūkšta, tarpuplautis pasislenka, mažėja veninis grįžimas į širdį. Iš pradžių – dažnas kvėpavimas, tachikardija, vėliau hipotenzija ir sustojimas. Ventiliuojamam pacientui būklė blogėja labai greitai. Požymiai panašūs į širdies tamponados.</p><p>Gydymas – nedelsiant dekompresija: šoninė torakostomija, po to drenas. Adatos dekompresija – tik jei nėra kompetentingo gydytojo ar įrangos.</p>' +
+      '<h3>Įtampinis pneumotoraksas</h3><p>Oras patenka į pleuros ertmę, bet neišeina: plautis subliūkšta, tarpuplautis pasislenka, mažėja veninis grįžimas į širdį. Iš pradžių – dažnas kvėpavimas, tachikardija, vėliau hipotenzija ir sustojimas. Ventiliuojamam pacientui būklė blogėja labai greitai. Požymiai panašūs į širdies tamponados.</p><p>Gydymas – nedelsiant dekompresija: šoninė torakostomija, po to drenas. Adatinė dekompresija – tik jei nėra kompetentingo gydytojo ar įrangos, ir tik laikinai: 14–16 G, ≥ 8 cm kanulė; suaugusiam pirmiausia 4–5 tarpšonkaulis tarp priekinės ir vidurinės pažasties linijų, alternatyva – 2 tarpšonkaulis vidurinėje raktikaulio linijoje. Nesėkmė – 40–50 % (ETC 5.0): nepagerėjus – pirštinė torakostomija; po adatos visada drenas.</p>' +
       '<h3>Atvira krūtinės žaizda</h3><p>Sandariai uždengus žaizdą, gali susidaryti įtampos pneumotoraksas. Uždedamas vienkryptis (vožtuvinis) okliuzinis tvarstis, vėliau įvedamas drenas.</p>' +
-      '<h3>Masyvus hemotoraksas</h3><p>Daugiau nei 1500 ml kraujo pleuros ertmėje. Požymiai: hipovoleminis šokas, duslus perkusijos garsas ir susilpnėjęs kvėpavimas pažeistoje pusėje. Gydymas: deguonis, torakostomija ir drenas, kraujagyslių prieiga, kraujo komponentai pagal masinio kraujavimo protokolą. Jei per drenažą nuolat bėga daugiau nei 200 ml/val. – skubiai chirurgas.</p>' +
-      '<h3>Nestabili krūtinės ląsta</h3><p>Jauniems pacientams paradoksalus krūtinės judesys iš pradžių gali būti nematomas – lūžusius šonkaulius prilaiko raumenys. Išryškėja pacientui pavargus.</p>' +
+      '<h3>Masyvus hemotoraksas</h3><p>Daugiau nei 1500 ml kraujo pleuros ertmėje. Požymiai: hipovoleminis šokas, duslus perkusijos garsas ir susilpnėjęs kvėpavimas pažeistoje pusėje. Gydymas: deguonis, torakostomija ir drenas, kraujagyslių prieiga, kraujo komponentai pagal masinio kraujavimo protokolą. Iš dreno iškart > 1500 ml arba > 200 ml/val. 3 val. iš eilės – skubiai chirurgas (torakotomija).</p>' +
+      '<h3>Nestabili krūtinės ląsta</h3><p>≥ 3 gretimi šonkauliai lūžę ≥ 2 vietose (ETC 5.0). Jauniems pacientams paradoksalus krūtinės judesys iš pradžių gali būti nematomas – lūžusius šonkaulius prilaiko raumenys. Išryškėja pacientui pavargus. Gydymas: analgezija (regioninė blokada), šildytas drėkintas O₂, atsargūs skysčiai; intubuoti tik blogėjant.</p>' +
+      '<h3>Širdies tamponada</h3><p>Penetruojanti žaizda pavojaus zonoje, šokas, išsiplėtusios kaklo venos (ne visada). Patvirtina e-FAST. Indukcija ir DPV gali sukelti sustojimą – A įspėja. Gydymas – chirurginis; perikardiocentezė netinka; sustojimo atveju – reanimacinė torakotomija (#39).</p>' +
       link('#/v/B?f=1', 'B – pirminė apžiūra') + link('#/igudis/14', 'Įgūdis #14 – pleuros drenavimas') + link('#/igudis/18', 'Įgūdis #18 – krikotiroidotomija'),
-    saltinis: 'ETC vadovas 4.1, 3 ir 4 sk.'
+    saltinis: 'ETC vadovas 5.0 (2026), 4 sk. „Kvėpavimo takai“ ir 5 sk. „Krūtinė“'
   },
   komunikacija: {
     title: 'Komunikacija komandoje', sub: 'Closed loop, SBAR, PACE, CRM principai',
@@ -445,7 +450,7 @@ E.puslapiai = {
       '<h3>Fiksacijos klaidos</h3><ul><li><b>„Tai ir tik tai“</b> – tunelinis mąstymas, kitos galimybės nesvarstomos.</li><li><b>„Viskas, išskyrus tai“</b> – ieškoma smulkmenų, ignoruojant pavojingiausią priežastį.</li><li><b>„Viskas gerai“</b> – pavojaus ženklai nurašomi artefaktams.</li></ul><p>Padeda: antra nuomonė, „10 už 10“, žvilgsnis tarsi įėjus į kambarį pirmą kartą.</p>' +
       '<h3>15 CRM principų</h3><ol><li>Pažink aplinką</li><li>Numatyk ir planuok</li><li>Laiku kviesk pagalbą</li><li>Būk lyderis ir sekėjas, būk ryžtingas</li><li>Paskirstyk darbo krūvį (10 už 10)</li><li>Mobilizuok visus išteklius</li><li>Bendrauk efektyviai – kalbėk</li><li>Naudok visą turimą informaciją</li><li>Užkirsk kelią fiksacijos klaidoms</li><li>Tikrink ir dar kartą tikrink</li><li>Naudok kognityvines pagalbos priemones</li><li>Pakartotinai vertink (10 už 10)</li><li>Dirbk komandoje, koordinuok ir remk kitus</li><li>Išmintingai paskirstyk dėmesį</li><li>Dinamiškai nustatyk prioritetus</li></ol>' +
       link('#/s/komanda', 'Komandos darbo sąrašas') + link('#/s/stop', 'STOP · 10 už 10'),
-    saltinis: 'ETC vadovas 4.1, 1 sk.; ETC vertinimo lapas',
+    saltinis: 'ETC vadovas 5.0 (2026), 2 sk. „Žmogiškieji veiksniai“; ETC vertinimo lapas',
     video: [V('Qi-TxP-Uhxg', 'Making Things Happen - The Art of Leading Resuscitation', 'Kaip vadovauti gaivinimo komandai'),
       V('LzPnro0xlwA', 'How to challenge authority in Resus', 'Kaip saugiai paprieštarauti vadovui (PACE)'),
       V('-ZfVcbxVkNY', 'The Resuscitationist Mindset', 'Mąstysena ir darbas esant stresui')]
@@ -463,7 +468,7 @@ E.puslapiai = {
       '<p class="muted">Eritrocitų universalus donoras – O−, plazmos – AB. Lentelę slinkite į šoną, jei netelpa ekrane.</p>' +
       '<h3>Trombocitai ir RhD</h3><p>RhD neigiamoms vaisingo amžiaus moterims – RhD neigiami trombocitai; jei skirta RhD teigiamų – rekomenduojama skirti anti-D imunoglobuliną (250 TV pakanka 5 suaugusiųjų dozėms per 6 sav.). O grupės trombocitai ne O grupės recipientui – tik kraštutiniu atveju ir tik mažo anti-A / anti-B titro.</p>' +
       '<h3>Ką perpilti hemoraginio šoko atveju (pirmenybės tvarka)</h3><ol><li>Šaltai laikytas mažo titro O grupės pilnas kraujas</li><li>Iš anksto ištirtų donorų mažo titro O grupės šviežias pilnas kraujas</li><li>Plazma, eritrocitai ir trombocitai santykiu 1:1:1</li><li>Plazma ir eritrocitai santykiu 1:1</li><li>Tik plazma arba tik eritrocitai</li></ol>' +
-      '<p>AKS tikslai iki chirurginės kraujavimo kontrolės: VAKS (MAP) 65 mm Hg; esant galvos smegenų traumai – sAKS 110–120 mm Hg (ETC vertinimo lapas; kitose gairėse tikslai skiriasi – įgūdis #40). Po pirmojo perpilto kraujo vieneto – kalcis (dozė – Vaistai: Kalcis).</p>' +
+      '<p>AKS tikslai iki chirurginės kraujavimo kontrolės: hemoraginis šokas be galvos ar nugaros smegenų traumos – sAKS 80–90 mm Hg (ETC 5.0; vertinimo lape – VAKS 65 mm Hg); galvos smegenų trauma – sAKS ≥ 110 mm Hg arba VAKS > 80 mm Hg, su nesustabdytu kraujavimu kitur – sAKS ~100–110 mm Hg (ETC 5.0). Permisinė hipotenzija netaikoma galvos ar nugaros smegenų traumai, vaikams ir nėščiosioms (įgūdis #40). Po pirmojo perpilto kraujo vieneto – kalcis (dozė – Vaistai: Kalcis).</p>' +
       link('#/vaistas/kalcis', 'Kalcio gliukonatas') + link('#/igudis/23', 'Įgūdis #23 – kraujo grupė ir transfuzija'),
     saltinis: 'ETC įgūdžių lapas (Combined Blood Compatibility Table), išversta; TCCC gairės 2026-05-01; NHS Scotland trombocitų parinkimo tvarka'
   },
@@ -494,15 +499,15 @@ E.puslapiai = {
     title: 'Skausmo malšinimas', sub: 'Vertinimas, titravimas, nemedikamentinės priemonės',
     html: '<h3>Įvertinkite</h3><p>Paprašykite pacientą įvertinti skausmą nuo 0 (nėra) iki 10 (stipriausias įsivaizduojamas). Prieš analgeziją užrašykite sąmonę (AVPU). Kartokite po kiekvienos dozės.</p>' +
       '<h3>Parinkite pagal skausmą ir būklę</h3><p><b>Lengvas–vidutinis skausmas, gali gerti</b> – paracetamolis 1000 mg per burną kas 8 val. ir meloksikamas 15 mg per burną kartą per parą (negalinčiam gerti – paracetamolis IV).</p>' +
-      '<p><b>Vidutinis–stiprus skausmas</b> – ketaminas 25 mg (0,2–0,3 mg/kg) IV / IO lėtai per 1 min, arba 100 mg IM, arba 50 mg į nosį (100 mg/ml); kartoti kas 30 min, tikslas – sumažėjęs skausmas arba atsiradęs nistagmas. Ir (ar) titruojami IV opioidai – morfinas, fentanilis (dozės – vaisto puslapyje). ETC: analgetikai paprastai skiriami kartu su antiemetiku; skirtingų grupių derinys mažina bendrą dozę.</p>' +
+      '<p><b>Vidutinis–stiprus skausmas</b> – ketaminas 25 mg (0,2–0,3 mg/kg) IV / IO lėtai per 1 min, arba 100 mg IM, arba 50 mg į nosį (100 mg/ml); kartoti kas 30 min, tikslas – sumažėjęs skausmas arba atsiradęs nistagmas. Ir (ar) titruojami IV opioidai – morfinas, fentanilis (dozės – vaisto puslapyje). Skirtingų grupių analgetikų derinys didina veiksmingumą ir mažina šalutinį poveikį (ETC 5.0). Pykinant – ondansetronas.</p>' +
       '<ul><li>Šokas ar kvėpavimo sutrikimas – saugesnis ketaminas; opioidų dozes mažinkite, poveikis šoke vėluoja.</li><li>Stebėkite kvėpavimo takus, kvėpavimą ir kraujotaką; po ketamino – seilėtekis, turėkite atsiurbimą.</li><li>Benzodiazepinų rutiniškai nederinkite nei su ketaminu, nei su opioidais (kvėpavimo slopinimas); iš dalies disocijavusiam – saugiau papildyti ketamino. Išimtis – ryški ažitacija: gydytojo sprendimu, maža dozė, stebint kvėpavimą.</li><li>Pykinimui – ondansetronas 4 mg ODT / IV / IO / IM kas 8 val.</li><li>Tikslas – toleruojamas skausmas, ne visiškas jo pašalinimas.</li></ul>' +
-      '<p class="muted">Morfino, fentanilio ir naloksono dozės – pagal gamintojo PCS (žr. vaisto puslapį); skiria medikas. Pakankama analgezija tik slopinant sąmonę, kvėpavimą ar AKS – reikia bendrosios nejautros (patyręs anesteziologas, ETC).</p>' +
+      '<p class="muted">Morfino ir fentanilio dozės – pagal ETC 5.0 ir gamintojo PCS, naloksono – pagal PCS (žr. vaisto puslapį); skiria medikas. Pakankama analgezija tik slopinant sąmonę, kvėpavimą ar AKS – reikia bendrosios nejautros (patyręs anesteziologas, ETC).</p>' +
       '<h3>Titruokite</h3><p>Geriau kelios mažesnės dozės nedideliais intervalais nei viena didelė. Norimas efektas – skausmas sumažėja bent 3 balais (pvz., buvo 8/10, tapo 5/10); siekiant 3/10 ar mažiau reikės didelių dozių ir atsiras komplikacijų. Registruokite visas skirtas dozes (vaistas, dozė, būdas, laikas).</p>' +
       '<h3>Kur sustoti</h3><ul><li><b>Ketaminas:</b> sumažėjęs skausmas arba atsiradęs nistagmas.</li><li><b>Opioidai:</b> skyrimas nutraukiamas, kai kvėpavimo dažnis &lt; 10 k./min (kuopos kortelė).</li><li><b>Naloksonas:</b> po 0,1–0,2 mg (2,5–5 ml 0,04 mg/ml tirpalo) kas 2–3 min iki kvėpavimo dažnio &gt; 10 k./min, neprarandant nuskausminimo; ETC – iki 2 mg (PCS).</li></ul>' +
       '<h3>Ypač atsargiai, kai yra</h3><ul><li>sumažėjęs sąmonės lygis</li><li>kvėpavimo sutrikimas</li><li>šokas – vaisto poveikis gali gerokai vėluoti; opioidų dozes mažinti</li><li>hipotermija</li><li>apsinuodijimas (alkoholis, narkotikai)</li><li>senyvas amžius</li></ul>' +
       '<h3>Be vaistų</h3><ul><li>Palaikykite akių ir fizinį kontaktą, paaiškinkite, kas vyksta, įspėkite prieš skausmingą procedūrą, saugokite orumą.</li><li>Kuo anksčiau imobilizuokite lūžius.</li><li>Uždenkite nudegimus.</li><li>Kuo anksčiau nukelkite nuo kietų neštuvų / lentų.</li><li>Šildykite – drebulys stiprina skausmą.</li><li>Procedūroms (drenas, lūžių manipuliacijos) – vietinė ar regioninė nejautra pagal kompetenciją.</li></ul>' +
       link('#/vaistas/ketaminas', 'Ketaminas') + link('#/vaistas/fentanilis', 'Fentanilis') + link('#/vaistas/morfinas', 'Morfinas') + link('#/vaistas/paracetamolis', 'Paracetamolis') + link('#/vaistas/meloksikamas', 'Meloksikamas') + link('#/vaistas/ondansetronas', 'Ondansetronas') + link('#/vaistas/naloksonas', 'Naloksonas') + link('#/igudis/43', 'Įgūdis #43: skausmo vertinimas ir malšinimas'),
-    saltinis: 'ETC vadovas 4.1, 2 sk. „Analgezija“ (2.3 lentelė); TCCC gairės 2026-05-01 (Deployed Medicine) ir gamintojų PCS – dozės; kuopos vaistų kortelės'
+    saltinis: 'ETC vadovas 5.0 (2026), 1 sk. „Priėmimas ir gaivinimas“ (7 lentelė – analgezija); TCCC gairės 2026-05-01 (Deployed Medicine) ir gamintojų PCS – dozės; kuopos vaistų kortelės'
   }
 };
 

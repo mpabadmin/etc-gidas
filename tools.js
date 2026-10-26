@@ -9,7 +9,7 @@ const TCFG = {
   laikai: 'etc-laikai', // pradžios ekrano laikmačiai { trauma, turn }
   // nuorodos puslapių apačioje: [adresas, pavadinimas, paantraštė]
   nl: () => [['#/mist', 'MIST kortelė', MC.status()], ['#/igudis/46', 'Pasiruošimas pervežimui ir perdavimas', 'Įgūdis #46']],
-  mc: () => [['#/skenuoti', 'Nuskaityti popierinę kortelę', 'DD 1380 nuotrauka → MIST, be interneto'], ['#/pacientas', 'Pacientas', 'Apžvalga, vaistai, eiga, perdavimas'], ['#/qr-priimti', 'Priimti pacientą QR kodu', 'Nuskaityti kito telefono kodą'], ['#/gks', 'GKS skaičiuoklė', GK.status()], ['#/9line', '9-Line MEDEVAC', NL.status()], ['#/s/atmist', 'ATMIST perdavimas', 'Kontrolinis sąrašas'], ['#/igudis/46', 'Pasiruošimas pervežimui ir perdavimas', 'Įgūdis #46']],
+  mc: () => [['#/skenuoti', 'Nuskaityti popierinę kortelę', 'DD 1380 nuotrauka → MIST, be interneto'], ['#/pacientas', 'Pacientas', 'Apžvalga, vaistai, eiga, perdavimas'], ['#/qr-priimti', 'Priimti pacientą QR kodu', 'Nuskaityti kito telefono kodą'], ['#/gks', 'GKS skaičiuoklė', GK.status()], ['#/9line', '9-Line MEDEVAC', NL.status()], ['#/s/atmist', 'ATMISTER perdavimas', 'Kontrolinis sąrašas'], ['#/igudis/46', 'Pasiruošimas pervežimui ir perdavimas', 'Įgūdis #46']],
   gk: () => [['#/mist', 'MIST kortelė', MC.status()], ['#/igudis/12', 'Vyzdžiai, AVPU, galūnių simetrija ir GKS', 'Įgūdis #12']],
   pt: ['laikai', 'ck', 'vz', 'nb', 'wbb', 'svoris'], // paciento failas: šie raktai priklauso dabartiniam pacientui (perjungiami kartu su MIST kortele); svoris – kiekvienam pacientui savas
   migrate: null, // ankstesnių formatų perkėlimas (ETC – nereikia; vienos kortelės formatą perkelia MC)
@@ -23,7 +23,7 @@ const TCFG = {
     noBar: ['pacientas', 'mist', 'zymejimas', 'nudegimai', 'pilnas-kraujas', 'skenuoti', 'qr-priimti'],
     quick: [['vit', '+ Požymiai', 1], ['vz', '+ Vaistas', 1], ['tq', '+ Turniketas', 1], ['mk', '+ Žymė schemoje'], ['gks', 'GKS'], ['nb', 'Nudegimai ir nušalimai']],
     go: { gks: '#/gks', nb: '#/nudegimai' },
-    handoff: () => [['#/9line', '9-Line MEDEVAC', NL.status()], ['#/sitrep', 'SITREP – padėties pranešimas', typeof SR !== 'undefined' ? SR.status() : ''], ['#/s/atmist', 'ATMIST perdavimas', 'Kontrolinis sąrašas'], ['#/qr-priimti', 'Priimti pacientą QR kodu', 'Nuskaityti kito telefono kodą'], ['#/skenuoti', 'Nuskaityti popierinę kortelę', 'DD 1380 nuotrauka → MIST']]
+    handoff: () => [['#/9line', '9-Line MEDEVAC', NL.status()], ['#/sitrep', 'SITREP – padėties pranešimas', typeof SR !== 'undefined' ? SR.status() : ''], ['#/s/atmist', 'ATMISTER perdavimas', 'Kontrolinis sąrašas'], ['#/qr-priimti', 'Priimti pacientą QR kodu', 'Nuskaityti kito telefono kodą'], ['#/skenuoti', 'Nuskaityti popierinę kortelę', 'DD 1380 nuotrauka → MIST']]
   }
 };
 
