@@ -18,7 +18,7 @@ window.ETC.scenarijai = [
     "klaus": "Ką pirmiausia daro komandos vadas A?",
     "opt": [
      {
-      "t": "Perima ATMIST ir pradeda nuo kvėpavimo takų – Planas A",
+      "t": "Perima ATMISTER ir pradeda nuo kvėpavimo takų – Planas A",
       "ok": false
      },
      {
@@ -85,7 +85,7 @@ window.ETC.scenarijai = [
       "ok": true
      }
     ],
-    "why": "Turniketas ant šlaunies ar amputacija neatmeta dubens lūžio. Konversija negalima esant šokui ir amputacijai. TXA ≤ 3 val. nuo traumos.",
+    "why": "Turniketas ant šlaunies ar amputacija neatmeta dubens lūžio. Konversija negalima esant šokui ir amputacijai. TXA – geriausia per 90 min (≤ 3 val.) nuo traumos.",
     "ref": [
      "#/igudis/20",
      "#/igudis/26",
@@ -251,7 +251,7 @@ window.ETC.scenarijai = [
     ]
    },
    {
-    "sit": "Gydytojas dar neatvyko. B atliko adatinę dekompresiją 14 G kanule 2-ajame tarpšonkaulyje vidurinėje raktikaulio linijoje. Oro išėjimo negirdėti, būklė negerėja.",
+    "sit": "Gydytojas dar neatvyko. B atliko adatinę dekompresiją 14 G kanule 4–5 tarpšonkaulyje tarp priekinės ir vidurinės pažasties linijų. Oro išėjimo negirdėti, būklė negerėja.",
     "gp": {
      "SpO₂": "82 %",
      "AKS": "80/48"
@@ -333,7 +333,7 @@ window.ETC.scenarijai = [
       "ok": true
      }
     ],
-    "why": "Šildyti kraujo komponentai vietoje kristaloidų, TXA kuo greičiau (≤ 3 val.). Vazopresoriai hemoraginio šoko negydo (#40).",
+    "why": "Šildyti kraujo komponentai vietoje kristaloidų, TXA kuo greičiau – geriausia per 90 min (≤ 3 val.). Vazopresoriai hemoraginio šoko negydo (#40).",
     "ref": [
      "#/igudis/40",
      "#/vaistas/txa",
@@ -354,7 +354,7 @@ window.ETC.scenarijai = [
       "ok": false
      },
      {
-      "t": "Skirti kalcį; VAKS ~65 mm Hg – AKS daugiau nekelti iki chirurginės kontrolės",
+      "t": "Skirti kalcį; sAKS 80–90 mm Hg – AKS daugiau nekelti iki chirurginės kontrolės",
       "ok": true
      },
      {
@@ -362,7 +362,7 @@ window.ETC.scenarijai = [
       "ok": false
      }
     ],
-    "why": "Kalcis – po pirmojo perpilto vieneto. Be galvos traumos tikslas VAKS 65 mm Hg; per didelis AKS gali suardyti krešulį (#23, #40).",
+    "why": "Kalcis – po pirmojo perpilto vieneto. Be galvos ar nugaros smegenų traumos tikslas – sAKS 80–90 mm Hg (ETC 5.0); per didelis AKS gali suardyti krešulį (#23, #40).",
     "ref": [
      "#/vaistas/kalcis",
      "#/igudis/23",
@@ -387,7 +387,7 @@ window.ETC.scenarijai = [
     "klaus": "Kurie tikslai svarbiausi?",
     "opt": [
      {
-      "t": "Permisinė hipotenzija – VAKS 65 mm Hg, kad nekraujuotų žaizda",
+      "t": "Permisinė hipotenzija – sAKS 80–90 mm Hg, kad nekraujuotų žaizda",
       "ok": false
      },
      {
@@ -395,11 +395,11 @@ window.ETC.scenarijai = [
       "ok": false
      },
      {
-      "t": "SpO₂ ≥ 94 % (prireikus ventiliacija) ir sAKS 110–120 mm Hg",
+      "t": "SpO₂ ≥ 94 % (prireikus ventiliacija) ir sAKS ≥ 110 mm Hg",
       "ok": true
      }
     ],
-    "why": "Antrinis pažeidimas = hipoksija + hipotenzija. Galvos traumai sAKS 110–120 mm Hg; hiperventiliacija be EtCO₂ kontrolės – klaida (#44).",
+    "why": "Antrinis pažeidimas = hipoksija + hipotenzija. Galvos traumai sAKS ≥ 110 arba VAKS > 80 mm Hg (ETC 5.0), permisinė hipotenzija netaikoma; hiperventiliacija be EtCO₂ kontrolės – klaida (#44).",
     "ref": [
      "#/igudis/44",
      "#/s/kokybe"
@@ -541,7 +541,7 @@ window.ETC.scenarijai = [
       "ok": false
      }
     ],
-    "why": "Dideli nudegimai greitai šąla – ilgas vėsinimas ir ledas yra klaidos. > 20 % KPP – skysčiai pagal SOP, titruojant pagal diurezę 0,5–1 ml/kg/val. (#48, #19).",
+    "why": "Dideli nudegimai greitai šąla – ilgas vėsinimas ir ledas yra klaidos. ≥ 15 % KPP – skysčiai pagal SOP, titruojant pagal diurezę 0,5–1 ml/kg/val. (#48, #19).",
     "ref": [
      "#/igudis/48",
      "#/igudis/19",
@@ -567,7 +567,7 @@ window.ETC.scenarijai = [
       "ok": false
      },
      {
-      "t": "Tęsti Planą A, pirma priimti ATMIST",
+      "t": "Tęsti Planą A, pirma priimti ATMISTER",
       "ok": false
      },
      {
@@ -575,7 +575,7 @@ window.ETC.scenarijai = [
       "ok": true
      }
     ],
-    "why": "TCA išgyvenimas priklauso nuo grįžtamų priežasčių (HOTT) šalinimo, ne nuo paspaudimų; adrenalino nauda neįrodyta. Standartinis ALS – klaida (#39).",
+    "why": "TCA išgyvenimas priklauso nuo grįžtamų priežasčių (HOTT) šalinimo, ne nuo paspaudimų; adrenalinas – tik pašalinus grįžtamas priežastis ir pradėjus kraują. Standartinis ALS – klaida (#39).",
     "ref": [
      "#/igudis/39",
      "#/s/esc-tss"
@@ -898,11 +898,11 @@ window.ETC.scenarijai = [
       "ok": false
      },
      {
-      "t": "ATMIST tiesiogiai priimančiam medikui, dokumentai su laikais prie paciento, turniketas matomas",
+      "t": "ATMISTER tiesiogiai priimančiam medikui, dokumentai su laikais prie paciento, turniketas matomas",
       "ok": true
      }
     ],
-    "why": "Perduodama tiesiogiai ir struktūruotai (ATMIST), dokumentai keliauja su pacientu, turniketai lieka matomi. Pacientas perduotas, kai priimantis perėmė stebėseną (#46).",
+    "why": "Perduodama tiesiogiai ir struktūruotai (ATMISTER), dokumentai keliauja su pacientu, turniketai lieka matomi. Pacientas perduotas, kai priimantis perėmė stebėseną (#46).",
     "ref": [
      "#/igudis/46",
      "#/s/atmist",
@@ -1435,7 +1435,7 @@ window.ETC.scenarijai = [
       "ok": true
      }
     ],
-    "why": "Pašalinus grįžtamas priežastis ir perpylus kraują, išliekant asistolijai, komandos sprendimu konstatuojama mirtis. Adrenalino nauda TCA neįrodyta (#39).",
+    "why": "Pašalinus grįžtamas priežastis ir perpylus kraują, išliekant asistolijai, komandos sprendimu konstatuojama mirtis. Adrenalinas TCA – ne pirmos eilės; standartinis ALS grįžtamų priežasčių nešalina (#39).",
     "ref": [
      "#/igudis/39",
      "#/s/esc-tss"
@@ -1698,11 +1698,11 @@ window.ETC.scenarijai = [
     "klaus": "Koks AKS tikslas?",
     "opt": [
      {
-      "t": "sAKS 110–120 mm Hg iki chirurginės kontrolės",
+      "t": "sAKS ~100–110 mm Hg iki chirurginės kontrolės",
       "ok": true
      },
      {
-      "t": "VAKS 65 mm Hg – kaip visiems hemoraginiame šoke",
+      "t": "sAKS 80–90 mm Hg – kaip visiems hemoraginiame šoke",
       "ok": false
      },
      {
@@ -1710,7 +1710,7 @@ window.ETC.scenarijai = [
       "ok": false
      }
     ],
-    "why": "Pagal ETC vertinimo lapą su galvos smegenų trauma tikslas – sAKS 110–120 mm Hg, be jos – VAKS 65 mm Hg. Vazopresoriai hemoraginio šoko negydo (#40).",
+    "why": "ETC 5.0: galvos smegenų trauma su nesustabdytu kraujavimu kitur – sAKS ~100–110 mm Hg (be kraujavimo – sAKS ≥ 110 arba VAKS > 80); permisinė hipotenzija (sAKS 80–90) galvos traumai netaikoma. Vazopresoriai hemoraginio šoko negydo (#40).",
     "ref": [
      "#/igudis/40",
      "#/s/kokybe"
@@ -1745,7 +1745,7 @@ window.ETC.scenarijai = [
       "ok": false
      }
     ],
-    "why": "TXA – kuo greičiau, ne vėliau kaip per 3 val. nuo sužalojimo. 2 g leidžiama lėtai, ne greičiau kaip 1 ml/min (~20 min): per greitai – hipotenzija.",
+    "why": "TXA – kuo greičiau (geriausia per 90 min), ne vėliau kaip per 3 val. nuo sužalojimo. 2 g leidžiama lėtai, ne greičiau kaip 1 ml/min (~20 min): per greitai – hipotenzija.",
     "ref": [
      "#/vaistas/txa",
      "#/igudis/40"
@@ -1823,7 +1823,7 @@ window.ETC.scenarijai = [
     "klaus": "Ką A paskelbia?",
     "opt": [
      {
-      "t": "Tęsiamas Planas A – pirma priimamas visas ATMIST",
+      "t": "Tęsiamas Planas A – pirma priimamas visas ATMISTER",
       "ok": false
      },
      {
@@ -1967,7 +1967,7 @@ window.ETC.scenarijai = [
     "klaus": "Ką daro A?",
     "opt": [
      {
-      "t": "Ventiliuoja ambu maišu su O₂ dviese, 10–12/min, planuoja pažangią priemonę",
+      "t": "Ventiliuoja ambu maišu su O₂ dviese, ~10/min, planuoja pažangią priemonę",
       "ok": true
      },
      {
@@ -2162,7 +2162,7 @@ window.ETC.scenarijai = [
       "ok": false
      }
     ],
-    "why": "> 1500 ml iš karto arba > 200 ml/val. – skubiai chirurgas; išleidus hemotoraksą kraujavimas gali atsinaujinti. Gaivinama kraujo komponentais, kristaloidai ribojami (#14, #40).",
+    "why": "> 1500 ml iš karto arba > 200 ml/val. 3 val. iš eilės – skubiai chirurgas; išleidus hemotoraksą kraujavimas gali atsinaujinti. Gaivinama kraujo komponentais, kristaloidai ribojami (#14, #40).",
     "ref": [
      "#/igudis/14",
      "#/igudis/40",
@@ -2271,7 +2271,7 @@ window.ETC.scenarijai = [
   "tema": "Krūtinė",
   "q": [
    {
-    "sit": "Minos sprogimo banga nubloškė karį į šarvuočio bortą. Po 40 min evakuacijos atvežtas į Role 1; B pirminėje apžiūroje ryškių krūtinės radinių neranda, hemodinamika stabili.",
+    "sit": "Minos sprogimo banga nubloškė karį į šarvuočio bortą. Po 40 min evakuacijos atvežtas į Role 1; B pirminėje apžiūroje ryškių krūtinės radinių neranda, hemodinamika stabili, stuburo ar dubens sužalojimo požymių nėra.",
     "gp": {
      "KD": "22",
      "SpO₂": "95 %",
@@ -2293,7 +2293,7 @@ window.ETC.scenarijai = [
       "ok": false
      }
     ],
-    "why": "Nugara apžiūrima kartu su C prieš e-FAST; vertimas atidedamas tik A sprendimu, jei pacientas nestabilus ar įtariamas dubens lūžis. e-FAST prieš nugaros apžiūrą – klaida (#16, #17).",
+    "why": "Nugara apžiūrima kartu su C prieš e-FAST; vertimas atidedamas tik A sprendimu, jei pacientas nestabilus, įtariamas dubens ar stuburo sužalojimas arba netrukus KT. e-FAST prieš nugaros apžiūrą – klaida (#16, #17).",
     "ref": [
      "#/igudis/17",
      "#/igudis/16",
@@ -2322,7 +2322,7 @@ window.ETC.scenarijai = [
       "ok": false
      }
     ],
-    "why": "Nėra pleuros slydimo ir B linijų – pneumotoraksas; skystis rodytų hemotoraksą. Iškart po traumos radiniai gali būti normalūs – vertinkite iš naujo; radinius B praneša A (#16, #13, #14).",
+    "why": "Savaime kvėpuojant nėra pleuros slydimo ir B linijų – pneumotoraksas (slydimo nebūna ir apnėjos ar intubacijos į vieną bronchą atveju); skystis rodytų hemotoraksą. Iškart po traumos radiniai gali būti normalūs – vertinkite iš naujo; radinius B praneša A (#16, #13, #14).",
     "ref": [
      "#/igudis/16",
      "#/igudis/13",
@@ -2586,15 +2586,15 @@ window.ETC.scenarijai = [
       "ok": false
      },
      {
-      "t": "14 G ar 10 G, ≥ 8 cm kanulė, 2 tarpšonkaulis vidurinėje raktikaulio linijoje",
+      "t": "14–16 G, ≥ 8 cm kanulė, 4–5 tarpšonkaulis prieš vidurinę pažasties liniją",
       "ok": true
      },
      {
-      "t": "14 G adata 5 tarpšonkaulyje po šonkaulio apatiniu kraštu, adatą palikti",
+      "t": "14 G adata 7 tarpšonkaulyje po šonkaulio apatiniu kraštu, adatą palikti",
       "ok": false
      }
     ],
-    "why": "Kanulė ≥ 8 cm (4,5 cm dažnai per trumpa); 2 tarpšonkaulis vidurinėje raktikaulio linijoje (alternatyva – 4–5 tarpšonkaulis prieš vidurinę pažasties liniją), statmenai, virš apatinio šonkaulio, adata ištraukiama. Mediališkiau spenelio linijos ar po šonkauliu – klaida (#38).",
+    "why": "Kanulė ≥ 8 cm (4,5 cm dažnai per trumpa); suaugusiam pirmiausia 4–5 tarpšonkaulis tarp priekinės ir vidurinės pažasties linijų (alternatyva – 2 tarpšonkaulis vidurinėje raktikaulio linijoje), statmenai, virš apatinio šonkaulio, adata ištraukiama. Mediališkiau spenelio linijos, po šonkauliu ar per žemai – klaida (#38).",
     "ref": [
      "#/igudis/38"
     ]
@@ -2663,14 +2663,14 @@ window.ETC.scenarijai = [
     ]
    },
    {
-    "sit": "Ir dviese ventiliacija lieka neefektyvi, intubuojančio gydytojo nėra. A nusprendžia dėti klasikinę laringinę kaukę.",
+    "sit": "Ir dviese ventiliacija lieka neefektyvi, intubuojančio gydytojo nėra. A nusprendžia dėti laringinę kaukę (i-gel).",
     "gp": {
      "SpO₂": "84 %"
     },
     "klaus": "Kas teisinga dedant laringinę kaukę?",
     "opt": [
      {
-      "t": "Vyrui dydis 5; galva neutrali su MILS; nepavyko per 30 s – vėl ventiliuoti kauke",
+      "t": "Dydis pagal svorį; galva neutrali su MILS; nepavyko per 30 s – vėl ventiliuoti kauke",
       "ok": true
      },
      {
@@ -2682,7 +2682,7 @@ window.ETC.scenarijai = [
       "ok": false
      }
     ],
-    "why": "Klasikinė laringinė kaukė vyrams – 5 dydžio; prieš tai ventiliuojama kauke su O₂, įtariant kaklo traumą galva neutrali su MILS, jėgos nenaudojama; nepavyko per 30 s – vėl ventiliuoti kauke (#6).",
+    "why": "Rinkitės 2 kartos laringinę kaukę, dydis – pagal svorį, nurodytą ant priemonės; prieš tai ventiliuojama kauke su O₂, įtariant kaklo traumą galva neutrali su MILS, jėgos nenaudojama; nepavyko per 30 s – vėl ventiliuoti kauke (#6).",
     "ref": [
      "#/igudis/6"
     ]
@@ -2762,7 +2762,7 @@ window.ETC.scenarijai = [
     "klaus": "Kokia padėtis ir priemonės dabar tinkamiausios?",
     "opt": [
      {
-      "t": "Galvūgalis 30°, galva tiesiai, kaklo įtvaras atlaisvintas",
+      "t": "Galvūgalis 30°, galva tiesiai, vietoj įtvaro – blokai ir juostos",
       "ok": true
      },
      {
@@ -2774,7 +2774,7 @@ window.ETC.scenarijai = [
       "ok": false
      }
     ],
-    "why": "Jei nėra šoko – galvūgalis 30°, galva tiesiai, kaklo įtvaras atlaisvintas, kad nespaustų jungo venų. Vidutinė ar sunki galvos trauma – įtvarą atlaisvinkite (#44, #31).",
+    "why": "Jei nėra šoko – galvūgalis 30°, galva tiesiai. Vidutinė ar sunki galvos trauma – vietoj kaklo įtvaro blokai ir juostos: įtvaras spaudžia jungo venas ir didina ICP (#44, #31).",
     "ref": [
      "#/igudis/44",
      "#/igudis/31",
@@ -2799,11 +2799,11 @@ window.ETC.scenarijai = [
       "ok": false
      },
      {
-      "t": "Išvaržos požymiai: 3 % NaCl, EtCO₂ 35–45, skubi evakuacija",
+      "t": "Išvaržos požymiai: 3 % NaCl, retesnė ventiliacija, skubi evakuacija",
       "ok": true
      }
     ],
-    "why": "Asimetriški vyzdžiai ir patologinė laikysena – išvaržos požymiai: A garsiai praneša, manitolis arba 3 % NaCl (TCCC 2026 – 250 ml per ≥ 10 min), skubiai neurochirurgas. Ventiliuojamam – normokapnija (EtCO₂ 35–45 mm Hg): EtCO₂ 26 rodo hiperventiliaciją – ventiliacijos dažnį mažinti (#44).",
+    "why": "Asimetriški vyzdžiai ir patologinė laikysena – išvaržos požymiai: A garsiai praneša, manitolis arba 3 % NaCl (TCCC 2026 – 250 ml per ≥ 10 min), skubiai neurochirurgas. Ventiliuojamam – normokapnija (EtCO₂ 35–45 mm Hg), kol veikia osmoterapija – laikinai PaCO₂ 32–35, ne žemiau 30: EtCO₂ 26 rodo per didelę hiperventiliaciją – dažnį mažinti (#44).",
     "ref": [
      "#/igudis/44",
      "#/vaistas/nacl-hipert"
@@ -3021,7 +3021,7 @@ window.ETC.scenarijai = [
       "ok": false
      }
     ],
-    "why": "Atvykusiam be imobilizacijos – MILS: rankos ant speninių ataugų, ausų neuždengti, galva neutraliai be traukos. Jėga tiesinti galvą – klaida; vėliau MILS keičiamas įtvaru su blokais ir juostomis (#31).",
+    "why": "Atvykusiam be imobilizacijos – MILS: rankos ant speninių ataugų, ausų neuždengti, galva neutraliai be traukos. Jėga tiesinti galvą – klaida; vėliau MILS keičiamas vakuuminiu čiužiniu ar mentiniais neštuvais su blokais ir juostomis, įtvaras – selektyviai (#31).",
     "ref": [
      "#/igudis/31",
      "#/igudis/2"
@@ -3057,7 +3057,7 @@ window.ETC.scenarijai = [
     ]
    },
    {
-    "sit": "Karys guli ant stuburo lentos, kaklas įtvare. Nugara dar neapžiūrėta, hemodinamika stabili.",
+    "sit": "Karys guli ant stuburo lentos, kaklas įtvare. Nugara dar neapžiūrėta, hemodinamika stabili; KT nebus, A nusprendžia nugarą apžiūrėti.",
     "gp": {
      "AKS": "106/64",
      "ŠSD": "66",
@@ -3078,7 +3078,7 @@ window.ETC.scenarijai = [
       "ok": true
      }
     ],
-    "why": "A laiko galvą ir duoda komandą, B ir C vienoje pusėje verčia kaip vieną vienetą; B apžiūri nugarą ir palpuoja stuburo vidurio liniją. Vertimas kelis kartus – klaida; nuo lentos nukelkite kuo anksčiau (#17, #31).",
+    "why": "A laiko galvą ir duoda komandą, B ir C vienoje pusėje verčia kaip vieną vienetą; B apžiūri nugarą ir palpuoja stuburo vidurio liniją. Vertimas kelis kartus – klaida; nuo lentos nukelkite kuo anksčiau. ETC 5.0 rekomenduoja 5 žmones – kvieskite pagalbos (#17, #31).",
     "ref": [
      "#/igudis/17",
      "#/igudis/31"
@@ -3141,7 +3141,7 @@ window.ETC.scenarijai = [
       "ok": false
      }
     ],
-    "why": "Atviras lūžis – pirma kraujavimas, žaizda uždengiama steriliu tvarsčiu; PMS prieš ir po; įtvaras apima sąnarius virš ir žemiau lūžio. Per didelis manipuliavimas ir įtvaras ant nesutvarkytos žaizdos – klaidos (#33).",
+    "why": "Atviras lūžis – pirma kraujavimas, žaizda neplaunama, uždengiama NaCl sudrėkinta sterilia marle ir okliuziniu tvarsčiu; PMS prieš ir po; įtvaras apima sąnarius virš ir žemiau lūžio. Per didelis manipuliavimas ir įtvaras ant nesutvarkytos žaizdos – klaidos (#33).",
     "ref": [
      "#/igudis/33",
      "#/igudis/32",
@@ -3169,7 +3169,7 @@ window.ETC.scenarijai = [
       "ok": false
      }
     ],
-    "why": "Po įtvaro PMS kartojami: pulsas dingo – atlaisvinkite, pataisykite, uždėkite iš naujo. Atviram lūžiui – analgezija ir antibiotikai, radiniai ir laikas užrašomi (#33).",
+    "why": "Po įtvaro PMS kartojami: pulsas dingo – atlaisvinkite, pataisykite, uždėkite iš naujo. Atviram lūžiui – analgezija ir IV antibiotikai per 1 val., radiniai ir laikas užrašomi (#33).",
     "ref": [
      "#/igudis/33",
      "#/s/c-ant"
@@ -3509,7 +3509,7 @@ window.ETC.scenarijai = [
       "ok": true
      }
     ],
-    "why": "AMPLE: alergijos, vaistai (antikoaguliantai!), ligos, paskutinis valgis, įvykiai; patikslinamas stabligės statusas, tikrinami drabužiai ir daiktai. Antrasis variantas primena ATMIST perdavimo struktūrą (#42).",
+    "why": "AMPLE: alergijos, vaistai (antikoaguliantai!), ligos, paskutinis valgis, įvykiai; patikslinamas stabligės statusas, tikrinami drabužiai ir daiktai. Antrasis variantas primena ATMISTER perdavimo struktūrą (#42).",
     "ref": [
      "#/igudis/42",
      "#/s/a-ant"
@@ -3653,7 +3653,7 @@ window.ETC.scenarijai = [
       "ok": false
      },
      {
-      "t": "Surenka komandą: prisistatymas, ATMIST, vaidmenys A, B, C ir rašytojas",
+      "t": "Surenka komandą: prisistatymas, ATMISTER, vaidmenys A, B, C ir rašytojas",
       "ok": true
      },
      {
@@ -3661,7 +3661,7 @@ window.ETC.scenarijai = [
       "ok": false
      }
     ],
-    "why": "Komandos darbas prasideda prieš pacientui atvykstant: A surenka komandą, nariai prisistato vardais, A perteikia ATMIST informaciją ir paskirsto vaidmenis A, B, C ir rašytoją (#41).",
+    "why": "Komandos darbas prasideda prieš pacientui atvykstant: A surenka komandą, nariai prisistato vardais, A perteikia ATMISTER informaciją ir paskirsto vaidmenis A, B, C ir rašytoją (#41).",
     "ref": [
      "#/igudis/41",
      "#/s/a-pas",
@@ -3669,7 +3669,7 @@ window.ETC.scenarijai = [
     ]
    },
    {
-    "sit": "Iš ATMIST: karys apie 25 m., SSU sprogimas prieš 40 min, kairės blauzdos amputacija su turniketu, mieguistas, blyškus. Vaidmenys paskirstyti, Planas A – standartinė pirminė apžiūra.",
+    "sit": "Iš ATMISTER: karys apie 25 m., SSU sprogimas prieš 40 min, kairės blauzdos amputacija su turniketu, mieguistas, blyškus. Vaidmenys paskirstyti, Planas A – standartinė pirminė apžiūra.",
     "gp": {},
     "klaus": "Kuriuos Escape planus A turi aptarti instruktaže?",
     "opt": [
@@ -3802,7 +3802,7 @@ window.ETC.scenarijai = [
       "ok": true
      }
     ],
-    "why": "STOP (10 už 10) skelbiamas būklei netikėtai pablogėjus ar komandai „įstrigus“: problema, visi klauso, faktai pagal cABCDE, planas, paskirstymas, klausimai, patikrinimas (#41).",
+    "why": "STOP (10 už 10) skelbiamas būklei netikėtai pablogėjus ar komandai „įstrigus“: problema, visi klauso, faktai pagal cABCDE, nuomonės, planas, paskirstymas, patikrinimas (#41).",
     "ref": [
      "#/s/stop",
      "#/igudis/41"
@@ -3877,7 +3877,7 @@ window.ETC.scenarijai = [
       "ok": false
      },
      {
-      "t": "Kai priimantis medikas išklausė ATMIST ir perėmė stebėseną",
+      "t": "Kai priimantis medikas išklausė ATMISTER ir perėmė stebėseną",
       "ok": true
      },
      {
@@ -3885,7 +3885,7 @@ window.ETC.scenarijai = [
       "ok": false
      }
     ],
-    "why": "Perduodama tiesiogiai priimančiam medikui, struktūruotai (ATMIST), atsakant į klausimus prieš išvykstant. Pacientas perduotas tik tada, kai priimantis išklausė perdavimą ir perėmė stebėseną (#46).",
+    "why": "Perduodama tiesiogiai priimančiam medikui, struktūruotai (ATMISTER), atsakant į klausimus prieš išvykstant. Pacientas perduotas tik tada, kai priimantis išklausė perdavimą ir perėmė stebėseną (#46).",
     "ref": [
      "#/igudis/46",
      "#/s/atmist"
@@ -4132,7 +4132,7 @@ window.ETC.scenarijai = [
     ]
    },
    {
-    "sit": "Vairuotojas sveria 80 kg, nudegimai 27 % KPP, trauma įvyko prieš 1 val. A skiria Ringerio laktatą pagal Parkland formulę (4 ml × kg × % KPP per 24 val.).",
+    "sit": "Vairuotojas sveria 80 kg, nudegimai 27 % KPP, trauma įvyko prieš 1 val. A skiria Ringerio laktatą pagal Parkland formulę (2–4 ml × kg × % KPP per 24 val.), pradžiai imdamas 4 ml.",
     "gp": {
      "AKS": "104/66",
      "ŠSD": "114"
@@ -4152,7 +4152,7 @@ window.ETC.scenarijai = [
       "ok": false
      }
     ],
-    "why": "4 × 80 × 27 = 8640 ml per 24 val.; pusė (4320 ml) – per pirmas 8 val. nuo traumos, ne nuo atvykimo. Titruojama pagal diurezę 0,5–1 ml/kg/val. (įrankis Nudegimai, #48).",
+    "why": "4 × 80 × 27 = 8640 ml per 24 val.; pusė (4320 ml) – per pirmas 8 val. nuo traumos, ne nuo atvykimo. Formulė – tik pradinis taškas: titruojama pagal diurezę 0,5–1 ml/kg/val. (įrankis Nudegimai, #48).",
     "ref": [
      "#/nudegimai",
      "#/igudis/48",
@@ -4239,7 +4239,7 @@ window.ETC.scenarijai = [
       "ok": true
      }
     ],
-    "why": "Skysčiai pagal formulę – kai > 20 % KPP; mažesniems – pagal būklę. Antibiotikai neskiriami vien dėl nudegimų; žiediniams nudegimams tikrinamas distalinis pulsas (#48).",
+    "why": "Skysčiai pagal formulę – kai ≥ 15 % KPP; mažesniems – pagal būklę. Antibiotikai neskiriami vien dėl nudegimų; žiediniams nudegimams tikrinamas distalinis pulsas (#48).",
     "ref": [
      "#/igudis/48",
      "#/nudegimai",
