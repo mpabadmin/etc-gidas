@@ -69,7 +69,8 @@ const installRow = () => installed() ? '' : row('#/idiegimas', 'Įdiegti program
 const GRUPES = [['K', 'Komanda, apžiūra ir pervežimas'], ['A', 'A – kvėpavimo takai ir neurologija'], ['B', 'B – kvėpavimas, krūtinė, dubuo'], ['C', 'C – kraujavimas ir kraujotaka'], ['S', 'D/E – galva, antrinė apžiūra, žaizdos'], ['V', 'Vaistai ir skausmas']];
 const grupesPav = g => (GRUPES.find(x => x[0] === g) || ['', ''])[1];
 const skillOrder = () => GRUPES.reduce((a, [g]) => a.concat((E.igudziai || []).filter(s => s.grupe === g)), []).concat((E.igudziai || []).filter(s => !GRUPES.some(([g]) => g === s.grupe)));
-const figHtml = f => `<figure class="fig"><a href="${esc(f.src)}" target="_blank" rel="noopener"><img loading="lazy" src="${esc(f.src)}" alt="${esc(f.cap)}"></a><figcaption>${esc(f.cap)}<small>Iliustracija: Joint Trauma System (Deployed Medicine)${f.orig ? ` · <a href="${esc(f.orig)}" target="_blank" rel="noopener">tccc.org.ua</a>` : ''}</small></figcaption></figure>`;
+// Iliustracija: src, cap, salt (šaltinis; numatytasis – JTS), orig (nuoroda į šaltinį), origLb (nuorodos tekstas).
+const figHtml = f => `<figure class="fig"><a href="${esc(f.src)}" target="_blank" rel="noopener"><img loading="lazy" src="${esc(f.src)}" alt="${esc(f.cap)}"></a><figcaption>${esc(f.cap)}<small>Šaltinis: ${esc(f.salt || 'Joint Trauma System (Deployed Medicine)')}${f.orig ? ` · <a href="${esc(f.orig)}" target="_blank" rel="noopener">${esc(f.origLb || 'tccc.org.ua')} ↗</a>` : ''}</small></figcaption></figure>`;
 
 const V = {
   home() { return mode === 'field' ? V.homeField() : V.homeLearn(); },
@@ -369,9 +370,9 @@ const V = {
     else h += row('#/idiegimas', 'Kaip įsidiegti telefone', 'Android, iPhone, QR');
     h += b('upd', 'Atnaujinti turinį', 'Reikia interneto ryšio');
     const verM = String(E.versija || '').match(/^(\S+)\s+(v\d+)\s*\((.*)\)$/);
-    h += '<h2>Apie</h2><p class="muted">' + (verM ? 'Versija ' + esc(verM[2]) + ' · ' + esc(verM[1]) : 'Versija ' + esc(E.versija || '—')) + '. Parengė 1040 medkuopa pagal European Trauma Course; dozės – TCCC 2026 ir gamintojo PCS. Atminties priemonė, ne oficialus ETC vadovas.</p>' +
+    h += '<h2>Apie</h2><p class="muted">' + (verM ? 'Versija ' + esc(verM[2]) + ' · ' + esc(verM[1]) : 'Versija ' + esc(E.versija || '—')) + '. Parengė 1040 medkuopa pagal European Trauma Course; dozės – TCCC 2026 ir gamintojo PCS. Atminties priemonė, ne oficialus ETC vadovas.</p><p class="muted">Iliustracijos: ETC Manual 5.0 (2026) © European Trauma Course Organisation (ETCO), naudojamos gavus leidimą; Joint Trauma System (Deployed Medicine). Prie kiekvienos iliustracijos – šaltinis ir puslapis.</p>' +
       (verM ? '<details class="alt"><summary>Kas naujo</summary><p class="muted">' + esc(verM[3]) + '</p></details>' : '');
-    h += '<a class="row" href="https://publications.europeantraumacourse.com/view/845868233/" target="_blank" rel="noopener"><div>Oficialus ETC vadovas<small>publications.europeantraumacourse.com</small></div><span class="ar">↗</span></a>';
+    h += '<a class="row" href="https://publications.europeantraumacourse.com/view/242042611/" target="_blank" rel="noopener"><div>Oficialus ETC vadovas 5.0 (2026)<small>publications.europeantraumacourse.com</small></div><span class="ar">↗</span></a>';
     h += '<a class="row" href="https://deployedmedicine.allogy.net/learner/collections/11" target="_blank" rel="noopener"><div>TCCC gairės<small>Deployed Medicine</small></div><span class="ar">↗</span></a>';
     return h;
   }
