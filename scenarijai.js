@@ -1816,7 +1816,7 @@ window.ETC.scenarijai = [
    {
     "sit": "Minosvaidžio sviedinio skeveldros sužalojo patrulio kario veidą. A 5 s apžiūroje: karys sujaudintas, girdimas burbuliavimas, burnoje kraujas ir išmušti dantys.",
     "gp": {
-     "AVPU": "V",
+     "AVPU": "A",
      "KD": "30",
      "SpO₂": "86 %"
     },
@@ -1995,7 +1995,7 @@ window.ETC.scenarijai = [
   "tema": "Kvėpavimas",
   "q": [
    {
-    "sit": "Drono numestos granatos skeveldros sužalojo kario apatinę veido dalį ir kaklą; kaklas tinsta, uždėtas kaklo įtvaras. Gydytojas nusprendė intubuoti RSI būdu.",
+    "sit": "Drono numestos granatos skeveldros sužalojo kario apatinę veido dalį ir kaklą; kaklas tinsta. Kaklo įtvaras nedėtas – jis spaustų tinstančius audinius; galvą laiko MILS. Gydytojas nusprendė intubuoti RSI būdu.",
     "gp": {
      "AVPU": "V",
      "KD": "28",
@@ -2008,7 +2008,7 @@ window.ETC.scenarijai = [
       "ok": true
      },
      {
-      "t": "Laringoskopuoti palikus uždėtą įtvarą, kad kaklas visiškai nejudėtų",
+      "t": "Prieš laringoskopiją uždėti kaklo įtvarą, kad kaklas visiškai nejudėtų",
       "ok": false
      },
      {
@@ -2016,10 +2016,11 @@ window.ETC.scenarijai = [
       "ok": false
      }
     ],
-    "why": "Numatant sunkius kvėpavimo takus aptariami planai A–D (RSI → kaukė → laringinė kaukė → priekinė kaklo prieiga) ir paruošiama įranga. Laringoskopija su uždėtu įtvaru (vietoj jo – MILS) ir nesutartas atsarginis planas – klaidos (#9, #10).",
+    "why": "Numatant sunkius kvėpavimo takus aptariami planai A–D (RSI → kaukė → laringinė kaukė → priekinė kaklo prieiga) ir paruošiama įranga. Įtvaras spaudžia tinstančius audinius ir trukdo laringoskopijai (vietoj jo – MILS), nesutartas atsarginis planas – klaidos (#9, #10, #31).",
     "ref": [
      "#/igudis/9",
      "#/igudis/10",
+     "#/igudis/31",
      "#/p/kvepavimas"
     ]
    },

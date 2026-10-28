@@ -683,15 +683,16 @@ window.ETC.vaistai = [
       {
         "k": "IV / IO (TCCC 2026)",
         "d": "30 ml 10 % kalcio gliukonato (arba 10 ml 10 % kalcio chlorido)",
-        "p": "Po pirmojo perpilto kraujo produkto vieneto. Leisti ne greičiau kaip per ~15 min (PCS: ≤ 0,45 mmol kalcio/min)."
+        "p": "Po pirmojo perpilto kraujo produkto vieneto (TCCC 2026); toliau – po kas 4 vienetų (JTS DCR 2023). Leisti lėtai, per ~10 min (TCCC ir JTS greičio nenurodo – kaip hiperkalemijai, UK RA 2020)."
       },
       {
         "k": "Hiperkalemija (JTS, CGO)",
-        "d": "30 ml 10 % kalcio gliukonato (arba 10 ml 10 % kalcio chlorido) IV per 5–10 min, stebint EKG",
-        "p": "EKG pokyčiai išlieka – kartoti po 10 min. Kalio nemažina – kartu insulinas su gliukoze (Vaistai: Insulinas).\nTurniketo atleidimas 2–6 val. intervale: kalcį ir insuliną su gliukoze paruošti iš anksto, EKG stebėti."
+        "d": "30 ml 10 % kalcio gliukonato (arba 10 ml 10 % kalcio chlorido) IV per 10 min, stebint EKG",
+        "p": "EKG pokyčiai išlieka – kartoti po 5–10 min (UK RA 2020, CGO; kalcio chlorido – iki 50 ml). Kalio nemažina – kartu insulinas su gliukoze (Vaistai: Insulinas).\nTurniketo atleidimas 2–6 val. intervale: kalcį ir insuliną su gliukoze paruošti iš anksto, EKG stebėti."
       }
     ],
     "ispejimai": [
+      "Neleisti per tą pačią liniją kartu su krauju (citratas + kalcis – krešuliai): kita prieiga arba praplauti 0,9 % NaCl (PCS).",
       "Su ceftriaksonu nemaišyti ir neleisti vienu metu; esant hipovolemijai – nelašinti ir paeiliui (PCS).",
       "Nemaišyti su natrio bikarbonatu ar fosfatais (PCS).",
       "Ekstravazacija sukelia audinių nekrozę (PCS)."
@@ -706,7 +707,7 @@ window.ETC.vaistai = [
       "txa",
       "insulinas"
     ],
-    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); PCS (kalcio gliukonatas 10 %); ETC vertinimo lapas; JTS CPG „Hyperkalemia and Dialysis in the Deployed Setting“ (2022); CGO „Hyperkalaemia“ (2026); ETC vadovas 5.0 (2026), 6 sk. „Šokas“",
+    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); PCS (kalcio gliukonatas 10 %); ETC vertinimo lapas; JTS CPG „Hyperkalemia and Dialysis in the Deployed Setting“ (2022); CGO „Hyperkalaemia“ (2026); ETC vadovas 5.0 (2026), 6 sk. „Šokas“; JTS „Damage Control Resuscitation Quick Reference Guide“ (2023); UK Renal Association „Treatment of Acute Hyperkalaemia in Adults“ (2020)",
     "nuorodos": [
       [
         "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
@@ -727,6 +728,10 @@ window.ETC.vaistai = [
       [
         "JK gynybos ministerijos CGO „Hyperkalaemia“ (2026)",
         "https://cms.cgo.mod.uk/clinical-guidelines-for-operations/treatment-guidelines/metabolic/hyperkalaemia"
+      ],
+      [
+        "JTS DCR Quick Reference Guide (medikams, 2023)",
+        "https://jts.health.mil/assets/docs/damage_control/Damage_Control_Resus_Quick_Reference_Guide_Medics_Corpsmen_2023.pdf"
       ]
     ],
     "lt": {
@@ -1560,23 +1565,24 @@ window.ETC.vaistai = [
     "dozes": [
       {
         "k": "IV / IO (JTS)",
-        "d": "10 VV paprasto insulino IV + 25 g gliukozės",
-        "p": "25 g gliukozės: 50 ml 50 % arba ~60 ml 40 % arba 250 ml 10 %. Jei gliukozė > 14 mmol/l – papildomos gliukozės nereikia (JTS, CGO).\nInsulinas 100 VV/ml: 0,1 ml = 10 VV – insulino švirkštu; patogiau atskiesti 10 VV iki 10 ml 0,9 % NaCl (1 VV/ml)."
+        "d": "10 VV paprasto insulino + 25 g gliukozės IV per 15 min",
+        "p": "25 g gliukozės: 50 ml 50 % arba ~60 ml 40 % arba 250 ml 10 %. Jei gliukozė > 15 mmol/l – papildomos gliukozės nereikia (CGO, UK RA 2020).\nInsulinas 100 VV/ml: 0,1 ml = 10 VV – insulino švirkštu; patogiau atskiesti 10 VV iki 10 ml 0,9 % NaCl (1 VV/ml)."
       }
     ],
     "ispejimai": [
-      "Gliukozę matuoti po 15–30 min ir ne vėliau kaip po 1 val., toliau – kas valandą (veikia 4–6 val.).",
+      "Gliukozę matuoti kas valandą 6 val. (UK RA 2020) – insulinas veikia 4–6 val., hipoglikemija dažna.",
       "Kalio poveikis laikinas – kalį (jei galima) ir EKG stebėti; profilaktiškai, be EKG pokyčių ar kalio matavimo, neskirti (CGO)."
     ],
     "pradzia": "10–20 min",
     "trukme": "4–6 val.",
     "pastabos": [
-      "Hiperkalemijos gydymo eilė: 1) kalcis (Vaistai: Kalcis) – jei EKG pokyčiai ar K > 6,5; 2) insulinas su gliukoze; 3) salbutamolis 10 mg per purkštuvą – papildomai; 4) skysčiai ir diurezė."
+      "Hiperkalemijos gydymo eilė: 1) kalcis (Vaistai: Kalcis) – jei EKG pokyčiai ar K > 6,5; 2) insulinas su gliukoze; 3) salbutamolis 10 mg per purkštuvą – papildomai; 4) skysčiai ir diurezė.",
+      "Kuopos vertinimo lape – 5 % gliukozė + insulinas 0,1 VV/kg; gide – viena schema (JTS, CGO, UK RA): 10 VV + 25 g gliukozės. 25 g gliukozės 5 % tirpalu – 500 ml, todėl naudojama 10–50 % gliukozė."
     ],
     "susije": [
       "kalcis"
     ],
-    "saltinis": "JTS CPG „Hyperkalemia and Dialysis in the Deployed Setting“ (2022); JK gynybos ministerijos CGO „Hyperkalaemia“ (2026), „Crush Injury“ (2026)",
+    "saltinis": "JTS CPG „Hyperkalemia and Dialysis in the Deployed Setting“ (2022); JK gynybos ministerijos CGO „Hyperkalaemia“ (2026), „Crush Injury“ (2026); UK Renal Association „Treatment of Acute Hyperkalaemia in Adults“ (2020)",
     "nuorodos": [
       [
         "JTS CPG „Hyperkalemia and Dialysis in the Deployed Setting“ (mokymo skaidrės, 2022)",

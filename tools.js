@@ -2159,14 +2159,18 @@ const NB = (() => {
   const r10 = x => Math.round(x / 10) * 10;
   function total(s) { let t = s.x; Object.keys(s.r).forEach(key => { const [side, k] = key.split(':'); t += pct(s, k, side) * s.r[key]; }); return Math.min(100, t); }
   // ── grynos skaičiuoklės (testuojamos) ──
-  // o: { kg, tbsa, tInj (ms), now (ms) } → SOP #48 kiekiai ir greičiai (iki 10 ml/val.), fazė nuo traumos, TCCC „10 taisyklė“
+  // o: { kg, tbsa, tInj (ms), now (ms), given (ml) } → Parkland 2–4 ml kiekiai ir greičiai (iki 10 ml/val.), fazė nuo traumos, TCCC „10 taisyklė“.
+  // Pirmos 8 val.: pirmos pusės likutis (atėmus jau suleistus skysčius) per likusį laiką iki 8 val. nuo traumos (Parkland; skaičiuojama nuo traumos, ne atvykimo).
   function calc(o) {
-    const kg = +o.kg || 0, t = +o.tbsa || 0, v24 = 4 * kg * t, v8 = v24 / 2, v8lo = v8 / 2; // 4 ml – viršutinė, 2 ml – apatinė riba
+    const kg = +o.kg || 0, t = +o.tbsa || 0, v24 = 4 * kg * t, v8 = v24 / 2, v8lo = v8 / 2, given = Math.max(0, +o.given || 0); // 4 ml – viršutinė, 2 ml – apatinė riba
     const el = +o.tInj > 0 ? Math.max(0, ((+o.now || Date.now()) - o.tInj) / 3.6e6) : null;
     const phase = el == null ? '' : el < 8 ? '8' : el < 24 ? '16' : 'end';
     const t10 = Math.round(t / 10) * 10, rule10 = kg >= 40 ? t10 * 10 + (kg > 80 ? Math.floor((kg - 80) / 10) * 100 : 0) : 0;
-    return { v24: Math.round(v24), v8: Math.round(v8), r8: r10(v8 / 8), r16: r10(v8 / 16), el, phase, now: phase === '8' ? r10(v8 / 8) : phase === '16' ? r10(v8 / 16) : 0, t10, rule10,
-      v24lo: Math.round(v24 / 2), v8lo: Math.round(v8lo), r8lo: r10(v8lo / 8), r16lo: r10(v8lo / 16), nowlo: phase === '8' ? r10(v8lo / 8) : phase === '16' ? r10(v8lo / 16) : 0 };
+    const left8 = phase === '8' ? 8 - el : 0, rem8 = Math.max(0, v8 - given), rem8lo = Math.max(0, v8lo - given);
+    const nowP = (rem, v) => phase === '8' ? (rem > 0 ? r10(rem / left8) : r10(v / 16)) : phase === '16' ? r10(v / 16) : 0;
+    return { v24: Math.round(v24), v8: Math.round(v8), r8: r10(v8 / 8), r16: r10(v8 / 16), el, phase, now: nowP(rem8, v8), t10, rule10,
+      v24lo: Math.round(v24 / 2), v8lo: Math.round(v8lo), r8lo: r10(v8lo / 8), r16lo: r10(v8lo / 16), nowlo: nowP(rem8lo, v8lo),
+      given: Math.round(given), left8, rem8: Math.round(rem8), rem8lo: Math.round(rem8lo), done8: phase === '8' && rem8lo === 0 };
   }
   const drops = (mlh, f) => Math.round(mlh * f / 60);
   // o: { ml, h, kg, el } → ml/val., ml/kg/val., tikslas (SOP 0,5–1 ml/kg/val.; elektros trauma – JTS 75–100 ml/val.), būsena lo / ok / hi
@@ -2175,7 +2179,7 @@ const NB = (() => {
     return { mlh: Math.round(mlh), mlkg: kg ? Math.round(mlh / kg * 10) / 10 : 0, lo: Math.round(lo), hi: Math.round(hi), st: mlh < lo ? 'lo' : mlh > hi ? 'hi' : 'ok' };
   }
   const tInjury = () => { const T = LS.get(TCFG.laikai, {}) || {}; if (+T.trauma) return +T.trauma; try { const st = MC.state(); return MC.trTs(st.pts[st.cur]) || 0; } catch (e) { return 0; } };
-  // Jau suleisti skysčiai – MIST C lentelės „Skysčiai“ eilutės su ml (informacijai; „pasivijimo“ greičio nerodome – JTS: venkite boliusų)
+  // Jau suleisti skysčiai – MIST C lentelės „Skysčiai“ eilutės su ml; atimami iš pirmų 8 val. kiekio (boliusų nesiūlome – JTS)
   function given() {
     try { const st = MC.state(), c = st.pts[st.cur]; let ml = 0, n = 0; (c.rows || []).forEach(r => { if (r.g !== 'fl') return; const m = /(\d+(?:[.,]\d+)?)\s*ml/i.exec(String(r.dose || '')); if (m) { ml += parseFloat(m[1].replace(',', '.')); n++; } }); return { ml: Math.round(ml), n }; } catch (e) { return { ml: 0, n: 0 }; }
   }
@@ -2199,7 +2203,7 @@ const NB = (() => {
       return h;
     }
     if (!w) return h + '<p class="nbneed"><b>Įveskite svorį</b> – be jo skysčiai neskaičiuojami.</p>' + wChips(0, 1);
-    const tI = tInjury(), C = calc({ kg: w, tbsa: t, tInj: tI, now: Date.now() }), G = given();
+    const tI = tInjury(), G = given(), C = calc({ kg: w, tbsa: t, tInj: tI, now: Date.now(), given: G.ml });
     h += `<p class="muted mt0">Svoris ${w} kg · ${tI ? 'nuo traumos ' + dur(C.el) + ' (' + hm(tI) + ')' : 'traumos laikas nenustatytas – skaičiuojama nuo traumos, ne nuo atvykimo'}</p>` +
       (tI ? '' : '<div class="acts"><button class="btn" data-act="mc-time">Nustatyti traumos laiką</button></div>') + wChips(w, 1);
     h += '<div class="seg2" role="group" aria-label="Formulė">' + chip('nb-f', 'etc', s.f === 'etc', 'Parkland (#48)') + chip('nb-f', 'tccc', s.f === 'tccc', 'TCCC „10 taisyklė“') + '</div>';
@@ -2208,7 +2212,10 @@ const NB = (() => {
       rate = C.phase === '8' || C.phase === '16' ? C.now : C.r8;
       const lo = C.phase === '8' || C.phase === '16' ? C.nowlo : C.r8lo;
       const big = C.phase === 'end' ? '' : `<small>Ringerio laktatas – ${C.phase === '16' ? 'kitos 16 val.' : C.phase === '8' ? 'dabar (pirmos 8 val.)' : 'pirmos 8 val.'}</small><b>${lo}–${rate} ml/val.</b>`;
-      h += `<section class="nbfl${C.phase === 'end' ? ' off' : ''}">${big}` +
+      const left = C.phase !== '8' ? '' : C.done8 ? `<small><b>Pirmų 8 val. kiekis jau suleistas (${C.given} ml)</b> – toliau kitų 16 val. greičiu, titruokite pagal diurezę.</small>` :
+        `<small><b>Likutis iki 8 val. nuo traumos: ${C.rem8lo}–${C.rem8} ml${C.given ? ` (atėmus suleistus ${C.given} ml)` : ''} per ${dur(C.left8)}</b></small>` +
+        (rate > 2 * C.r8 ? '<small><b>Greitis daugiau nei dvigubai viršija vidutinį – boliusų venkite, diurezę matuokite kas valandą, konsultuokitės su gydytoju (JTS).</b></small>' : '');
+      h += `<section class="nbfl${C.phase === 'end' ? ' off' : ''}">${big}${left}` +
         `<small>Per 24 val.: ${C.v24lo}–${C.v24} ml (2–4 ml × ${w} kg × ${fmt1(t)} %)</small>` +
         `<small>Pirmos 8 val. nuo traumos: ${C.v8lo}–${C.v8} ml → ${C.r8lo}–${C.r8} ml/val.</small><small>Kitos 16 val.: ${C.v8lo}–${C.v8} ml → ${C.r16lo}–${C.r16} ml/val.</small>` +
         (C.phase === 'end' ? '<small><b>Praėjo 24 val. – formulės laikotarpis baigėsi; tęskite pagal diurezę.</b></small>' : '') +
