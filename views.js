@@ -212,23 +212,22 @@ const V = {
   },
 
   drugs() {
-    const D = (E.vaistai || []).filter(v => ok(v.kam)), w = wCalc(), field = mode === 'field';
+    const D = (E.vaistai || []).filter(v => ok(v.kam)), w = wCalc();
     const G = E.vaistuGrupes || [{ id: undefined, pav: 'Vaistai' }];
     let h = '<h1>Vaistai</h1><p class="muted">Viena dozavimo schema – pagal TCCC 2026 gaires, gamintojo PCS ir ERC.</p>';
-    if (!field) h += row('#/korteles', 'Dozių kortelės', FC.status());
     G.forEach(g => {
       const a = D.filter(v => v.grupe === g.id);
       if (!a.length) return;
-      h += '<h2>' + esc(g.pav) + '</h2>' + a.map(v => row('#/vaistas/' + v.id, v.name, field ? doseShort(v, w) : v.klase,
+      h += '<h2>' + esc(g.pav) + '</h2>' + a.map(v => row('#/vaistas/' + v.id, v.name, doseShort(v, w),
         (v.tccc26 ? '<span class="tag grn">TCCC</span>' : '') + (v.kam && isDoc(v.kam) ? '<span class="tag red">Gydytojui</span>' : ''))).join('');
     });
-    return h + (mode === 'learn' ? '<p class="muted">Žyma „TCCC“ – vaistas yra TCCC 2026 gairėse. Vaistai skiriami tik pagal kompetenciją ir mediko nurodymu.</p>' : '');
+    return h + '<p class="muted">Žyma „TCCC“ – vaistas yra TCCC 2026 gairėse. Vaistai skiriami tik pagal kompetenciją ir mediko nurodymu.</p>';
   },
 
   drug(id) {
     const v = drugById(id);
     if (!v) return notFound();
-    const w = wCalc(), learn = mode === 'learn';
+    const w = wCalc();
     const allD = (v.dozes || []).concat(...(v.stulpeliai || []).map(c => c.dozes));
     const doseHtml = d => `<div class="dose"><div class="lb">${esc(d.k)}${d.c ? ' · ' + esc(d.d) : ''}</div><div class="big">${esc(d.c ? calc(d.c, w) : d.d)}</div>${d.p ? '<div class="lb">' + br(d.p) + '</div>' : ''}</div>`;
     let h = `<h1>${esc(v.name)}</h1><p class="muted">${esc(v.klase || '')}</p>`;
@@ -249,8 +248,8 @@ const V = {
     if ((v.pastabos || []).length) more += '<h3>Pastabos</h3>' + ul(v.pastabos);
     if (v.saltinis) more += '<p class="muted" style="margin-top:10px">Šaltiniai: ' + esc(v.saltinis) + '</p>';
     if ((v.nuorodos || []).length) more += v.nuorodos.map(([t, u]) => `<a class="row" href="${esc(u)}" target="_blank" rel="noopener"><div>${esc(t)}</div><span class="ar">↗</span></a>`).join('');
-    if (more) h += `<details class="alt"${learn ? ' open' : ''}><summary>Kontraindikacijos ir daugiau</summary>${more}</details>`;
-    h += V.drugLt(v, learn);
+    if (more) h += `<details class="alt"><summary>Kontraindikacijos ir daugiau</summary>${more}</details>`;
+    h += V.drugLt(v);
     const alt = (v.alt || []).filter(a => !a.id || (drugById(a.id) && ok(drugById(a.id).kam)));
     if (alt.length) h += '<h2>Alternatyva</h2>' + alt.map(a => a.id ? row('#/vaistas/' + a.id, drugById(a.id).name, a.t) : `<p class="muted altx">${esc(a.t)}</p>`).join('') +
       (alt.some(a => a.id) ? '<p class="muted altn">Kitas vaistas tam pačiam tikslui – sprendžia skiriantysis; dozė – to vaisto puslapyje.</p>' : '');
@@ -260,14 +259,14 @@ const V = {
   },
 
   // Lietuvoje registruoti preparatai (VVKT VAPRIS) – papildoma vaisto aprašo skiltis
-  drugLt(v, learn) {
+  drugLt(v) {
     const L = v.lt; if (!L || !((L.p || []).length || L.ne || L.pa)) return '';
     const ST = { T: ['Tiekiamas', 'grn'], L: ['Lygiagretus importas', 'grn'], U: ['Be registracijos numerio', 'amb'], N: ['Netiekiamas', 'red'] };
     let h = (L.p || []).map(p => { const s = ST[p.s] || ['', '']; return `<div class="ltp"><div class="ltn"><b>${esc(p.n)}</b>${s[0] ? `<span class="tag ${s[1]}">${s[0]}</span>` : ''}</div><div class="ltd">${esc(p.d)}${p.r ? ' · ' + esc(p.r) : ''}</div></div>`; }).join('');
     if (L.ne) h += `<div class="ltp"><div class="ltn"><span class="tag red">Netiekiami</span></div><div class="ltd">${esc(L.ne)}</div></div>`;
     if (L.pa) h += `<p class="ltpa">${esc(L.pa)}</p>`;
     h += '<p class="muted ltsrc">VVKT vaistinių preparatų registras, tikrinta 2026-10-14. Tiekimas keičiasi – naudokite tai, kas yra jūsų komplekte, ir tikrinkite koncentraciją ant ampulės.</p>';
-    return `<details class="alt lt"${learn ? ' open' : ''}><summary>Lietuvoje: preparatai ir pakuotės</summary>${h}</details>`;
+    return `<details class="alt lt"><summary>Lietuvoje: preparatai ir pakuotės</summary>${h}</details>`;
   },
 
   skills(q) {
@@ -290,7 +289,7 @@ const V = {
   skill(id) {
     const s = skillById(id);
     if (!s) return notFound();
-    const r = ratings()[s.id] || 0, learn = mode === 'learn';
+    const r = ratings()[s.id] || 0;
     const all = skillOrder().filter(x => ok(x.kam)), i = all.indexOf(s);
     let h = `<h1>${esc(s.pav)}</h1><span class="tag">#${s.id}</span><span class="tag">${esc(grupesPav(s.grupe))}</span>` + tag(s.kam) + (s.id > 34 ? '<span class="tag">Papildomas</span>' : '');
     if (s.aprasas) h += `<p class="lead">${esc(s.aprasas)}</p>`;
@@ -301,13 +300,13 @@ const V = {
     if ((s.klaidos || []).length) h += '<div class="warn wl"><b>Dažnos klaidos ir pavojai</b>' + ulr(s.klaidos) + '</div>';
     if ((s.vaizdai || []).length) h += '<div class="figs">' + s.vaizdai.map(figHtml).join('') + '</div>';
     h += videos(s.video);
-    if (learn) {
-      if (s.teorija || s.praktika) h += '<h2>Ką išmokti</h2>' + (s.teorija ? `<div class="kv"><b>Teorija</b><span>${br(s.teorija)}</span></div>` : '') + (s.praktika ? `<div class="kv"><b>Praktika</b><span>${br(s.praktika)}</span></div>` : '');
-      if (s.aprasymas) h += '<div>' + s.aprasymas + '</div>';
-    }
+    // Teorija, praktika ir išsamus aprašymas – suskleisti (v52: anksčiau rodyti tik mokymosi režime)
+    const learnH = (s.teorija || s.praktika ? '<h3>Ką išmokti</h3>' + (s.teorija ? `<div class="kv"><b>Teorija</b><span>${br(s.teorija)}</span></div>` : '') + (s.praktika ? `<div class="kv"><b>Praktika</b><span>${br(s.praktika)}</span></div>` : '') : '') + (s.aprasymas ? '<div>' + s.aprasymas + '</div>' : '');
+    if (learnH) h += expl(learnH, 'Išsamiau: teorija ir praktika');
     const link = (lb, src, url) => url ? `<a class="row" href="${esc(url)}" target="_blank" rel="noopener"><div>${esc(lb)}<small>${esc(src || url)}</small></div><span class="ar">↗</span></a>` : (src ? `<p class="muted">${esc(lb)}: ${esc(src)}</p>` : '');
     if ((s.esmeSrc || []).length) h += '<p class="muted">Šaltiniai: ' + esc(s.esmeSrc.join('; ')) + '</p>';
-    if (learn) h += link('Teorijos šaltinis', s.saltT, s.nuorT) + link('Praktikos šaltinis', s.saltP, s.nuorP);
+    const srcH = link('Teorijos šaltinis', s.saltT, s.nuorT) + link('Praktikos šaltinis', s.saltP, s.nuorP);
+    if (srcH) h += expl(srcH, 'Teorijos ir praktikos šaltiniai');
     h += '<h2>Mano įsivertinimas</h2><div class="chips">' + [1, 2, 3, 4].map(x => `<button class="${x === r ? 'on' : ''}" data-act="rate" data-id="${s.id}" data-v="${x}">${x}</button>`).join('') + '</div>';
     h += '<p class="muted">1 – nežinau · 2 – žinau teoriją · 3 – atlieku su pagalba · 4 – atlieku savarankiškai</p>';
     const prev = all[i - 1], next = all[i + 1];
@@ -349,7 +348,7 @@ const V = {
       '<li>Adreso juostoje paspauskite <b>„Bendrinti“</b> (kvadratas su rodykle aukštyn) arba meniu <b>⋯</b> → <b>„Bendrinti…“</b>.</li>' +
       '<li>Pasirinkite <b>„Įtraukti į pradžios ekraną“</b> (jei reikia – slinkite žemyn arba „Daugiau“), tada <b>„Įtraukti“</b>.</li></ol>' +
       '<p class="muted">Toliau programėlę atidarykite iš pradžios ekrano ženkliuko, ne iš naršyklės – tada ji veikia visame ekrane ir be interneto. Įdiegtą programėlę ištrinti galima kaip įprastą: palaikykite ženkliuką → „Pašalinti“.</p>' +
-      '<h2>Po įdiegimo</h2><ul><li>Pirmą kartą atidarykite su internetu – turinys išsisaugos telefone.</li><li>Programėlė atsinaujina pati, kai atidaroma su internetu. Jei reikia – Nustatymai → „Atnaujinti turinį“.</li><li>Vaizdo įrašams ir iliustracijoms iš TCCC reikia interneto.</li></ul>' +
+      '<h2>Po įdiegimo</h2><ul><li>Pirmą kartą atidarykite su internetu – turinys išsisaugos telefone.</li><li>Programėlė atsinaujina pati, kai atidaroma su internetu. Jei reikia – Nustatymai → „Atnaujinti turinį“.</li><li>Vaizdo įrašams reikia interneto. Iliustracijos išsisaugo kartu su programėle; Nustatymuose jas galima išsaugoti dar kartą („Išsaugoti iliustracijas naudojimui be interneto“).</li></ul>' +
       '<h2>Pasidalinkite</h2><p class="muted">Nuskenuokite telefono kamera:</p><img class="qr" src="img/qr.svg" alt="QR kodas: etc.1040medkuopa.lt"><p style="text-align:center"><b>etc.1040medkuopa.lt</b></p>';
     return h;
   },
@@ -368,12 +367,20 @@ const V = {
     if (inst) h += '<p class="muted">Programėlė įdiegta ir veikia be interneto (vaizdo įrašams reikia interneto).</p>';
     else if (installEv) h += b('install', 'Įdiegti į telefoną', '');
     else h += row('#/idiegimas', 'Kaip įsidiegti telefone', 'Android, iPhone, QR');
+    const nImg = allImgs().length, have = LS.get('etc-img', 0);
+    if (nImg) h += b('img-dl', have >= nImg ? 'Iliustracijos išsaugotos telefone ✓' : 'Išsaugoti iliustracijas naudojimui be interneto', have >= nImg ? plural(nImg, ['vaizdas', 'vaizdai', 'vaizdų']) + ' · paspauskite, jei norite atnaujinti' : plural(nImg, ['vaizdas', 'vaizdai', 'vaizdų']) + ', apie 2 MB · ETC vadovo ir JTS iliustracijos');
     h += b('upd', 'Tikrinti naujinimus', 'Atsisiunčiama naujausia versija · reikia interneto ryšio');
     const verM = String(E.versija || '').match(/^(\S+)\s+(v\d+)\s*\((.*)\)$/);
     h += '<h2>Apie</h2><p class="muted">' + (verM ? 'Versija ' + esc(verM[2]) + ' · ' + esc(verM[1]) : 'Versija ' + esc(E.versija || '—')) + '. Parengė 1040 medkuopa pagal European Trauma Course; dozės – TCCC 2026 ir gamintojo PCS. Atminties priemonė, ne oficialus ETC vadovas.</p><p class="muted">Iliustracijos: ETC vadovas 5.0 (2026), lietuviškas vertimas (2026-10-20); Joint Trauma System (Deployed Medicine). Prie kiekvienos iliustracijos – šaltinis ir puslapis.</p>' +
       (verM ? '<details class="alt"><summary>Kas naujo</summary><p class="muted">' + esc(verM[3]) + '</p></details>' : '');
     h += '<a class="row" href="https://publications.europeantraumacourse.com/view/242042611/" target="_blank" rel="noopener"><div>Oficialus ETC vadovas 5.0 (2026)<small>publications.europeantraumacourse.com</small></div><span class="ar">↗</span></a>';
     h += '<a class="row" href="https://deployedmedicine.allogy.net/learner/collections/11" target="_blank" rel="noopener"><div>TCCC gairės<small>Deployed Medicine</small></div><span class="ar">↗</span></a>';
+    const app = (u, p, t, s) => `<a class="row apr" href="${u}" target="_blank" rel="noopener"><svg class="api" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${p}"/></svg><div>${t}<small>${s}</small></div><span class="ar">↗</span></a>`;
+    h += '<h2>Kitos programėlės</h2>' +
+      app('https://sim.1040medkuopa.lt', 'M3 5h18v12H3zM8 21h8M12 17v4M5 11h3l2-3 2 6 2-3h5', 'SIM', 'Paciento monitoriaus simuliatorius treniruotėms') +
+      app('https://march.1040medkuopa.lt', 'M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z', 'March gidas', 'TCCC: CUF, TFC, TACEVAC') +
+      app('https://pcc.1040medkuopa.lt', 'M12 7v5l3 2M12 3a9 9 0 1 1 0 18 9 9 0 0 1 0-18z', 'PCC gidas', 'Ilgalaikė sužeistojo priežiūra lauke') +
+      app('https://apps.1040medkuopa.lt', 'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z', 'Visos programėlės', 'apps.1040medkuopa.lt – aprašymai ir įdiegimas');
     return h;
   }
 };

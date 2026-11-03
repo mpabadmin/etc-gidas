@@ -80,6 +80,8 @@ function ckToggle(id, i) {
   all[id] = a; LS.set('etc-ck', all);
 }
 
+// Paaiškinimai ir šaltiniai – suskleisti (v52: buvę mokymosi režimo tekstai rodomi visiems)
+const expl = (h, s) => `<details class="alt"><summary>${s || 'Paaiškinimas'}</summary>${h}</details>`;
 const infoBtn = key => `<button class="cki" data-act="ckinfo" aria-expanded="false" aria-controls="ix-${esc(key)}" aria-label="Paaiškinimas">i</button>`;
 const infoTxt = (html, key) => `<div class="ckx" id="ix-${esc(key)}" hidden>${html}</div>`;
 function renderList(id) {
@@ -160,8 +162,8 @@ function buildIdx() {
   add('Įrankiai', 'Nudegimai ir nušalimai', 'Devyneto taisyklė, % KPP, skysčiai, lašai, diurezė, nušalimai', 'nudegimai nudegimas kpp devyneto taisyklė plotas skysčiai lašai lašinė diurezė šlapimas parkland lund browder nušalimas nušalimai apkasų pėda šaltis frostbite', '#/nudegimai');
   add('Įrankiai', 'Kraujo transfuzija', 'Šviežias pilnas kraujas (vaikščiojantis kraujo bankas): donoras, paėmimas, perpylimas', 'kraujo transfuzija šviežias kraujas šviežias pilnas kraujas pilnas kraujas kraujo bankas wbb walking blood bank donoras perpylimas transfuzija ltowb', '#/pilnas-kraujas');
   add('Įrankiai', 'Treniruočių scenarijai', 'Klinikiniai atvejai su klausimais ir paaiškinimais', 'scenarijai scenarijus treniruotė viktorina testas klausimai', '#/scenarijai');
-  add('Įrankiai', 'Vaistų žymėjimas', 'Suleisti vaistai: dozė, kelias, laikas; perkėlimas į MIST', 'vaistų žymėjimas suleista suleisti vaistai dozė laikas įrašas žurnalas ketaminas fentanilis txa', '#/zymejimas');
-  add('Įrankiai', 'Nuskaityti popierinę kortelę', 'DD 1380 nuotrauka → MIST: langeliai, žymės, iškarpos', 'skenuoti nuskaityti nuotrauka fotografuoti popierinė kortelė dd1380 tccc card ocr atpažinimas', '#/skenuoti');
+  add('Įrankiai', 'Vaistų žymėjimas', 'Suleisti vaistai: dozė, kelias, laikas; perkėlimas į kortelę', 'vaistų žymėjimas suleista suleisti vaistai dozė laikas įrašas žurnalas ketaminas fentanilis txa', '#/zymejimas');
+  add('Įrankiai', 'Nuskaityti popierinę kortelę', 'DD1380 nuotrauka → kortelė: langeliai, žymės, iškarpos', 'skenuoti nuskaityti nuotrauka fotografuoti popierinė kortelė dd1380 tccc card ocr atpažinimas', '#/skenuoti');
   add('Įrankiai', 'Dozių kortelės', 'Kasdien 5 kortelės: vaistas ir kelias – prisiminkite dozę', 'dozių kortelės korteles flashcards kartojimas dozės atmintis testas', '#/korteles');
   add('Įrankiai', '10s triažas', 'Ten Second Triage (TST) – rūšiavimas per 10 sekundžių', 'tst 10s 10 s 10 sekundžių ten second triage triažas rūšiavimas masinė nelaimė p1 p2 p3', '#/tst');
   add('Įrankiai', 'SITREP – padėties pranešimas', 'Padėties pranešimas vadui: 10 eilučių, DTG, MGRS, nuostoliai, logistika', 'sitrep padėties pranešimas situacijos ataskaita vadas dtg mgrs nuostoliai wia kia logistika ryšys prašymai', '#/sitrep');
@@ -184,7 +186,7 @@ function results(q) {
     if (!a.length) return;
     h += `<h2>${k} · ${a.length}</h2>` + a.slice(0, 20).map(({ e }) => {
       const inHead = toks.every(t => (e.nt + ' ' + e.ns).indexOf(t) >= 0);
-      const sn = inHead ? '' : snippet(e.text, toks);
+      const sn = inHead || e.kind === 'Įrankiai' ? '' : snippet(e.text, toks); // įrankių tekstas – tik paieškos raktažodžiai, nerodomas
       return `<a class="row" href="${e.r}"><div>${hl(e.title, toks)}<small>${e.sub ? hl(e.sub, toks) : ''}${sn ? '<br>' + sn : ''}</small></div><span class="ar">›</span></a>`;
     }).join('');
   });

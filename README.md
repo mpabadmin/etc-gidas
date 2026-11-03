@@ -3,11 +3,11 @@
 1040 medkuopos atminties priemonė pagal European Trauma Course (ETC). Veikia telefone kaip programėlė (PWA), be interneto.
 Adresas: https://etc.1040medkuopa.lt
 
-## Režimai
-- **Taikymas** – Escape planai, vaidmenų (A, B, C) pirminės apžiūros sąrašai, laikai (trauma, turniketas, TXA iki), paciento svoris ir dažniausi vaistai su apskaičiuota doze.
-- **Mokymasis** – temos (pagrindai, A, B, C, antrinė apžiūra, vaistai), 48 įgūdžiai (aprašas, TCCC iliustracijos, esmė, žingsniai, dažnos klaidos, TCCC 2026, iki 2 vaizdo įrašų, TCCC įgūdžio kortelė, įsivertinimas), mokymosi puslapiai, paieška.
-- **Įrankiai** (`tools.js`, Taikymas → Greitai; Mokymasis → Įrankiai) – vizuali MIST kortelė (`#/mist`: kūno schema su žymėmis, požymių lentelė, gydymas, skaitymo režimas; keli sužeistieji – skirtukai 1, 2, … ir „+“, „Kopijuoti visus“), 9-Line MEDEVAC (`#/9line`, GPS → MGRS, kaip March gide), GKS skaičiuoklė (`#/gks`, GCS at 40, GKS-P, perkėlimas į MIST), TST rūšiavimas (`#/tst`, NHS Ten Second Triage, skaičiavimas). Duomenys – tik telefone (`localStorage`: `etc-mist`, `etc-9line`, `etc-gks`, `etc-tst`).
-- **Įdiegimas** – instrukcija Android ir iPhone (#/idiegimas) su QR kodu.
+## Sandara (vienas režimas, nuo v50)
+- **Pradžia** – Escape planų plytelės, vaidmenys (A, B, C → pirminės apžiūros sąrašai) ir įrankių plytelės. Paaiškinimai – po ⓘ mygtuku arba suskleistoje dalyje „Paaiškinimas“ / „Šaltiniai“.
+- **Apatinė juosta** – Pradžia, Pacientas, Sąrašai, Vaistai (dozės pagal svorį), Įgūdžiai (48 įgūdžiai: žingsniai, svarbu, klaidos, iliustracijos, video, įsivertinimas), Treniruotė (situacijos, dozių patikra, temos). Paieška ir Nustatymai – antraštėje.
+- **Įrankiai** (`tools.js`) – Nukentėjusiojo kortelė (DD1380; `#/pacientas?t=kortele`: kūno schema su žymėmis, požymiai, gydymas, keli sužeistieji), popierinės kortelės nuskaitymas (`#/skenuoti`), perdavimas QR kodu (`#/qr`, priima ETC, March ir PCC gidai; asmens duomenų kode nėra), 9-Line MEDEVAC (`#/9line`, GPS → MGRS), SITREP, GKS skaičiuoklė (`#/gks`), 10s triažas (`#/tst`), Mascal, nudegimai ir nušalimai, kraujo transfuzija, vaistų žymėjimas. Duomenys – tik telefone (`localStorage`, raktai `etc-…`).
+- **Įdiegimas** – instrukcija Android ir iPhone (#/idiegimas) su QR kodu; Nustatymuose – iliustracijų išsaugojimas naudojimui be interneto.
 - **Pranešimai** – mygtukas viršuje: komentaras + ekrano vaizdas → Google lentelė (žr. `tools/ATSILIEPIMAI.md`).
 
 ## Turinio failai
@@ -15,7 +15,7 @@ Adresas: https://etc.1040medkuopa.lt
 |---|---|
 | `sarasai.js` | Vaidmenys, kontroliniai sąrašai, Escape planai, mokymosi puslapiai, temos (`E.temos`) |
 | `vaistai.js` | Vaistai, grupės (`E.vaistuGrupes`), dozės ir skaičiuoklė; tvarka – nuo dažniausiai naudojamų (nuskausminamieji) iki rečiausių (midazolamas, naloksonas) |
-| `tools.js` | Įrankiai: MIST kortelė, 9-Line MEDEVAC, GKS skaičiuoklė, TST rūšiavimas (9-Line, MIST ir GKS kodas toks pat kaip March gide – skiriasi tik `TCFG`) |
+| `tools.js` | Įrankiai: Nukentėjusiojo kortelė, QR perdavimas, 9-Line MEDEVAC, GKS skaičiuoklė, TST rūšiavimas ir kt. (kodas toks pat kaip March ir PCC giduose – skiriasi tik `TCFG`) |
 | `igudziai.js` | Įgūdžiai: aprašas, esmė, žingsniai, klaidos, TCCC 2026, iliustracijos, video, kortelė, šaltiniai |
 | `img/tccc/` | TCCC (Joint Trauma System, Deployed Medicine) iliustracijos iš tccc.org.ua (WebP, 800 px) |
 | `img/logo-*.png`, `icon-*.png` | LŠS Vilniaus 1040 medicinos šaulių kuopos logotipas ir programėlės ženkliukai |

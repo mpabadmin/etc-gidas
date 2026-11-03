@@ -1,6 +1,7 @@
 'use strict';
 const app = document.getElementById('app');
 const backBtn = document.getElementById('back');
+const IMG_CACHE = 'etc-gidas-img-1'; // sw.js IMG – iliustracijos; atnaujinant neištrinama
 let depth = 0;
 let night = !!LS.get('etc-naktis', false); // naktinis raudonas režimas
 const dec = s => { try { return decodeURIComponent(s); } catch (e) { return s; } };
@@ -9,9 +10,50 @@ const clrCk = (p, q) => { let id = ''; try { id = HCFG().listOf(p, q || {}); } c
   return `<button class="btn" data-act="ck-clr" data-l="${esc(id)}" style="width:100%;margin-top:16px"${n ? '' : ' disabled'}>Išvalyti žymėjimus${n ? ' (' + n + ')' : ''}</button>`; };
 // „Išvalyti žymėjimus“ mygtuko būsena po žymėjimo (be perpiešimo)
 const ckBtn = l => { const cb = app.querySelector('[data-act=ck-clr]'); if (!cb || cb.dataset.l !== l) return; const n = (ckAll()[l] || []).length; cb.disabled = !n; cb.textContent = 'Išvalyti žymėjimus' + (n ? ' (' + n + ')' : ''); };
-// Seni maršrutai: MIST kortelė ir vaistų žymėjimas – paciento ekrane (MIST mokymosi režime lieka atskiras puslapis su paaiškinimais)
-const REDIR = p => p[0] === 'zymejimas' ? '#/pacientas?t=vaistai' : p[0] === 'mist' ? '#/pacientas?t=kortele' : p[0] === 'egzaminas' ? '#/treniruote' : '';
+// Seni maršrutai: kortelė ir vaistų žymėjimas – paciento ekrane; egzaminas ir vertinimo lapas (ETC jo neturi) – Treniruotė
+const REDIR = p => p[0] === 'zymejimas' ? '#/pacientas?t=vaistai' : p[0] === 'mist' ? '#/pacientas?t=kortele' : p[0] === 'egzaminas' || (p[0] === 'vertinimas' && !(typeof VL !== 'undefined' && VL.has())) ? '#/treniruote' : '';
 const PT_BAR = ['zymejimas', 'nudegimai', 'pilnas-kraujas']; // įrankiai, virš kurių rodoma pacientų juosta
+
+// Visos vietinės iliustracijos (įgūdžiai + mokymosi puslapiai) – išsaugoti naudojimui be interneto (kaip March gide)
+function allImgs() {
+  const set = new Set();
+  (E.igudziai || []).forEach(s => (s.vaizdai || []).forEach(v => v.src && !/^https?:/.test(v.src) && set.add(v.src)));
+  Object.keys(E.puslapiai || {}).forEach(k => { const m = String(E.puslapiai[k].html || '').match(/img\/(?:etc5|tccc)\/[^"'\s)]+\.webp/g); (m || []).forEach(x => set.add(x)); });
+  return Array.from(set);
+}
+// Tikrai IMG talpykloje esančių vaizdų skaičius (po išvalymo – etc-img atnaujinamas)
+async function imgStatus() {
+  if (!('caches' in window)) return;
+  try {
+    const c = await caches.open(IMG_CACHE), list = allImgs();
+    let n = 0;
+    for (const u of list) if (await c.match(new Request(u), { ignoreSearch: true })) n++;
+    const have = n >= list.length ? list.length : 0;
+    if (have !== LS.get('etc-img', 0)) { LS.set('etc-img', have); if (route().p[0] === 'nustatymai') { const y = scrollY; render(); scrollTo(0, y); } }
+  } catch (e) { /* tyliai */ }
+}
+async function saveImgs(el) {
+  if (!('caches' in window)) { toast('Ši naršyklė to nepalaiko'); return; }
+  const list = allImgs(), sm = el.querySelector('small');
+  el.disabled = true;
+  let n = 0, bad = 0;
+  try {
+    const c = await caches.open(IMG_CACHE);
+    for (const u of list) {
+      try {
+        const req = new Request(u);
+        if (!(await c.match(req, { ignoreSearch: true }))) { const r = (await caches.match(req, { ignoreSearch: true })) || await fetch(req); if (r && r.ok) await c.put(req, r); else bad++; } // jau programėlės talpykloje – nukopijuojama be interneto
+      } catch (e) { bad++; }
+      n++; if (sm) sm.textContent = 'Išsaugota ' + n + ' / ' + list.length;
+    }
+    // pašalinti nebenaudojamus (senesnių versijų) vaizdus
+    const want = new Set(list.map(u => new URL(u, location.href).href));
+    for (const k of await c.keys()) if (k.url.indexOf(location.origin + '/') === 0 && /\/img\/(etc5|tccc)\//.test(k.url) && !want.has(k.url.split('?')[0])) await c.delete(k);
+  } catch (e) { bad = list.length; }
+  LS.set('etc-img', bad ? 0 : list.length);
+  toast(bad ? 'Nepavyko išsaugoti ' + bad + ' vaizdų – patikrinkite ryšį ir bandykite dar kartą' : 'Iliustracijos išsaugotos');
+  if (route().p[0] === 'nustatymai') { const y = scrollY; render(); scrollTo(0, y); }
+}
 
 function route() {
   const raw = (location.hash || '#/').slice(1), qi = raw.indexOf('?'), q = {};
@@ -70,9 +112,11 @@ function render() {
   try { app.innerHTML = (PT_BAR.indexOf(p[0]) >= 0 ? PT.bar() : '') + view(p, q) + pb; }
   catch (err) { console.error(err); app.innerHTML = '<h1>Klaida</h1><p class="muted">Nepavyko atidaryti puslapio. Patikrinkite turinio failus.</p>'; }
   try { HUB.nav(); } catch (e) { console.error(e); }
+  { const h1 = app.querySelector('h1'), t = h1 ? h1.textContent.replace(/\s+/g, ' ').trim() : ''; document.title = p.length && t ? t + ' · ETC gidas' : 'ETC gidas'; } // naršyklės skirtukas, istorija
   // MIST sužeistųjų skirtukai: pasirinktas – matomas
   app.querySelectorAll('.ptabs').forEach(sc => { const b = sc.querySelector('button.on'), add = sc.querySelector('.add'); if (b && sc.scrollWidth > sc.clientWidth) { const av = sc.clientWidth - (add ? add.offsetWidth + 12 : 0); sc.scrollLeft = Math.max(0, b.offsetLeft - (av - b.offsetWidth) / 2); } });
   try { QR.after(p[0]); DICT.enhance(app); SK.after(p[0]); } catch (e) { console.error(e); }
+  if (p[0] === 'nustatymai') imgStatus();
   if (p[0] === 'paieska') { const i = document.getElementById('qs'); if (i) { i.focus(); try { i.setSelectionRange(i.value.length, i.value.length); } catch (e) {} } }
 }
 
@@ -165,10 +209,11 @@ app.addEventListener('click', e => {
       if (!FB.configured()) { alert('Pranešimų priėmimas dar neįjungtas. Pranešimai bus išsiųsti automatiškai, kai jis veiks.'); break; }
       if (!navigator.onLine) { alert('Nėra interneto ryšio.'); break; }
       el.disabled = true; FB.flush().then(n => { alert(n ? 'Išsiųsta: ' + n + '.' : 'Išsiųsti nepavyko – bandysime vėliau.'); render(); }); break;
+    case 'img-dl': saveImgs(el); break;
     case 'install': if (installEv) { installEv.prompt(); installEv.userChoice.finally(() => { installEv = null; render(); }); } break;
     case 'upd':
       if (!navigator.onLine) { alert('Atnaujinti galima tik su interneto ryšiu.'); break; }
-      caches.keys().then(ks => Promise.all(ks.map(k => caches.delete(k)))).then(() => location.reload());
+      caches.keys().then(ks => Promise.all(ks.filter(k => k !== IMG_CACHE).map(k => caches.delete(k)))).then(() => location.reload()); // iliustracijos lieka
       break;
   }
 });
