@@ -11,7 +11,7 @@ const E = window.ETC;
 const KOMP = 'Pagal kompetenciją', MED = 'Medicinos personalui', GYD = 'Gydytojui', INT = 'Intubuojantiems gydytojams';
 const link = (href, t, s) => `<a class="row" href="${href}"><div>${t}${s ? '<small>' + s + '</small>' : ''}</div><span class="ar">›</span></a>`;
 
-E.versija = '2026-11-03 v48 (sužeistojo kortelė vadinama „Nukentėjusiojo kortelė“ (DD1380); pradžios įrankiuose – atskiros plytelės „Nukentėjusiojo kortelė“ ir „Nuskaityti kortelę“ (popierinė DD1380))';
+E.versija = '2026-11-03 v50 (vienas režimas: Taikymas / Mokymasis panaikinta; antraštėje paieška ir nustatymų mygtukas; pradžia – tik piktogramos (Escape planas, vaidmenys, 12 įrankių); apačioje Treniruotė (situacijos, dozių patikra); paaiškinimai – mygtukas ⓘ; egzaminuotojo režimas panaikintas)';
 // Pranešimų priėmimo adresas: Google Apps Script žiniatinklio programos /exec URL (žr. tools/atsiliepimai.gs)
 E.atsiliepimai = { url: 'https://script.google.com/macros/s/AKfycbyUpzDmAClJ40FMltkHi21Ozc4PpItRr3u6yy4rU0DKNGe7JkRBnOr0y42wLwpJcBau/exec' };
 

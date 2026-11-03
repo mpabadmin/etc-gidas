@@ -2,7 +2,7 @@
 // ── Trumpa instrukcija „Kaip naudotis“: rodoma pirmą kartą atidarius pradžios ekraną, vėliau – mygtukas „?“ (pradžioje) ir Nustatymuose ──
 // Bendras visoms 1040 medkuopos programėlėms; turinys – STEPS žemiau. Mygtukai su data-g="open" atidaro instrukciją.
 const GUIDE = (() => {
-  const KEY = 'etc-guide', VER = 1;
+  const KEY = 'etc-guide', VER = 2;
   const IC = {
     search: 'M11 4a7 7 0 1 1 0 14 7 7 0 0 1 0-14Z|M20 20l-4-4', moon: 'M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z',
     chat: 'M20.5 11.5a8.5 8.5 0 0 1-12.3 7.6L3.5 20.5l1.4-4.6a8.5 8.5 0 1 1 15.6-4.4z', refresh: 'M20 11a8 8 0 0 0-14.3-4.9L4 8|M4 3v5h5|M4 13a8 8 0 0 0 14.3 4.9L20 16|M20 21v-5h-5',
@@ -13,11 +13,11 @@ const GUIDE = (() => {
   const txt = s => s.replace(/\{(\w+)\}/g, (m, k) => IC[k] ? svg(k, 'gdii') : m);
   const STEPS = [
   { ic: 'M12 3l7 4v5c0 4.5-3 8-7 9-4-1-7-4.5-7-9V7z|M12 8v6M9 11h6', t: 'ETC gidas', p: 'Atminties priemonė traumos komandai <b>Role 1</b> punkte pagal European Trauma Course: kas ką daro komandoje, ką daryti situacijai blogėjant, vaistų dozės. Veikia be interneto.' },
-  { ic: 'M4 6h16M4 12h16M4 18h10', t: 'Taikymas ir Mokymasis', p: 'Viršuje perjunkite režimą.', x: () => '<ul><li><b>Taikymas</b> – trumpi sąrašai darbui su sužeistuoju.</li><li><b>Mokymasis</b> – temos, įgūdžiai su video, scenarijai, dozių kortelės ir egzaminas.</li></ul>' },
+  { ic: 'M4 8h12v12H4z|M8 4h12v12|M7 13h6|M7 16h4', t: 'Apatinė juosta', p: '<b>Pacientas</b> – sužeistųjų kortelės, <b>Sąrašai</b> – visi kontroliniai sąrašai, <b>Vaistai</b> – dozės ir skaičiuoklė, <b>Įgūdžiai</b> su video, <b>Treniruotė</b> – situacijos ir dozių patikra. Mygtukas <b>ⓘ</b> prie punkto – paaiškinimas.' },
   { ic: 'M12 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8Z|M5 21v-2a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v2', t: 'Mano vaidmuo', p: 'Pradžioje pasirinkite <b>A</b>, <b>B</b> arba <b>C</b> – atsidarys jūsų pirminės apžiūros sąrašas. A – kvėpavimo takai ir vadovavimas, B – kvėpavimas, C – kraujotaka. Atliktą punktą pažymėkite paspausdami.' },
   { ic: 'M12 3 2 21h20z|M12 10v5M12 18h.01', t: 'Escape planai', p: 'Raudoni mygtukai pradžioje – <b>masyvus kraujavimas</b>, <b>kvėpavimo takų obstrukcija</b> ir <b>trauminis širdies sustojimas</b>. Atidarykite, kai situacija blogėja: žingsniai ir kas už ką atsakingas.' },
-  { ic: 'M5 4h14v16H5z|M9 8h6M9 12h6M9 16h4', t: 'Sužeistasis ir įrankiai', p: 'Apačioje juosta <b>„#1 Sužeistasis“</b> – laikai, rodikliai, suleisti vaistai ir Nukentėjusiojo kortelė (DD1380). Popierinę kortelę galima nuskaityti telefono kamera. Duomenys lieka tik šiame telefone. Įrankiai pradžioje: 10 s triažas, MASCAL, 9-Line, SITREP, GKS, nudegimai, transfuzija.' },
-  { ic: 'help', t: 'Greiti mygtukai', p: '{search} – paieška (vaistas, įgūdis, veiksmas), {moon} – raudonas naktinis režimas, {chat} – pranešti apie klaidą. Nustatymuose – pirštinių režimas su didesniais mygtukais. Šią instrukciją vėl atidarysite mygtuku <b>„Kaip naudotis“</b> pradžioje.' }
+  { ic: 'M5 4h14v16H5z|M9 8h6M9 12h6M9 16h4', t: 'Sužeistasis ir įrankiai', p: 'Apačioje juosta <b>„#1 Sužeistasis“</b> – laikai, rodikliai, suleisti vaistai ir Nukentėjusiojo kortelė (DD1380). Popierinę kortelę galima nuskaityti telefono kamera. Duomenys lieka tik šiame telefone. Įrankiai pradžioje: 10 s triažas, MASCAL, kortelė, 9-Line, SITREP, GKS, nudegimai, transfuzija, vaistų žymėjimas.' },
+  { ic: 'help', t: 'Greiti mygtukai', p: 'Viršuje – <b>paieška</b> (vaistas, įgūdis, veiksmas), {moon} – raudonas naktinis režimas, {chat} – pranešti apie klaidą, <svg class="gdii" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg> – nustatymai. Nustatymuose – pirštinių režimas su didesniais mygtukais. Šią instrukciją vėl atidarysite mygtuku <b>„Kaip naudotis“</b> pradžioje.' }
 ];
   let i = 0, el = null, last = null;
   const seen = () => { try { return +JSON.parse(localStorage.getItem(KEY) || '0') >= VER; } catch (e) { return false; } };

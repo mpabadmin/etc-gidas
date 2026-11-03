@@ -10,7 +10,7 @@ const clrCk = (p, q) => { let id = ''; try { id = HCFG().listOf(p, q || {}); } c
 // „Išvalyti žymėjimus“ mygtuko būsena po žymėjimo (be perpiešimo)
 const ckBtn = l => { const cb = app.querySelector('[data-act=ck-clr]'); if (!cb || cb.dataset.l !== l) return; const n = (ckAll()[l] || []).length; cb.disabled = !n; cb.textContent = 'Išvalyti žymėjimus' + (n ? ' (' + n + ')' : ''); };
 // Seni maršrutai: MIST kortelė ir vaistų žymėjimas – paciento ekrane (MIST mokymosi režime lieka atskiras puslapis su paaiškinimais)
-const REDIR = p => p[0] === 'zymejimas' ? '#/pacientas?t=vaistai' : p[0] === 'mist' && mode !== 'learn' ? '#/pacientas?t=kortele' : '';
+const REDIR = p => p[0] === 'zymejimas' ? '#/pacientas?t=vaistai' : p[0] === 'mist' ? '#/pacientas?t=kortele' : p[0] === 'egzaminas' ? '#/treniruote' : '';
 const PT_BAR = ['zymejimas', 'nudegimai', 'pilnas-kraujas']; // įrankiai, virš kurių rodoma pacientų juosta
 
 function route() {
@@ -48,7 +48,7 @@ function view(p, q) {
     case 'scenarijai': return SC.view(p[1], q);
     case 'pacientas': return HUB.view(q);
     case 'qr': case 'qr-priimti': return QR.view(p[0]);
-    case 'egzaminas': return EX.view(p[1]);
+    case 'treniruote': return V.train(q);
     case 'korteles': return FC.view();
     case 'vertinimas': return VL.view(p[1]);
     case 'skenuoti': return SK.view();
@@ -59,11 +59,8 @@ function view(p, q) {
 function render() {
   const { p, q } = route();
   document.body.className = night ? 'field night' : mode; // naktinis režimas – visada tamsi paletė + raudonas filtras
-  document.getElementById('mF').classList.toggle('on', mode === 'field');
-  document.getElementById('mL').classList.toggle('on', mode === 'learn');
   backBtn.style.display = p.length ? '' : 'none'; // pradžios ekrane vietoje „Atgal“ – atnaujinimo mygtukas dešinėje
-  const ub = document.getElementById('upd'); if (ub) ub.style.display = p.length ? 'none' : '';
-  const sec = { vaistai: 'vaistai', vaistas: 'vaistai', igudziai: 'igudziai', igudis: 'igudziai', temos: 'home', tema: 'home', p: 'home', sarasai: 'sarasai', s: 'sarasai', v: 'sarasai', '9line': 'home', mist: 'pacientas', gks: 'home', tst: 'home', sitrep: 'home', zymejimas: 'pacientas', nudegimai: 'home', mascal: 'home', 'pilnas-kraujas': 'home', scenarijai: 'igudziai', pacientas: 'pacientas', qr: 'pacientas', 'qr-priimti': 'pacientas', egzaminas: 'sarasai', korteles: 'vaistai', skenuoti: 'home', vertinimas: 'sarasai' }[p[0]] || (p.length ? '' : 'home');
+  const sec = { vaistai: 'vaistai', vaistas: 'vaistai', igudziai: 'igudziai', igudis: 'igudziai', temos: 'treniruote', tema: 'treniruote', p: 'home', sarasai: 'sarasai', s: 'sarasai', v: 'sarasai', '9line': 'home', mist: 'pacientas', gks: 'home', tst: 'home', sitrep: 'home', zymejimas: 'pacientas', nudegimai: 'home', mascal: 'home', 'pilnas-kraujas': 'home', scenarijai: 'treniruote', treniruote: 'treniruote', pacientas: 'pacientas', qr: 'pacientas', 'qr-priimti': 'pacientas', korteles: 'treniruote', skenuoti: 'home', vertinimas: 'sarasai' }[p[0]] || (p.length ? '' : 'home');
   document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('on', a.dataset.s === sec));
   try { PT.sync(); } catch (e) { console.error(e); }
   if (typeof DICT !== 'undefined') DICT.stop();
@@ -93,12 +90,10 @@ function onNav(first) {
   HUB.after();
 }
 
-function setMode(m) { if (m === mode) return; mode = m; LS.set('etc-rezimas', m); tmEdit = null; render(); }
 
 addEventListener('hashchange', () => onNav(false));
 backBtn.onclick = () => { if (depth > 0) history.back(); else location.replace('#/'); };
-document.getElementById('mF').onclick = () => setMode('field');
-document.getElementById('mL').onclick = () => setMode('learn');
+document.getElementById('gear').onclick = () => { if (route().p[0] !== 'nustatymai') location.hash = '#/nustatymai'; };
 document.getElementById('fbb').onclick = () => FB.open();
 document.getElementById('srch').onclick = () => { if (route().p[0] !== 'paieska') location.hash = '#/paieska'; };
 
@@ -106,6 +101,7 @@ app.addEventListener('click', e => {
   const el = e.target.closest('[data-act]');
   if (!el) return;
   const d = el.dataset;
+  if (d.act === 'ck' && e.target.closest('.ckx')) return; // atverstas paaiškinimas – nežymėti
   // Įrankiai (tools.js): 9-Line, MIST kortelė, GKS, TST
   if (/^nl-/.test(d.act)) { NL.act(el); return; }
   if (/^mc-/.test(d.act)) { MC.act(el, e); return; }
@@ -129,6 +125,7 @@ app.addEventListener('click', e => {
   if (/^gl-/.test(d.act)) { GL.act(el); return; }
   switch (d.act) {
     case 'ck': ckToggle(d.l, +d.i); el.classList.toggle('on'); updCount(el.closest('.cl')); ckBtn(d.l); if (navigator.vibrate) navigator.vibrate(15); break;
+    case 'ckinfo': { const x = document.getElementById(el.getAttribute('aria-controls')); if (!x) break; const o = x.hidden; x.hidden = !o; el.setAttribute('aria-expanded', o); break; }
     case 'go': location.hash = d.r; break;
     case 'toc': { const t = document.getElementById(d.t); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); break; }
     case 'mp4': {

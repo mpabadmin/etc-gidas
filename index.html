@@ -877,19 +877,57 @@ body.gdon{overflow:hidden}
 .ghelp svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
 .tool.wr{min-width:0}.tool.wr b{font-size:15px;line-height:1.15;hyphens:manual;min-width:0}
+
+/* v50: vienas režimas – paieška antraštėje, pradžia piktogramomis, Treniruotė, ⓘ paaiškinimai */
+#upd{display:none}#upd.new{display:flex}
+.hsrch{flex:1;min-width:0;height:42px;display:flex;align-items:center;gap:8px;padding:0 12px;border:0;border-radius:10px;background:var(--card);color:var(--tx2);font:inherit;font-size:15px;cursor:pointer;text-align:left}
+.hsrch svg{flex:none;width:20px;height:20px}.hsrch span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#nav a{max-width:120px;font-size:10.5px;letter-spacing:-.1px}
+.esct{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.esct a{display:flex;flex-direction:column;gap:6px;min-height:112px;padding:12px;border-radius:14px;background:var(--redbg);color:var(--red);text-decoration:none;box-sizing:border-box;min-width:0}
+.esct svg{width:32px;height:32px}
+.esct b{margin-top:auto;font-size:14px;line-height:1.2}
+.tools.t3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.tools.t3 .tool{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px;min-height:96px;padding:10px 4px}
+.tools.t3 .tool .ti{grid-row:auto;width:44px;height:44px;font-size:18px}
+.tools.t3 .tool b{font-size:13px;line-height:1.15;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tools.t3 .tool small{font-size:11px;line-height:1.2;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tools.t3 .tool.wr b{white-space:normal;font-size:12px}
+.cki{flex:none;display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;margin-left:4px;vertical-align:middle;border-radius:50%;border:0;padding:0;background:var(--ambbg);color:var(--amb);font:italic 800 14px Georgia,serif;cursor:pointer}
+.cki[aria-expanded=true]{background:#FAC775;color:#2A1A00}
+.ckx{margin-top:8px;padding:8px 10px;border-radius:10px;background:var(--bg);font-size:14px;line-height:1.45;color:var(--tx2);font-weight:400}
+.ckx[hidden]{display:none}
+.phib{display:inline-flex;align-items:center;gap:8px;margin:0 0 8px;padding:4px 12px 4px 4px;border:1px solid var(--line);border-radius:999px;background:none;color:var(--tx2);font:inherit;font-size:14px;cursor:pointer}.phib .cki{margin:0}.phib[aria-expanded=true] .cki{background:#FAC775;color:#2A1A00}
+.phx{margin:0 0 10px}
+.trt{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 10px}
+.trt a,.trt button{margin:0;position:relative;display:flex;flex-direction:column;justify-content:space-between;min-height:124px;padding:14px;border-radius:16px;border:0;text-align:left;font:inherit;text-decoration:none;cursor:pointer;box-sizing:border-box}
+.trt svg{width:34px;height:34px}
+.trt b{font-size:17px;line-height:1.2}.trt small{font-size:13px;opacity:.85}
+.trt .tra{background:var(--ambbg);color:var(--amb)}
+.trt .trd{background:var(--acc);color:var(--bg)}
+.trt .bdg{position:absolute;top:12px;right:12px;min-width:26px;height:26px;padding:0 6px;box-sizing:border-box;border-radius:13px;background:var(--bg);color:var(--acc);font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.trf{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 10px}
+.trf a{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--tx2);text-decoration:none;font-size:14px}
+.trf a.on{border:2px solid var(--acc);background:var(--accbg);color:var(--tx);font-weight:700}
+.trf a small{opacity:.8}
+.scr{display:flex;align-items:center;gap:12px;padding:13px 14px;margin:0 0 8px;border-radius:14px;background:var(--card);color:var(--tx);text-decoration:none}
+.scr b{flex:1;font-size:15px;font-weight:600;min-width:0}
+.scr small{color:var(--tx2);font-size:13px}
+.scr .tag{flex:none}
 </style>
 </head>
 <body class="field">
 <header>
   <button class="ib" id="back" aria-label="Atgal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
-  <div class="seg"><button id="mF">Taikymas</button><button id="mL">Mokymasis</button></div>
+  <button class="hsrch" id="srch" aria-label="Paieška"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span>Paieška</span></button>
   <button class="ib" id="upd" aria-label="Tikrinti, ar yra nauja versija" title="Tikrinti, ar yra nauja versija"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 3v5h5"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 21v-5h-5"/></svg></button>
   <button class="ib" id="night" aria-label="Naktinis raudonas režimas" aria-pressed="false" title="Naktinis raudonas režimas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></button>
   <button class="ib" id="fbb" aria-label="Pranešti apie klaidą ar pasiūlyti" title="Pranešti apie klaidą"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.3 7.6L3.5 20.5l1.4-4.6a8.5 8.5 0 1 1 15.6-4.4z"/><path d="M12 7.5v4.5M12 15.6v.01"/></svg></button>
-  <button class="ib" id="srch" aria-label="Paieška"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
+  <button class="ib" id="gear" aria-label="Nustatymai" title="Nustatymai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
 </header>
 <main id="app"></main>
-<nav id="nav"><a href="#/" data-s="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>Pradžia</a><a href="#/pacientas" data-s="pacientas" aria-label="Pacientas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Pacientas<span class="nbdg" aria-hidden="true"></span></a><a href="#/sarasai" data-s="sarasai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg>Sąrašai</a><a href="#/vaistai" data-s="vaistai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="9" width="18" height="6" rx="3" transform="rotate(-45 12 12)"/><path d="M9.5 9.5l5 5"/></svg>Vaistai</a><a href="#/igudziai" data-s="igudziai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg>Įgūdžiai</a></nav>
+<nav id="nav"><a href="#/" data-s="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>Pradžia</a><a href="#/pacientas" data-s="pacientas" aria-label="Pacientas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Pacientas<span class="nbdg" aria-hidden="true"></span></a><a href="#/sarasai" data-s="sarasai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg>Sąrašai</a><a href="#/vaistai" data-s="vaistai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="9" width="18" height="6" rx="3" transform="rotate(-45 12 12)"/><path d="M9.5 9.5l5 5"/></svg>Vaistai</a><a href="#/igudziai" data-s="igudziai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg>Įgūdžiai</a>
+<a href="#/treniruote" data-s="treniruote"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h12v12H4zM8 4h12v12M7 13h6M7 16h4"/></svg>Treniruotė</a></nav>
 <script src="sarasai.js"></script>
 <script src="vaistai.js"></script>
 <script src="igudziai.js"></script>

@@ -4,7 +4,7 @@ const LS = {
   get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
 };
-let mode = LS.get('etc-rezimas', 'field');
+let mode = 'field'; // v50: vienas režimas (paaiškinimai – mygtukas ⓘ)
 let tmEdit = null, installEv = null, IDX = null;
 
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -80,6 +80,8 @@ function ckToggle(id, i) {
   all[id] = a; LS.set('etc-ck', all);
 }
 
+const infoBtn = key => `<button class="cki" data-act="ckinfo" aria-expanded="false" aria-controls="ix-${esc(key)}" aria-label="Paaiškinimas">i</button>`;
+const infoTxt = (html, key) => `<div class="ckx" id="ix-${esc(key)}" hidden>${html}</div>`;
 function renderList(id) {
   const L = (E.sarasai || {})[id];
   if (!L) return '<p class="muted">Sąrašas nerastas.</p>';
@@ -91,8 +93,8 @@ function renderList(id) {
     tot++;
     const on = done.indexOf(i) >= 0; if (on) n++;
     const sub = (it.s || []).length ? '<ul>' + it.s.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : '';
-    const info = mode === 'learn' && it.i ? '<div class="muted">' + it.i + '</div>' : '';
-    h += `<div class="ck${on ? ' on' : ''}${it.k ? ' key' : ''}" data-act="ck" data-l="${esc(id)}" data-i="${i}"><span class="bx">✓</span><div class="t">${esc(it.t)} ${tag(it.g)}${sub}${info}</div></div>`;
+    const ik = id + '-' + i, infoB = it.i ? infoBtn(ik) : '', info = it.i ? infoTxt(it.i, ik) : '';
+    h += `<div class="ck${on ? ' on' : ''}${it.k ? ' key' : ''}" data-act="ck" data-l="${esc(id)}" data-i="${i}"><span class="bx">✓</span><div class="t">${esc(it.t)} ${tag(it.g)}${infoB}${sub}${info}</div></div>`;
   });
   const pct = tot ? Math.round(n / tot * 100) : 0;
   return `<div class="cl"><div class="muted cnt">${n} / ${tot}</div><div class="prog"><i style="width:${pct}%"></i></div>${h}</div>`;
@@ -161,7 +163,6 @@ function buildIdx() {
   add('Įrankiai', 'Vaistų žymėjimas', 'Suleisti vaistai: dozė, kelias, laikas; perkėlimas į MIST', 'vaistų žymėjimas suleista suleisti vaistai dozė laikas įrašas žurnalas ketaminas fentanilis txa', '#/zymejimas');
   add('Įrankiai', 'Nuskaityti popierinę kortelę', 'DD 1380 nuotrauka → MIST: langeliai, žymės, iškarpos', 'skenuoti nuskaityti nuotrauka fotografuoti popierinė kortelė dd1380 tccc card ocr atpažinimas', '#/skenuoti');
   add('Įrankiai', 'Dozių kortelės', 'Kasdien 5 kortelės: vaistas ir kelias – prisiminkite dozę', 'dozių kortelės korteles flashcards kartojimas dozės atmintis testas', '#/korteles');
-  add('Įrankiai', 'Egzaminuotojo režimas', 'Kontrolinio sąrašo vertinimas su laiku ir kritiniais punktais', 'egzaminas egzaminuotojas vertinimas instruktorius laikmatis kritiniai punktai', '#/egzaminas');
   add('Įrankiai', '10s triažas', 'Ten Second Triage (TST) – rūšiavimas per 10 sekundžių', 'tst 10s 10 s 10 sekundžių ten second triage triažas rūšiavimas masinė nelaimė p1 p2 p3', '#/tst');
   add('Įrankiai', 'SITREP – padėties pranešimas', 'Padėties pranešimas vadui: 10 eilučių, DTG, MGRS, nuostoliai, logistika', 'sitrep padėties pranešimas situacijos ataskaita vadas dtg mgrs nuostoliai wia kia logistika ryšys prašymai', '#/sitrep');
   return I;

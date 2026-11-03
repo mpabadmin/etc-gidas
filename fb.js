@@ -37,7 +37,7 @@ const FB = (() => {
       pazymeta: sel,
       versija: E.versija || '',
       irenginys: device(),
-      rezimas: (mode === 'field' ? 'Taikymas' : 'Mokymasis') + (w ? ' · svoris ' + w + ' kg' : '')
+      rezimas: w ? 'svoris ' + w + ' kg' : ''
     };
   }
 
