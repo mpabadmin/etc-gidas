@@ -318,7 +318,7 @@ const V = {
   page(id) {
     const p = (E.puslapiai || {})[id];
     if (!p) return notFound();
-    return `<h1>${esc(p.title)}</h1>` + (p.sub ? '<p class="muted">' + esc(p.sub) + '</p>' : '') + tocHtml(p.html || '') + videos(p.video) +
+    return `<h1>${esc(p.title)}</h1>` + (p.sub ? '<p class="muted">' + esc(p.sub) + '</p>' : '') + (id === 'kraujas' && typeof WB_NOTE !== 'undefined' ? WB_NOTE : '') + tocHtml(p.html || '') + videos(p.video) +
       (p.saltinis ? '<p class="muted" style="margin-top:12px">Šaltinis: ' + esc(p.saltinis) + '</p>' : '');
   },
 

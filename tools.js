@@ -2336,6 +2336,8 @@ const NB = (() => {
 })();
 
 // ───────── Šviežias pilnas kraujas (KR) – eiga žingsniais; duomenys – sarasai.js E.wbb (tik ETC gide) ─────────
+// Transfuzija – ne mokymosi medžiaga: būtinas pilno kraujo mokymo kursas
+const WB_NOTE = '<div class="warn wbn"><b>Tai nėra mokymosi medžiaga.</b> Norint tinkamai išmokti pilno kraujo transfuziją, reikia baigti pilno kraujo mokymo kursą.<a class="wbl" href="https://thor.podia.com/" target="_blank" rel="noopener">Pilno kraujo mokymo kursas ↗<small>thor.podia.com</small></a></div>';
 const KR = (() => {
   const KEY = TCFG.pre + 'wbb';
   const D = () => E.wbb || { steps: [] };
@@ -2360,7 +2362,7 @@ const KR = (() => {
   function view() {
     const s = get(), S = D().steps, st = S[s.s], learn = mode === 'learn';
     if (!st) return '<h1>Kraujo transfuzija</h1><p class="muted">Duomenų nėra.</p>';
-    let h = '<h1>Kraujo transfuzija</h1><p class="muted mt0">Šviežias pilnas kraujas – vaikščiojantis kraujo bankas</p>';
+    let h = '<h1>Kraujo transfuzija</h1><p class="muted mt0">Šviežias pilnas kraujas – vaikščiojantis kraujo bankas</p>' + WB_NOTE;
     h += '<p class="muted">„Vaikščiojantis kraujo bankas“ – eiga žingsniais. Sprendžia ir vadovauja gydytojas; kuopos protokolas – viršesnis.</p>';
     h += '<div class="krst" role="tablist">' + S.map((x, i) => { const c = (s.ck[x.id] || []).length, done = c === x.items.length; return `<button role="tab" aria-selected="${i === s.s}" class="${i === s.s ? 'on' : ''}${done ? ' done' : ''}" data-act="kr-s" data-k="${i}"><b>${i + 1}</b><small>${esc(x.pav)}</small></button>`; }).join('') + '</div>';
     const ck = s.ck[st.id] || [];

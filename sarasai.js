@@ -11,7 +11,7 @@ const E = window.ETC;
 const KOMP = 'Pagal kompetenciją', MED = 'Medicinos personalui', GYD = 'Gydytojui', INT = 'Intubuojantiems gydytojams';
 const link = (href, t, s) => `<a class="row" href="${href}"><div>${t}${s ? '<small>' + s + '</small>' : ''}</div><span class="ar">›</span></a>`;
 
-E.versija = '2026-11-03 v50 (vienas režimas: Taikymas / Mokymasis panaikinta; antraštėje paieška ir nustatymų mygtukas; pradžia – tik piktogramos (Escape planas, vaidmenys, 12 įrankių); apačioje Treniruotė (situacijos, dozių patikra); paaiškinimai – mygtukas ⓘ; egzaminuotojo režimas panaikintas)';
+E.versija = '2026-11-03 v51 (prie kraujo transfuzijos ir kraujo suderinamumo – pastaba, kad tai ne mokymosi medžiaga, ir nuoroda į pilno kraujo mokymo kursą thor.podia.com)';
 // Pranešimų priėmimo adresas: Google Apps Script žiniatinklio programos /exec URL (žr. tools/atsiliepimai.gs)
 E.atsiliepimai = { url: 'https://script.google.com/macros/s/AKfycbyUpzDmAClJ40FMltkHi21Ozc4PpItRr3u6yy4rU0DKNGe7JkRBnOr0y42wLwpJcBau/exec' };
 
