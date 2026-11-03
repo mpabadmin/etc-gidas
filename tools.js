@@ -8,9 +8,9 @@ const TCFG = {
   pre: 'etc-',          // localStorage raktų prefiksas
   laikai: 'etc-laikai', // pradžios ekrano laikmačiai { trauma, turn }
   // nuorodos puslapių apačioje: [adresas, pavadinimas, paantraštė]
-  nl: () => [['#/mist', 'MIST kortelė', MC.status()], ['#/igudis/46', 'Pasiruošimas pervežimui ir perdavimas', 'Įgūdis #46']],
+  nl: () => [['#/mist', 'Nukentėjusiojo kortelė (DD1380)', MC.status()], ['#/igudis/46', 'Pasiruošimas pervežimui ir perdavimas', 'Įgūdis #46']],
   mc: () => [['#/skenuoti', 'Nuskaityti popierinę kortelę', 'DD 1380 nuotrauka → MIST, be interneto'], ['#/pacientas', 'Pacientas', 'Apžvalga, vaistai, eiga, perdavimas'], ['#/qr-priimti', 'Priimti pacientą QR kodu', 'Nuskaityti kito telefono kodą'], ['#/gks', 'GKS skaičiuoklė', GK.status()], ['#/9line', '9-Line MEDEVAC', NL.status()], ['#/s/atmist', 'ATMISTER perdavimas', 'Kontrolinis sąrašas'], ['#/igudis/46', 'Pasiruošimas pervežimui ir perdavimas', 'Įgūdis #46']],
-  gk: () => [['#/mist', 'MIST kortelė', MC.status()], ['#/igudis/12', 'Vyzdžiai, AVPU, galūnių simetrija ir GKS', 'Įgūdis #12']],
+  gk: () => [['#/mist', 'Nukentėjusiojo kortelė (DD1380)', MC.status()], ['#/igudis/12', 'Vyzdžiai, AVPU, galūnių simetrija ir GKS', 'Įgūdis #12']],
   pt: ['laikai', 'ck', 'vz', 'nb', 'wbb', 'svoris'], // paciento failas: šie raktai priklauso dabartiniam pacientui (perjungiami kartu su MIST kortele); svoris – kiekvienam pacientui savas
   migrate: null, // ankstesnių formatų perkėlimas (ETC – nereikia; vienos kortelės formatą perkelia MC)
   // paciento ekranas, juosta ir dažniausi sąrašai (pacientas.js – bendras kodas)
@@ -700,7 +700,7 @@ const MC = (() => {
     if (learn && !emb) h += '<p class="muted">M – mechanizmas, I – sužalojimai, S – būklė, T – pagalba, E – evakuacija. Retai pildomi laukai – „+“. Per radiją – tik ID / šaukinys.</p>';
     if (!emb) h += tabs(st);
     h += `<article class="mc mq" aria-label="MIST kortelė – sužeistasis ${n}">`;
-    h += `<div class="mch"><b>MIST</b><span>Nukentėjusiojo kortelė · ${esc(s.dt || today())}${tot > 1 ? ' · ' + n + ' / ' + tot : ''}</span></div>`;
+    h += `<div class="mch"><b>DD1380</b><span>Nukentėjusiojo kortelė · ${esc(s.dt || today())}${tot > 1 ? ' · ' + n + ' / ' + tot : ''}</span></div>`;
     // A – asmuo
     h += '<div class="mqa">' +
       `<div class="mqg2"><label class="mqf">Pavardė, vardas<input class="inp" data-mc="name" value="${esc(s.name)}" autocomplete="off"></label><label class="mqf">ID / šaukinys<input class="inp mqid" data-mc="id" value="${esc(s.id)}" autocomplete="off" placeholder="pvz. Vilkas 2"></label></div>` +
@@ -2034,7 +2034,7 @@ const VZ = (() => {
     else h += '<div class="vzl">' + s.e.slice().reverse().map(e => `<button class="vze${e.x ? ' x' : ''}" data-act="vz-ed" data-k="${esc(e.id)}"><span class="vzet">${hm(e.t)}</span><span class="vzen"><b>${esc(name(e.v))}</b> ${esc([e.a, e.u].filter(Boolean).join(' '))} ${esc(RT[e.r] || e.r)}${e.n ? '<small>' + esc(e.n) + '</small>' : ''}</span><small class="vzea" data-ago="${e.t}">${ago(e.t)}</small></button>`).join('') + '</div>' +
       '<p class="muted">Bakstelėkite įrašą, kad pataisytumėte ar ištrintumėte.' + (s.e.some(e => e.x) ? ' Pilki – jau perkelti į MIST.' : '') + '</p>';
     h += '<div class="acts"><button class="btn pri" data-act="vz-read"' + (s.e.length ? '' : ' disabled') + '>Skaityti perduodant</button><button class="btn" data-act="vz-mist"' + (s.e.some(e => !e.x) ? '' : ' disabled') + '>Į MIST kortelę</button><button class="btn" data-act="vz-copy"' + (s.e.length ? '' : ' disabled') + '>Kopijuoti</button><button class="btn" data-act="vz-clr"' + (s.e.length ? '' : ' disabled') + '>Išvalyti vaistų įrašus</button></div>';
-    if (!emb) h += row('#/mist', 'MIST kortelė', MC.status()) + row('#/vaistai', 'Vaistai', 'Dozės, įspėjimai, skaičiuoklė');
+    if (!emb) h += row('#/mist', 'Nukentėjusiojo kortelė (DD1380)', MC.status()) + row('#/vaistai', 'Vaistai', 'Dozės, įspėjimai, skaičiuoklė');
     if (sel) h += panel();
     return h;
   }
@@ -2292,7 +2292,7 @@ const NB = (() => {
     const s = get(), t = total(s), learn = mode === 'learn';
     let h = '<h1>Nudegimai ir nušalimai</h1>';
     h += '<div class="seg2" role="tablist" aria-label="Skiltis">' + [['nud', 'Nudegimai'], ['nus', 'Nušalimai']].map(([k, l]) => `<button class="${s.tab === k ? 'on' : ''}" data-act="nb-tab" data-k="${k}" role="tab" aria-selected="${s.tab === k}">${l}</button>`).join('') + '</div>';
-    if (s.tab === 'nus') return h + frost(s, learn) + row('#/igudis/19', 'Hipotermija', 'Įgūdis #19') + row('#/mist', 'MIST kortelė', MC.status());
+    if (s.tab === 'nus') return h + frost(s, learn) + row('#/igudis/19', 'Hipotermija', 'Įgūdis #19') + row('#/mist', 'Nukentėjusiojo kortelė (DD1380)', MC.status());
     h += '<p class="muted">Bakstelėkite sritį: 1 kartą – visa, 2 kartus – pusė, 3 – nuimti. Skaičiuokite tik II–III laipsnio (ne paraudimą); delnas su pirštais ≈ 1 %.</p>';
     h += '<div class="seg2" role="group" aria-label="Amžius">' + chip('nb-age', 'a', s.age === 'a', 'Suaugęs (devyneto taisyklė)') + chip('nb-age', 'c', s.age === 'c', 'Vaikas') + '</div>';
     h += '<div class="nbfigs">' + fig(s, 'f') + fig(s, 'b') + '</div>';
@@ -2303,7 +2303,7 @@ const NB = (() => {
     if (t >= 15) h += fluids(s, t, learn);
     else if (s.el || s.uo.length) h += urine(s, wNow(), 0, learn);
     if (s.age === 'c' && learn) h += '<p class="muted">Vaikui galva didesnė, kojos mažesnės (galva 18 %, kiekviena koja 14 %); tiksliau – Lund–Browder lentelė.</p>';
-    h += row('#/igudis/48', 'Nudegimai: ploto vertinimas, skysčiai ir tvarstymas', 'Įgūdis #48') + row('#/mist', 'MIST kortelė', MC.status());
+    h += row('#/igudis/48', 'Nudegimai: ploto vertinimas, skysčiai ir tvarstymas', 'Įgūdis #48') + row('#/mist', 'Nukentėjusiojo kortelė (DD1380)', MC.status());
     return h;
   }
   function act(el) {
@@ -2418,7 +2418,7 @@ const SC = (() => {
   const best = () => { const b = LS.get(KEY, {}); return b && typeof b === 'object' && !Array.isArray(b) ? b : {}; };
   const byId = id => all().find(s => s.id === id);
   const LET = ['A', 'B', 'C', 'D'];
-  const TOOLS = { '#/tst': '10s triažas', '#/9line': '9-Line MEDEVAC', '#/mist': 'MIST kortelė', '#/sitrep': 'SITREP', '#/gks': 'GKS skaičiuoklė', '#/zymejimas': 'Vaistų žymėjimas', '#/nudegimai': 'Nudegimai ir nušalimai' };
+  const TOOLS = { '#/tst': '10s triažas', '#/9line': '9-Line MEDEVAC', '#/mist': 'Nukentėjusiojo kortelė (DD1380)', '#/sitrep': 'SITREP', '#/gks': 'GKS skaičiuoklė', '#/zymejimas': 'Vaistų žymėjimas', '#/nudegimai': 'Nudegimai ir nušalimai' };
   function refLabel(r) {
     let m;
     if ((m = r.match(/^#\/igudis\/(\d+)$/))) { const s = (E.igudziai || []).find(x => String(x.id) === m[1]); return s ? ['Įgūdis #' + m[1], s.pav] : null; }
@@ -2703,13 +2703,13 @@ const PT = (() => {
     let h = bar().replace(/<a class="ptf"[^>]*>[^<]*<\/a>/, '') + `<h1>${esc(p.label)}</h1><p class="muted">Pacientas #${p.i + 1}${la.trauma ? ' · sužeistas ' + hm(la.trauma) + ' (prieš ' + Math.max(0, Math.round((Date.now() - la.trauma) / 60000)) + ' min)' : ''}${p.cat ? ' · ' + p.cat : ''}</p>`;
     h += typeof REM !== 'undefined' ? REM.banners(p.pid) : '';
     const tile = (r, t, s) => `<a class="ptt" href="${r}"><small>${esc(t)}</small><b>${esc(s)}</b></a>`;
-    h += '<div class="pttiles">' + tile('#/mist', 'MIST', MC.status()) +
+    h += '<div class="pttiles">' + tile('#/mist', 'Nukentėjusiojo kortelė · DD1380', MC.status()) +
       (typeof VZ !== 'undefined' ? tile('#/zymejimas', 'Vaistai', VZ.status()) : tile('#/9line', '9-Line', NL.status())) +
       (typeof NB !== 'undefined' ? tile('#/nudegimai', 'Nudegimai ir nušalimai', NB.status()) : '') +
       (typeof KR !== 'undefined' ? tile('#/pilnas-kraujas', 'Kraujo transfuzija', KR.status()) : '') + '</div>';
     h += '<h2>Įvykių eiga</h2>' + (ev.length ? '<div class="ptev">' + ev.map(([t, x]) => `<div><b>${hm(t)}</b><span>${esc(x)}</span></div>`).join('') + '</div>' : '<p class="muted">Įvykių dar nėra: pažymėkite laikus (Pradžia → Laikai), MIST požymius' + (typeof VZ !== 'undefined' ? ', suleistus vaistus' : '') + '.</p>');
     h += '<div class="acts"><button class="btn pri" data-act="go" data-r="#/qr">Perduoti QR kodu</button><button class="btn" data-act="pt-read">Skaityti perduodant</button><button class="btn" data-act="pt-copy">Kopijuoti viską</button></div>';
-    h += row('#/qr-priimti', 'Priimti pacientą QR kodu', 'Nuskaityti kito telefono kodą') + row('#/mist', 'MIST kortelė', 'Sužeistųjų tvarkymas, šalinimas');
+    h += row('#/qr-priimti', 'Priimti pacientą QR kodu', 'Nuskaityti kito telefono kodą') + row('#/mist', 'Nukentėjusiojo kortelė (DD1380)', 'Sužeistųjų tvarkymas, šalinimas');
     if (mode === 'learn') h += '<p class="muted">Viršuje – pacientų juosta: pasirinktas pacientas galioja visiems įrankiams (MIST, laikai, sąrašų žymėjimai' + (typeof VZ !== 'undefined' ? ', vaistai, nudegimai, šviežias kraujas' : '') + '). „+“ – naujas pacientas, ankstesni lieka sąraše.</p>';
     if (typeof OP !== 'undefined') h += '<button class="btn dng" data-act="op-wipe" style="width:100%;margin-top:14px">Ištrinti visų sužeistųjų duomenis</button>';
     return h;

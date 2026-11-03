@@ -151,7 +151,7 @@ function buildIdx() {
   });
   Object.keys(E.puslapiai || {}).forEach(id => { const p = E.puslapiai[id]; add('Mokymosi temos', p.title, '', strip(p.html), '#/p/' + id); });
   // Įrankiai (tools.js)
-  add('Įrankiai', 'MIST kortelė', 'Vizuali sužeistojo kortelė: mechanizmas, sužalojimai kūno schemoje, požymiai, gydymas', 'mist handover perdavimas sužeistasis keli sužeistieji kortelė atmist kūno schema žaizda turniketas', '#/mist');
+  add('Įrankiai', 'Nukentėjusiojo kortelė (DD1380)', 'Vizuali sužeistojo kortelė: mechanizmas, sužalojimai kūno schemoje, požymiai, gydymas', 'mist handover perdavimas sužeistasis keli sužeistieji kortelė atmist kūno schema žaizda turniketas', '#/mist');
   add('Įrankiai', '9-Line MEDEVAC', '9 eilučių evakuacijos prašymas su kodais', '9 line nine line 9line medevac evakuacija koordinatės mgrs gps skubumas urgent priority routine radijas', '#/9line');
   add('Įrankiai', 'GKS skaičiuoklė', 'Glasgow komos skalė (GCS at 40), GKS-P', 'gks glasgow gcs koma sąmonė akys kalba motorika vyzdžiai', '#/gks');
   add('Įrankiai', 'Mascal', 'Sužeistųjų lenta masinio sužalojimo atveju: T1–T4, būsenos, suvestinė', 'mascal masinis sužalojimas triažas rūšiavimas t1 t2 t3 t4 immediate delayed minimal expectant sužeistųjų lenta', '#/mascal');

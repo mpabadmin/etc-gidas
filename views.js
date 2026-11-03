@@ -46,6 +46,7 @@ const installed = () => matchMedia('(display-mode: standalone)').matches || navi
 // Plytelių piktogramos ir plytelė: paantraštė rodoma tik kai yra būsena (užpildyta, skaičiai) – be pasikartojančių aprašymų
 const ic = d => `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
 const ICO = {
+  scan: ic('<path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M8 9h8M8 12h8M8 15h5"/>'),
   mist: ic('<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="11" r="2"/><path d="M6 16c.6-1.4 1.5-2 2.5-2s1.9.6 2.5 2M14 10h4M14 14h3"/>'),
   sitrep: ic('<path d="M9 3h6v3H9z"/><path d="M8 4.5H6a1 1 0 0 0-1 1V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5.5a1 1 0 0 0-1-1h-2M9 11h6M9 15h4"/>'),
   contrep: ic('<circle cx="12" cy="12" r="7"/><path d="M12 2v5M12 17v5M2 12h5M17 12h5"/>'),
@@ -62,6 +63,9 @@ const ICO = {
   exam: ic('<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/>'),
   eval: ic('<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2.8h6V4M9 12l2 2 4-4"/>')
 };
+// Nukentėjusiojo kortelė (DD1380) ir popierinės kortelės nuskaitymas – atskiros plytelės
+const cardTile = (href, cls) => { const st = stOf(() => MC); return tile(href, ICO.mist, 'Nukentėju\u00adsiojo kortelė', 'DD1380' + (st ? ' · ' + st : ''), 'Nukentėjusiojo kortelė DD1380', cls || 'wr'); };
+const scanTile = cls => tile('#/skenuoti', ICO.scan, 'Nuskaityti kortelę', 'popierinė DD1380', 'Nuskaityti popierinę kortelę DD1380', cls || 'wr');
 const tile = (href, ti, b, sm, lb, cls) => `<a class="tool${cls ? ' ' + cls : ''}" href="${href}" aria-label="${esc((lb || b) + (sm ? ': ' + sm : ''))}"><span class="ti">${ti}</span><b>${esc(b)}</b>${sm ? '<small>' + esc(sm) + '</small>' : ''}</a>`;
 const stOf = m => { try { return m().status(); } catch (e) { return ''; } }; // tools.js gali būti neįkeltas
 const installRow = () => installed() ? '' : row('#/idiegimas', 'Įdiegti programėlę', 'Veikia be interneto');
@@ -86,6 +90,7 @@ const V = {
     const P = E.puslapiai || {}, gk = stOf(() => GK).replace(/^Paskutinė: /, '');
     return '<div class="tools">' +
       tile('#/tst', '10s', '10s triažas', stOf(() => TS), '', 'big') + tile('#/mascal', ICO.mascal, 'Mascal', stOf(() => MS), '', 'big') +
+      cardTile('#/mist') + scanTile() +
       tile('#/9line', '9', '9-Line', stOf(() => NL), '9-Line MEDEVAC') + tile('#/sitrep', ICO.sitrep, 'SITREP', stOf(() => SR)) +
       tile('#/gks', ICO.gks, 'GKS', gk) + tile('#/nudegimai', ICO.burn, 'Nudegimai', stOf(() => NB), 'Nudegimai ir nušalimai') +
       (P.kraujas ? tile('#/p/kraujas', ICO.drop, 'Kraujas', '', 'Kraujo suderinamumas ABO / RhD') : '') +
@@ -102,7 +107,7 @@ const V = {
   // Mokymosi pradžia: įrankiai plytelėmis su piktogramomis (kaip March gide) – trys grupės
   learnTools() {
     return '<h2>MEDEVAC įrankiai</h2><div class="tools">' +
-      tile('#/tst', '10s', '10s triažas', stOf(() => TS)) + tile('#/mist', ICO.mist, 'MIST', stOf(() => MC), 'MIST kortelė') +
+      tile('#/tst', '10s', '10s triažas', stOf(() => TS)) + cardTile('#/mist') + scanTile() +
       tile('#/9line', '9', '9-Line', stOf(() => NL), '9-Line MEDEVAC') + tile('#/sitrep', ICO.sitrep, 'SITREP', stOf(() => SR)) + '</div>' +
       '<h2>Kiti įrankiai</h2><div class="tools">' +
       tile('#/gks', ICO.gks, 'GKS', stOf(() => GK)) + tile('#/mascal', ICO.mascal, 'Mascal', stOf(() => MS)) +
