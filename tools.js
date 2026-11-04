@@ -1177,7 +1177,7 @@ const MC = (() => {
             h += `<div class="mqpan" id="mqpan"><div class="mqph"><b>${esc(dn(v))}</b><small>C lentelė: ${esc(gn)}</small></div>` +
               (ah ? `<p class="mqwarn" role="alert">Pažymėta alergija: ${esc(ah)} – patikrinkite prieš skiriant.</p>` : alg.length ? `<p class="muted mqhint">Alergijos: ${esc(alg.join(', '))}</p>` : '') +
               (lg ? `<p class="muted mqhint">Paskutinė dozė šiam sužeistajam: ${esc(lg)}</p>` : '') +
-              (q.length ? '<div class="mqlab">Dozė ir būdas (iš gido)</div><div class="mqrow">' + q.map(([r, a, u], i) => { const on = SH.dose && !SH.dose.c && SH.dose.i === i; return `<button class="mqc big${on ? ' on' : ''}" data-sa="qd" data-v="${i}" aria-pressed="${!!on}"><b>${esc(a)} ${esc(u)}</b><small>${esc(r)}</small></button>`; }).join('') + '</div>' : '<p class="muted mqhint">Greitųjų dozių gide nėra – įveskite dozę.</p>') +
+              (q.length ? '<div class="mqlab">Dozė ir būdas (iš gido)</div><div class="mqrow">' + q.map(([r, a, u, n], i) => { const on = SH.dose && !SH.dose.c && SH.dose.i === i; return `<button class="mqc big${on ? ' on' : ''}" data-sa="qd" data-v="${i}" aria-pressed="${!!on}"><b>${esc(a)} ${esc(u)}</b><small>${esc(r)}${n ? ' (' + esc(n) + ')' : ''}</small></button>`; }).join('') + '</div>' : '<p class="muted mqhint">Greitųjų dozių gide nėra – įveskite dozę.</p>') +
               `<div class="mqrow"><button class="mqc${SH.dose && SH.dose.c ? ' on' : ''}" data-sa="cdose">${SH.dose && SH.dose.c ? esc(SH.dose.a + ' ' + SH.dose.u + ' ' + SH.dose.r) + ' ✎' : 'Kita dozė / būdas…'}</button><a class="mqc" href="#/vaistas/${esc(v.id)}">Dozės gide ›</a></div>` +
               '<div class="mqlab">Laikas</div>' + tmRow() + noteIn() + '</div>';
             if (SH.dose) foot = `<button class="btn pri mqsave" data-sa="save">Įrašyti: ${esc(dn(v) + ' ' + SH.dose.a + ' ' + SH.dose.u + ' ' + SH.dose.r)} · ${shT()}</button>`;
@@ -1905,6 +1905,7 @@ const TS = (() => {
 
 // ───────── Vaistų žymėjimas – suleistų vaistų įrašai (tik ETC gide) ─────────
 // Greitosios dozės (QD) – tik tikslios reikšmės iš vaistai.js dozių teksto (tikrinama teste). Kitos dozės įvedamos ranka.
+// [kelias, kiekis, vienetai, pastaba?] – pastaba rodoma prie mygtuko (pvz., naloksonas IV – „titruoti“).
 const VZ = (() => {
   const KEY = TCFG.pre + 'vz';
   const RT = { IV: 'IV', IO: 'IO', IM: 'IM', IN: 'Į nosį', PO: 'Per burną', ODT: 'ODT' };
@@ -1925,7 +1926,7 @@ const VZ = (() => {
     metoklopramidas: [['IV', '10', 'mg']],
     'nacl-hipert': [['IV', '250', 'ml']],
     atropinas: [['IV', '0,5', 'mg']],
-    naloksonas: [['IM', '0,4', 'mg'], ['IN', '1,8', 'mg']]
+    naloksonas: [['IV', '40', 'mcg', 'titruoti'], ['IM', '0,4', 'mg'], ['IN', '1,8', 'mg']]
   };
   const num = a => parseFloat(String(a).replace(',', '.'));
   const fmtN = x => String(Math.round(x * 100) / 100).replace('.', ',');
@@ -2002,7 +2003,7 @@ const VZ = (() => {
     let h = '<div class="vzbg" data-act="vz-x"></div><section class="vzp" role="dialog" aria-label="' + esc(v.name) + '">';
     h += `<div class="vzh"><b>${esc(v.name)}</b><button class="ib" data-act="vz-x" aria-label="Uždaryti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>`;
     if (es.length) h += `<p class="vzlast">Jau suleista ×${es.length}${totals(es) ? ' · iš viso ' + esc(totals(es)) : ''} · paskutinė ${hm(last.t)} (<span data-ago="${last.t}">${ago(last.t)}</span>)${nextTxt(last) ? ' · ' + nextTxt(last) : ''}</p>`;
-    if (q.length) h += '<div class="lbl">Dozė</div><div class="opts vzq">' + q.map(([r, a, u]) => chip('vz-q', r + '|' + a + '|' + u, dr.r === r && dr.a === a && dr.u === u, `${esc(RT[r])} <b>${esc(a)} ${esc(u)}</b>`)).join('') + '</div>';
+    if (q.length) h += '<div class="lbl">Dozė</div><div class="opts vzq">' + q.map(([r, a, u, n]) => chip('vz-q', r + '|' + a + '|' + u, dr.r === r && dr.a === a && dr.u === u, `${esc(RT[r])} <b>${esc(a)} ${esc(u)}</b>${n ? ' (' + esc(n) + ')' : ''}`)).join('') + '</div>';
     h += '<div class="lbl">' + (q.length ? 'Kita dozė' : 'Dozė') + '</div><div class="vzin"><input class="inp" data-vz="a" inputmode="decimal" autocomplete="off" placeholder="kiekis" value="' + esc(dr.a) + '" aria-label="Kiekis"><div class="seg2 vzu" role="group" aria-label="Vienetai">' + units(v).map(u => chip('vz-u', u, dr.u === u, esc(u))).join('') + '</div></div>';
     h += '<div class="lbl">Kelias</div><div class="seg2 vzr" role="group" aria-label="Kelias">' + routes(v).map(r => chip('vz-r', r, dr.r === r, esc(RT[r]))).join('') + '</div>';
     const tv = dr.t == null ? '' : hm(dr.t);
@@ -2114,9 +2115,9 @@ const VZ = (() => {
 })();
 
 // ───────── Nudegimai ir nušalimai (NB) – devyneto taisyklė, skysčių ir diurezės skaičiuoklės, nušalimai (tik ETC gide) ─────────
-// Skysčiai – Parkland 2–4 ml × kg × % KPP per 24 val. (ETC 5.0, 2026; kuopos paskaita – 4 ml), pusė per pirmas 8 val. NUO TRAUMOS; nuo ≥ 15 % KPP (ETC 5.0; TCCC – > 20 %).
-// TCCC 2026 „10 taisyklė“ – alternatyva (40–80 kg; virš 80 kg + 100 ml/val. kas 10 kg). Diurezė – 0,5–1 ml/kg/val. (#48);
-// titravimas ±20 %, įvertinti po 2 val. (JTS Burn Care CPG 2025). Nušalimai – WMS 2024, JTS CPG 2017 (kuopos medžiagoje nėra).
+// Skysčiai – vienintelė formulė TCCC 2026 „10 taisyklė“: kai > 20 % KPP; 40–80 kg – % KPP × 10 ml/val.; kas 10 kg virš 80 kg + 100 ml/val.;
+// Ringerio laktatas (arba 0,9 % NaCl). Diurezė – 30–50 ml/val. (JTS Burn Care CPG); titravimas ±20 %, įvertinti po 2 val.
+// Parkland (ETC 5.0, ligoninėje) – tik palyginimui suskleistame „Paaiškinimas“. Nušalimai – WMS 2024, JTS CPG 2017 (kuopos medžiagoje nėra).
 const NB = (() => {
   const KEY = TCFG.pre + 'nb';
   // [raktas, pavadinimas, suaugusiojo % {f priekis, b nugara}, vaiko %]
@@ -2145,10 +2146,10 @@ const NB = (() => {
   const FB_REG = ['Veidas', 'D plaštaka', 'K plaštaka', 'D pėda', 'K pėda', 'Kita'];
   const FB_D = [['p', 'Paviršinis (I–II°)'], ['g', 'Gilus (III–IV°)'], ['n', 'Dar neaišku']];
   const FB_T = [['nus', 'Nušalimas'], ['ap', 'Apkasų pėda']];
-  const def = () => ({ age: 'a', r: {}, x: 0, f: 'etc', tab: 'nud', el: 0, df: 20, uh: 1, uo: [], fb: { reg: [], d: '', t: 'nus', tw: '' } });
+  const def = () => ({ age: 'a', r: {}, x: 0, tab: 'nud', el: 0, df: 20, uh: 1, uo: [], fb: { reg: [], d: '', t: 'nus', tw: '' } });
   function get() {
     const raw = LS.get(KEY, {}), s = Object.assign(def(), raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {});
-    s.age = s.age === 'c' ? 'c' : 'a'; s.f = s.f === 'tccc' ? 'tccc' : 'etc'; s.tab = s.tab === 'nus' ? 'nus' : 'nud';
+    s.age = s.age === 'c' ? 'c' : 'a'; delete s.f; s.tab = s.tab === 'nus' ? 'nus' : 'nud';
     const r = s.r && typeof s.r === 'object' ? s.r : {}; s.r = {};
     Object.keys(r).forEach(k => { if (/^[fb]:\w+$/.test(k) && (r[k] === 1 || r[k] === 0.5)) s.r[k] = r[k]; });
     s.x = Math.max(0, Math.min(50, parseInt(s.x, 10) || 0));
@@ -2161,30 +2162,24 @@ const NB = (() => {
   const save = s => LS.set(KEY, s);
   const pct = (s, k, side) => { const R = REG.find(x => x[0] === k); return R ? (s.age === 'c' ? R[3] : R[2])[side] : 0; };
   const fmt1 = x => String(Math.round(x * 10) / 10).replace('.', ',');
-  const r10 = x => Math.round(x / 10) * 10;
   function total(s) { let t = s.x; Object.keys(s.r).forEach(key => { const [side, k] = key.split(':'); t += pct(s, k, side) * s.r[key]; }); return Math.min(100, t); }
   // ── grynos skaičiuoklės (testuojamos) ──
-  // o: { kg, tbsa, tInj (ms), now (ms), given (ml) } → Parkland 2–4 ml kiekiai ir greičiai (iki 10 ml/val.), fazė nuo traumos, TCCC „10 taisyklė“.
-  // Pirmos 8 val.: pirmos pusės likutis (atėmus jau suleistus skysčius) per likusį laiką iki 8 val. nuo traumos (Parkland; skaičiuojama nuo traumos, ne atvykimo).
+  // o: { kg, tbsa, tInj (ms), now (ms) } → TCCC „10 taisyklė“: base – % KPP × 10 ml/val. (40–80 kg), add – + 100 ml/val. kas 10 kg virš 80 kg; el – val. nuo traumos.
+  // 80 kg, 27 % → 270 ml/val.; 100 kg, 30 % → 300 + 200 = 500 ml/val.
   function calc(o) {
-    const kg = +o.kg || 0, t = +o.tbsa || 0, v24 = 4 * kg * t, v8 = v24 / 2, v8lo = v8 / 2, given = Math.max(0, +o.given || 0); // 4 ml – viršutinė, 2 ml – apatinė riba
+    const kg = +o.kg || 0, t = +o.tbsa || 0;
     const el = +o.tInj > 0 ? Math.max(0, ((+o.now || Date.now()) - o.tInj) / 3.6e6) : null;
-    const phase = el == null ? '' : el < 8 ? '8' : el < 24 ? '16' : 'end';
-    const t10 = Math.round(t / 10) * 10, rule10 = kg >= 40 ? t10 * 10 + (kg > 80 ? Math.floor((kg - 80) / 10) * 100 : 0) : 0;
-    const left8 = phase === '8' ? 8 - el : 0, rem8 = Math.max(0, v8 - given), rem8lo = Math.max(0, v8lo - given);
-    const nowP = (rem, v) => phase === '8' ? (rem > 0 ? r10(rem / left8) : r10(v / 16)) : phase === '16' ? r10(v / 16) : 0;
-    return { v24: Math.round(v24), v8: Math.round(v8), r8: r10(v8 / 8), r16: r10(v8 / 16), el, phase, now: nowP(rem8, v8), t10, rule10,
-      v24lo: Math.round(v24 / 2), v8lo: Math.round(v8lo), r8lo: r10(v8lo / 8), r16lo: r10(v8lo / 16), nowlo: nowP(rem8lo, v8lo),
-      given: Math.round(given), left8, rem8: Math.round(rem8), rem8lo: Math.round(rem8lo), done8: phase === '8' && rem8lo === 0 };
+    const base = kg >= 40 ? Math.round(t * 10) : 0, add = kg > 80 ? Math.floor((kg - 80) / 10) * 100 : 0;
+    return { el, base, add, rule10: kg >= 40 ? base + add : 0, need: t > 20 };
   }
   const drops = (mlh, f) => Math.round(mlh * f / 60);
-  // o: { ml, h, kg, el } → ml/val., ml/kg/val., tikslas (SOP 0,5–1 ml/kg/val.; elektros trauma – JTS 75–100 ml/val.), būsena lo / ok / hi
+  // o: { ml, h, kg, el } → ml/val., ml/kg/val., tikslas (JTS Burn Care CPG 30–50 ml/val.; elektros trauma – JTS 75–100 ml/val.), būsena lo / ok / hi
   function uop(o) {
-    const kg = +o.kg || 0, mlh = +o.h > 0 ? +o.ml / +o.h : 0, lo = o.el ? 75 : 0.5 * kg, hi = o.el ? 100 : kg;
+    const kg = +o.kg || 0, mlh = +o.h > 0 ? +o.ml / +o.h : 0, lo = o.el ? 75 : 30, hi = o.el ? 100 : 50;
     return { mlh: Math.round(mlh), mlkg: kg ? Math.round(mlh / kg * 10) / 10 : 0, lo: Math.round(lo), hi: Math.round(hi), st: mlh < lo ? 'lo' : mlh > hi ? 'hi' : 'ok' };
   }
   const tInjury = () => { const T = LS.get(TCFG.laikai, {}) || {}; if (+T.trauma) return +T.trauma; try { const st = MC.state(); return MC.trTs(st.pts[st.cur]) || 0; } catch (e) { return 0; } };
-  // Jau suleisti skysčiai – MIST C lentelės „Skysčiai“ eilutės su ml; atimami iš pirmų 8 val. kiekio (boliusų nesiūlome – JTS)
+  // Jau suleisti skysčiai – MIST C lentelės „Skysčiai“ eilutės su ml (rodoma ir tikrinama > 250 ml/kg riba – JTS)
   function given() {
     try { const st = MC.state(), c = st.pts[st.cur]; let ml = 0, n = 0; (c.rows || []).forEach(r => { if (r.g !== 'fl') return; const m = /(\d+(?:[.,]\d+)?)\s*ml/i.exec(String(r.dose || '')); if (m) { ml += parseFloat(m[1].replace(',', '.')); n++; } }); return { ml: Math.round(ml), n }; } catch (e) { return { ml: 0, n: 0 }; }
   }
@@ -2208,28 +2203,14 @@ const NB = (() => {
       return h;
     }
     if (!w) return h + '<p class="nbneed"><b>Įveskite svorį</b> – be jo skysčiai neskaičiuojami.</p>' + wChips(0, 1);
-    const tI = tInjury(), G = given(), C = calc({ kg: w, tbsa: t, tInj: tI, now: Date.now(), given: G.ml });
-    h += `<p class="muted mt0">Svoris ${w} kg · ${tI ? 'nuo traumos ' + dur(C.el) + ' (' + hm(tI) + ')' : 'traumos laikas nenustatytas – skaičiuojama nuo traumos, ne nuo atvykimo'}</p>` +
-      (tI ? '' : '<div class="acts"><button class="btn" data-act="mc-time">Nustatyti traumos laiką</button></div>') + wChips(w, 1);
-    h += '<div class="seg2" role="group" aria-label="Formulė">' + chip('nb-f', 'etc', s.f === 'etc', 'Parkland (#48)') + chip('nb-f', 'tccc', s.f === 'tccc', 'TCCC „10 taisyklė“') + '</div>';
-    let rate = 0;
-    if (s.f === 'etc') {
-      rate = C.phase === '8' || C.phase === '16' ? C.now : C.r8;
-      const lo = C.phase === '8' || C.phase === '16' ? C.nowlo : C.r8lo;
-      const big = C.phase === 'end' ? '' : `<small>Ringerio laktatas – ${C.phase === '16' ? 'kitos 16 val.' : C.phase === '8' ? 'dabar (pirmos 8 val.)' : 'pirmos 8 val.'}</small><b>${lo}–${rate} ml/val.</b>`;
-      const left = C.phase !== '8' ? '' : C.done8 ? `<small><b>Pirmų 8 val. kiekis jau suleistas (${C.given} ml)</b> – toliau kitų 16 val. greičiu, titruokite pagal diurezę.</small>` :
-        `<small><b>Likutis iki 8 val. nuo traumos: ${C.rem8lo}–${C.rem8} ml${C.given ? ` (atėmus suleistus ${C.given} ml)` : ''} per ${dur(C.left8)}</b></small>` +
-        (rate > 2 * C.r8 ? '<small><b>Greitis daugiau nei dvigubai viršija vidutinį – boliusų venkite, diurezę matuokite kas valandą, konsultuokitės su gydytoju (JTS).</b></small>' : '');
-      h += `<section class="nbfl${C.phase === 'end' ? ' off' : ''}">${big}${left}` +
-        `<small>Per 24 val.: ${C.v24lo}–${C.v24} ml (2–4 ml × ${w} kg × ${fmt1(t)} %)</small>` +
-        `<small>Pirmos 8 val. nuo traumos: ${C.v8lo}–${C.v8} ml → ${C.r8lo}–${C.r8} ml/val.</small><small>Kitos 16 val.: ${C.v8lo}–${C.v8} ml → ${C.r16lo}–${C.r16} ml/val.</small>` +
-        (C.phase === 'end' ? '<small><b>Praėjo 24 val. – formulės laikotarpis baigėsi; tęskite pagal diurezę.</b></small>' : '') +
-        '<small>Parkland 2–4 ml – tik pradinis taškas, titruokite pagal diurezę (ETC 5.0); kuopos paskaitoje – 4 ml.</small></section>';
-      if (C.phase === 'end') rate = 0;
-    } else {
-      rate = C.rule10;
-      h += `<section class="nbfl"><small>Pradinis greitis</small><b>${C.rule10} ml/val.</b><small>${fmt1(t)} % → ${C.t10} % × 10 ml/val. (40–80 kg)${w > 80 ? '; virš 80 kg + 100 ml/val. kas 10 kg' : ''} (TCCC 2026).</small></section>`;
-    }
+    const tI = tInjury(), G = given(), C = calc({ kg: w, tbsa: t, tInj: tI, now: Date.now() });
+    h += `<p class="muted mt0">Svoris ${w} kg${tI ? ' · nuo traumos ' + dur(C.el) + ' (' + hm(tI) + ')' : ''}</p>` + wChips(w, 1);
+    const rate = C.rule10;
+    h += `<section class="nbfl"><small>Ringerio laktatas (arba 0,9 % NaCl) – pradinis greitis</small><b>${rate} ml/val.</b>` +
+      `<small>${fmt1(t)} % KPP × 10 ml/val. = ${C.base} ml/val. (40–80 kg)${C.add ? ` + ${C.add} ml/val. (kas 10 kg virš 80 kg + 100 ml/val.)` : ''} – TCCC „10 taisyklė“.</small>` +
+      '<small>Titruokite pagal diurezę: tikslas 30–50 ml/val. (JTS Burn Care CPG).</small></section>';
+    h += expl('<p class="muted">TCCC „10 taisyklė“: skysčiai, kai &gt; 20 % KPP; 40–80 kg – % KPP × 10 ml/val.; kas 10 kg virš 80 kg + 100 ml/val.; Ringerio laktatas (arba 0,9 % NaCl); tikslinė diurezė 30–50 ml/val. (JTS Burn CPG).</p>' +
+      '<p class="muted">Palyginimui – Parkland (ETC 5.0, ligoninėje): 4 ml × kg × % KPP per 24 val., pusė per pirmas 8 val.</p><p class="muted">Šaltinis: TCCC 2026; JTS Burn Care CPG.</p>');
     const flNote = '<p class="muted">TCCC 2026: Ringerio laktatas, NaCl 0,9 % arba Hextend (ne daugiau 1000 ml, toliau – Ringerio laktatas ar NaCl). Iki 30 % KPP, jei sąmoningas ir gali ryti, – galima gerti. Hemoraginis šokas – pirmiausia gydomas šokas.</p>';
     if (rate) h += '<div class="nbdr"><div class="lbl0">Lašai/min, kai ' + rate + ' ml/val.</div><table class="nbdt"><tbody>' +
       DF.map(f => `<tr class="${f === 20 ? 'on' : ''}"><th scope="row">${f} lašų/ml${f === 60 ? ' (mikrolašinė)' : ''}</th><td><b>${drops(rate, f)}</b>${f === 20 ? ` <small>(${Math.round(drops(rate, f) / 4)} per 15 s)</small>` : ''}</td></tr>`).join('') +
@@ -2239,11 +2220,11 @@ const NB = (() => {
     return h + urine(s, w, rate);
   }
   function urine(s, w, rate) {
-    const tg = s.el ? '75–100 ml/val. (JTS, aukštos įtampos elektros trauma)' : `${Math.round(0.5 * w)}–${w} ml/val. (0,5–1 ml/kg/val., įgūdis #48)`;
+    const tg = s.el ? '75–100 ml/val. (JTS, aukštos įtampos elektros trauma)' : '30–50 ml/val. (JTS Burn Care CPG)';
     let h = '<h2>Diurezė</h2>' + `<p class="mt0">Tikslas: <b>${tg}</b></p>`;
     h += '<div class="chips nbch">' + chip('nb-el', '1', s.el, (s.el ? '✓ ' : '') + 'Aukštos įtampos elektros trauma / rabdomiolizė') + '</div>';
     if (s.el) h += '<p class="muted mt0">Skysčių reikia daugiau, nei rodo nudegimo plotas (JTS). EKG stebėsena (#48).</p>';
-    h += expl('<p class="muted">JTS suaugusiajam: 30–50 ml/val. Kuopos SOP (#48) – 0,5–1 ml/kg/val.</p>', 'Šaltiniai');
+    h += expl('<p class="muted">JTS Burn Care CPG: suaugusiajam 30–50 ml/val.; aukštos įtampos elektros trauma – 75–100 ml/val.</p>', 'Šaltiniai');
     h += '<div class="lbl0">Išmatuota, ml</div><div class="nbuo"><input class="inp" id="nb-ml" inputmode="numeric" placeholder="ml" aria-label="Išmatuotas šlapimo kiekis, ml" autocomplete="off">' +
       '<div class="chips" role="group" aria-label="Per laikotarpį">' + UH.map(x => `<button class="${s.uh === x ? 'on' : ''}" data-act="nb-uh" data-k="${x}" aria-pressed="${s.uh === x}">${x} val.</button>`).join('') + '</div>' +
       '<button class="btn pri" data-act="nb-uo">Įrašyti</button></div>';
@@ -2304,8 +2285,8 @@ const NB = (() => {
     h += stepper('nb-x', 'x', s.x + ' %', 'Pavienės vietos (delnais)', 'po 1 % – delnas su pirštais');
     const sel = Object.keys(s.r).map(key => { const [side, k] = key.split(':'), R = REG.find(x => x[0] === k); return R ? (R[1] + (side === 'b' ? ' (nugara)' : k === 'tarp' ? '' : ' (priekis)')) + ' ' + fmt1(pct(s, k, side) * s.r[key]) : ''; }).filter(Boolean);
     if (sel.length || s.x) h += `<div class="nbsel"><span>${esc(sel.concat(s.x ? ['pavienės ' + s.x] : []).join(' · '))}</span><button class="btn sm" data-act="nb-clr">Išvalyti</button></div>`;
-    h += `<div class="nbres${t >= 15 ? ' hi' : ''}"><div class="nbt">${fmt1(t)} % <small>KPP</small></div><div>${t >= 15 ? '≥ 15 % – skysčių gaivinimas, kai tik yra IV / IO prieiga (ETC 5.0; TCCC – > 20 %); saugokite nuo hipotermijos' : t ? 'Mažiau nei 15 % – skysčiai pagal būklę' : 'Pažymėkite nudegusias sritis'}</div></div>`;
-    if (t >= 15) h += fluids(s, t);
+    h += `<div class="nbres${t > 20 ? ' hi' : ''}"><div class="nbt">${fmt1(t)} % <small>KPP</small></div><div>${t > 20 ? '> 20 % – skysčių gaivinimas pagal TCCC „10 taisyklę“, kai tik yra IV / IO prieiga; saugokite nuo hipotermijos' : t ? '≤ 20 % – skysčiai pagal būklę (TCCC 2026)' : 'Pažymėkite nudegusias sritis'}</div></div>`;
+    if (t > 20) h += fluids(s, t);
     else if (s.el || s.uo.length) h += urine(s, wNow(), 0);
     if (s.age === 'c') h += '<p class="muted">Vaikui galva didesnė, kojos mažesnės (galva 18 %, kiekviena koja 14 %); tiksliau – Lund–Browder lentelė.</p>';
     h += row('#/igudis/48', 'Nudegimai: ploto vertinimas, skysčiai ir tvarstymas', 'Įgūdis #48') + row('#/mist', 'Nukentėjusiojo kortelė (DD1380)', MC.status());
@@ -2318,7 +2299,6 @@ const NB = (() => {
       case 'nb-r': { const k = d.k; if (!/^[fb]:\w+$/.test(k)) return; const v = s.r[k] || 0; if (v === 0) s.r[k] = 1; else if (v === 1) s.r[k] = 0.5; else delete s.r[k]; break; }
       case 'nb-age': s.age = d.k === 'c' ? 'c' : 'a'; Object.keys(s.r).forEach(k => { const [side, kk] = k.split(':'); if (!pct(s, kk, side)) delete s.r[k]; }); break;
       case 'nb-x': s.x = Math.max(0, Math.min(50, s.x + (+d.d))); break;
-      case 'nb-f': s.f = d.k === 'tccc' ? 'tccc' : 'etc'; break;
       case 'nb-clr': s.r = {}; s.x = 0; break;
       case 'nb-el': s.el = s.el ? 0 : 1; break;
       case 'nb-uh': { const v = +d.k; if (UH.indexOf(v) < 0) return; s.uh = v; break; }

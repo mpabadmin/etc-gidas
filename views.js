@@ -207,6 +207,9 @@ const V = {
     let h = `<h1>${esc(L.title)}</h1>`;
     if (L.intro) h += '<p class="muted">' + br(L.intro) + '</p>';
     h += renderList(id);
+    if (L.pastaba) h += '<p class="muted">' + esc(L.pastaba) + '</p>';
+    if ((L.vaizdai || []).length) h += '<div class="figs">' + L.vaizdai.map(figHtml).join('') + '</div>';
+    if (L.saltinis) h += '<p class="muted" style="margin-top:12px">Šaltinis: ' + esc(L.saltinis) + '</p>';
     if ((E.escape || []).indexOf(id) >= 0) h += '<h2>Kiti Escape planai</h2>' + (E.escape || []).filter(x => x !== id).map(x => `<a class="row esc" href="#/s/${x}">${esc(E.sarasai[x].title)}<span class="ar">›</span></a>`).join('');
     return h;
   },

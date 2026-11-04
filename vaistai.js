@@ -1,6 +1,6 @@
 // ETC gidas – VAISTAI
 // Viena schema kiekvienam vaistui. Šaltinių prioritetas: TCCC gairės 2026-05-01 → JTS CPG / JK gynybos CGO → gamintojo PCS → ERC / RCUK.
-// Jei šaltiniai skiriasi – naudojamas vienas patikimiausias. Ketamino sedacijos dozės – ETC įgūdžių lentelės (sutampa su TCCC 2026).
+// Jei šaltiniai skiriasi – naudojamas vienas patikimiausias. Ketamino sedacijos dozės – ETC įgūdžių lentelės (sutampa su TCCC 2026), infuzija – JTS PFC.
 // Tvarka – nuo dažniausiai iki rečiausiai naudojamų (Ukrainos karo traumos patirtis): nuskausminamieji pirmiausia, naloksonas – paskutinis.
 // Laukai: grupe – paskirtis; tipas 'pagr' – yra kuopos vaistų kortelėje; tccc26 – yra TCCC 2026 gairėse; kam – kas skiria;
 //   dozes – dozės; stulpeliai – [{pav, sub, dozes}] – rodomi greta (pvz., nuskausminimas / sedacija); ispejimai – svarbiausi įspėjimai;
@@ -70,14 +70,15 @@ window.ETC.vaistai = [
       "Esketaminas (jei prieinamas): 14 arba 28 mg į nosį vieną kartą (TCCC 2026).",
       "Kartu – paracetamolis ir (jei nėra kontraindikacijų) meloksikamas: skirtingų grupių derinys mažina bendrą dozę (ETC).",
       "Greitai leidžiant į veną – laikina apnėja ir kraujospūdžio padidėjimas (PCS). Ketaminą paprastai saugu skirti jau gavusiam opioidų.",
-      "Nistagmas – nevalingi, ritmingi akių judesiai."
+      "Nistagmas – nevalingi, ritmingi akių judesiai.",
+      "Kiti šaltiniai – ETC 5.0: nuskausminimui IV / IO 0,2–0,5 mg/kg, titruoti (> 0,5 mg/kg – bendrosios anestezijos rizika), IM – iki 2 mg/kg. Gide naudojama TCCC 2026 schema."
     ],
     "susije": [
       "paracetamolis",
       "ondansetronas",
       "midazolamas"
     ],
-    "saltinis": "TCCC gairės 2026-05-01; ETC įgūdžių lentelės (sedacija, infuzomatas); PCS (Ketalar); ETC vadovas 5.0 (2026), 1 sk. (7 lentelė – analgezija)",
+    "saltinis": "TCCC gairės 2026-05-01; JTS CPG Analgesia and Sedation Management during PFC (2023) – infuzija; ETC įgūdžių lentelės (sedacija, infuzomatas); PCS (Ketalar); ETC vadovas 5.0 (2026), 1 sk. (7 lentelė – analgezija) – kiti šaltiniai",
     "nuorodos": [
       [
         "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
@@ -103,11 +104,11 @@ window.ETC.vaistai = [
     "stulpeliai": [
       {
         "pav": "Nuskausminimas",
-        "sub": "TCCC 2026 · ETC 5.0",
+        "sub": "TCCC 2026",
         "dozes": [
           {
             "k": "IV / IO (TCCC 2026)",
-            "d": "0,2–0,3 mg/kg (arba 25 mg) · ml skiesto 5 mg/ml tirpalo",
+            "d": "25 mg (0,2–0,3 mg/kg) per 1 min · ml skiesto 5 mg/ml tirpalo",
             "c": {
               "min": 0.2,
               "max": 0.3,
@@ -115,16 +116,6 @@ window.ETC.vaistai = [
               "alt": "arba 25 mg"
             },
             "p": "Lėtai per 1 min. Skiedimas: 1 ml (50 mg) iki 10 ml = 5 mg/ml."
-          },
-          {
-            "k": "IV / IO (ETC 5.0)",
-            "d": "0,2–0,5 mg/kg, titruoti · ml skiesto 5 mg/ml tirpalo",
-            "c": {
-              "min": 0.2,
-              "max": 0.5,
-              "conc": 5
-            },
-            "p": "> 0,5 mg/kg – bendrosios anestezijos rizika. IM – iki 2 mg/kg (ETC 5.0)."
           },
           {
             "k": "IM",
@@ -138,14 +129,14 @@ window.ETC.vaistai = [
           },
           {
             "k": "Kartoti",
-            "d": "kas 30 min",
-            "p": "Tikslas – skausmas sumažėjo arba atsirado nistagmas."
+            "d": "kas 30 min pagal poreikį",
+            "p": "Tikslas – skausmas sumažėja arba atsiranda nistagmas."
           }
         ]
       },
       {
         "pav": "Sedacija",
-        "sub": "ETC / TCCC 2026",
+        "sub": "ETC · TCCC 2026 · JTS PFC",
         "dozes": [
           {
             "k": "IV / IO",
@@ -163,14 +154,14 @@ window.ETC.vaistai = [
             "p": "100 mg/ml – 3 ml; 50 mg/ml – 6 ml (didelį tūrį svarstykite dalyti į 2 vietas). Dozė – TCCC 2026."
           },
           {
-            "k": "Infuzomatu",
-            "d": "nuo 0,5 mg/kg/val.",
+            "k": "Infuzija – sedacija (JTS PFC)",
+            "d": "įsotinti 1 mg/kg IV per 60 s; neintubuotam 1 mg/kg/val., intubuotam 1–2 mg/kg/val.; keisti po 0,25 mg/kg/val.",
             "c": {
-              "per": 0.5,
+              "per": 1,
               "conc": 10,
               "hour": true
             },
-            "p": "500 mg (10 ml, 50 mg/ml) + 40 ml NaCl = 50 ml, 10 mg/ml (ETC). Su 100 mg/ml ampulėmis – 5 ml + 45 ml NaCl."
+            "p": "Infuzomatu: 500 mg + 40 ml NaCl (50 ml švirkštas) = 10 mg/ml. 80 kg: 1 mg/kg/val. = 8 ml/val. Su 100 mg/ml ampulėmis – 5 ml + 45 ml NaCl."
           },
           {
             "k": "Emergencijos reakcija",
@@ -218,41 +209,14 @@ window.ETC.vaistai = [
     "kontra": "PCS: alergija opioidams, kvėpavimo slopinimas, obstrukcinė kvėpavimo takų liga, MAO inhibitoriai (per 2 sav.).",
     "dozes": [
       {
-        "k": "IV / IO (ETC 5.0)",
-        "d": "50–100 mcg (0,5–1 mcg/kg), titruoti kas 2–5 min · ml 50 mcg/ml",
-        "c": {
-          "min": 0.5,
-          "max": 1,
-          "conc": 50,
-          "u": "mcg"
-        },
-        "p": "Leisti lėtai; stebėkite kvėpavimą."
+        "k": "IV / IO (ankstesnės TCCC, Deployed Medicine)",
+        "d": "50 mcg lėtai, kartoti kas 30 min pagal poreikį",
+        "p": "50 mcg/ml – 1 ml. Leisti lėtai; stebėkite kvėpavimą."
       },
       {
-        "k": "Į nosį (ETC 5.0)",
-        "d": "100 mcg (≥ 70 m. – 50 mcg), kartoti kas 5 min, iš viso ≤ 500 mcg",
+        "k": "Į nosį (ankstesnės TCCC, Deployed Medicine)",
+        "d": "100 mcg, kartoti kas 30 min pagal poreikį",
         "p": "Dalyti per abi šnerves, ≤ 1 ml į šnervę (50 mcg/ml: 100 mcg = 2 ml – po 1 ml į kiekvieną)."
-      },
-      {
-        "k": "IV / IO (ankstesnės TCCC gairės)",
-        "d": "50 mcg (0,5–1 mcg/kg) lėtai · ml 50 mcg/ml",
-        "c": {
-          "min": 0.5,
-          "max": 1,
-          "conc": 50,
-          "u": "mcg"
-        },
-        "p": "Kartoti kas 30 min pagal poreikį (ankstesnės TCCC gairės)."
-      },
-      {
-        "k": "Į nosį (ankstesnės TCCC gairės)",
-        "d": "100 mcg",
-        "p": "Kartoti kas 30 min pagal poreikį (ankstesnės TCCC gairės)."
-      },
-      {
-        "k": "Kartoti (ankstesnės TCCC gairės)",
-        "d": "kas 30 min pagal poreikį",
-        "p": "Ankstesnės TCCC gairės; stebėkite kvėpavimą."
       }
     ],
     "ispejimai": [
@@ -265,14 +229,15 @@ window.ETC.vaistai = [
     "salutinis": "Kvėpavimo slopinimas, pykinimas, sedacija, raumenų rigidiškumas.",
     "pakuote": "50 mcg/ml tirpalas",
     "pastabos": [
-      "TCCC 2026 fentanilio nebenumato (ankstesnėse gairėse buvo)."
+      "TCCC 2026 fentanilio nebenumato.",
+      "Kiti šaltiniai – ETC 5.0: IV / IO 50–100 mcg (0,5–1 mcg/kg), titruoti kas 2–5 min; į nosį 100 mcg (≥ 70 m. – 50 mcg), kartoti kas 5 min, iš viso ≤ 500 mcg. Gide naudojama ankstesnių TCCC gairių schema."
     ],
     "susije": [
       "morfinas",
       "ketaminas",
       "naloksonas"
     ],
-    "saltinis": "ETC vadovas 5.0 (2026), 1 sk. (7 lentelė – analgezija); ankstesnės TCCC gairės (ATP-P, JSOM); PCS (fentanilis); NextGen Combat Medic",
+    "saltinis": "Ankstesnės TCCC gairės (ATP-P, JSOM; Deployed Medicine); PCS (fentanilis); ETC vadovas 5.0 (2026), 1 sk. (7 lentelė – analgezija) – kiti šaltiniai; NextGen Combat Medic",
     "nuorodos": [
       [
         "Ankstesnės TCCC gairės (ATP-P, JSOM) – analgezija",
@@ -1415,16 +1380,16 @@ window.ETC.vaistai = [
     "kontra": "PCS: hipovolemijos sukelta hipotenzija – pirmiausia atkurti kraujo tūrį; išimtis – skubi priemonė vainikinių ir smegenų arterijų perfuzijai palaikyti, kol atkuriamas tūris.",
     "dozes": [
       {
-        "k": "Infuzomatu (PCS) – 40 mcg/ml",
-        "d": "0,05–1 mcg/kg/min",
+        "k": "Infuzomatu – 80 mcg/ml",
+        "d": "0,1–0,4 mcg/kg/min, pradėti nuo 0,1 ir titruoti pagal sAKS; didesnė dozė – gydytojo sprendimu",
         "c": {
-          "min": 0.05,
-          "max": 1,
-          "conc": 40,
+          "min": 0.1,
+          "max": 0.4,
+          "conc": 80,
           "u": "mcg",
           "minute": true
         },
-        "p": "2 ml (2 mg) koncentrato + 48 ml 5 % gliukozės = 40 mcg/ml. Pradžia 10–20 ml/val., titruoti pagal AKS."
+        "p": "4 mg (4 ml) + 46 ml 5 % gliukozės = 80 mcg/ml (50 ml švirkštas). ml/val. = mcg/kg/min × kg × 60 ÷ 80; 80 kg: 0,1 = 6 ml/val., 0,4 = 24 ml/val."
       }
     ],
     "ispejimai": [
@@ -1435,7 +1400,7 @@ window.ETC.vaistai = [
     "pastabos": [
       "PCS tikslas: žemas normalus sAKS (100–120 mm Hg) arba vidutinis AKS > 65–80 mm Hg – priklauso nuo būklės."
     ],
-    "saltinis": "PCS (noradrenalinas 1 mg/ml)",
+    "saltinis": "JTS PCC ID 91; ETC lentelė; PCS (noradrenalinas 1 mg/ml)",
     "nuorodos": [
       [
         "PCS – noradrenalinas 1 mg/ml (JK eMC)",
@@ -1700,37 +1665,32 @@ window.ETC.vaistai = [
     "kontra": "Alergija.",
     "dozes": [
       {
-        "k": "IV (PCS)",
-        "d": "0,1–0,2 mg, kartoti kas 2–3 min pagal poreikį",
-        "p": "Titruoti iki kvėpavimo dažnio > 10 k./min, neprarandant nuskausminimo. Skiedimas: 0,4 mg (1 ml) + 9 ml NaCl = 0,04 mg/ml; 0,1 mg = 2,5 ml."
+        "k": "IV / IO – titruoti (JTS PFC)",
+        "d": "po 40 mcg, kol KD > 10 k./min",
+        "p": "0,4 mg (1 ml) + 9 ml 0,9 % NaCl = 40 mcg/ml. Leisti po 1 ml lėtai kas 2–3 min – kvėpavimas atsistato, nuskausminimas išlieka."
       },
       {
-        "k": "IM (PCS)",
-        "d": "0,4 mg (iki 2 mg), kartoti kas 2–3 min",
-        "p": "Kai IV neįmanoma. Po 10 mg be atsako – peržiūrėti diagnozę."
-      },
-      {
-        "k": "Į nosį (Nyxoid)",
-        "d": "1,8 mg į vieną šnervę",
-        "p": "Nėra atsako – po 2–3 min kita šnerve."
+        "k": "IM / IN – kai nėra IV (JTS PFC; PCS)",
+        "d": "0,4 mg IM · IN – Nyxoid 1,8 mg",
+        "p": "Kartoti kas 2–3 min pagal poreikį; iš viso ne daugiau kaip 10 mg."
       }
     ],
     "ispejimai": [
       "Veikia 1–4 val.; kai kurie opioidai – ilgiau: stebėti, ar neatsinaujina kvėpavimo slopinimas (PCS).",
-      "Per greitas atstatymas – abstinencija, hipertenzija, aritmijos, plaučių edema (PCS)."
+      "Per greitas atstatymas – skausmas, ažitacija, abstinencija, hipertenzija, aritmijos, plaučių edema (PCS)."
     ],
     "pradzia": "1–2 min (į veną)\n2–5 min (į raumenis)",
     "trukme": "1–4 val., priklauso nuo dozės (PCS)",
     "salutinis": "Pykinimas, vėmimas, sujaudinimas, susilpnėjęs nuskausminimas.",
     "pakuote": "Ampulės 0,4 mg / 1 ml (0,4 mg/ml)",
     "pastabos": [
-      "TCCC 2026 naloksono nenumato."
+      "TCCC 2026 naloksono nemini (fentanilis išimtas iš nuskausminimo); ankstesnės TCCC – 0,4 mg turi būti po ranka, kai skiriami opioidai."
     ],
     "susije": [
       "morfinas",
       "fentanilis"
     ],
-    "saltinis": "PCS (naloksonas 400 mcg/ml, Nyxoid); ankstesnės TCCC gairės (ATP-P, JSOM)",
+    "saltinis": "JTS CPG Analgesia and Sedation Management during PFC (2023); PCS (naloksonas 400 mcg/ml; Nyxoid 1,8 mg)",
     "nuorodos": [
       [
         "PCS – naloksonas 400 mcg/ml (JK eMC)",

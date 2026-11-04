@@ -354,7 +354,7 @@ window.ETC.scenarijai = [
       "ok": false
      },
      {
-      "t": "Skirti kalcį; sAKS 80–90 mm Hg – AKS daugiau nekelti iki chirurginės kontrolės",
+      "t": "Skirti kalcį; sAKS ≈ 100 mm Hg (90–110) gaivinant krauju – daugiau nekelti iki chirurginės kontrolės",
       "ok": true
      },
      {
@@ -362,7 +362,7 @@ window.ETC.scenarijai = [
       "ok": false
      }
     ],
-    "why": "Kalcis – po pirmojo perpilto vieneto. Be galvos ar nugaros smegenų traumos tikslas – sAKS 80–90 mm Hg (ETC 5.0); per didelis AKS gali suardyti krešulį (#23, #40).",
+    "why": "Kalcis – po pirmojo perpilto vieneto. Be galvos ar nugaros smegenų traumos, gaivinant krauju, tikslas – sAKS ≈ 100 mm Hg (90–110); jei kraujo nėra – 80–90 mm Hg (JTS DCR). Per didelis AKS gali suardyti krešulį (#23, #40).",
     "ref": [
      "#/vaistas/kalcis",
      "#/igudis/23",
@@ -399,7 +399,7 @@ window.ETC.scenarijai = [
       "ok": true
      }
     ],
-    "why": "Antrinis pažeidimas = hipoksija + hipotenzija. Galvos traumai sAKS ≥ 110 arba VAKS > 80 mm Hg (ETC 5.0), permisinė hipotenzija netaikoma; hiperventiliacija be EtCO₂ kontrolės – klaida (#44).",
+    "why": "Antrinis pažeidimas = hipoksija + hipotenzija. Galvos traumai sAKS ≥ 110 mm Hg (JTS DCR; ETC 5.0 – arba VAKS > 80 mm Hg), permisinė hipotenzija netaikoma; hiperventiliacija be EtCO₂ kontrolės – klaida (#44).",
     "ref": [
      "#/igudis/44",
      "#/s/kokybe"
@@ -533,7 +533,7 @@ window.ETC.scenarijai = [
       "ok": false
      },
      {
-      "t": "Nutraukti vėsinimą, uždengti, šildyti; Ringerio laktatas pagal SOP, titruojant pagal diurezę",
+      "t": "Nutraukti vėsinimą, uždengti, šildyti; Ringerio laktatas pagal TCCC „10 taisyklę“, titruojant pagal diurezę",
       "ok": true
      },
      {
@@ -541,7 +541,7 @@ window.ETC.scenarijai = [
       "ok": false
      }
     ],
-    "why": "Dideli nudegimai greitai šąla – ilgas vėsinimas ir ledas yra klaidos. ≥ 15 % KPP – skysčiai pagal SOP, titruojant pagal diurezę 0,5–1 ml/kg/val. (#48, #19).",
+    "why": "Dideli nudegimai greitai šąla – ilgas vėsinimas ir ledas yra klaidos. > 20 % KPP – Ringerio laktatas pagal TCCC „10 taisyklę“, titruojant pagal diurezę 30–50 ml/val. (#48, #19).",
     "ref": [
      "#/igudis/48",
      "#/igudis/19",
@@ -1702,7 +1702,7 @@ window.ETC.scenarijai = [
       "ok": true
      },
      {
-      "t": "sAKS 80–90 mm Hg – kaip visiems hemoraginiame šoke",
+      "t": "sAKS 80–90 mm Hg – permisinė hipotenzija, kaip šoke be galvos traumos",
       "ok": false
      },
      {
@@ -3946,18 +3946,18 @@ window.ETC.scenarijai = [
       "ok": false
      },
      {
-      "t": "0,4 mg + 9 ml NaCl; po 0,1–0,2 mg (2,5–5 ml) kas 2–3 min iki KD > 10",
+      "t": "0,4 mg + 9 ml NaCl = 40 mcg/ml; po 1 ml (40 mcg) lėtai kas 2–3 min, kol KD > 10",
       "ok": true
      }
     ],
-    "why": "Naloksonas skiedžiamas iki 0,04 mg/ml ir titruojamas po 0,1–0,2 mg kas 2–3 min iki KD > 10 k./min, neprarandant nuskausminimo. Per greitas atstatymas – abstinencija, hipertenzija, aritmijos, plaučių edema (Vaistai: naloksonas).",
+    "why": "Naloksonas IV / IO: 0,4 mg (1 ml) + 9 ml 0,9 % NaCl = 40 mcg/ml, leisti po 1 ml lėtai kas 2–3 min, kol KD > 10 k./min – kvėpavimas atsistato, nuskausminimas išlieka; iš viso ne daugiau kaip 10 mg (JTS PFC). Per greitas atstatymas – skausmas, ažitacija, abstinencija, hipertenzija, aritmijos (Vaistai: naloksonas).",
     "ref": [
      "#/vaistas/naloksonas",
      "#/p/skiedimas"
     ]
    },
    {
-    "sit": "Po 0,2 mg naloksono sužeistasis atsimerkia ir kvėpuoja pats. Skausmas 5/10. Evakuacija užtruks.",
+    "sit": "Po 3 ml (120 mcg) naloksono sužeistasis atsimerkia ir kvėpuoja pats. Skausmas 5/10. Evakuacija užtruks.",
     "gp": {
      "AVPU": "A",
      "KD": "14",
@@ -4133,27 +4133,27 @@ window.ETC.scenarijai = [
     ]
    },
    {
-    "sit": "Vairuotojas sveria 80 kg, nudegimai 27 % KPP, trauma įvyko prieš 1 val. A skiria Ringerio laktatą pagal Parkland formulę (2–4 ml × kg × % KPP per 24 val.), pradžiai imdamas 4 ml.",
+    "sit": "Vairuotojas sveria 80 kg, nudegimai 27 % KPP, trauma įvyko prieš 1 val. Kraujavimas sustabdytas, veikia IO. A skiria Ringerio laktatą pagal TCCC „10 taisyklę“.",
     "gp": {
      "AKS": "104/66",
      "ŠSD": "114"
     },
-    "klaus": "Kiek skysčių reikia per pirmas 8 valandas?",
+    "klaus": "Koks pradinis skysčių greitis?",
     "opt": [
      {
-      "t": "4320 ml per pirmas 8 val. nuo traumos",
+      "t": "270 ml/val. (27 × 10 ml/val.), titruoti pagal diurezę 30–50 ml/val.",
       "ok": true
      },
      {
-      "t": "8640 ml per pirmas 8 val. – visas paros kiekis",
+      "t": "1 l boliusas per 30 min, toliau – pagal AKS",
       "ok": false
      },
      {
-      "t": "4320 ml per 8 val., skaičiuojant nuo atvykimo į punktą",
+      "t": "Skysčių nereikia, kol AKS normalus",
       "ok": false
      }
     ],
-    "why": "4 × 80 × 27 = 8640 ml per 24 val.; pusė (4320 ml) – per pirmas 8 val. nuo traumos, ne nuo atvykimo. Formulė – tik pradinis taškas: titruojama pagal diurezę 0,5–1 ml/kg/val. (įrankis Nudegimai, #48).",
+    "why": "TCCC „10 taisyklė“ (Role 1 skaičiuoklė): kai > 20 % KPP, 40–80 kg – % KPP × 10 ml/val.: 27 × 10 = 270 ml/val.; kas 10 kg virš 80 kg + 100 ml/val. Titruojama pagal diurezę – tikslas 30–50 ml/val. (JTS Burn CPG); boliusų venkite (įrankis Nudegimai, #48).",
     "ref": [
      "#/nudegimai",
      "#/igudis/48",
@@ -4220,7 +4220,7 @@ window.ETC.scenarijai = [
     ]
    },
    {
-    "sit": "Nudegimai – apie 9 % KPP. Rašytojas klausia, ar skirti ceftriaksono ir pradėti skysčius pagal Parkland formulę.",
+    "sit": "Nudegimai – apie 9 % KPP. Rašytojas klausia, ar skirti ceftriaksono ir pradėti skysčius pagal TCCC „10 taisyklę“.",
     "gp": {
      "AKS": "128/80",
      "ŠSD": "96"
@@ -4240,7 +4240,7 @@ window.ETC.scenarijai = [
       "ok": true
      }
     ],
-    "why": "Skysčiai pagal formulę – kai ≥ 15 % KPP; mažesniems – pagal būklę. Antibiotikai neskiriami vien dėl nudegimų; žiediniams nudegimams tikrinamas distalinis pulsas (#48).",
+    "why": "Skysčiai pagal TCCC „10 taisyklę“ – kai > 20 % KPP; mažesniems – pagal būklę. Antibiotikai neskiriami vien dėl nudegimų; žiediniams nudegimams tikrinamas distalinis pulsas (#48).",
     "ref": [
      "#/igudis/48",
      "#/nudegimai",
@@ -4321,19 +4321,19 @@ window.ETC.scenarijai = [
     "klaus": "Kaip vertinti diurezę?",
     "opt": [
      {
-      "t": "30 ml/val. pakanka – formulę tęsti, nieko nekeičiant greičio",
-      "ok": false
+      "t": "30 ml/val. – pakankama diurezė (tikslas 30–50 ml/val.): greitį palikti, matuoti kas valandą",
+      "ok": true
      },
      {
-      "t": "30 ml/val. – mažiau už tikslą (40–80 ml/val.): didinti skysčių greitį",
-      "ok": true
+      "t": "30 ml/val. – per mažai: dvigubai padidinti skysčių greitį",
+      "ok": false
      },
      {
       "t": "Greitai suleisti 2 l boliusą – per daug skysčių tikrai nepakenks",
       "ok": false
      }
     ],
-    "why": "Skysčiai titruojami pagal valandinę diurezę 0,5–1 ml/kg/val. (80 kg – 40–80 ml/val.), matuojamą per ŠPK. Per daug skysčių – tiek pat blogai, kaip per mažai (#48, #34).",
+    "why": "Nudegus skysčiai titruojami pagal valandinę diurezę, matuojamą per ŠPK: tikslas 30–50 ml/val. (JTS Burn CPG). Mažiau nei 30 – greitį didinti 20 %, daugiau nei 50 – mažinti 20 %; boliusų venkite. Per daug skysčių – tiek pat blogai, kaip per mažai (#48, #34).",
     "ref": [
      "#/igudis/34",
      "#/igudis/48",
@@ -4370,7 +4370,7 @@ window.ETC.scenarijai = [
       "ok": true
      }
     ],
-    "why": "Šoke saugesnis ketaminas; opioidų dozes mažinti, jų poveikis šoke vėluoja – dozė per greitai nekartojama. Tikslas – toleruojamas skausmas, ne 0/10 (Skausmo malšinimas, #43).",
+    "why": "Šoke saugesnis ketaminas; opioidų dozes mažinti, jų poveikis šoke vėluoja – dozė per greitai nekartojama. Fentanilis – 50 mcg IV lėtai, kartoti kas 30 min pagal poreikį (ne 100 mcg kas 5 min). Tikslas – toleruojamas skausmas, ne 0/10 (Skausmo malšinimas, #43).",
     "ref": [
      "#/p/skausmas",
      "#/vaistas/ketaminas",
@@ -4472,24 +4472,24 @@ window.ETC.scenarijai = [
     ]
    },
    {
-    "sit": "Švirkštas paruoštas ir paženklintas: ketaminas 10 mg/ml. Karys sveria 80 kg, paskirta pradėti nuo 0,5 mg/kg/val.",
+    "sit": "Švirkštas paruoštas ir paženklintas: ketaminas 10 mg/ml. Karys sveria 80 kg, neintubuotas; paskirta 1 mg/kg/val. (JTS PFC).",
     "gp": {},
     "klaus": "Kokį greitį nustatyti pompoje?",
     "opt": [
      {
-      "t": "4 ml/val.",
+      "t": "8 ml/val.",
       "ok": true
      },
      {
-      "t": "40 ml/val.",
+      "t": "80 ml/val.",
       "ok": false
      },
      {
-      "t": "0,4 ml/val.",
+      "t": "0,8 ml/val.",
       "ok": false
      }
     ],
-    "why": "0,5 mg/kg/val. × 80 kg = 40 mg/val.; 40 mg ÷ 10 mg/ml = 4 ml/val. Greitis skaičiuojamas pagal švirkšto, ne ampulės koncentraciją (#25).",
+    "why": "1 mg/kg/val. × 80 kg = 80 mg/val.; 80 mg ÷ 10 mg/ml = 8 ml/val. Greitis keičiamas po 0,25 mg/kg/val. (JTS PFC) ir skaičiuojamas pagal švirkšto, ne ampulės koncentraciją (#25).",
     "ref": [
      "#/igudis/25",
      "#/p/skiedimas"
