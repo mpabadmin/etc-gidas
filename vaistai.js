@@ -10,7 +10,8 @@
 // lt – Lietuvoje registruoti preparatai (VVKT VAPRIS registras, tikrinta 2026-10-14): p – [{n pavadinimas, d stiprumas ir pakuotė, r registruotojas,
 //   s: T registruotas ir tiekiamas, L lygiagretus importas, U be registracijos numerio (tiekiamas), N netiekiamas}], ne – netiekiami, pa – pastaba.
 // alt – alternatyva tam pačiam tikslui: [{id – vaistas gide, t – kam}] (sprendžia skiriantysis). Antibiotikai – pagal suvartojimą Lietuvoje (VVKT 2024).
-// Patikrinta: 2026-10-08 (dozės), 2026-10-14 (Lietuvos preparatai), 2026-10-24 (manitolis, gliukozė, insulinas, kalcis hiperkalemijai – JTS, CGO, NHS / JBDS).
+// Patikrinta: 2026-10-08 (dozės), 2026-10-14 (Lietuvos preparatai), 2026-10-24 (manitolis, gliukozė, insulinas, kalcis hiperkalemijai – JTS, CGO, NHS / JBDS),
+//   2026-11-06 (vienos schemos: morfinas, manitolis – JTS PFC; kalcis hiperkalemijai – ERC 2025 / UK KA; midazolamas traukuliams, levetiracetamas – JTS TBI PFC).
 window.ETC = window.ETC || {};
 
 window.ETC.vaistuGrupes = [
@@ -291,28 +292,18 @@ window.ETC.vaistai = [
     "klase": "Nuskausminamieji (opioidas)",
     "grupe": "skausmas",
     "tipas": "pagr",
-    "ind": "Stiprus skausmas – titruojant IV mažomis dozėmis (ETC). Esant šokui ar kvėpavimo sutrikimui saugesnis ketaminas.",
+    "ind": "Stiprus skausmas – IV / IO titruojant (JTS PFC). Esant šokui ar kvėpavimo sutrikimui saugesnis ketaminas.",
     "kontra": "Alergija. PCS: ūminis kvėpavimo slopinimas, obstrukcinė kvėpavimo takų liga, galvos trauma, padidėjęs intrakranijinis spaudimas, smegenų edema, koma, traukulių ligos, MAO inhibitoriai (per 2 sav.), paralyžinis žarnų nepraeinamumas, feochromocitoma.",
     "dozes": [
       {
-        "k": "IV / IO (ETC 5.0)",
-        "d": "2–3 mg (0,03–0,1 mg/kg), titruoti kas 5–10 min · ml 1 mg/ml tirpalo",
-        "c": {
-          "min": 0.03,
-          "max": 0.1,
-          "conc": 1
-        },
-        "p": "Pradėti nuo 2–3 mg; kartoti pagal skausmą ir kvėpavimą. Senyviems – mažesnė dozė. Skiedimas: 1 ml (10 mg) iki 10 ml = 1 mg/ml."
+        "k": "IV / IO (JTS PFC)",
+        "d": "5 mg (2,5–10 mg) lėtai; kartoti kas 5 min, kol skausmas sumažėja arba KD < 10",
+        "p": "10 mg (1 ml) + 9 ml 0,9 % NaCl = 1 mg/ml. Šoke ar hipovolemijai – pradėti nuo 2,5 mg."
       },
       {
-        "k": "IV (PCS)",
-        "d": "2,5–15 mg lėtai, titruojant pagal atsaką",
-        "p": "Pradėti nuo mažesnės dozės. Įprastai ne dažniau kaip kas 4 val., bet dozė ir intervalas titruojami, kol pasiekiamas nuskausminimas. Skiedimas: 1 ml (10 mg) iki 10 ml = 1 mg/ml."
-      },
-      {
-        "k": "IM (PCS)",
-        "d": "10 mg (5–20 mg) kas 4 val.",
-        "p": "Neskiesto 10 mg/ml – 1 ml."
+        "k": "IM – tik jei nėra IV (JTS PFC)",
+        "d": "5–10 mg; kartoti pagal poreikį kas 1–6 val.",
+        "p": "Neskiesto 10 mg/ml: 5 mg – 0,5 ml, 10 mg – 1 ml."
       }
     ],
     "ispejimai": [
@@ -326,15 +317,20 @@ window.ETC.vaistai = [
     "pakuote": "Ampulės 10 mg / 1 ml (10 mg/ml)",
     "pastabos": [
       "Esant šokui ar kvėpavimo sutrikimui saugesnis ketaminas (TCCC 2026 morfino nebenumato).",
-      "NextGen Combat Medic: 10 mg morfino ≈ 100 mcg fentanilio."
+      "NextGen Combat Medic: 10 mg morfino ≈ 100 mcg fentanilio.",
+      "Kiti šaltiniai – ETC 5.0: IV / IO 2–3 mg (0,03–0,1 mg/kg), titruoti kas 5–10 min; PCS: IV 2,5–15 mg lėtai, IM 10 mg (5–20 mg) kas 4 val. Gide naudojama JTS PFC schema."
     ],
     "susije": [
       "ketaminas",
       "ondansetronas",
       "naloksonas"
     ],
-    "saltinis": "ETC vadovas 5.0 (2026), 1 sk. (7 lentelė – analgezija); PCS (morfino sulfatas 10 mg/ml); TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine)",
+    "saltinis": "JTS CPG Analgesia and Sedation Management during PFC (2023); PCS (morfino sulfatas 10 mg/ml); TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); ETC vadovas 5.0 (2026), 1 sk. (7 lentelė – analgezija) – kiti šaltiniai",
     "nuorodos": [
+      [
+        "JTS CPG „Analgesia and Sedation Management during PFC“ (tccc.org.ua, 2023)",
+        "https://tccc.org.ua/en/guide/analgesia-and-sedation-management-during-prolonged-field-care-pcc"
+      ],
       [
         "PCS – morfino sulfatas 10 mg/ml (JK eMC)",
         "https://www.medicines.org.uk/emc/product/13178/smpc"
@@ -651,9 +647,9 @@ window.ETC.vaistai = [
         "p": "Po pirmojo perpilto kraujo produkto vieneto (TCCC 2026); toliau – po kas 4 vienetų (JTS DCR 2023). Leisti lėtai, per ~10 min (TCCC ir JTS greičio nenurodo – kaip hiperkalemijai, UK RA 2020)."
       },
       {
-        "k": "Hiperkalemija (JTS, CGO)",
-        "d": "30 ml 10 % kalcio gliukonato (arba 10 ml 10 % kalcio chlorido) IV per 10 min, stebint EKG",
-        "p": "EKG pokyčiai išlieka – kartoti po 5–10 min (UK RA 2020, CGO; kalcio chlorido – iki 50 ml). Kalio nemažina – kartu insulinas su gliukoze (Vaistai: Insulinas).\nTurniketo atleidimas 2–6 val. intervale: kalcį ir insuliną su gliukoze paruošti iš anksto, EKG stebėti."
+        "k": "Hiperkalemija (ERC 2025; UK KA 2020)",
+        "d": "30 ml 10 % kalcio gliukonato (arba 10 ml 10 % kalcio chlorido) IV / IO per 5–10 min; kartoti po 5–10 min, jei EKG pokyčiai išlieka",
+        "p": "Ta pati dozė kaip po kraujo vieneto. Stebėti EKG. Kalio nemažina – kartu insulinas su gliukoze (Vaistai: Insulinas).\nTurniketo atleidimas 2–6 val. intervale: kalcį ir insuliną su gliukoze paruošti iš anksto, EKG stebėti."
       }
     ],
     "ispejimai": [
@@ -672,7 +668,7 @@ window.ETC.vaistai = [
       "txa",
       "insulinas"
     ],
-    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); PCS (kalcio gliukonatas 10 %); ETC vertinimo lapas; JTS CPG „Hyperkalemia and Dialysis in the Deployed Setting“ (2022); CGO „Hyperkalaemia“ (2026); ETC vadovas 5.0 (2026), 6 sk. „Šokas“; JTS „Damage Control Resuscitation Quick Reference Guide“ (2023); UK Renal Association „Treatment of Acute Hyperkalaemia in Adults“ (2020)",
+    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); PCS (kalcio gliukonatas 10 %); ETC vertinimo lapas; JTS CPG „Hyperkalemia and Dialysis in the Deployed Setting“ (2022); CGO „Hyperkalaemia“ (2026); ETC vadovas 5.0 (2026), 6 sk. „Šokas“; JTS „Damage Control Resuscitation Quick Reference Guide“ (2023); UK Kidney Association (buv. Renal Association) „Treatment of Acute Hyperkalaemia in Adults“ (2020); ERC 2025 (ypatingos aplinkybės – hiperkalemija)",
     "nuorodos": [
       [
         "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
@@ -1248,7 +1244,7 @@ window.ETC.vaistai = [
     "alt": [
       {
         "id": "manitolis",
-        "t": "jei NaCl nėra, šoko nėra ir sAKS > 110 mm Hg"
+        "t": "jei NaCl nėra, šoko nėra ir sAKS ≥ 110 mm Hg"
       }
     ],
     "susije": [
@@ -1262,18 +1258,18 @@ window.ETC.vaistai = [
     "grupe": "galva",
     "tipas": "papild",
     "kam": "Medicinos personalui",
-    "ind": "Galvos smegenų išvaržos požymiai – alternatyva hipertoniniam NaCl, kai šoko nėra ir sAKS > 110 mm Hg. Galvos traumai su politrauma pirmenybė – hipertoniniam NaCl (JTS).",
+    "ind": "Galvos smegenų išvaržos požymiai – alternatyva hipertoniniam NaCl, kai nėra kraujavimo ir šoko, sAKS ≥ 110 mm Hg. Galvos traumai su politrauma pirmenybė – hipertoniniam NaCl (JTS).",
     "kontra": "Hipotenzija, hipovolemija ar nesustabdytas kraujavimas (JTS). PCS: anurija, sunkus širdies nepakankamumas, plaučių edema.",
     "dozes": [
       {
-        "k": "IV / IO (ETC 5.0)",
-        "d": "0,5 g/kg (0,25–1 g/kg) per 20 min · ml 20 % tirpalo",
+        "k": "IV / IO (JTS PFC)",
+        "d": "1 g/kg IV / IO per 20 min (20 % tirpalas – 5 ml/kg; 80 kg – 400 ml) · ml 20 % tirpalo",
         "c": {
-          "per": 0.5,
+          "per": 1,
           "u": "g",
           "conc": 0.2
         },
-        "p": "20 % – 2,5 ml/kg (80 kg – 200 ml); 15 % – 3,3 ml/kg (80 kg – 270 ml).\nPakartotinai – 0,5 g/kg kas 3 val., jei reikia (JTS, gydytojo sprendimu)."
+        "p": "Tik kai nėra kraujavimo ir šoko, sAKS ≥ 110. Prireikus kartoti 0,5 g/kg kas 3 val. Pirmenybė – hipertoniniam NaCl.\n15 % tirpalo – 6,7 ml/kg (80 kg – 530 ml)."
       }
     ],
     "ispejimai": [
@@ -1285,14 +1281,14 @@ window.ETC.vaistai = [
     "trukme": "apie 3 val.",
     "salutinis": "Hipotenzija dėl diurezės, elektrolitų sutrikimai, ekstravazacijos vietos sudirginimas.",
     "pastabos": [
-      "JTS lauko gairės – iki 1 g/kg (20 % – 5 ml/kg).",
       "JTS lauko gairės: hipertoninis NaCl pirmenybinis; manitolis – kai NaCl nėra arba būklė blogėja. Galvūgalis 30°, SpO₂ ir AKS tikslai – kaip hipertoniniam NaCl.",
-      "Šlapimo kateteris – diurezei matuoti."
+      "Šlapimo kateteris – diurezei matuoti.",
+      "Kiti šaltiniai – ETC 5.0: 0,5 g/kg (0,25–1 g/kg) per 20 min (20 % – 2,5 ml/kg). Gide naudojama JTS PFC schema."
     ],
     "susije": [
       "nacl-hipert"
     ],
-    "saltinis": "JTS CPG „TBI Management in Prolonged Field Care“ (2023) ir „TBI Management and Basic Neurosurgery in the Deployed Environment“; ETC vertinimo lapas; ETC vadovas 5.0 (2026), 7 sk. „Galvos trauma“",
+    "saltinis": "JTS CPG „TBI Management in Prolonged Field Care“ (2023) ir „TBI Management and Basic Neurosurgery in the Deployed Environment“; ETC vertinimo lapas; ETC vadovas 5.0 (2026), 7 sk. „Galvos trauma“ – kiti šaltiniai",
     "nuorodos": [
       [
         "JTS CPG „Traumatic Brain Injury Management in Prolonged Field Care“ (tccc.org.ua, 2023)",
@@ -1308,6 +1304,39 @@ window.ETC.vaistai = [
         "id": "nacl-hipert",
         "t": "pirmenybinis išvaržos požymiams"
       }
+    ]
+  },
+  {
+    "id": "levetiracetamas",
+    "name": "Levetiracetamas",
+    "klase": "Prieštraukulinis",
+    "grupe": "galva",
+    "tipas": "papild",
+    "kam": "Gydytojo sprendimu",
+    "ind": "Galvos smegenų trauma: palaikomasis gydymas po traukulių, nutrauktų midazolamu (JTS TBI PFC).",
+    "kontra": "Alergija levetiracetamui (PCS).",
+    "dozes": [
+      {
+        "k": "IV / IO (JTS TBI PFC)",
+        "d": "2000 mg IV / IO per 15 min, toliau 500 mg kas 12 val. – gydytojo sprendimu",
+        "p": "Pirmiausia traukulius nutraukti midazolamu (Vaistai: Midazolamas)."
+      }
+    ],
+    "ispejimai": [
+      "Sedacija ir mieguistumas apsunkina neurologinį vertinimą – GKS ir vyzdžius užrašyti prieš skiriant."
+    ],
+    "pastabos": [
+      "Kiti šaltiniai – epilepsinė būklė (ESETT, NICE 2022): 60 mg/kg, ne daugiau kaip 4,5 g, per 10 min. Gide naudojama JTS TBI PFC schema."
+    ],
+    "susije": [
+      "midazolamas"
+    ],
+    "saltinis": "JTS CPG „TBI Management in Prolonged Field Care“ (2023); ESETT, NICE 2022 (epilepsinė būklė) – kiti šaltiniai",
+    "nuorodos": [
+      [
+        "JTS CPG „Traumatic Brain Injury Management in Prolonged Field Care“ (tccc.org.ua, 2023)",
+        "https://tccc.org.ua/en/guide/traumatic-brain-injury-management-in-prolonged-field-care-pcc"
+      ]
     ]
   },
   {
@@ -1576,16 +1605,21 @@ window.ETC.vaistai = [
     "grupe": "retai",
     "tipas": "pagr",
     "tccc26": true,
-    "ind": "TCCC 2026 – tik ketamino sukelta emergencijos reakcija. PCS – sedacija, premedikacija.",
+    "ind": "TCCC 2026 – ketamino sukelta emergencijos reakcija. Traukuliai (JTS TBI PFC). PCS – sedacija, premedikacija.",
     "kontra": "PCS: padidėjęs jautrumas benzodiazepinams; sąmoningai sedacijai – sunkus kvėpavimo nepakankamumas ar ūminis kvėpavimo slopinimas.",
     "dozes": [
       {
-        "k": "IV / IO",
+        "k": "Emergencijos reakcija / sedacija IV / IO",
         "d": "0,5–2 mg lėtai",
         "p": "TCCC 2026 – ketamino emergencijos reakcijai. Sedacijai titruoti po 1 mg (apie 1 mg per 30 s); daugiau kaip 5 mg (≥ 60 m. – 3,5 mg) paprastai nereikia (PCS)."
       },
       {
-        "k": "IM (PCS)",
+        "k": "Traukuliai (JTS TBI PFC)",
+        "d": "5 mg IV / IO / IM; kartoti kas 5 min, kol traukuliai liausis",
+        "p": "5 mg/ml – 1 ml (1 mg/ml – 5 ml). Toliau – levetiracetamas (gydytojo sprendimu). Stebėti kvėpavimą – maišas su kauke po ranka."
+      },
+      {
+        "k": "Sedacija IM (PCS)",
         "d": "0,07–0,1 mg/kg · ml 5 mg/ml tirpalo",
         "c": {
           "min": 0.07,
@@ -1607,9 +1641,10 @@ window.ETC.vaistai = [
       "Sukelia anterogradinę amneziją: pacientas neprisimena įvykių po vaisto suleidimo, paprastai iki 1 val."
     ],
     "susije": [
-      "ketaminas"
+      "ketaminas",
+      "levetiracetamas"
     ],
-    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); PCS (midazolamas 5 mg/ml)",
+    "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); JTS CPG „TBI Management in Prolonged Field Care“ (2023) – traukuliai; PCS (midazolamas 5 mg/ml)",
     "nuorodos": [
       [
         "TCCC gairės 2026-05-01 (PDF, Deployed Medicine)",
@@ -1618,6 +1653,10 @@ window.ETC.vaistai = [
       [
         "Deployed Medicine – TCCC kolekcija (reikia prisijungti)",
         "https://deployedmedicine.allogy.net/learner/collections/11"
+      ],
+      [
+        "JTS CPG „Traumatic Brain Injury Management in Prolonged Field Care“ (tccc.org.ua, 2023)",
+        "https://tccc.org.ua/en/guide/traumatic-brain-injury-management-in-prolonged-field-care-pcc"
       ],
       [
         "PCS – midazolamas injekcinis (JK eMC)",

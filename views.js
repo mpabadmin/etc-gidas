@@ -217,7 +217,7 @@ const V = {
   drugs() {
     const D = (E.vaistai || []).filter(v => ok(v.kam)), w = wCalc();
     const G = E.vaistuGrupes || [{ id: undefined, pav: 'Vaistai' }];
-    let h = '<h1>Vaistai</h1><p class="muted">Viena dozavimo schema – pagal TCCC 2026 gaires, gamintojo PCS ir ERC.</p>';
+    let h = '<h1>Vaistai</h1><p class="muted">Viena dozavimo schema – pagal TCCC 2026 gaires, JTS CPG, gamintojo PCS ir ERC.</p>';
     G.forEach(g => {
       const a = D.filter(v => v.grupe === g.id);
       if (!a.length) return;

@@ -1523,7 +1523,7 @@ window.ETC.scenarijai = [
       "ok": false
      }
     ],
-    "why": "Hiperkalemijai su EKG pokyčiais – kalcio gliukonatas IV stebint EKG, gliukozė su insulinu (#27). Turniketas vėl užveržiamas tik atsinaujinus kraujavimui ar esant galūnės išemijai (#26).",
+    "why": "Hiperkalemijai su EKG pokyčiais – kalcio gliukonatas 10 % 30 ml (ar kalcio chloridas 10 % 10 ml) IV / IO per 5–10 min stebint EKG, pokyčiai išlieka – kartoti po 5–10 min (ERC 2025); kartu gliukozė su insulinu (#26, #27). Turniketas vėl užveržiamas tik atsinaujinus kraujavimui ar esant galūnės išemijai (#26).",
     "ref": [
      "#/igudis/26",
      "#/vaistas/kalcis",
@@ -4370,7 +4370,7 @@ window.ETC.scenarijai = [
       "ok": true
      }
     ],
-    "why": "Šoke saugesnis ketaminas; opioidų dozes mažinti, jų poveikis šoke vėluoja – dozė per greitai nekartojama. Fentanilis – 50 mcg IV lėtai, kartoti kas 30 min pagal poreikį (ne 100 mcg kas 5 min). Tikslas – toleruojamas skausmas, ne 0/10 (Skausmo malšinimas, #43).",
+    "why": "Šoke saugesnis ketaminas; opioidų dozes mažinti, jų poveikis šoke vėluoja – dozė per greitai nekartojama. Morfinas šoke – nuo 2,5 mg IV lėtai, kartoti kas 5 min (JTS PFC), ne 10 mg greitai. Fentanilis – 50 mcg IV lėtai, kartoti kas 30 min pagal poreikį (ne 100 mcg kas 5 min). Tikslas – toleruojamas skausmas, ne 0/10 (Skausmo malšinimas, #43).",
     "ref": [
      "#/p/skausmas",
      "#/vaistas/ketaminas",

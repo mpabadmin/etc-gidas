@@ -12,7 +12,7 @@ const E = window.ETC;
 const KOMP = 'Pagal kompetenciją', MED = 'Medicinos personalui', GYD = 'Gydytojui', INT = 'Intubuojantiems gydytojams';
 const link = (href, t, s) => `<a class="row" href="${href}"><div>${t}${s ? '<small>' + s + '</small>' : ''}</div><span class="ar">›</span></a>`;
 
-E.versija = '2026-11-06 v54 (perdavimo tekstų skaitymas balsu: 9-Line, SITREP, kortelė, perdavimas; režimas „Per radiją“)';
+E.versija = '2026-11-06 v55 (vienos schemos: morfinas, manitolis, kalcis hiperkalemijai, midazolamas traukuliams, levetiracetamas – JTS / ERC 2025)';
 // Pranešimų priėmimo adresas: Google Apps Script žiniatinklio programos /exec URL (žr. tools/atsiliepimai.gs)
 E.atsiliepimai = { url: 'https://script.google.com/macros/s/AKfycbyUpzDmAClJ40FMltkHi21Ozc4PpItRr3u6yy4rU0DKNGe7JkRBnOr0y42wLwpJcBau/exec' };
 
@@ -487,9 +487,9 @@ E.puslapiai = {
       '<h3>IV boliusu</h3>' +
       sk('Ketaminas – sedacija', '10 ml švirkštas: 250 mg (5 ml × 50 mg/ml) + 5 ml NaCl = 25 mg/ml', '1–2 mg/kg, lėtai. Esant šokui – dozė mažinama 50 %. Jei ampulė 100 mg/ml – koncentracija bus kita.') +
       sk('Fentanilis', '2 ml švirkštas: 100 mcg, neskiestas = 50 mcg/ml', '0,5–1 mcg/kg, lėtai') +
-      sk('Morfinas', '10 ml švirkštas: 10 mg + 9 ml NaCl = 1 mg/ml', '0,1 mg/kg') +
+      sk('Morfinas', '10 ml švirkštas: 10 mg + 9 ml NaCl = 1 mg/ml', 'Boliusas 2,5–5 mg (2,5–5 ml), kartoti kas 5 min, kol skausmas sumažėja arba KD &lt; 10 (JTS PFC). Šoke – pradėti nuo 2,5 mg.') +
       sk('Traneksamo rūgštis', '2000 mg į 100 ml arba 250 ml NaCl', '2 g infuzija. PCS – ne greičiau kaip 1 ml/min 100 mg/ml tirpalo (100 mg/min; 2 g – ne trumpiau kaip 20 min). TCCC 2026 – 2 g lėta IV / IO injekcija.') +
-      sk('Kalcio gliukonatas', '3 g (30 ml 10 %) į 250 ml NaCl', '3 g infuzija. PCS – ne greičiau kaip 0,45 mmol/min (ne trumpiau kaip 15 min). Nemaišyti su bikarbonatu, fosfatais, ceftriaksonu.') +
+      sk('Kalcio gliukonatas', '30 ml 10 % (3 g), neskiestas (arba 10 ml 10 % kalcio chlorido)', 'IV / IO per 5–10 min, stebint EKG – po kraujo vieneto ir hiperkalemijai ta pati dozė; hiperkalemijai – kartoti po 5–10 min, jei EKG pokyčiai išlieka (ERC 2025; UK KA 2020). Ne per tą pačią liniją su krauju; nemaišyti su bikarbonatu, fosfatais, ceftriaksonu (PCS).') +
       sk('Ondansetronas', '20 ml švirkštas: 8 mg + 16 ml NaCl = 0,4 mg/ml', 'Suleisti lėtai IV – ne greičiau kaip per 30 s (PCS).') +
       sk('Metoklopramidas', '10 ml švirkštas: 10 mg + 8 ml NaCl = 1 mg/ml', 'Suleisti lėtai IV – ne trumpiau kaip per 3 min (PCS).') +
       sk('Rokuroniumas', '10 ml švirkštas: 100 mg, neskiestas = 10 mg/ml', '0,5–1,5 mg/kg. PCS: intubacijai 0,6 mg/kg, greitosios sekos indukcijai 1,0 mg/kg.') +
@@ -502,7 +502,7 @@ E.puslapiai = {
       sk('Noradrenalinas', '50 ml švirkštas: 4 mg (4 ml) + 46 ml 5 % gliukozės = 80 mcg/ml', '0,1–0,4 mcg/kg/min, pradėti nuo 0,1 ir titruoti pagal sAKS; didesnė dozė – gydytojo sprendimu. ml/val. = mcg/kg/min × kg × 60 ÷ 80; 80 kg: 0,1 = 6 ml/val., 0,4 = 24 ml/val. Per centrinę veną.') +
       '<p class="muted">Pagrindinės dozės – vaisto puslapyje (TCCC 2026 / PCS). Šių ETC lentelių dozės kai kur skiriasi – jei skiriasi, vadovaukitės vaisto puslapiu.</p>' +
       link('#/vaistai', 'Visi vaistai') + link('#/igudis/24', 'Įgūdis #24 – IV vaistų paruošimas') + link('#/igudis/25', 'Įgūdis #25 – infuzomatas'),
-    saltinis: 'ETC įgūdžių lapas (Vaistai IV boliusu, Vaistai IV per infuzomatą); JTS CPG Analgesia and Sedation Management during PFC (2023) – naloksonas, ketamino infuzija; JTS PCC ID 91 – noradrenalinas; gamintojų PCS (JK eMC); TCCC gairės 2026-05-01'
+    saltinis: 'ETC įgūdžių lapas (Vaistai IV boliusu, Vaistai IV per infuzomatą); JTS CPG Analgesia and Sedation Management during PFC (2023) – naloksonas, morfinas, ketamino infuzija; JTS PCC ID 91 – noradrenalinas; ERC 2025, UK KA 2020 – kalcis hiperkalemijai; gamintojų PCS (JK eMC); TCCC gairės 2026-05-01'
   },
   skausmas: {
     title: 'Skausmo malšinimas', sub: 'Vertinimas, titravimas, nemedikamentinės priemonės',
@@ -510,13 +510,13 @@ E.puslapiai = {
       '<h3>Parinkite pagal skausmą ir būklę</h3><p><b>Lengvas–vidutinis skausmas, gali gerti</b> – paracetamolis 1000 mg per burną kas 8 val. ir meloksikamas 15 mg per burną kartą per parą (negalinčiam gerti – paracetamolis IV).</p>' +
       '<p><b>Vidutinis–stiprus skausmas</b> – ketaminas 25 mg (0,2–0,3 mg/kg) IV / IO lėtai per 1 min, arba 100 mg IM, arba 50 mg į nosį (100 mg/ml); kartoti kas 30 min, tikslas – sumažėjęs skausmas arba atsiradęs nistagmas. Ir (ar) titruojami IV opioidai – morfinas, fentanilis (dozės – vaisto puslapyje). Skirtingų grupių analgetikų derinys didina veiksmingumą ir mažina šalutinį poveikį (ETC 5.0). Pykinant – ondansetronas.</p>' +
       '<ul><li>Šokas ar kvėpavimo sutrikimas – saugesnis ketaminas; opioidų dozes mažinkite, poveikis šoke vėluoja.</li><li>Stebėkite kvėpavimo takus, kvėpavimą ir kraujotaką; po ketamino – seilėtekis, turėkite atsiurbimą.</li><li>Benzodiazepinų rutiniškai nederinkite nei su ketaminu, nei su opioidais (kvėpavimo slopinimas); iš dalies disocijavusiam – saugiau papildyti ketamino. Išimtis – ryški ažitacija: gydytojo sprendimu, maža dozė, stebint kvėpavimą.</li><li>Pykinimui – ondansetronas 4 mg ODT / IV / IO / IM kas 8 val.</li><li>Tikslas – toleruojamas skausmas, ne visiškas jo pašalinimas.</li></ul>' +
-      '<p class="muted">Morfino dozės – pagal ETC 5.0 ir gamintojo PCS, fentanilio – pagal ankstesnes TCCC gaires, naloksono – pagal JTS PFC (žr. vaisto puslapį); skiria medikas. Pakankama analgezija tik slopinant sąmonę, kvėpavimą ar AKS – reikia bendrosios nejautros (patyręs anesteziologas, ETC).</p>' +
+      '<p class="muted">Morfino ir naloksono dozės – pagal JTS PFC, fentanilio – pagal ankstesnes TCCC gaires (žr. vaisto puslapį); skiria medikas. Pakankama analgezija tik slopinant sąmonę, kvėpavimą ar AKS – reikia bendrosios nejautros (patyręs anesteziologas, ETC).</p>' +
       '<h3>Titruokite</h3><p>Geriau kelios mažesnės dozės nedideliais intervalais nei viena didelė. Norimas efektas – skausmas sumažėja bent 3 balais (pvz., buvo 8/10, tapo 5/10); siekiant 3/10 ar mažiau reikės didelių dozių ir atsiras komplikacijų. Registruokite visas skirtas dozes (vaistas, dozė, būdas, laikas).</p>' +
       '<h3>Kur sustoti</h3><ul><li><b>Ketaminas:</b> sumažėjęs skausmas arba atsiradęs nistagmas.</li><li><b>Opioidai:</b> skyrimas nutraukiamas, kai kvėpavimo dažnis &lt; 10 k./min (kuopos kortelė).</li><li><b>Naloksonas:</b> IV / IO po 40 mcg (1 ml 40 mcg/ml tirpalo) lėtai kas 2–3 min, kol kvėpavimo dažnis &gt; 10 k./min – nuskausminimas išlieka; be IV – 0,4 mg IM arba Nyxoid 1,8 mg į nosį; iš viso ne daugiau kaip 10 mg (JTS PFC).</li></ul>' +
       '<h3>Ypač atsargiai, kai yra</h3><ul><li>sumažėjęs sąmonės lygis</li><li>kvėpavimo sutrikimas</li><li>šokas – vaisto poveikis gali gerokai vėluoti; opioidų dozes mažinti</li><li>hipotermija</li><li>apsinuodijimas (alkoholis, narkotikai)</li><li>senyvas amžius</li></ul>' +
       '<h3>Be vaistų</h3><ul><li>Palaikykite akių ir fizinį kontaktą, paaiškinkite, kas vyksta, įspėkite prieš skausmingą procedūrą, saugokite orumą.</li><li>Kuo anksčiau imobilizuokite lūžius.</li><li>Uždenkite nudegimus.</li><li>Kuo anksčiau nukelkite nuo kietų neštuvų / lentų.</li><li>Šildykite – drebulys stiprina skausmą.</li><li>Procedūroms (drenas, lūžių manipuliacijos) – vietinė ar regioninė nejautra pagal kompetenciją.</li></ul>' +
       link('#/vaistas/ketaminas', 'Ketaminas') + link('#/vaistas/fentanilis', 'Fentanilis') + link('#/vaistas/morfinas', 'Morfinas') + link('#/vaistas/paracetamolis', 'Paracetamolis') + link('#/vaistas/meloksikamas', 'Meloksikamas') + link('#/vaistas/ondansetronas', 'Ondansetronas') + link('#/vaistas/naloksonas', 'Naloksonas') + link('#/igudis/43', 'Įgūdis #43: skausmo vertinimas ir malšinimas'),
-    saltinis: 'ETC vadovas 5.0 (2026), 1 sk. „Priėmimas ir gaivinimas“ (7 lentelė – analgezija); TCCC gairės 2026-05-01 (Deployed Medicine) ir gamintojų PCS – dozės; JTS CPG Analgesia and Sedation Management during PFC (2023) – naloksonas; kuopos vaistų kortelės'
+    saltinis: 'ETC vadovas 5.0 (2026), 1 sk. „Priėmimas ir gaivinimas“ (7 lentelė – analgezija); TCCC gairės 2026-05-01 (Deployed Medicine) ir gamintojų PCS – dozės; JTS CPG Analgesia and Sedation Management during PFC (2023) – morfinas, naloksonas; kuopos vaistų kortelės'
   }
 };
 
@@ -539,7 +539,7 @@ E.temos = [
     apie: 'Sistemingai nuo galvos iki kojų, iš priekio ir nugaros; anamnezė AMPLE; neatlikti elementai įrašomi į problemų sąrašą.',
     puslapiai: [], sarasai: ['antrine', 'a-ant', 'b-ant', 'c-ant'], igudziai: [42, 44, 45, 28, 29, 30, 31, 32, 33, 48, 34], vaistai: ['ceftriaksonas', 'cefadroksilis'] },
   { id: 'vaistai', zenklas: 'Rx', pav: 'Vaistai ir skausmas', sub: 'Dozės, skausmo malšinimas, skiedimas',
-    apie: 'Viena dozavimo schema – pagal TCCC 2026 gaires, gamintojo PCS ir ERC.',
+    apie: 'Viena dozavimo schema – pagal TCCC 2026 gaires, JTS CPG, gamintojo PCS ir ERC.',
     puslapiai: ['skausmas', 'skiedimas'], sarasai: [], igudziai: [43, 47, 24, 25, 27], vaistai: ['ketaminas', 'paracetamolis', 'meloksikamas', 'txa', 'ceftriaksonas', 'ondansetronas'] }
 ];
 })();

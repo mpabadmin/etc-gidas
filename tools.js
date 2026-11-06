@@ -2027,7 +2027,7 @@ const VZ = (() => {
   const QD = {
     ketaminas: [['IV', '25', 'mg'], ['IM', '100', 'mg'], ['IN', '50', 'mg']],
     fentanilis: [['IV', '50', 'mcg'], ['IN', '100', 'mcg']],
-    morfinas: [['IM', '10', 'mg']],
+    morfinas: [['IV', '5', 'mg'], ['IV', '2,5', 'mg', 'šoke'], ['IM', '10', 'mg']],
     paracetamolis: [['PO', '1000', 'mg'], ['IV', '1', 'g']],
     meloksikamas: [['PO', '15', 'mg']],
     txa: [['IV', '2', 'g']],
