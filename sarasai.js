@@ -12,7 +12,7 @@ const E = window.ETC;
 const KOMP = 'Pagal kompetenciją', MED = 'Medicinos personalui', GYD = 'Gydytojui', INT = 'Intubuojantiems gydytojams';
 const link = (href, t, s) => `<a class="row" href="${href}"><div>${t}${s ? '<small>' + s + '</small>' : ''}</div><span class="ar">›</span></a>`;
 
-E.versija = '2026-11-04 v53 (vienodos dozės: naloksonas – IV po 40 mcg titruoti, IM 0,4 mg, IN 1,8 mg; ketaminas – TCCC 2026 bolusas, JTS PFC infuzija; fentanilis – viena schema; noradrenalinas – tik 80 mcg/ml, 0,1–0,4 mcg/kg/min; nudegimai – tik TCCC „10 taisyklė“, diurezė 30–50 ml/val.; AKS tikslai pagal JTS DCR; trauminio širdies sustojimo sąrašas papildytas pagal ERC / RCUK 2025)';
+E.versija = '2026-11-06 v54 (perdavimo tekstų skaitymas balsu: 9-Line, SITREP, kortelė, perdavimas; režimas „Per radiją“)';
 // Pranešimų priėmimo adresas: Google Apps Script žiniatinklio programos /exec URL (žr. tools/atsiliepimai.gs)
 E.atsiliepimai = { url: 'https://script.google.com/macros/s/AKfycbyUpzDmAClJ40FMltkHi21Ozc4PpItRr3u6yy4rU0DKNGe7JkRBnOr0y42wLwpJcBau/exec' };
 
