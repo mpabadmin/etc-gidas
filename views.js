@@ -1,6 +1,11 @@
 'use strict';
 const W_LIST = [50, 60, 70, 80, 90, 100, 120];
 const ok = g => !(hide() && isDoc(g));
+// v56: gydytojui skirtas vaistas / įgūdis atidarytas tiesiogiai (nuoroda, istorija), kai nustatymuose jie paslėpti – pranešimas vietoje turinio;
+// „Rodyti vis tiek“ – tik šiam atidarymui (iki perkrovimo), nustatymo nekeičia.
+const DOC_SHOW = new Set();
+const docHidden = (kind, id, name) => `<h1>${esc(name)}</h1><div class="warn"><b>${kind === 'vaistas' ? 'Gydytojui skirtas vaistas' : 'Gydytojui skirtas įgūdis'} – paslėptas nustatymuose.</b><div class="muted" style="margin-top:4px">Įjungta „Slėpti tik gydytojui skirtus veiksmus ir vaistus“ – ${kind === 'vaistas' ? 'šio vaisto nėra sąrašuose ir paieškoje' : 'šio įgūdžio nėra sąrašuose ir paieškoje'}.</div><div class="acts"><button class="btn" data-act="go" data-r="#/nustatymai">Nustatymai</button><button class="btn" data-act="doc-show" data-k="${esc(kind + ':' + id)}">Rodyti vis tiek</button></div></div>` +
+  row(kind === 'vaistas' ? '#/vaistai' : '#/igudziai', kind === 'vaistas' ? 'Visi vaistai' : 'Visi įgūdžiai');
 const tabBtn = (lb, r, on) => `<button class="${on ? 'on' : ''}" data-act="go" data-r="${r}">${esc(lb)}</button>`;
 const ul = a => '<ul>' + a.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>';
 const drugById = id => (E.vaistai || []).find(x => x.id === id);
@@ -230,6 +235,7 @@ const V = {
   drug(id) {
     const v = drugById(id);
     if (!v) return notFound();
+    if (!ok(v.kam) && !DOC_SHOW.has('vaistas:' + v.id)) return docHidden('vaistas', v.id, v.name);
     const w = wCalc();
     const allD = (v.dozes || []).concat(...(v.stulpeliai || []).map(c => c.dozes));
     const doseHtml = d => `<div class="dose"><div class="lb">${esc(d.k)}${d.c ? ' · ' + esc(d.d) : ''}</div><div class="big">${esc(d.c ? calc(d.c, w) : d.d)}</div>${d.p ? '<div class="lb">' + br(d.p) + '</div>' : ''}</div>`;
@@ -292,6 +298,7 @@ const V = {
   skill(id) {
     const s = skillById(id);
     if (!s) return notFound();
+    if (!ok(s.kam) && !DOC_SHOW.has('igudis:' + s.id)) return docHidden('igudis', s.id, s.pav);
     const r = ratings()[s.id] || 0;
     const all = skillOrder().filter(x => ok(x.kam)), i = all.indexOf(s);
     let h = `<h1>${esc(s.pav)}</h1><span class="tag">#${s.id}</span><span class="tag">${esc(grupesPav(s.grupe))}</span>` + tag(s.kam) + (s.id > 34 ? '<span class="tag">Papildomas</span>' : '');
@@ -307,6 +314,8 @@ const V = {
     const learnH = (s.teorija || s.praktika ? '<h3>Ką išmokti</h3>' + (s.teorija ? `<div class="kv"><b>Teorija</b><span>${br(s.teorija)}</span></div>` : '') + (s.praktika ? `<div class="kv"><b>Praktika</b><span>${br(s.praktika)}</span></div>` : '') : '') + (s.aprasymas ? '<div>' + s.aprasymas + '</div>' : '');
     if (learnH) h += expl(learnH, 'Išsamiau: teorija ir praktika');
     const link = (lb, src, url) => url ? `<a class="row" href="${esc(url)}" target="_blank" rel="noopener"><div>${esc(lb)}<small>${esc(src || url)}</small></div><span class="ar">↗</span></a>` : (src ? `<p class="muted">${esc(lb)}: ${esc(src)}</p>` : '');
+    const drugs = (s.vaistai || []).map(drugById).filter(v => v && ok(v.kam)); // v56: įgūdžio vaistai (pvz., lidokainas – #14, #38, #47)
+    if (drugs.length) h += '<h2>Vaistai</h2>' + drugs.map(v => row('#/vaistas/' + v.id, v.name, doseShort(v, wCalc()))).join('');
     if ((s.esmeSrc || []).length) h += '<p class="muted">Šaltiniai: ' + esc(s.esmeSrc.join('; ')) + '</p>';
     const srcH = link('Teorijos šaltinis', s.saltT, s.nuorT) + link('Praktikos šaltinis', s.saltP, s.nuorP);
     if (srcH) h += expl(srcH, 'Teorijos ir praktikos šaltiniai');

@@ -100,7 +100,7 @@ function view(p, q) {
 
 function render() {
   const { p, q } = route();
-  document.body.className = night ? 'field night' : mode; // naktinis režimas – visada tamsi paletė + raudonas filtras
+  document.body.className = night ? 'field night' : 'field'; // v50: vienas (lauko) režimas; naktinis – ta pati tamsi paletė + raudonas filtras
   backBtn.style.display = p.length ? '' : 'none'; // pradžios ekrane vietoje „Atgal“ – atnaujinimo mygtukas dešinėje
   const sec = { vaistai: 'vaistai', vaistas: 'vaistai', igudziai: 'igudziai', igudis: 'igudziai', temos: 'treniruote', tema: 'treniruote', p: 'home', sarasai: 'sarasai', s: 'sarasai', v: 'sarasai', '9line': 'home', mist: 'pacientas', gks: 'home', tst: 'home', sitrep: 'home', zymejimas: 'pacientas', nudegimai: 'home', mascal: 'home', 'pilnas-kraujas': 'home', scenarijai: 'treniruote', treniruote: 'treniruote', pacientas: 'pacientas', qr: 'pacientas', 'qr-priimti': 'pacientas', korteles: 'treniruote', skenuoti: 'home', vertinimas: 'sarasai' }[p[0]] || (p.length ? '' : 'home');
   document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('on', a.dataset.s === sec));
@@ -161,7 +161,6 @@ app.addEventListener('click', e => {
   if (/^hb-/.test(d.act)) { HUB.act(el); return; }
   if (/^rem-/.test(d.act)) { REM.act(el); return; }
   if (/^qr-/.test(d.act)) { QR.act(el); return; }
-  if (/^ex-/.test(d.act)) { EX.act(el); return; }
   if (/^vl-/.test(d.act)) { VL.act(el); return; }
   if (/^sk-/.test(d.act)) { SK.act(el); return; }
   if (/^fc-/.test(d.act)) { FC.act(el); return; }
@@ -202,7 +201,8 @@ app.addEventListener('click', e => {
       LS.set('etc-ivert', R); render(); break;
     }
     case 'new-pt': { const prev = PT.list().cur; PT.add(); render(); PT.added(prev); break; } // kitas sužeistasis; ankstesni lieka sąraše
-    case 'hide': LS.set('etc-slepti', !hide()); IDX = null; render(); break;
+    case 'hide': LS.set('etc-slepti', !hide()); IDX = null; render(); break; // IDX – paieškos indeksas be paslėptų vaistų / įgūdžių (core.js buildIdx)
+    case 'doc-show': DOC_SHOW.add(d.k); render(); break; // paslėptą gydytojo vaistą / įgūdį rodyti šį kartą (views.js)
     case 'reset-ivert': if (confirm('Ištrinti visus įsivertinimus?')) { LS.set('etc-ivert', {}); render(); } break;
     case 'fb': FB.open(); break;
     case 'fb-flush':
@@ -222,7 +222,7 @@ app.addEventListener('keydown', e => {
   if (e.key === 'Enter' && e.target && (e.target.id === 'w-in' || e.target.id === 'nb-ml' || e.target.id === 'hb-win')) { e.preventDefault(); const b = app.querySelector(e.target.id === 'w-in' ? '[data-act="w-ok"]' : e.target.id === 'hb-win' ? '[data-act="hb-wok"]' : '[data-act="nb-uo"]'); if (b) b.click(); return; }
   const t = e.target, a = t.dataset && t.dataset.act;
   if (e.key === 'Enter' && /^(yt|mp4)$/.test(a || '')) t.click();
-  if ((e.key === 'Enter' || e.key === ' ') && (a === 'nb-r' || a === 'kr-ck' || a === 'ex-ck' || a === 'gl-tg')) { e.preventDefault(); t.dispatchEvent(new MouseEvent('click', { bubbles: true })); return; }
+  if ((e.key === 'Enter' || e.key === ' ') && (a === 'nb-r' || a === 'kr-ck' || a === 'gl-tg')) { e.preventDefault(); t.dispatchEvent(new MouseEvent('click', { bubbles: true })); return; }
   if ((e.key === 'Enter' || e.key === ' ') && a === 'mc-mdel' && !(t instanceof HTMLButtonElement)) { e.preventDefault(); MC.act(t, e); } // SVG žymė
 });
 

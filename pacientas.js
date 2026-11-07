@@ -6,7 +6,7 @@
 // Programėlės skirtumai – TCFG.hub (tools.js pradžioje): sąrašų maršrutai ir numatytieji, vaistai, greiti veiksmai, perdavimo nuorodos, laikmačiai.
 //
 // ── API (stabili; March prievadas naudoja tą pačią) ──
-// Reikia globalių: E, LS, mode, app, render, route (app.js), esc, hm, row, notFound, listRow, listRoute, drugById, doseShort, W_LIST, timersHtml (core.js / views.js),
+// Reikia globalių: E, LS, app, render, route (app.js), esc, hm, row, notFound, listRow, listRoute, drugById, doseShort, W_LIST, timersHtml (core.js / views.js),
 //   TCFG, MC, PT, REM, toast, plural, tcfgRows (tools.js); nebūtini: VZ, OP.
 // TCFG.hub = {                                  visi laukai nebūtini (numatytieji – HCFG žemiau)
 //   listDefaults: ['id', …]                     dažnų sąrašų užpildas, kai mažai naudojimo (top 3)

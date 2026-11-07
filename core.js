@@ -4,7 +4,6 @@ const LS = {
   get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
 };
-let mode = 'field'; // v50: vienas režimas (paaiškinimai – mygtukas ⓘ)
 let tmEdit = null, installEv = null, IDX = null;
 
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -142,12 +141,13 @@ function videoHtml(v) {
 function buildIdx() {
   const I = [];
   const add = (kind, title, sub, text, r) => I.push({ kind, title, sub: sub || '', text: text || '', r, n: norm(title + ' ' + (sub || '') + ' ' + (text || '')), nt: norm(title), ns: norm(sub || '') });
-  (E.vaistai || []).forEach(v => add('Vaistai', v.name, v.klase,
+  const hd = hide(), shown = kam => !(hd && isDoc(kam)); // v56: „Slėpti tik gydytojui skirtus“ – tokių vaistų ir įgūdžių nėra ir paieškoje (IDX išvalomas keičiant nustatymą – app.js 'hide')
+  (E.vaistai || []).forEach(v => { if (!shown(v.kam)) return; add('Vaistai', v.name, v.klase,
     [v.ind, v.kontra, (v.dozes || []).map(d => d.k + ' ' + d.d + ' ' + (d.p || '')).join(' '), v.salutinis, v.pakuote, (v.pastabos || []).join(' '), (v.ispejimai || []).join(' '), (v.stulpeliai || []).map(c => c.pav + ' ' + c.dozes.map(d => d.k + ' ' + d.d + ' ' + (d.p || '')).join(' ')).join(' '),
       v.lt ? (v.lt.p || []).map(p => p.n).join(' ') + ' ' + (v.lt.ne || '') : ''].join(' '),
-    '#/vaistas/' + v.id));
-  (E.igudziai || []).forEach(s => add('Įgūdžiai', s.pav, '#' + s.id + ' · ' + s.sritis + ' · ' + (s.kam || ''),
-    [s.aprasas, (s.esme || []).join(' '), (s.zingsniai || []).join(' '), (s.klaidos || []).join(' '), s.teorija, s.praktika, strip(s.aprasymas), (s.video || []).map(v => v.title).join(' ')].join(' '), '#/igudis/' + s.id));
+    '#/vaistas/' + v.id); });
+  (E.igudziai || []).forEach(s => { if (!shown(s.kam)) return; add('Įgūdžiai', s.pav, '#' + s.id + ' · ' + s.sritis + ' · ' + (s.kam || ''),
+    [s.aprasas, (s.esme || []).join(' '), (s.zingsniai || []).join(' '), (s.klaidos || []).join(' '), s.teorija, s.praktika, strip(s.aprasymas), (s.video || []).map(v => v.title).join(' ')].join(' '), '#/igudis/' + s.id); });
   (E.temos || []).forEach(t => add('Mokymosi temos', t.pav, t.sub, t.apie, '#/tema/' + t.id));
   Object.keys(E.sarasai || {}).forEach(id => {
     const L = E.sarasai[id], r = listRoute(id);

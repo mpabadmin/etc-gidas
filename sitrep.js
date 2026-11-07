@@ -1,7 +1,7 @@
 'use strict';
 // ───────── SITREP – padėties pranešimas (trumpasis taktinis formatas) ─────────
 // Bendras failas ETC ir March giduose (laikyti identišką). Raktas – TCFG.pre + 'sitrep'.
-// Priklauso nuo tools.js: TCFG, LS, esc, chip, stepper, row, plural, toast, copyText, shareText, readMode, toMGRS, MC, NL; core.js: mode, render.
+// Priklauso nuo tools.js: TCFG, LS, esc, chip, stepper, row, plural, toast, copyText, shareText, readMode, toMGRS, MC, NL; core.js: render.
 const SR = (() => {
   const KEY = TCFG.pre + 'sitrep';
   const MON = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];

@@ -96,7 +96,8 @@ const RDV = (() => {
     lt: [[/\bmcg\b|µg/g, 'mikrogramų'], [/\bmg\b/g, 'miligramų'], [/\bml\b/g, 'mililitrų'], [/(\d)\s*g\b/g, '$1 gramų'], [/\/kg\b/g, ' kilogramui'], [/\/val\.?/g, ' per valandą'], [/\/min\.?/g, ' per minutę'],
       [/\bval\./g, 'valandos'], [/(\d)\s*min\b\.?/g, '$1 minutės'], [/\bIV\b/g, 'į veną'], [/\bIM\b/g, 'į raumenis'], [/\bIN\b/g, 'į nosį'], [/\bIO\b/g, 'į kaulą'], [/\bPO\b/g, 'per burną'], [/\bTQ\b/g, 'turniketas'],
       [/\bSpO[₂2](?!\w)/g, 'saturacija'], [/\bmm\s?Hg\b/g, 'milimetrų gyvsidabrio']],
-    en: [[/\bmcg\b|µg/g, 'micrograms'], [/\bmg\b/g, 'milligrams'], [/\bml\b/g, 'millilitres'], [/\/kg\b/g, ' per kilogram'], [/\/(h|hr)\b/g, ' per hour'], [/\/min\b/g, ' per minute'], [/\bTQ\b/g, 'tourniquet'],
+    en: [[/\bmcg\b|µg/g, 'micrograms'], [/\bmg\b/g, 'milligrams'], [/\bml\b/g, 'millilitres'], [/(\d)\s*g\b/g, '$1 grams'], [/\/kg\b/g, ' per kilogram'], [/\/(h|hr)\b/g, ' per hour'], [/\/min\b/g, ' per minute'], [/\bTQ\b/g, 'tourniquet'],
+      [/\bIV\b/g, 'I V'], [/\bIM\b/g, 'I M'], [/\bIN\b/g, 'intranasal'], [/\bIO\b/g, 'I O'], // v56: keliai raidėmis / žodžiu (kaip LT)
       [/\bSpO[₂2](?!\w)/g, 'oxygen saturation'], [/\bmm\s?Hg\b/g, 'millimetres of mercury']]
   };
   const ICO = { prev: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h2.5v14H6zM19 5v14L9.5 12z"/></svg>', next: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15.5 5H18v14h-2.5zM5 5v14l9.5-7z"/></svg>',
@@ -125,7 +126,8 @@ const RDV = (() => {
     (en ? AB.en : AB.lt).forEach(r => { t = t.replace(r[0], r[1]); });
     t = t.replace(/(\d)\s*\/\s*(\d)/g, en ? '$1 over $2' : '$1 su $2'); // AKS 92/58 → „92 su 58“
     if (rd) t = t.replace(/(\d)[.,](\d)/g, en ? '$1 point $2' : '$1 kablelis $2').replace(/(\d):(?=\d)/g, '$1 ').replace(/(\d)(?=[A-Za-z])|([A-Za-z])(?=\d)/g, '$1$2 ').replace(/\d+/g, m => m.split('').join(' ')); // 35U → „3 5 U“
-    return t.replace(/,\s*(?=[.,;:])/g, '').replace(/\s+/g, ' ').trim();
+    // v56: be likusių skyriklių – „Eilutė 1 nenurodyta ;“ → „Eilutė 1 nenurodyta“; „nenurodyta ; 35U“ → „nenurodyta; 35U“
+    return t.replace(/,\s*(?=[.,;:])/g, '').replace(/\s+(?=[.,;:])/g, '').replace(/([.,;:])[.,;:\s]*(?=[.,;:])/g, '$1').replace(/\s+/g, ' ').replace(/[\s.,;:\-]+$/, '').trim();
   };
   const voice = en => {
     let vs = []; try { vs = SS ? SS.getVoices() : []; } catch (e) {}
@@ -338,7 +340,7 @@ const NL = (() => {
     '<tr><td><b>D – įprastinė evakuacija</b> (Routine)</td><td>&lt; 24 val.</td><td>Nubrozdinimai, smulkūs lūžiai, nušalimai</td></tr>' +
     '<tr><td><b>E – evakuojami pagal galimybes</b> (Convenience)</td><td>Mediciniškai nebūtina</td><td>Administracinis perkėlimas</td></tr></table></div>' +
     '<p class="muted">LK formos išnaša: A – ' + PREC_FN.A + '; B – ' + PREC_FN.B + '; C – ' + PREC_FN.C + '.</p>' +
-    '<p class="muted">MIST kortelės evakuacija → 3 eilutė: neatidėliotina – A (chirurginė – B), skubi – C, įprastinė – D.</p>' +
+    '<p class="muted">Nukentėjusiojo kortelės evakuacija → 3 eilutė: neatidėliotina – A (chirurginė – B), skubi – C, įprastinė – D.</p>' +
     '<p class="muted">Terminai priklauso nuo doktrinos ir SOP: LK ir JTS CLS (2020) nurodo &lt; 2 val. (A, B) ir &lt; 4 val. (C), kai kurios JAV ir NATO procedūros neatidėliotinai kategorijai numato 1 val. ar 90 min. Vadovaukitės savo vieneto SOP.</p></details>';
   // Iš sužeistųjų MIST kortelių: 3 eilutė – evakuacijos kategorija (neatidėliotina → A, skubi → C, įprastinė → D), 5 eilutė – transportavimo padėtis (gulint, pakeltomis kojomis, pusiau sėdint, ant šono → L; sėdint, gali eiti → A)
   function fromCards() {
@@ -816,7 +818,7 @@ const MC = (() => {
     let h = emb ? '' : '<h1>Nukentėjusiojo kortelė</h1>';
     if (!emb) h += expl('<p class="muted">M – mechanizmas, I – sužalojimai, S – būklė, T – pagalba, E – evakuacija. Retai pildomi laukai – „+“. Per radiją – tik ID / šaukinys.</p>');
     if (!emb) h += tabs(st);
-    h += `<article class="mc mq" aria-label="MIST kortelė – sužeistasis ${n}">`;
+    h += `<article class="mc mq" aria-label="Nukentėjusiojo kortelė – sužeistasis ${n}">`;
     h += `<div class="mch"><b>DD1380</b><span>Nukentėjusiojo kortelė · ${esc(s.dt || today())}${tot > 1 ? ' · ' + n + ' / ' + tot : ''}</span></div>`;
     // A – asmuo
     h += '<div class="mqa">' +
@@ -1897,7 +1899,7 @@ const GK = (() => {
         if (!y) { toast('Pasirinkite bent vieną komponentą'); return; }
         const cy = calc(y); // dalinis – kaip NT: perduodami komponentai, suma neskaičiuojama
         const who = MC.addGcs({ ts: y.ts, v: cy.nt || !cy.done ? 'NT' : String(cy.tot), d: cy.comp + (cy.gp != null ? ', GKS-P ' + cy.gp : '') });
-        toast('Į MIST kortelę' + (who ? ' (' + who + ')' : '') + ' įrašyta: ' + histLine(y)); break;
+        toast('Į Nukentėjusiojo kortelę' + (who ? ' (' + who + ')' : '') + ' įrašyta: ' + histLine(y)); break;
       }
       default: return;
     }
@@ -2041,6 +2043,8 @@ const VZ = (() => {
     metoklopramidas: [['IV', '10', 'mg']],
     'nacl-hipert': [['IV', '250', 'ml']],
     atropinas: [['IV', '0,5', 'mg']],
+    midazolamas: [['IV', '5', 'mg', 'traukuliai']], // v56: traukuliai (JTS TBI PFC)
+    levetiracetamas: [['IV', '2000', 'mg']], // v56: po traukulių (JTS TBI PFC)
     naloksonas: [['IV', '40', 'mcg', 'titruoti'], ['IM', '0,4', 'mg'], ['IN', '1,8', 'mg']]
   };
   const num = a => parseFloat(String(a).replace(',', '.'));

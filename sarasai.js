@@ -12,7 +12,7 @@ const E = window.ETC;
 const KOMP = 'Pagal kompetenciją', MED = 'Medicinos personalui', GYD = 'Gydytojui', INT = 'Intubuojantiems gydytojams';
 const link = (href, t, s) => `<a class="row" href="${href}"><div>${t}${s ? '<small>' + s + '</small>' : ''}</div><span class="ar">›</span></a>`;
 
-E.versija = '2026-11-06 v55 (vienos schemos: morfinas, manitolis, kalcis hiperkalemijai, midazolamas traukuliams, levetiracetamas – JTS / ERC 2025)';
+E.versija = '2026-11-07 v56 (peržiūros pataisos: naktinio režimo kontrastas, gydytojo filtras paieškoje, skiedimo lentelė suderinta su vaistų puslapiais, lidokainas, s12, smulkmenos)';
 // Pranešimų priėmimo adresas: Google Apps Script žiniatinklio programos /exec URL (žr. tools/atsiliepimai.gs)
 E.atsiliepimai = { url: 'https://script.google.com/macros/s/AKfycbyUpzDmAClJ40FMltkHi21Ozc4PpItRr3u6yy4rU0DKNGe7JkRBnOr0y42wLwpJcBau/exec' };
 
@@ -74,7 +74,7 @@ E.sarasai = {
       { t: 'Kiaurinis krūtinės sužeidimas – galima tamponada: skubi evakuacija chirurgui' },
       { t: 'A (komandos vadas) – kraujotaka neatsistato pašalinus priežastis: sprendimas nutraukti, laikas užrašytas' }
     ],
-    pastaba: 'Mūšio lauke (TCCC) sprogimo ar kiaurinės traumos sužeistajam be gyvybės ženklų CPR nedaroma.',
+    pastaba: 'Mūšio lauke (TCCC) sprogimo ar kiaurinės traumos sužeistajam be gyvybės ženklų CPR nedaroma – prieš tai atlikus abipusę adatinę dekompresiją, jei liemens trauma (#39).',
     vaizdai: [{ src: 'img/etc5/etc5-p117-tca-erc2025.webp', cap: 'ERC TCA 2025 algoritmas', salt: 'ETC vadovas 5.0 (2026), lietuviškas vertimas (2026-10-20), PDF 121 psl., 1 pav.', orig: 'https://publications.europeantraumacourse.com/view/242042611/117/', origLb: 'Originalas (EN), 117 psl.' }],
     saltinis: 'ERC / RCUK 2025 (trauminis širdies sustojimas); ETC 5.0'
   },
@@ -342,7 +342,7 @@ E.sarasai = {
       { t: 'Audiniai pakankamai aprūpinami deguonimi', k: true },
       { t: 'Sustabdytas kraujo netekimas (netaikoma kraujavimui į pilvo ertmę)', k: true },
       { t: 'Atkuriamas cirkuliuojančio kraujo tūris' },
-      { t: 'Pacientas pakankamai nuskausmintas opioidais' },
+      { t: 'Pacientas pakankamai nuskausmintas (ketaminu / opioidais)' },
       { t: 'Laikomasi AKS tikslų', k: true, s: ['Kraujavimo šokas – sAKS ≈ 100 mm Hg (90–110), kai gaivinama krauju; 80–90 mm Hg, jei kraujo nėra (JTS DCR); ETC vertinimo lape – VAKS 65 mm Hg', 'Galvos smegenų trauma – sAKS ≥ 110 mm Hg (JTS DCR; ETC 5.0 – arba VAKS > 80 mm Hg); su nesustabdytu kraujavimu kitur – sAKS ~100–110 mm Hg (ETC 5.0)', 'Lauke (TCCC 2026, March gidas) galvos traumai – > 100 mm Hg'], i: 'Tikslai galioja iki chirurginės kraujavimo kontrolės. Per didelis AKS gali suardyti krešulį. Permisinė hipotenzija netaikoma galvos ar nugaros smegenų traumai, vaikams ir nėščiosioms (įgūdis #40).' },
       { t: 'Taikoma hipotermijos prevencija' },
       { t: 'Skirta traneksamo rūgštis', i: 'Kuo greičiau – geriausia per 90 min, ne vėliau kaip per 3 val. nuo traumos. Dozė – Vaistai: TXA.' },
@@ -442,7 +442,7 @@ E.puslapiai = {
       link('#/s/esc-kt', 'Escape: kvėpavimo takų obstrukcija') + link('#/v/A?f=2', 'A – pirminė apžiūra (eskalavimas)') +
       '<h3>6 gyvybei pavojingos krūtinės būklės</h3><p>Jas B narys turi atmesti pirminės apžiūros metu:</p><ol><li>Kvėpavimo takų obstrukcija / pažeidimas</li><li>Įtampos pneumotoraksas</li><li>Atvira krūtinės žaizda (atviras pneumotoraksas)</li><li>Masyvus hemotoraksas</li><li>Nestabili krūtinės ląsta (flail chest)</li><li>Širdies tamponada</li></ol>' +
       '<p class="muted">Pneumotoraksą, hemotoraksą ir tamponadą ultragarsu nustatyti tiksliau nei rentgenu.</p>' +
-      '<h3>Įtampinis pneumotoraksas</h3><p>Oras patenka į pleuros ertmę, bet neišeina: plautis subliūkšta, tarpuplautis pasislenka, mažėja veninis grįžimas į širdį. Iš pradžių – dažnas kvėpavimas, tachikardija, vėliau hipotenzija ir sustojimas. Ventiliuojamam pacientui būklė blogėja labai greitai. Požymiai panašūs į širdies tamponados.</p><p>Gydymas – nedelsiant dekompresija: šoninė torakostomija, po to drenas. Adatinė dekompresija – tik jei nėra kompetentingo gydytojo ar įrangos, ir tik laikinai: 14–16 G, ≥ 8 cm kanulė; suaugusiam pirmiausia 4–5 tarpšonkaulis tarp priekinės ir vidurinės pažasties linijų, alternatyva – 2 tarpšonkaulis vidurinėje raktikaulio linijoje. Nesėkmė – 40–50 % (ETC 5.0): nepagerėjus – pirštinė torakostomija; po adatos visada drenas.</p>' +
+      '<h3>Įtampos pneumotoraksas</h3><p>Oras patenka į pleuros ertmę, bet neišeina: plautis subliūkšta, tarpuplautis pasislenka, mažėja veninis grįžimas į širdį. Iš pradžių – dažnas kvėpavimas, tachikardija, vėliau hipotenzija ir sustojimas. Ventiliuojamam pacientui būklė blogėja labai greitai. Požymiai panašūs į širdies tamponados.</p><p>Gydymas – nedelsiant dekompresija: šoninė torakostomija, po to drenas. Adatinė dekompresija – tik jei nėra kompetentingo gydytojo ar įrangos, ir tik laikinai: 14–16 G, ≥ 8 cm kanulė; suaugusiam pirmiausia 4–5 tarpšonkaulis tarp priekinės ir vidurinės pažasties linijų, alternatyva – 2 tarpšonkaulis vidurinėje raktikaulio linijoje. Nesėkmė – 40–50 % (ETC 5.0): nepagerėjus – pirštinė torakostomija; po adatos visada drenas.</p>' +
       '<h3>Atvira krūtinės žaizda</h3><p>Sandariai uždengus žaizdą, gali susidaryti įtampos pneumotoraksas. Uždedamas vienkryptis (vožtuvinis) okliuzinis tvarstis, vėliau įvedamas drenas.</p>' +
       '<h3>Masyvus hemotoraksas</h3><p>Daugiau nei 1500 ml kraujo pleuros ertmėje. Požymiai: hipovoleminis šokas, duslus perkusijos garsas ir susilpnėjęs kvėpavimas pažeistoje pusėje. Gydymas: deguonis, torakostomija ir drenas, kraujagyslių prieiga, kraujo komponentai pagal masinio kraujavimo protokolą. Iš dreno iškart > 1500 ml arba > 200 ml/val. 3 val. iš eilės – skubiai chirurgas (torakotomija).</p>' +
       '<h3>Nestabili krūtinės ląsta</h3><p>≥ 3 gretimi šonkauliai lūžę ≥ 2 vietose (ETC 5.0). Jauniems pacientams paradoksalus krūtinės judesys iš pradžių gali būti nematomas – lūžusius šonkaulius prilaiko raumenys. Išryškėja pacientui pavargus. Gydymas: analgezija (regioninė blokada), šildytas drėkintas O₂, atsargūs skysčiai; intubuoti tik blogėjant.</p>' +
@@ -483,32 +483,32 @@ E.puslapiai = {
   },
   skiedimas: {
     title: 'Vaistų skiedimo lentelės', sub: 'IV boliusai ir infuzomatai (ETC)',
-    html: '<div class="warn">Medicinos personalui. Tai paruošimo atmintinė iš ETC įgūdžių lentelių – vaistą ir dozę skiria gydytojas. Pastabos „PCS“ – iš gamintojo preparato charakteristikų santraukos. Pagrindinės dozės – vaisto puslapyje.</div>' +
+    html: '<div class="warn">Medicinos personalui. Tai paruošimo atmintinė pagal ETC įgūdžių lenteles – vaistą ir dozę skiria gydytojas. Pastabos „PCS“ – iš gamintojo preparato charakteristikų santraukos. Dozės – tokios pat kaip vaistų puslapiuose.</div>' +
       '<h3>IV boliusu</h3>' +
       sk('Ketaminas – sedacija', '10 ml švirkštas: 250 mg (5 ml × 50 mg/ml) + 5 ml NaCl = 25 mg/ml', '1–2 mg/kg, lėtai. Esant šokui – dozė mažinama 50 %. Jei ampulė 100 mg/ml – koncentracija bus kita.') +
-      sk('Fentanilis', '2 ml švirkštas: 100 mcg, neskiestas = 50 mcg/ml', '0,5–1 mcg/kg, lėtai') +
-      sk('Morfinas', '10 ml švirkštas: 10 mg + 9 ml NaCl = 1 mg/ml', 'Boliusas 2,5–5 mg (2,5–5 ml), kartoti kas 5 min, kol skausmas sumažėja arba KD &lt; 10 (JTS PFC). Šoke – pradėti nuo 2,5 mg.') +
+      sk('Fentanilis', '2 ml švirkštas: 100 mcg, neskiestas = 50 mcg/ml', '50 mcg (1 ml) lėtai; į nosį 100 mcg (2 ml – po 1 ml į kiekvieną šnervę); kartoti kas 30 min pagal poreikį.') +
+      sk('Morfinas', '10 ml švirkštas: 10 mg + 9 ml NaCl = 1 mg/ml', '5 mg (2,5–10 mg) = 5 ml lėtai; kartoti kas 5 min, kol skausmas sumažėja arba KD &lt; 10 (JTS PFC). Šoke – pradėti nuo 2,5 mg.') +
       sk('Traneksamo rūgštis', '2000 mg į 100 ml arba 250 ml NaCl', '2 g infuzija. PCS – ne greičiau kaip 1 ml/min 100 mg/ml tirpalo (100 mg/min; 2 g – ne trumpiau kaip 20 min). TCCC 2026 – 2 g lėta IV / IO injekcija.') +
       sk('Kalcio gliukonatas', '30 ml 10 % (3 g), neskiestas (arba 10 ml 10 % kalcio chlorido)', 'IV / IO per 5–10 min, stebint EKG – po kraujo vieneto ir hiperkalemijai ta pati dozė; hiperkalemijai – kartoti po 5–10 min, jei EKG pokyčiai išlieka (ERC 2025; UK KA 2020). Ne per tą pačią liniją su krauju; nemaišyti su bikarbonatu, fosfatais, ceftriaksonu (PCS).') +
       sk('Ondansetronas', '20 ml švirkštas: 8 mg + 16 ml NaCl = 0,4 mg/ml', 'Suleisti lėtai IV – ne greičiau kaip per 30 s (PCS).') +
       sk('Metoklopramidas', '10 ml švirkštas: 10 mg + 8 ml NaCl = 1 mg/ml', 'Suleisti lėtai IV – ne trumpiau kaip per 3 min (PCS).') +
-      sk('Rokuroniumas', '10 ml švirkštas: 100 mg, neskiestas = 10 mg/ml', '0,5–1,5 mg/kg. PCS: intubacijai 0,6 mg/kg, greitosios sekos indukcijai 1,0 mg/kg.') +
-      sk('Atropinas', '10 ml švirkštas: 1 mg (ampulė 1 mg / 1 ml) + 9 ml NaCl = 0,1 mg/ml', 'Po 0,5 mg kas 1–2 min, iki 3 mg') +
+      sk('Rokuroniumas', '10 ml švirkštas: 100 mg, neskiestas = 10 mg/ml', '1 mg/kg greitosios sekos indukcijai (80 kg – 8 ml); palaikomoji 0,15 mg/kg (PCS).') +
+      sk('Atropinas', '10 ml švirkštas: 1 mg (ampulė 1 mg / 1 ml) + 9 ml NaCl = 0,1 mg/ml', '0,5 mg (5 ml), kartoti kas 3–5 min iki 3 mg (ERC / RCUK 2025).') +
       sk('Naloksonas', '10 ml švirkštas: 0,4 mg (1 ml) + 9 ml 0,9 % NaCl = 40 mcg/ml', 'Po 1 ml (40 mcg) lėtai kas 2–3 min, kol KD > 10 k./min – kvėpavimas atsistato, nuskausminimas išlieka. Iš viso ne daugiau kaip 10 mg (JTS PFC).') +
       '<h3>IV per infuzomatą</h3>' +
       sk('Ketaminas', '50 ml švirkštas: 500 mg + 40 ml NaCl = 10 mg/ml', '1 mg/kg/val. neintubuotam, 1–2 intubuotam (80 kg – 8 ml/val. už 1 mg/kg/val.)') +
       sk('Fentanilis', '50 ml švirkštas: 1000 mcg + 30 ml NaCl = 20 mcg/ml', '1–3 mcg/kg/val. (~100 kg pacientui – maždaug nuo 5 ml/val.)') +
       sk('Morfinas', '10 ml švirkštas: 10 mg + 9 ml NaCl = 1 mg/ml', 'Pradinis 1–2 mg/val. (1–2 ml/val.)') +
       sk('Noradrenalinas', '50 ml švirkštas: 4 mg (4 ml) + 46 ml 5 % gliukozės = 80 mcg/ml', '0,1–0,4 mcg/kg/min, pradėti nuo 0,1 ir titruoti pagal sAKS; didesnė dozė – gydytojo sprendimu. ml/val. = mcg/kg/min × kg × 60 ÷ 80; 80 kg: 0,1 = 6 ml/val., 0,4 = 24 ml/val. Per centrinę veną.') +
-      '<p class="muted">Pagrindinės dozės – vaisto puslapyje (TCCC 2026 / PCS). Šių ETC lentelių dozės kai kur skiriasi – jei skiriasi, vadovaukitės vaisto puslapiu.</p>' +
+      '<p class="muted">Dozės suderintos su vaistų puslapiais (TCCC 2026 / JTS / PCS / ERC) – pagrindinė dozė visada vaisto puslapyje. Kiti šaltiniai – ETC lentelė: fentanilis 0,5–1 mcg/kg lėtai; morfinas boliusas 2,5–5 mg; rokuroniumas 0,5–1,5 mg/kg (PCS: intubacijai 0,6 mg/kg); atropinas po 0,5 mg kas 1–2 min.</p>' +
       link('#/vaistai', 'Visi vaistai') + link('#/igudis/24', 'Įgūdis #24 – IV vaistų paruošimas') + link('#/igudis/25', 'Įgūdis #25 – infuzomatas'),
-    saltinis: 'ETC įgūdžių lapas (Vaistai IV boliusu, Vaistai IV per infuzomatą); JTS CPG Analgesia and Sedation Management during PFC (2023) – naloksonas, morfinas, ketamino infuzija; JTS PCC ID 91 – noradrenalinas; ERC 2025, UK KA 2020 – kalcis hiperkalemijai; gamintojų PCS (JK eMC); TCCC gairės 2026-05-01'
+    saltinis: 'ETC įgūdžių lapas (Vaistai IV boliusu, Vaistai IV per infuzomatą); JTS CPG Analgesia and Sedation Management during PFC (2023) – naloksonas, morfinas, ketamino infuzija; ankstesnės TCCC gairės (Deployed Medicine) – fentanilis; RCUK / ERC 2025 – atropinas; JTS PCC ID 91 – noradrenalinas; ERC 2025, UK KA 2020 – kalcis hiperkalemijai; gamintojų PCS (JK eMC) – rokuroniumas ir kt.; TCCC gairės 2026-05-01'
   },
   skausmas: {
     title: 'Skausmo malšinimas', sub: 'Vertinimas, titravimas, nemedikamentinės priemonės',
     html: '<h3>Įvertinkite</h3><p>Paprašykite pacientą įvertinti skausmą nuo 0 (nėra) iki 10 (stipriausias įsivaizduojamas). Prieš analgeziją užrašykite sąmonę (AVPU). Kartokite po kiekvienos dozės.</p>' +
       '<h3>Parinkite pagal skausmą ir būklę</h3><p><b>Lengvas–vidutinis skausmas, gali gerti</b> – paracetamolis 1000 mg per burną kas 8 val. ir meloksikamas 15 mg per burną kartą per parą (negalinčiam gerti – paracetamolis IV).</p>' +
-      '<p><b>Vidutinis–stiprus skausmas</b> – ketaminas 25 mg (0,2–0,3 mg/kg) IV / IO lėtai per 1 min, arba 100 mg IM, arba 50 mg į nosį (100 mg/ml); kartoti kas 30 min, tikslas – sumažėjęs skausmas arba atsiradęs nistagmas. Ir (ar) titruojami IV opioidai – morfinas, fentanilis (dozės – vaisto puslapyje). Skirtingų grupių analgetikų derinys didina veiksmingumą ir mažina šalutinį poveikį (ETC 5.0). Pykinant – ondansetronas.</p>' +
+      '<p><b>Vidutinis–stiprus skausmas</b> – ketaminas 25 mg (0,2–0,3 mg/kg) IV / IO lėtai per 1 min, arba 100 mg IM, arba 50 mg į nosį (50 mg/ml – 1 ml, po 0,5 ml į šnervę); kartoti kas 30 min, tikslas – sumažėjęs skausmas arba atsiradęs nistagmas. Ir (ar) titruojami IV opioidai – morfinas, fentanilis (dozės – vaisto puslapyje). Skirtingų grupių analgetikų derinys didina veiksmingumą ir mažina šalutinį poveikį (ETC 5.0). Pykinant – ondansetronas.</p>' +
       '<ul><li>Šokas ar kvėpavimo sutrikimas – saugesnis ketaminas; opioidų dozes mažinkite, poveikis šoke vėluoja.</li><li>Stebėkite kvėpavimo takus, kvėpavimą ir kraujotaką; po ketamino – seilėtekis, turėkite atsiurbimą.</li><li>Benzodiazepinų rutiniškai nederinkite nei su ketaminu, nei su opioidais (kvėpavimo slopinimas); iš dalies disocijavusiam – saugiau papildyti ketamino. Išimtis – ryški ažitacija: gydytojo sprendimu, maža dozė, stebint kvėpavimą.</li><li>Pykinimui – ondansetronas 4 mg ODT / IV / IO / IM kas 8 val.</li><li>Tikslas – toleruojamas skausmas, ne visiškas jo pašalinimas.</li></ul>' +
       '<p class="muted">Morfino ir naloksono dozės – pagal JTS PFC, fentanilio – pagal ankstesnes TCCC gaires (žr. vaisto puslapį); skiria medikas. Pakankama analgezija tik slopinant sąmonę, kvėpavimą ar AKS – reikia bendrosios nejautros (patyręs anesteziologas, ETC).</p>' +
       '<h3>Titruokite</h3><p>Geriau kelios mažesnės dozės nedideliais intervalais nei viena didelė. Norimas efektas – skausmas sumažėja bent 3 balais (pvz., buvo 8/10, tapo 5/10); siekiant 3/10 ar mažiau reikės didelių dozių ir atsiras komplikacijų. Registruokite visas skirtas dozes (vaistas, dozė, būdas, laikas).</p>' +

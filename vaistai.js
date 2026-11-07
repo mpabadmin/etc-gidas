@@ -11,7 +11,8 @@
 //   s: T registruotas ir tiekiamas, L lygiagretus importas, U be registracijos numerio (tiekiamas), N netiekiamas}], ne – netiekiami, pa – pastaba.
 // alt – alternatyva tam pačiam tikslui: [{id – vaistas gide, t – kam}] (sprendžia skiriantysis). Antibiotikai – pagal suvartojimą Lietuvoje (VVKT 2024).
 // Patikrinta: 2026-10-08 (dozės), 2026-10-14 (Lietuvos preparatai), 2026-10-24 (manitolis, gliukozė, insulinas, kalcis hiperkalemijai – JTS, CGO, NHS / JBDS),
-//   2026-11-06 (vienos schemos: morfinas, manitolis – JTS PFC; kalcis hiperkalemijai – ERC 2025 / UK KA; midazolamas traukuliams, levetiracetamas – JTS TBI PFC).
+//   2026-11-06 (vienos schemos: morfinas, manitolis – JTS PFC; kalcis hiperkalemijai – ERC 2025 / UK KA; midazolamas traukuliams, levetiracetamas – JTS TBI PFC),
+//   2026-11-07 (v56: lidokainas – infiltracija ETC 5.0 / PCS, IO Teleflex EZ-IO; atropinas kas 3–5 min; ketaminas į nosį 50 mg/ml; kalcis per 5–10 min).
 window.ETC = window.ETC || {};
 
 window.ETC.vaistuGrupes = [
@@ -126,7 +127,7 @@ window.ETC.vaistai = [
           {
             "k": "Į nosį",
             "d": "50 mg",
-            "p": "Naudoti 100 mg/ml – 0,5 ml."
+            "p": "50 mg/ml – 1 ml (po 0,5 ml į kiekvieną šnervę). Jei yra 100 mg/ml – 0,5 ml."
           },
           {
             "k": "Kartoti",
@@ -549,6 +550,68 @@ window.ETC.vaistai = [
     ]
   },
   {
+    "id": "lidokainas",
+    "name": "Lidokainas",
+    "klase": "Vietinis anestetikas",
+    "grupe": "skausmas",
+    "tipas": "papild",
+    "kam": "Medicinos personalui",
+    "ind": "Vietinė (infiltracinė) nejautra procedūroms – pleuros drenas, pirštinė torakostomija, žaizdos tvarkymas (įgūdžiai #14, #38). Skausmui malšinti prieš infuziją per intrakaulinę adatą sąmoningam pacientui (#22, #47).",
+    "kontra": "Alergija amidinio tipo vietiniams anestetikams. PCS: visiškas širdies blokas, hipovolemija (sisteminė toksinė reakcija), sunki širdies veiklos ar kepenų nepakankamumas – atsargiai.",
+    "dozes": [
+      {
+        "k": "Infiltracija – vietinė nejautra (ETC, PCS)",
+        "d": "1 % (10 mg/ml) iki 3 mg/kg – 80 kg: 240 mg = 24 ml",
+        "p": "Su adrenalinu – iki 7 mg/kg. Leisti sluoksniais: oda, poodis, iki pleuros (drenas); prieš kiekvieną injekciją aspiruoti. Pradžia 2–5 min, trukmė 1–2 val. (su adrenalinu ilgiau)."
+      },
+      {
+        "k": "IO – skausmui prieš infuziją (Teleflex EZ-IO)",
+        "d": "2 % be konservantų 20–40 mg (1–2 ml) lėtai per 2 min",
+        "p": "Palaukti 1 min, tada praplauti 5–10 ml 0,9 % NaCl. Skausmui išliekant – kartoti pusę dozės (20 mg) lėtai per 1 min, pagal poreikį. Tik sąmoningam; be konservantų ir be adrenalino. Vaikams – 0,5 mg/kg (ne daugiau kaip 40 mg)."
+      }
+    ],
+    "ispejimai": [
+      "Neviršyti didžiausios dozės – skaičiuoti bendrą kiekį iš visų būdų (infiltracija + IO). Toksiškumo požymiai: tirpimas aplink burną, spengimas ausyse, svaigimas, raumenų trūkčiojimas, traukuliai, bradikardija, hipotenzija, aritmija – nutraukti iš karto (PCS).",
+      "Neleisti į kraujagyslę – aspiruoti prieš injekciją; galvos ir kaklo srityje net maža dozė į arteriją sukelia smegenų simptomus (PCS).",
+      "Su adrenalinu neleisti į galūnių galus (pirštai, nosis, ausys, varpa) – audinių išemija (standartinė nuostata).",
+      "IO – tik 2 % tirpalas be konservantų; su konservantais ar adrenalinu netinka (Teleflex)."
+    ],
+    "pradzia": "2–5 min (infiltracija)",
+    "trukme": "1–2 val. (infiltracija); su adrenalinu – ilgiau",
+    "salutinis": "Dozę viršijus – CNS ir širdies toksiškumas (žr. įspėjimus); retai – alerginės reakcijos.",
+    "pakuote": "1 % (10 mg/ml) ir 2 % (20 mg/ml) tirpalas, ampulės 10 ml",
+    "pastabos": [
+      "Procedūros vietą nuskausminti būtina ir skubiai (ETC 5.0): drenas, torakostomija – sąmoningam pacientui tik su vietine nejautra ir sistemine analgezija.",
+      "IO dozė – tik skausmui dėl infuzijos (slėgio) sumažinti; pati adatos įvedimo procedūra skausminga mažai.",
+      "Kiti šaltiniai – PCS (hameln 1 %, JK eMC): vienkartinė dozė suaugusiesiems ne daugiau kaip 200 mg (4,5 mg/kg); vaikams iki 12 m. – 3 mg/kg, kartoti ne dažniau kaip kas 4 val. Gide naudojama įprasta ETC taisyklė 3 mg/kg (su adrenalinu 7 mg/kg)."
+    ],
+    "susije": [
+      "ketaminas",
+      "fentanilis"
+    ],
+    "saltinis": "ETC vadovas 5.0 (2026), 5 sk. „Krūtinė“ (pleuros drenas, torakostomija) ir kuopos paskaita „Kriko, vietiniai anestetikai“ – infiltracija; PCS – lidokaino hidrochloridas 1 % (hameln, JK eMC); Teleflex Arrow EZ-IO – skausmo valdymas IO (2020)",
+    "nuorodos": [
+      [
+        "PCS – lidokaino hidrochloridas 1 % (hameln, JK eMC)",
+        "https://www.medicines.org.uk/emc/product/6277/smpc"
+      ],
+      [
+        "Teleflex Arrow EZ-IO – lidokainas IO skausmui (PDF)",
+        "https://www.teleflex.com/global/clinical-resources/documents/MCI-2019-0391_VA_Arrow_Intraosseous_PainManagment_0120.pdf"
+      ]
+    ],
+    "lt": {
+      "p": [],
+      "ne": "",
+      "pa": "Lietuvoje tiekiamos 1 % (10 mg/ml) ir 2 % (20 mg/ml) ampulės po 10 ml (kelių gamintojų). VVKT registras šiam vaistui 2026-10-14 peržiūroje netikrintas – naudokite tai, kas yra komplekte; IO naudojimui tikrinkite, ar ampulėje nėra konservantų ir adrenalino."
+    },
+    "alt": [
+      {
+        "t": "Kito vietinio anestetiko gide nėra – pagal vietinį SOP"
+      }
+    ]
+  },
+  {
     "id": "txa",
     "name": "Traneksamo rūgštis (TXA)",
     "klase": "Antifibrinolitikas",
@@ -644,7 +707,7 @@ window.ETC.vaistai = [
       {
         "k": "IV / IO (TCCC 2026)",
         "d": "30 ml 10 % kalcio gliukonato (arba 10 ml 10 % kalcio chlorido)",
-        "p": "Po pirmojo perpilto kraujo produkto vieneto (TCCC 2026); toliau – po kas 4 vienetų (JTS DCR 2023). Leisti lėtai, per ~10 min (TCCC ir JTS greičio nenurodo – kaip hiperkalemijai, UK RA 2020)."
+        "p": "Po pirmojo perpilto kraujo produkto vieneto (TCCC 2026); toliau – po kas 4 vienetų (JTS DCR 2023). Leisti lėtai, per 5–10 min, stebint EKG – kaip hiperkalemijai (TCCC ir JTS greičio nenurodo; UK KA 2020)."
       },
       {
         "k": "Hiperkalemija (ERC 2025; UK KA 2020)",
@@ -1210,7 +1273,7 @@ window.ETC.vaistai = [
     "pastabos": [
       "TCCC 2026 galvos smegenų traumai: SpO₂ ≥ 92 %, sAKS > 100 mm Hg (nesant matavimo – normalus radialinis pulsas); ventiliuojamam su monitoringu EtCO₂ 35–45 mm Hg (be EtCO₂ – 10 įkvėpimų/min mažu kvėpavimo tūriu, 1 įkvėpimas kas 6 s). Galvą ir liemenį pakelti > 30°, jei nėra šoko ir leidžia taktinė situacija; neurologinę būklę vertinti kas 5–10 min.",
       "ETC vertinimo lapas: manitolis arba 3 % NaCl, galvūgalis 30°. AKS tikslas (ETC 5.0): sAKS ≥ 110 mm Hg arba VAKS > 80 mm Hg; su nesustabdytu kraujavimu kitur – sAKS ~100–110 mm Hg.",
-      "ETC 5.0: 2–5 ml/kg per 10–20 min, pirmenybė esant hipovolemijai; Na⁺ ≤ 155 mmol/l."
+      "Kiti šaltiniai – ETC 5.0: 2–5 ml/kg per 10–20 min, pirmenybė esant hipovolemijai; Na⁺ ≤ 155 mmol/l. Gide naudojama TCCC 2026 schema."
     ],
     "saltinis": "TCCC gairės, 2026-05-01 (CoTCCC, Deployed Medicine); ETC vertinimo lapas; ETC vadovas 5.0 (2026), 7 sk. „Galvos trauma“",
     "nuorodos": [
@@ -1471,7 +1534,7 @@ window.ETC.vaistai = [
     "dozes": [
       {
         "k": "IV (ERC / RCUK 2025)",
-        "d": "0,5 mg, kartoti iki maks. 3 mg",
+        "d": "0,5 mg, kartoti kas 3–5 min iki maks. 3 mg",
         "p": "Ampulė 1 mg / 1 ml + 9 ml NaCl = 0,1 mg/ml: 0,5 mg = 5 ml."
       }
     ],
@@ -1496,7 +1559,7 @@ window.ETC.vaistai = [
         }
       ],
       "ne": "Atropine sulfate Basi 0,5 mg/ml – registruotas, netiekiamas",
-      "pa": "Tiekiamos 1 mg/ml ampulės: 0,5 mg = 0,5 ml."
+      "pa": "Pakuotė: 1 mg/ml ampulės po 1 ml (neskiesto 0,5 mg = 0,5 ml). Gide dozuojama skiestu 0,1 mg/ml tirpalu – 5 ml."
     },
     "alt": [
       {

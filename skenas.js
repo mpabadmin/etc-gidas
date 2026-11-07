@@ -278,7 +278,7 @@ const SK = (() => {
       h += '<section class="card skr"><b>Mechanizmas</b><div class="opts">' + MC.MECH.map(([m, , en]) => chip2('sk-mech', m, F.mech.indexOf(m) >= 0, esc(m) + ' <small>' + esc(en) + '</small>')).join('') + '</div>' +
         (has(R, 'm_other') ? img(crop(s.m_other, 'f')) : '') + inp('mechTxt', F.mechTxt, 'Patikslinimas (pvz., mina, RPG)') + '</section>';
       h += '<section class="card skr"><b>Turniketai</b>' + TQL.map(([k, lb]) => { const q = F.tq[k] || {}; return `<div class="skrow">${chip2('sk-tq', k, q.on, esc(lb))}${q.on || has(R, 'tq_' + k + '_time') ? img(crop(uni(s['tq_' + k + '_type'], s['tq_' + k + '_time']), 'f', 0.1)) + tin('tq.' + k, q.tm) : ''}</div>`; }).join('') + '</section>';
-      h += '<section class="card skr"><b>Žymės ant kūno schemos</b>' + (F.marks.length ? '<p class="muted mt0">Rastos žymės – priskirtos artimiausiai kūno sričiai. Pasirinkite sutartinį ženklą kaip LK kortelėje; klaidingas atžymėkite.</p>' + F.marks.map((m, i) => `<div class="skrow">${chip2('sk-mk', String(i), m.on, esc(MC.region(m.s, m.x, m.y).t))}<select class="inp sksel" data-sk="mk.${i}">${MC.MK.slice(0, 5).map(([v, g, l]) => `<option value="${v}"${m.t === v ? ' selected' : ''}>${esc(g + ' – ' + l)}</option>`).join('')}</select></div>`).join('') : '<p class="muted mt0">Žymių nerasta. Jei kortelėje jų yra – sužymėkite MIST kortelėje rankiniu būdu.</p>') +
+      h += '<section class="card skr"><b>Žymės ant kūno schemos</b>' + (F.marks.length ? '<p class="muted mt0">Rastos žymės – priskirtos artimiausiai kūno sričiai. Pasirinkite sutartinį ženklą kaip LK kortelėje; klaidingas atžymėkite.</p>' + F.marks.map((m, i) => `<div class="skrow">${chip2('sk-mk', String(i), m.on, esc(MC.region(m.s, m.x, m.y).t))}<select class="inp sksel" data-sk="mk.${i}">${MC.MK.slice(0, 5).map(([v, g, l]) => `<option value="${v}"${m.t === v ? ' selected' : ''}>${esc(g + ' – ' + l)}</option>`).join('')}</select></div>`).join('') : '<p class="muted mt0">Žymių nerasta. Jei kortelėje jų yra – sužymėkite Nukentėjusiojo kortelėje rankiniu būdu.</p>') +
         img(crop(t.body.Ant.map((v, i) => i === 2 ? t.body.Post[2] : v), 'f', 0), 'skc skbody') + '</section>';
       h += '<section class="card skr"><b>Požymiai</b>' + (F.vit.length ? F.vit.map((v, i) => { const c = v.c; return `<div class="skv">${img(crop(uni(s['v' + c + '_ts'], s['v' + c + '_pain']), 'f', 0.05), 'skc skcol')}<div class="skvg">` +
         [['ts', 'Laikas', 'time'], ['hr', 'Pulsas'], ['bp', 'AKS'], ['rr', 'KD'], ['spo2', 'SpO₂'], ['pain', 'Skausmas']].map(([k, lb, ty]) => `<label>${lb}${ty === 'time' ? tin('v.' + i + '.ts', v.ts) : inp('v.' + i + '.' + k, v[k], '', k === 'bp' ? '' : ' inputmode="numeric"')}</label>`).join('') +
@@ -374,7 +374,7 @@ const SK = (() => {
         const card = toCard();
         if (card.t0 && !HM_RE.test(card.t0)) { toast('Traumos laikas: pvz. 14:05'); return; }
         PT.add(card); S.res = {}; S.form = null; S.src = null;
-        toast('Įrašyta kaip naujas sužeistasis – patikrinkite MIST kortelę');
+        toast('Įrašyta kaip naujas sužeistasis – patikrinkite Nukentėjusiojo kortelę');
         location.hash = '#/pacientas?t=kortele'; return; // nuskaityta kortelė – paciento ekrane
       }
     }

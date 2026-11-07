@@ -1004,7 +1004,7 @@ window.ETC.scenarijai = [
   "tema": "Kraujavimas",
   "q": [
    {
-    "sit": "Kolonos priekinė mašina užvažiavo ant SSU. Karys atvežamas su skeveldros žaizda kairėje kaklo pusėje – kraujas srūva pro pridėtą tvarstį. Karys sumišęs, akis atmerkia tik kalbinamas.",
+    "sit": "Kolonos priekinė mašina užvažiavo ant SSU. Karė (24 m.) atvežama su skeveldros žaizda kairėje kaklo pusėje – kraujas srūva pro pridėtą tvarstį. Karė sumišusi, akis atmerkia tik kalbinama.",
     "gp": {
      "AVPU": "V",
      "KD": "24",
@@ -1060,7 +1060,7 @@ window.ETC.scenarijai = [
     ]
    },
    {
-    "sit": "C nustatė kraujo grupę EldonCard kortele – B Rh−. Šoko požymiai išlieka, A paskyrė eritrocitų.",
+    "sit": "C nustatė karės (24 m.) kraujo grupę EldonCard kortele – B Rh−. Šoko požymiai išlieka, A paskyrė eritrocitų.",
     "gp": {
      "AKS": "90/58",
      "ŠSD": "124"
@@ -1068,11 +1068,11 @@ window.ETC.scenarijai = [
     "klaus": "Kurių grupių eritrocitus galima perpilti?",
     "opt": [
      {
-      "t": "O− arba B−",
+      "t": "Tik O− arba B− – vaisingo amžiaus moteriai Rh+ neskiriama",
       "ok": true
      },
      {
-      "t": "O+ arba B+ – ABO sutampa, Rh nesvarbu",
+      "t": "O+ arba B+ – ABO sutampa, Rh šoke nesvarbu",
       "ok": false
      },
      {
@@ -1080,7 +1080,7 @@ window.ETC.scenarijai = [
       "ok": false
      }
     ],
-    "why": "Pagal kraujo suderinamumo lentelę B− recipientui tinka O− ir B− eritrocitai. O− – universalus eritrocitų donoras (#23).",
+    "why": "B− recipientei tinka B− ir O− eritrocitai (O− – universalus eritrocitų donoras). Rh+ eritrocitai Rh− vaisingo amžiaus moteriai neskiriami – anti-D imunizacija kels pavojų būsimam nėštumui; vyrams ir ne vaisingo amžiaus moterims kraštutiniu atveju galima Rh+ (ETC 5.0; #23).",
     "ref": [
      "#/p/kraujas",
      "#/igudis/23"

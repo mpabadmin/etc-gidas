@@ -15,7 +15,6 @@
 <style>
 :root{--bg:#F7F6F2;--card:#fff;--line:#E2E0D8;--tx:#2C2C2A;--tx2:#5F5E5A;--acc:#0C447C;--accbg:#E6F1FB;--red:#791F1F;--redbg:#FCEBEB;--amb:#633806;--ambbg:#FAEEDA;--grn:#085041;--grnbg:#E1F5EE;--hl:#FAC775}
 body.field{--bg:#1C1C1B;--card:#2C2C2A;--line:#444441;--tx:#F1EFE8;--tx2:#B4B2A9;--acc:#B5D4F4;--accbg:#0C447C;--red:#FCEBEB;--redbg:#791F1F;--amb:#FAC775;--ambbg:#633806;--grn:#9FE1CB;--grnbg:#085041;--hl:#854F0B}
-@media(prefers-color-scheme:dark){body.learn{--bg:#1C1C1B;--card:#2C2C2A;--line:#444441;--tx:#F1EFE8;--tx2:#B4B2A9;--acc:#B5D4F4;--accbg:#0C447C;--red:#F7C1C1;--redbg:#501313;--amb:#FAC775;--ambbg:#412402;--grn:#9FE1CB;--grnbg:#04342C;--hl:#854F0B}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-tap-highlight-color:transparent}
 body.field{font-size:17px}
@@ -54,8 +53,7 @@ details.card summary{cursor:pointer}
 .vthumb .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:64px;height:44px;border-radius:12px;background:rgba(200,0,0,.9);color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center}
 .vcap b{display:block;font-size:15px;line-height:1.3}.vcap small{display:block;color:var(--tx2);font-size:13px}
 .brand{display:flex;align-items:center;gap:10px;margin:2px 0 6px}.brand img{height:40px;width:auto}.brand span{font-size:13px;color:var(--tx2);line-height:1.3}
-.lg-l{display:none}body.learn .lg-d{display:none}body.learn .lg-l{display:inline}
-@media(prefers-color-scheme:dark){body.learn .lg-d{display:inline}body.learn .lg-l{display:none}}
+.lg-l{display:none}
 .steps{counter-reset:st;list-style:none;padding:0;margin:8px 0}.steps li{counter-increment:st;position:relative;padding:8px 0 8px 40px;border-bottom:1px solid var(--line)}.steps li::before{content:counter(st);position:absolute;left:0;top:8px;width:28px;height:28px;border-radius:50%;background:var(--accbg);color:var(--acc);font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px}
 .qr{display:block;width:180px;height:180px;margin:10px auto;border-radius:10px;background:#fff;padding:6px}
 .lead{font-size:16px;margin:10px 0}
@@ -76,7 +74,6 @@ p{margin:6px 0} a{color:var(--acc)} ul,ol{padding-left:20px}
 .tools{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 :root{--tlbg:#EBE8F0;--tlfg:#4B4560;--tlic:#5E5775;--tlicfg:#fff}
 body.field{--tlbg:#35313F;--tlfg:#CFC8E2;--tlic:#CFC8E2;--tlicfg:#1C1C1B}
-@media(prefers-color-scheme:dark){body.learn{--tlbg:#35313F;--tlfg:#CFC8E2;--tlic:#CFC8E2;--tlicfg:#1C1C1B}}
 .tool{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:10px;align-items:center;align-content:center;padding:12px;border-radius:14px;background:var(--tlbg);color:var(--tlfg);text-decoration:none;min-width:0;border:1px solid var(--tlbg)}
 .tool.wide{grid-column:1/-1}
 .tool .ti{grid-row:1/3;width:40px;height:40px;border-radius:10px;background:var(--tlic);color:var(--tlicfg);font-weight:800;font-size:22px;display:flex;align-items:center;justify-content:center}
@@ -147,7 +144,6 @@ textarea{display:block;width:100%;font:inherit;color:var(--tx);background:var(--
 /* ── įrankiai: 9-Line, MIST kortelė, GKS, TST (tools.js) ── */
 :root{--ok:#1D9E75;--abn:#B42318;--mkr:#fff;--bfill:#ECEAE3;--bline:#8F8D85;--sMc:#B42318;--sMb:#FDECEA;--sMf:#7A1F1F;--sIc:#B35300;--sIb:#FFF1DF;--sIf:#6B3300;--sSc:#1D5FB4;--sSb:#E6F0FC;--sSf:#0C447C;--sTc:#18794E;--sTb:#E2F4EA;--sTf:#085041}
 body.field{--abn:#FF9B91;--mkr:#F1EFE8;--bfill:#3F3F3B;--bline:#A3A198;--sMb:#4A1714;--sMf:#FFD9D4;--sIb:#472A06;--sIf:#FFD9A6;--sSb:#11304F;--sSf:#CFE3FA;--sTb:#0F3B28;--sTf:#BDEBCB}
-@media(prefers-color-scheme:dark){body.learn{--abn:#FF9B91;--mkr:#F1EFE8;--bfill:#3F3F3B;--bline:#A3A198;--sMb:#4A1714;--sMf:#FFD9D4;--sIb:#472A06;--sIf:#FFD9A6;--sSb:#11304F;--sSf:#CFE3FA;--sTb:#0F3B28;--sTf:#BDEBCB}}
 .btn{min-height:44px}.btn:disabled{opacity:.5}
 .btn.sm{padding:8px 12px;font-size:14px;min-height:40px}
 .btn.dng{color:var(--red);border-color:var(--red);background:none}
@@ -458,7 +454,8 @@ details.alt .tw table{font-size:13px}
 #toast.show{opacity:1;transform:translate(-50%,0)}
 html.fbopen #toast{bottom:auto;top:calc(12px + env(safe-area-inset-top))}
 /* ── naktinis raudonas režimas: tamsi paletė + raudonas filtras (lieka tik raudonas kanalas) ── */
-body.night::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;background:#c80000;mix-blend-mode:multiply}
+/* v56: #f00 (buvo #c80000) – multiply palieka tik raudoną kanalą; su #c80000 net balta ant juodos tebūtų 3,5:1, su #f00 – 5,25:1 (WCAG 4,5:1 pasiekiama) */
+body.night::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;background:#f00;mix-blend-mode:multiply}
 body.night{background:#000}
 #night[aria-pressed="true"]{background:var(--tx);color:var(--bg)}
 header .seg{min-width:0}header .seg button{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:2px;padding-right:2px}
@@ -476,11 +473,8 @@ header .seg{min-width:0}header .seg button{min-width:0;white-space:nowrap;overfl
 #prt{display:none}
 @media print{html.prt body>*:not(#prt){display:none!important}html.prt #prt{display:block!important}html.prt #prt img{display:block;width:268mm;max-width:100%;height:auto;margin:0 auto}html.prt body{background:#fff}html.prt body::after{display:none!important}}
 .exbar{position:sticky;top:calc(60px + env(safe-area-inset-top));z-index:3;display:flex;align-items:center;gap:10px;padding:8px 10px 8px 14px;margin:8px 0;border-radius:12px;background:var(--tx);color:var(--bg)}
-#ex-clock{font:800 26px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:1px}
 .exbar .exn{flex:1;min-width:0;font-size:14px;opacity:.85;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .exbar .btn{background:var(--bg);color:var(--tx);border-color:var(--bg);font-weight:700}
-.ck .ext{margin-left:auto;flex:none;font:600 14px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--tx2);padding-top:2px}
-.ck.exi.on .t{text-decoration:none;color:var(--tx)}
 .exres{border-radius:14px;padding:14px;margin:10px 0;background:var(--card);border:1px solid var(--line)}
 .exres.bad{border-color:var(--red)}
 .exres .big{font-size:34px;font-weight:800;line-height:1.15}.exres .big small{font-size:18px;font-weight:600;color:var(--tx2)}
@@ -558,7 +552,6 @@ html.gl .vlb button{width:52px;height:52px}
 /* MIST kortelė pasirinkimais (v29): spalvotos dalys, „+“ laukai, įvedimo langai (požymiai, vaistai / skysčiai, sužalojimas, turniketas, laikas) */
 :root{--sEc:#6B6A64;--sEb:#EEEDE8;--sEf:#2C2C2A}
 body.field{--sEb:#353533;--sEf:#F1EFE8}
-@media(prefers-color-scheme:dark){body.learn{--sEb:#353533;--sEf:#F1EFE8}}
 .mcs.sE{--c:var(--sEc);--b:var(--sEb);--f:var(--sEf)}
 .mc.mq{margin:0 0 12px}
 .mqa{padding:10px 12px;border-bottom:2px solid var(--line)}
@@ -597,7 +590,6 @@ body.field{--sEb:#353533;--sEf:#F1EFE8}
 .mqed>.inp,.mqed>.dictw{margin:8px 0 0}.mqed .dictw .inp{margin:0}
 .mqed textarea.inp{min-height:72px}
 .mqdate{color-scheme:light}body.field .mqdate{color-scheme:dark}
-@media(prefers-color-scheme:dark){body.learn .mqdate{color-scheme:dark}}
 .mqhint{margin:8px 0 0;font-size:13px}
 .mqg{display:inline-flex;align-items:center;justify-content:center;flex:none;width:26px;height:26px;border-radius:50%;background:var(--g);color:var(--gf);font-weight:800;font-size:12px;box-shadow:0 0 0 1.5px var(--mkr)}
 .mqtools{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin:4px 0 8px}
@@ -756,7 +748,7 @@ html.gl .mqtm .mqc,html.gl .mqqv .mqc{min-height:56px;font-size:16px}
   .mqsh .mqrow:has(> [data-sa="gcson"]){margin-top:4px}.mqsh [data-sa="gcson"]{min-height:32px}
   .mqqv .mqc{min-height:36px}
 }
-@media(max-height:680px){.mqkp button{min-height:40px;font-size:20px}.mqavpu button,.mqvf button{min-height:40px}.mqdisp{min-height:36px}.mqdisp b,.mqbp{font-size:28px;min-height:36px}.mqsh .mqc{min-height:38px}}
+@media(max-height:680px){.mqsh{max-height:96vh;max-height:96dvh}.mqkp{gap:4px}.mqkp button{min-height:44px;font-size:20px}.mqavpu button,.mqvf button{min-height:40px}.mqdisp{min-height:36px}.mqdisp b,.mqbp{font-size:28px;min-height:36px}.mqsh .mqc{min-height:38px}.mqsave{padding:8px 12px}} /* v56: klaviatūra ≥ 44 px (320×640) */
 @media(max-height:760px) and (max-width:360px){.mqvf span{font-size:9.5px;letter-spacing:-.2px}.mqvf b{font-size:13px}}
 /* pirštinių „Atgal“ – dešinėje, virš juostos: neuždengia žymėjimų ir MARCH PAWS raidžių */
 #glback{left:auto;right:12px;width:56px;height:56px}
@@ -791,6 +783,29 @@ body.night .mqg{background:#000;color:#fff;box-shadow:0 0 0 2px #fff}
 body.night .mk .dot{fill:#000;stroke:#fff;stroke-width:1.8}body.night .mk text{fill:#fff}
 body.night .mqtools button.on{background:#fff;color:#000;border-color:#fff}
 body.night td.ab::after,body.night b.ab::after,body.night .mqvf button.ab b::after{content:'!';margin-left:2px;font-weight:900}
+/* v56: naktinis filtras (multiply) palieka tik raudoną kanalą – spalvų skirtumai dingsta, mėlynas fonas su tamsiu tekstu tampa ~2:1.
+   Naktį – tik juoda / balta su matomais rėmeliais: paletė perrašoma, spalvoti fonai – juodi su baltu 1 px rėmeliu, „įjungta“ – balta su juodu tekstu. */
+body.night{--bg:#000;--card:#141414;--line:#8f8f8f;--tx:#fff;--tx2:#F5F5F5;--acc:#fff;--accbg:#000;--red:#fff;--redbg:#000;--amb:#fff;--ambbg:#000;--grn:#fff;--grnbg:#000;--hl:#444;--tlbg:#000;--tlfg:#fff;--tlic:#fff;--tlicfg:#000;--abn:#fff;--ok:#fff}
+body.night .dose,body.night .dose.tc,body.night .warn,body.night .tag,body.night .hbtm,body.night .tool,body.night .nn,body.night .msk,body.night .msum a,body.night .tp1,body.night .tp2,body.night .tp3,body.night .gres,body.night .rA,body.night .rB,body.night .rC,body.night .mcl .lt,body.night .bdg,body.night .mqt,body.night .mcs .btn.pri,body.night .nbres.hi,body.night .sco .scl,body.night .scm,body.night .vlm,body.night .tz{background:#000!important;color:#fff!important;border:1px solid #fff!important}
+body.night .tool .ti{background:#fff;color:#000}
+body.night .btn.pri,body.night .btn.pri0,body.night .acts .pri0,body.night .pn .pri0,body.night .gdgo,body.night .trnext,body.night .mqsave{background:#000!important;color:#fff!important;border:2px solid #fff!important}
+body.night .btn.pri:disabled,body.night .mqsave:disabled{opacity:.55}
+body.night .hbqa{background:#000;color:#fff;border-color:#fff}body.night .hbqa.pri{border-width:2px;font-weight:800}
+body.night .x{background:#000;color:#fff;border-color:#fff}
+body.night .mqkp button{background:#000;color:#fff;border-color:#fff}body.night .mqkp button.nx{background:#fff;color:#000}
+body.night .mqseg button.on,body.night .mqpain button.on,body.night .mqsh .mqc.on,body.night .mcs .mqc.on,body.night .mcs .opts button.on,body.night .madd.sm button.on,body.night .lgs button.on,body.night .chips button.on,body.night .tabs button.on,body.night .seg button.on,body.night .mqvf button.on,body.night .mqavpu button.on,body.night .trt .trd,body.night .rdvp,body.night .rdvp.on,body.night .dictb.on,body.night .nl.ok .nn,body.night .sco.ok .scl,body.night .ck.on .bx,body.night .tnb{background:#fff!important;color:#000!important;border-color:#fff!important;box-shadow:none}
+body.night .mqvf button.on{border:2px solid #fff}body.night .mqvf button.on span,body.night .mqvf button.on b{color:#000}
+body.night .mqvf span,body.night .mqdisp small,body.night .hbtm small,body.night .row small,body.night .muted,body.night #nav a{color:#F5F5F5}
+body.night #nav a.on{background:#000;color:#fff;box-shadow:inset 0 0 0 1px #fff}
+body.night .ck.on .t{color:#F5F5F5}
+body.night .prog i,body.night .scprog i.d,body.night .qrprog i.d{background:#fff}body.night .prog,body.night .scprog i,body.night .qrprog i{background:#555}
+body.night .esme{border-left-color:#fff}
+body.night .rdl.on{background:#141414;box-shadow:0 0 0 6px #141414,-10px 0 0 #fff}
+body.night .mqev .evu,body.night .mqev .evp,body.night .mqev .evr{background:#000;color:#fff;border:1px solid #fff}
+body.night .mcs,body.night .mcl,body.night .msT1,body.night .msT2,body.night .msT3,body.night .msT4,body.night .msX{--c:#fff;--f:#fff;--b:#000;--sMb:#000;--sMf:#fff;--sIb:#000;--sIf:#fff;--sSb:#000;--sSf:#fff;--sTb:#000;--sTf:#fff;--sEb:#000;--sEf:#fff;--sMc:#fff;--sIc:#fff;--sSc:#fff;--sTc:#fff}
+body.night .mcl{border-top:1px solid #fff;border-bottom:1px solid #fff}body.night .mqtl,body.night .mqtl.r{color:#fff}
+body.night .madd button{background:#000;color:#fff;border-color:#fff}body.night .madd:not(.sm) button,body.night .madd.sm button.on{background:#fff;color:#000}
+body.night input,body.night select,body.night textarea{background:#000;color:#fff;border-color:#fff}
 /* SITREP (kodas bendras su March gidu – sitrep.js) */
 .srt{display:flex;align-items:center;gap:12px;margin:6px 0 10px}.srt .btn{flex:none;margin:0}
 .srdtg{font:700 19px/1.2 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.5px;min-width:0;overflow-wrap:anywhere}
@@ -801,7 +816,6 @@ body.night td.ab::after,body.night b.ab::after,body.night .mqvf button.ab b::aft
 .lgs button.on{background:var(--c);color:var(--f)}
 .lg-z{--c:#18794E;--f:#fff}.lg-g{--c:#D9A200;--f:#1A1400}.lg-r{--c:#B42318;--f:#fff}.lg-j{--c:#000;--f:#fff}
 body.field .lg-j{border-color:#8F8D85}body.field .lg-j.on{background:#000;border-color:#F1EFE8}
-@media(prefers-color-scheme:dark){body.learn .lg-j{border-color:#8F8D85}body.learn .lg-j.on{background:#000;border-color:#F1EFE8}}
 section.nl .lgr+.inp{margin-top:10px}
 html.gl .lgs button{width:52px;height:52px}
 @media(max-width:380px){.lgs{gap:3px}.lgs button{width:40px;height:44px;font-size:15px}.lgr>span{font-size:14px}html.gl .lgs button{width:46px;height:52px}}
